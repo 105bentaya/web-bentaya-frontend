@@ -1,0 +1,22 @@
+<p-galleria
+  [value]="items"
+  [containerStyle]="{}"
+  [numVisible]="1"
+  [showThumbnails]="false"
+  [showIndicators]="true"
+  [showItemNavigators]="true"
+  [circular]="true"
+  [autoPlay]="true"
+  [transitionInterval]="10000"
+>
+  <ng-template pTemplate="item" let-blog>
+    <img
+      [routerLink]="'/blog/' + blog.title"
+      [src]="blog.image"
+      class="bulletin-img"
+    />
+  </ng-template>
+  <ng-template pTemplate="caption" let-blog>
+    <span class="font">{{ blog.description }}</span>
+  </ng-template>
+</p-galleria>

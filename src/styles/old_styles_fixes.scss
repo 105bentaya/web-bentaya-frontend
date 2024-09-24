@@ -1,0 +1,218 @@
+//      $xs: 0;
+//      $sm: 576px;
+//      $md: 768px;
+//      $lg: 992px;
+//      $xl: 1200px;
+//      $xxl: 1400px;
+//
+//
+//      .p-datepicker table th {
+//        text-align: center;
+//      }
+//
+//      .form-control {
+//        padding: 0.5rem 0.5rem;
+//      }
+//
+//      .row-container, .four-row-container {
+//        display: flex;
+//        flex-direction: row;
+//        justify-content: space-between;
+//      }
+//
+//      .single-row {
+//        margin-bottom: 2em;
+//        width: 100%;
+//      }
+//
+//      .two-col {
+//        margin-bottom: 2em;
+//        width: 49.25%;
+//      }
+//
+//      .three-col {
+//        width: 32.5%;
+//        margin-bottom: 2em;
+//      }
+//
+//      .four-col {
+//        margin-bottom: 2em;
+//        width: 24%;
+//      }
+//
+//      @media screen and (max-device-width: 767px) {
+//
+//        .row-container {
+//          flex-direction: column;
+//        }
+//
+//        .two-col, .three-col {
+//          width: 100%;
+//        }
+//      }
+//
+//      @media screen and (max-device-width: 991px) {
+//        .four-row-container {
+//          flex-direction: column;
+//        }
+//
+//        .four-col {
+//          width: 100%;
+//        }
+//      }
+//
+//      .no-control {
+//        padding: 0 !important;
+//        border: 0;
+//        background-image: none;
+//      }
+//
+//      .p-button {
+//        border-radius: 0.5rem;
+//      }
+//
+      .web-page-image {
+        width: 100%;
+        max-width: 512px;
+      }
+//
+//      .p-column-title {
+//        font-weight: bold
+//      }
+//
+//      .line {
+//        white-space: pre-line;
+//        max-width: 600px;
+//      }
+//
+//
+//      p-dropdown, p-calendar, p-inputNumber {
+//        .p-component {
+//          border-radius: .375rem;
+//        }
+//      }
+//
+//      .p-inputtext {
+//        border-color: #ced4da;
+//      }
+//
+
+      .menuBar.p-menubar {
+        background-color: rgb(95, 174, 226);
+        border: 0;
+        border-radius: 0;
+      }
+
+      .p-menubar .p-menuitem.p-highlight > .p-menuitem-content .p-menuitem-link .p-menuitem-text, .p-submenu-icon {
+        color: #4B5563;
+      }
+
+      .p-submenu-list {
+        z-index: 4 !important;
+      }
+
+//
+//      .p-submenu-list {
+//        z-index: 4 !important;
+//      }
+//
+//      .small-input {
+//        input {
+//          width: 36px;
+//        }
+//      }
+//
+//      .p-divider {
+//        margin: 0 !important;
+//      }
+//
+//      .p-submenu-list {
+//        z-index: 4 !important;
+//      }
+//
+//
+//
+//
+//      .p-selectbutton .p-button.p-highlight {
+//        background: #3B82F6;
+//        border-color: #3B82F6;
+//        border-right-color: rgb(33, 150, 243);
+//        color: #ffffff;
+//      }
+//
+//      .p-selectbutton .p-button.p-highlight:hover {
+//        background: #2563eb;
+//        border-color: #2563eb;
+//      }
+//
+//      .fc-scrollgrid-section-sticky {
+//        z-index: 0 !important;
+//      }
+//
+//
+//      .bold-placeholder {
+//        ::placeholder {
+//          color: black;
+//        }
+//      }
+//
+//      .p-paginator {
+//        .p-dropdown {
+//          display: flex;
+//          align-items: center;
+//        }
+//      }
+//
+//      .p-dialog-header-icon:focus {
+//        box-shadow: none !important;
+//      }
+//
+//      .p-dialog-content {
+//        border-top: 0 none;
+//      }
+//
+//
+//
+//
+//      .p-multiselect-panel, .p-autocomplete-panel {
+//        max-width: 100vw
+//      }
+//
+//      .attendance-multiselect {
+//        .p-multiselect-item-group {
+//          padding-top: 0 !important;
+//          padding-bottom: 0 !important;
+//        }
+//        timesicon.p-icon-wrapper {
+//          display: block !important;
+//        }
+//      }
+//
+//      p-message {
+//        exclamationtriangleicon {
+//          margin-left: 5px;
+//          margin-right: 10px;
+//        }
+//        .p-inline-message-text {
+//          font-weight: bold;
+//        }
+//      }
+//
+//      .calendar-cursor-default {
+//        .p-datepicker-calendar-container {
+//          cursor: default !important;
+//          pointer-events: none !important;
+//        }
+//      }
+//
+//      .step-form-title {
+//        visibility: collapse;
+//      }
+//
+//      @media screen and (max-device-width: 767px) {
+//        .step-form-title {
+//          visibility: initial;
+//          margin-bottom: 2em;
+//        }
+//      }
+//

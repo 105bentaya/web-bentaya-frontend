@@ -1,0 +1,63 @@
+<div class="container">
+  <h1>LISTA DE VOLUNTARIADO</h1>
+  <p-table
+    #scouterTab
+    styleClass="p-datatable-gridlines"
+    [value]="preScouters"
+    responsiveLayout="stack"
+    [loading]="!preScouters"
+  >
+    <ng-template pTemplate="caption">
+      <div class="ms-auto" style="text-align: right;">
+          <span>
+            {{ scouterTab.totalRecords }}
+            {{ scouterTab.totalRecords == 1 ? "preinscripción hecha" : "preinscripciones hechas" }}
+          </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nombre de el/la voluntario/a</th>
+        <th>Fecha de nacimiento</th>
+        <th>Género</th>
+        <th class="w-min"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-preScouter>
+      <tr class="stack-table-title">
+        <td>
+          <span class="p-column-title">Nombre de el/la voluntario/a</span>
+          <span>{{ preScouter.surname }}, {{ preScouter.name }}</span>
+        </td>
+        <td>
+          <span class="p-column-title">Fecha de nacimiento</span>
+          <span>{{ preScouter.birthday }}</span>
+        </td>
+        <td>
+          <span class="p-column-title">Género</span>
+          <span>{{ preScouter.gender }}</span>
+        </td>
+        <td>
+          <div class="d-flex flex-row gap-2 justify-content-end w-100">
+            <button
+              pButton
+              icon="pi pi-file-pdf"
+              [disabled]="loading"
+              (click)="downloadPreScouterAsPdf(preScouter)"
+              class="p-button-raised p-button-outlined"
+              title="Exportar como PDF"
+            ></button>
+            <button
+              pButton
+              icon="pi pi-trash"
+              [disabled]="loading"
+              (click)="deleteScouter($event, preScouter)"
+              class="p-button-danger p-button-raised p-button-outlined"
+              title="Eliminar preinscripción"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

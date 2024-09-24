@@ -1,0 +1,35 @@
+<div>
+  <span [ngClass]="{'p-float-label': floatLabel}">
+    <textarea
+      pInputText
+      id="comment"
+      type="text"
+      [(ngModel)]="value"
+      [ngClass]="ngClass"
+      (ngModelChange)="onChange(value)"
+      (blur)="_onTouched()"
+      [rows]="rows"
+      [disabled]="disabled"
+      class="w-100"
+    ></textarea>
+    @if (floatLabel) {
+      <label [class]="labelClass">{{ floatLabel }}</label>
+    }
+  </span>
+  <div style="margin-top: -5px;">
+    <p-tag
+      class="float-end"
+      title="No superar los {{maxLength}} caracteres"
+      [severity]="
+      valueLength > maxLength ? 'danger' :
+      maxLength > 30 && valueLength >= maxLength-20 ? 'warning' : 'success'"
+      [rounded]="true"
+      [value]="valueLength + '/' + maxLength"
+    ></p-tag>
+  </div>
+</div>
+@if (showErrorMessage && !textIsUnderLimit) {
+  <div class="text-danger">
+    <small>El texto excede el límite de caracteres.</small>
+  </div>
+}

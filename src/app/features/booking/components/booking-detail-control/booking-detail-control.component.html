@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="d-flex justify-content-start flex-wrap-reverse gap-2 align-items-baseline">
+    <a
+      pButton
+      icon="fa-regular fa-circle-left"
+      class="text-decoration-none p-button-text p-button-rounded fs-3 d-none d-sm-inline-flex"
+      routerLink="/centros-scout/gestion"
+      title="Atrás"
+    ></a>
+    <h2>Gestor de Reservas - Nº {{ id }}</h2>
+  </div>
+  <hr>
+  @if (booking) {
+    @if (booking.ownBooking) {
+      <app-own-booking-detail [booking]="booking"></app-own-booking-detail>
+    } @else {
+      <app-booking-detail [booking]="booking"></app-booking-detail>
+    }
+    <app-booking-calendar
+      [dateRanges]="dateRanges"
+      [currentReservationId]="id"
+      [calendarDate]="booking.startDate"
+      (changeId)="reloadInfo($event)"
+    ></app-booking-calendar>
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>

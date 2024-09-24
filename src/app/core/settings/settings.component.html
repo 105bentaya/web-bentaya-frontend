@@ -1,0 +1,53 @@
+<div class="container">
+  <h1>Ajustes Generales</h1>
+  @if (settingsLoaded) {
+    <div class="d-flex flex-row gap-2 align-items-center">
+      <label>Ronda actual: 20{{ currentYear - 1 }}/</label>
+      <p-inputNumber
+        class="small-input"
+        [(ngModel)]="currentYear"
+        mode="decimal"
+        [useGrouping]="false"
+        [min]="23"
+        [max]="99"
+      ></p-inputNumber>
+    </div>
+    <div class="d-flex flex-row gap-2 align-items-center">
+      <label>Activar/Desactivar formulario de preinscripción</label>
+      <p-checkbox
+        [(ngModel)]="formIsOpen"
+        [binary]="true"
+      ></p-checkbox>
+    </div>
+    <div class="d-flex flex-row gap-2 align-items-center">
+      <label>Año que se muestra en el formulario de preinscripción: 20{{ currentFormYear - 1 }}/</label>
+      <p-inputNumber
+        class="small-input"
+        [(ngModel)]="currentFormYear"
+        mode="decimal"
+        [useGrouping]="false"
+        [min]="22"
+        [max]="99"
+      ></p-inputNumber>
+    </div>
+    <div class="d-flex flex-row gap-2 align-items-center mt-1">
+      <label>Fecha del mensaje de mantenimiento:</label>
+      <p-calendar
+        [(ngModel)]="dateValue"
+        [showTime]="true"
+        [showClear]="true"
+        (onClear)="clearDate()"
+        (onSelect)="setDate($event)"
+        [readonlyInput]="true"
+      ></p-calendar>
+    </div>
+    <app-save-buttons
+      class="mt-2"
+      [saveDisabled]="saveButtonDisabled()"
+      [saveLoading]="loading > 0"
+      (onSave)="saveChanges()"
+    ></app-save-buttons>
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>

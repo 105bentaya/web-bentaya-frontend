@@ -1,0 +1,10 @@
+<h1 class="pb-4 text-center">PREINSCRIPCIONES - Ser Scout</h1>
+@if (!yearLoading && !formLoading) {
+  @if (showForm) {
+    <app-ser-scout [secondYearOfTerm]="formYear"></app-ser-scout>
+  } @else {
+    <app-closed-ser-scout [secondYearOfClosedTerm]="formYear" [error]="error"></app-closed-ser-scout>
+  }
+} @else {
+  <p-progressSpinner></p-progressSpinner>
+}

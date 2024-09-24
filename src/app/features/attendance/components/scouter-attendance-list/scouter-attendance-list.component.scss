@@ -1,0 +1,12 @@
+.input-w-100 {
+  @media screen and (max-width: 550px) {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .stack-table-title {
+    text-align: right;
+    margin-left: 10px;
+  }
+}

@@ -1,0 +1,7 @@
+@media screen and (min-device-width: 750px) {
+  .title-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

@@ -1,0 +1,171 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between flex-wrap align-items-center gap-2">
+    <h1>LISTA DE PREINSCRIPCIONES</h1>
+    <p-checkbox [binary]="true" [(ngModel)]="showCurrentYear" label="Mostrar unidad actual"></p-checkbox>
+  </div>
+  @if (yearList && yearList.length < 1) {
+    No hay preinscripciones
+  }
+  @if (yearList) {
+    <p-tabMenu
+      [model]="yearList"
+      [activeItem]="yearList[0]"
+      (activeItemChange)="filterByYear($event.id, tab)"
+    ></p-tabMenu>
+    <p-table
+      #tab
+      (sortFunction)="customSort($event)"
+      [customSort]="true"
+      [sortOrder]="-1"
+      [value]="preScouts"
+      responsiveLayout="scroll"
+      sortField="creationDate"
+      styleClass="p-datatable-gridlines"
+    >
+      <ng-template pTemplate="caption">
+        <div class="d-flex align-items-center">
+          <button
+            (click)="exportExcelScout()"
+            [disabled]="excelLoading"
+            [icon]="excelLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
+            class="p-button-success"
+            pButton
+            title="Descargar preinscripciones como excel"
+            type="button"
+          ></button>
+          <div class="ms-auto text-end">
+                  <span>
+                    {{ tab.processedData.length }}
+                    {{ tab.processedData.length == 1 ? "preinscripción hecha" : "preinscripciones hechas" }}
+                    con estas condiciones
+                  </span>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="surname">
+            Nombre
+            <p-sortIcon field="surname"></p-sortIcon>
+          </th>
+          <th pSortableColumn="section" style="max-width: 8em;">
+            Sección
+            <p-sortIcon field="section"></p-sortIcon>
+          </th>
+          @if (showCurrentYear) {
+            <th>
+              Unidad Actual
+            </th>
+          }
+          <th pSortableColumn="gender">
+            Género
+            <p-sortIcon field="gender"></p-sortIcon>
+          </th>
+          <th pSortableColumn="creationDate">
+            Fecha de la Preinscripción
+            <p-sortIcon field="creationDate"></p-sortIcon>
+          </th>
+          <th>
+            Estado
+          </th>
+          <th class="w-min"></th>
+        </tr>
+        <tr>
+          <th>
+            <input
+              (input)="tab.filter($any($event.target).value, 'id', 'name-surname-filter')"
+              pInputText
+              placeholder="ID o nombre"
+              type="text"
+            />
+          </th>
+          <th>
+            <p-multiSelect
+              (onChange)="tab.filter($event.value, 'section', 'in')"
+              [options]="sections"
+              [showHeader]="false"
+              [showClear]="true"
+              appendTo="body"
+              scrollHeight="300px"
+            ></p-multiSelect>
+          </th>
+          @if (showCurrentYear) {
+            <th></th>
+          }
+          <th></th>
+          <th></th>
+          <th>
+            <p-multiSelect
+              (onChange)="tab.filter($event.value, 'status', 'in')"
+              [options]="multiSelectStatuses"
+              [showHeader]="false"
+              [showClear]="true"
+              appendTo="body"
+              optionLabel="name"
+              optionValue="id"
+              scrollHeight="300px"
+            ></p-multiSelect>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template let-preScout pTemplate="body">
+        <tr>
+          <td>
+            {{ preScout.surname }}, {{ preScout.name }}
+          </td>
+          <td>
+            {{ preScout.section }}
+          </td>
+          @if (showCurrentYear) {
+            <td>
+              {{ currentYear - +(preScout.birthday.split("/")[2]) | scoutYear }}
+            </td>
+          }
+          <td>
+            {{ preScout.gender }}
+          </td>
+          <td>
+            {{ preScout.creationDate }}
+          </td>
+          <td>
+            {{ preScout.status | status:preScout.groupId }}
+          </td>
+          <td>
+            <div class="d-flex flex-row gap-2">
+              <button
+                (click)="downloadPreScoutAsPdf(preScout)"
+                [disabled]="loading"
+                class="p-button-outlined p-button-raised"
+                icon="pi pi-file-pdf"
+                pButton
+                title="Exportar como PDF"
+                type="button"
+              ></button>
+              <button
+                (click)="openForm(preScout)"
+                [disabled]="loading"
+                class="p-button-light p-button-outlined p-button-raised"
+                icon="pi pi-th-large"
+                pButton
+                title="Asignar"
+                type="button"
+              ></button>
+              <button
+                (click)="deleteScout(preScout)"
+                [disabled]="loading"
+                class="p-button-danger p-button-outlined p-button-raised"
+                icon="pi pi-trash"
+                pButton
+                title="Eliminar"
+                type="button"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>

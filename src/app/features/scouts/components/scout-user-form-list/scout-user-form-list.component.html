@@ -1,0 +1,63 @@
+<div>
+  <span>
+    Lista de los nombres de usuario que tienen acceso a esta educanda. Los usuarios deben ser
+    <b>correos electrónicos</b>.
+  </span>
+  <ul>
+    <li>Si se añade un nuevo usuario que no existe, éste se creará automáticamente y se le enviará un correo
+      informándole del alta en la página web junto a su contraseña.
+    </li>
+    <li>
+      Si el usuario ya existe, se le notificará mediante correo electrónico que se le ha añadido la persona educanda a
+      su cuenta.
+    </li>
+  </ul>
+  <p-table
+    [value]="users"
+    responsiveLayout="scroll"
+    [loading]="!users"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="required">Usuario</th>
+        <th class="w-min">
+          <button
+            pButton
+            icon="pi pi-user-plus"
+            title="Añadir contacto"
+            (click)="addUser()"
+            class="p-button-raised p-button-outlined p-button-info"
+            style="width: 2rem; height: 2rem;"
+          ></button>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user let-ri="rowIndex">
+      <tr>
+        <td>
+          <input
+            pInputText
+            [email]="true"
+            type="email"
+            [(ngModel)]="user.username"
+            [ngClass]="{'invalid' : user.username.length == 0}"
+          >
+        </td>
+        <td class="text-center">
+          <button
+            pButton
+            icon="pi pi-user-minus"
+            title="Eliminar"
+            (click)="deleteUser(ri)"
+            class="p-button-raised p-button-outlined p-button-danger"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4">No hay usuarios asignados a esta persona educanda</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

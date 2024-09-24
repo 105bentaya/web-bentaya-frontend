@@ -1,0 +1,18 @@
+.status-width {
+  width: 8rem;
+  @media screen and (min-width: 600px) {
+    width: 10rem;
+  }
+  @media screen and (min-width: 992px) {
+    width: 12rem;
+  }
+  @media screen and (min-width: 1200px) {
+    width: 14rem;
+  }
+}
+
+.input-w-100 {
+  @media screen and (max-width: 550px) {
+    width: 100% !important;
+  }
+}

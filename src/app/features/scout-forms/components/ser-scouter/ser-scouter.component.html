@@ -1,0 +1,134 @@
+<h1 class="text-center">VOLUNTARIADO - Ser Scouter</h1>
+<div class="container">
+  <p>
+    Si eres mayor de edad, tienes los 19 años cumplidos y tienes ganas de realizar un voluntariado, te damos la
+    posibilidad de realizarlo como educador o educadora scout en nuestra asociación. Rellena el siguiente formulario y
+    nos pondremos en contacto contigo.
+  </p>
+  <form [formGroup]="preScouterForm.form" class="form-container mt-4">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <p-floatLabel>
+            <input
+              pInputText
+              formControlName="name"
+              id="name"
+              type="text"
+            >
+            <label class="required" for="name">Nombre</label>
+        </p-floatLabel>
+        @if (preScouterForm.isDirtyAndInvalid('name')) {
+          <small class="text-danger">Introduzca su nombre</small>
+        }
+      </div>
+      <div class="col-12 col-md-6">
+        <p-floatLabel>
+            <input
+              pInputText
+              formControlName="surname"
+              id="surname"
+              type="text"
+            >
+            <label class="required" for="surname">Apellidos</label>
+        </p-floatLabel>
+        @if (preScouterForm.isDirtyAndInvalid('surname')) {
+          <small class="text-danger">Introduzca sus apellidos</small>
+        }
+      </div>
+      <div class="col-12 col-md-3">
+        <p-floatLabel>
+            <input
+              pInputText
+              formControlName="phone"
+              id="phone"
+              type="text"
+            >
+            <label class="required" for="phone">Teléfono de contacto</label>
+        </p-floatLabel>
+        @if (preScouterForm.isDirtyAndInvalid('phone')) {
+          <small class="text-danger">Introduzca un número de teléfono</small>
+        }
+      </div>
+      <div class="col-12 col-md-3">
+        <p-floatLabel>
+            <input
+              pInputText
+              formControlName="email"
+              id="email"
+              type="text"
+            >
+            <label class="required" for="email">Correo de contacto</label>
+        </p-floatLabel>
+        @if (preScouterForm.isDirtyAndInvalid('email')) {
+          <small class="text-danger">Introduzca un correo electrónico válido</small>
+        }
+      </div>
+      <div class="col-12 col-md-3">
+        <p-floatLabel>
+            <p-calendar
+              id="birthday"
+              formControlName="birthday"
+              dataType="string"
+            ></p-calendar>
+            <label class="required">Fecha de Nacimiento</label>
+        </p-floatLabel>
+        @if (preScouterForm.isDirtyAndInvalid('birthday')) {
+          <small class="text-danger">Introduzca una fecha en formato dd/mm/yyyy</small>
+        }
+      </div>
+      <div class="col-12 col-md-3">
+        <p-floatLabel>
+          <p-dropdown
+            id="gender"
+            formControlName="gender"
+            [options]="genders"
+            styleClass="w-100"
+          ></p-dropdown>
+          <label class="required" for="gender">Género</label>
+        </p-floatLabel>
+        @if (preScouterForm.isDirtyAndInvalid('gender')) {
+          <small class="text-danger">Introduzca el género</small>
+        }
+      </div>
+      <div class="col-12 mb-2">
+        <label class="required" for="comment">
+          Breve comentario sobre la motivación para su incorporación a la asociación (valoramos la motivación y el
+          compromiso).
+        </label>
+        <app-form-text-area
+          id="comment"
+          formControlName="comment"
+          [maxLength]="512"
+          [showErrorMessage]="preScouterForm.isDirtyAndInvalidWithError('comment', 'maxlength')"
+        >
+        </app-form-text-area>
+        @if (preScouterForm.isDirtyAndInvalidWithError('comment', 'required')) {
+          <small class="text-danger">Introduzca el nombre</small>
+        }
+      </div>
+      <div class="col-12 mb-2">
+        <app-privacy-checkbox-container>
+          <p-checkbox
+            id="privacy"
+            formControlName="privacy"
+            [binary]="true"
+          ></p-checkbox>
+        </app-privacy-checkbox-container>
+        @if (preScouterForm.isDirtyAndInvalid('privacy')) {
+          <small class="text-danger">Debe leer y estar de acuerdo con los términos</small>
+        }
+      </div>
+    </div>
+    <app-save-buttons
+      saveLabel="ENVIAR"
+      (onSave)="submit()"
+      [saveLoading]="loading"
+      [blockOverlay]="true"
+    ></app-save-buttons>
+    @if (preScouterForm.isDirtyAndInvalid()) {
+      <div class="w-100 text-center">
+        <small class="text-danger">Rellene todos los campos</small>
+      </div>
+    }
+  </form>
+</div>

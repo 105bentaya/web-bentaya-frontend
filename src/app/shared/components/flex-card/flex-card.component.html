@@ -1,0 +1,23 @@
+<div class="options-container">
+  <div class="options">
+    @for (option of options; track $index) {
+      <div
+        class="option"
+        [ngClass]="{'active': selectedIndex === $index}"
+        [style.background-image]="'url(' + option.backgroundImageUrl + ')'"
+        (click)="selectOption($index)"
+      >
+        <div class="shadow"></div>
+        <div class="label">
+          <div class="icon">
+            <i [class]="option.iconClass"></i>
+          </div>
+          <div class="info">
+            <div class="main">{{ option.mainText }}</div>
+            <div class="sub">{{ option.subText }}</div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

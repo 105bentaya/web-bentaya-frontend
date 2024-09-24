@@ -1,0 +1,93 @@
+<nav class="d-flex align-items-center menu px-1" style="background-color: #223a88; height: 104px;">
+  <div class="d-flex justify-content-md-center w-100 logo">
+    <a routerLink="/home">
+      <img
+        priority
+        ngSrc="assets/nav-bar/nav-bar-logo.png"
+        width="335"
+        height="100"
+        class="d-none d-sm-block"
+        alt="LOGO"
+      >
+      <img
+        ngSrc="assets/nav-bar/nav-bar-logo-small.png"
+        width="105"
+        height="100"
+        class="d-sm-none"
+        alt="LOGO"
+      >
+    </a>
+  </div>
+  <div class="buttons-right d-flex flex-column gap-1 me-2">
+    <div class="d-flex gap-2">
+      @for (button of socialMediaButtons; track $index) {
+        <a
+          pButton
+          [href]="button.link"
+          [icon]="button.icon"
+          class="p-button-rounded p-button-text"
+        ></a>
+      }
+    </div>
+    <div class="align-self-center home-bar-login-button">
+      @if (isLoggedIn) {
+        <button
+          type="button"
+          pButton
+          icon="pi pi-list"
+          (click)="userMenu.toggle($event)"
+          label="Mi Vivac"
+          class="overflow-visible"
+          pBadge
+          badgeStyleClass="p-badge-danger"
+          [badgeDisabled]="!hasNotifications"
+        ></button>
+      } @else {
+        <button
+          pButton
+          type="button"
+          icon="pi pi-user"
+          (click)="logIn()"
+          label="Iniciar Sesión"
+        ></button>
+      }
+    </div>
+  </div>
+</nav>
+<p-menubar
+  styleClass="menuBar"
+  [model]="menu"
+>
+  <a
+    pButton
+    label="Canal de denuncias"
+    style="background-color: #6828a4 !important; color: white;"
+    class="p-button-outlined p-button-rounded fw-bold me-2"
+    routerLink="canal-de-denuncias"
+  ></a>
+</p-menubar>
+<p-menu
+  #userMenu
+  [model]="menuItems"
+  [popup]="true"
+  class="main-home-bar"
+></p-menu>
+@if (scouts) {
+  <p-dialog
+    header="Educandas sin autorización de imágenes"
+    [(visible)]="showDialog"
+    [draggable]="false"
+    [resizable]="false"
+    styleClass="small dialog-width"
+    [modal]="true"
+  >
+    <p>
+      Educandas sin autorización de imágenes:
+    </p>
+    <ul>
+      @for (scout of scouts; track $index) {
+        <li>{{ scout.name }} {{ scout.surname }} ({{ scout.groupId | group }})</li>
+      }
+    </ul>
+  </p-dialog>
+}

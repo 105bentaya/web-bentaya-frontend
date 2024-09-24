@@ -1,0 +1,44 @@
+<div class="container">
+  <h1 class="text-center">Gestión Económica</h1>
+  <p>
+    La gestión económica de la Asociación Scouts Exploradores Bentaya está basada en un estrecho control financiero de
+    los recursos, tanto internos como externos, intentando, en todo momento, que la información contable y económica
+    originada representen de la manera más fiel posible todo lo que Scouts 105 Bentaya realiza a lo largo del año.
+  </p>
+  <p>
+    Las cuentas de la entidad se someten además a diferentes auditorias.
+  </p>
+  @if (data) {
+    <p-tabView>
+      @for (yearData of data; track $index) {
+        <p-tabPanel header="{{yearData.year}}" class="text-center">
+          <p>Las cuentas anuales de Scouts 105 Bentaya correspondientes al ejercicio {{ yearData.year }}.</p>
+          <p>Aquí puedes consultar nuestras
+            <a
+              target="_blank"
+              href="assets/archivos/cuentas-anuales/{{yearData.file}}"
+              class="hyperlink"
+            >Cuentas Anuales {{ yearData.year }}</a>.</p>
+          <div class="d-flex flex-wrap flex-md-nowrap justify-content-center w-100">
+            <p-chart
+              width="300px"
+              height="300px"
+              type="pie"
+              [data]="yearData.inData.data"
+              [options]="yearData.inData.options"
+            ></p-chart>
+            <p-chart
+              width="300px"
+              height="300px"
+              type="pie"
+              [data]="yearData.outData.data"
+              [options]="yearData.outData.options"
+            ></p-chart>
+          </div>
+        </p-tabPanel>
+      }
+    </p-tabView>
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>

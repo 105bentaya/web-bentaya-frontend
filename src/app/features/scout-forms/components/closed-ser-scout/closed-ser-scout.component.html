@@ -1,0 +1,42 @@
+<div class="text-center">
+  @if (error) {
+    <h3 class="mt-1 mb-4 closed">ERROR AL CARGAR EL FORMULARIO DE PREINSCRIPCIÓN</h3>
+    <div class="container">
+      <p>
+        Ha ocurrido un error al cargar el formulario de preinscripción. Vuelva a intentarlo más tarde.
+      </p>
+      <p>
+        Si ve que el problema persiste, envíenos un correo a
+        <a href="mailto:informatica@105bentaya.org?subject=ERROR EN EL FORMULARIO DE PREINSCRIPCIÓN">
+          informatica&#64;105bentaya.org
+        </a>
+      </p>
+    </div>
+  } @else {
+    <h3 class="mt-1 mb-4 closed">
+      CERRADA PREINSCRIPCIÓN {{ secondYearOfClosedTerm - 1 }}/{{ secondYearOfClosedTerm - 2000 }}
+    </h3>
+    <div class="container">
+      <p>
+        <b>
+          Cerrada la preinscripción de la Ronda Solar
+          {{ secondYearOfClosedTerm - 1 }}/{{ secondYearOfClosedTerm - 2000 }}
+        </b>, de quedar plazas libres en alguna rama (umbrales de edad) se abrirá a partir del 1 de octubre.
+      </p>
+      <p>
+        La preinscripción para la
+        <b>
+          Ronda Solar {{ secondYearOfClosedTerm }}/{{ secondYearOfClosedTerm - 1999 }}
+          se abrirá el 10 de enero de {{ secondYearOfClosedTerm }}.
+        </b>
+      </p>
+      <p>Si tiene cualquier duda puede contactarnos mediante nuestro apartado de
+        <a href="/contacto">contacto</a>
+        o enviando un correo a
+        <a href="mailto:informatica@105bentaya.org?subject=DUDAS RESPECTO A LA INSCRIPCIÓN">
+          informatica&#64;105bentaya.org
+        </a>
+      </p>
+    </div>
+  }
+</div>

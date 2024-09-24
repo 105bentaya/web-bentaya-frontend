@@ -1,0 +1,139 @@
+@import "./../styles/variables";
+
+.fc-list-empty {
+  text-align: center;
+}
+
+.fc .fc-list-empty-cushion {
+  margin: 5em 10px;
+}
+
+.fc {
+  a {
+    text-decoration: none;
+  }
+
+  .fc-col-header-cell {
+    background-color: #f8f9fa;
+  }
+
+  .fc-col-header-cell-cushion, .fc-daygrid-day-number, .fc-daygrid-dot-event .fc-event-time, .fc-daygrid-dot-event .fc-event-title, .fc-list-day-text {
+    color: $dark-grey
+  }
+
+  button {
+    background-color: $button-color !important;
+    border-color: $button-color !important;
+
+    &:focus {
+      box-shadow: $button-shadow !important;
+    }
+  }
+
+  .event-text-dark .fc-event-main {
+    color: $dark-grey;
+  }
+
+  .unknown-time {
+    .fc-event-time {
+      display: none;
+    }
+
+    .fc-event-title {
+      margin-left: 3px;
+    }
+
+    .fc-list-event-time {
+      font-size: 0;
+
+      &::after {
+        content: "Sin especificar";
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .fc-event {
+    cursor: pointer;
+  }
+
+  .fc-daygrid-event {
+    overflow: hidden;
+  }
+
+  .fc-event-time {
+    overflow: visible !important;
+  }
+
+  .fc-daygrid-block-event {
+    .fc-event-time {
+      font-weight: unset !important;
+    }
+
+    .fc-event-title {
+      font-weight: 700 !important;
+    }
+  }
+
+  .fc-daygrid-day-number {
+    text-decoration: none;
+  }
+
+  @media screen and (max-width: 650px) {
+    .fc-event-time {
+      display: none;
+    }
+    .fc-daygrid-block-event .fc-event-title {
+      margin-left: 3px;
+    }
+  }
+
+  .fc-scrollgrid-section-sticky {
+    z-index: 0 !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .fc .fc-list-event {
+    .fc-list-event-graphic {
+      padding-right: 0;
+      padding-left: 0;
+    }
+
+    .fc-list-event-title {
+      padding-right: 4px;
+      padding-left: 4px
+    }
+  }
+}
+
+.calendar-multiselect {
+  display: block;
+
+  .p-multiselect {
+    width: 40px;
+
+    background-color: $button-color;
+    border-radius: 10px;
+    height: $button-icon-width-height;
+    border: 0;
+
+    &:hover {
+      background-color: $button-hover-color;
+      border-color: $button-hover-color;
+    }
+
+    .p-multiselect-label {
+      display: none;
+    }
+
+    .p-multiselect-trigger {
+      color: white;
+      width: $button-icon-width-height;
+    }
+  }
+}
+
+.p-selectbutton.p-button-icon-only:after {
+  content: none;
+}

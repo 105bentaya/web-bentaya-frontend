@@ -1,0 +1,33 @@
+<div class="pt-4">
+  @if (ownBookingForm.form) {
+    <form class="form-container" (ngSubmit)="submitForm()" [formGroup]="ownBookingForm.form">
+      <div class="row row-cols-1">
+        <app-booking-form-center-selection
+            #centerSelectionComponent
+            (onInit)="addCenterControl($event)"
+        ></app-booking-form-center-selection>
+        <div class="col mb-2">
+          <app-form-text-area
+            formControlName="observations"
+            [maxLength]="1023"
+            floatLabel="Detalles de la reserva"
+            labelClass="required"
+          ></app-form-text-area>
+        </div>
+        <div class="col">
+          <p-checkbox
+            label="Centro en exclusividad"
+            formControlName="exclusiveReservation"
+            [binary]="true"
+          ></p-checkbox>
+        </div>
+      </div>
+      <app-save-buttons
+        [showCancelButton]="true"
+        [saveLoading]="loading"
+        (onCancel)="ref.close()"
+        saveType="submit"
+      ></app-save-buttons>
+    </form>
+  }
+</div>

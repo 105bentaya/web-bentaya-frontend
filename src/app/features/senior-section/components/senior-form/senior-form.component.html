@@ -1,0 +1,177 @@
+<div class="container">
+  <h1 class="text-center">SECCIÓN SENIOR - Siempre Scout</h1>
+  <p>
+    La Sección Sénior de Scouts 105 Bentaya está abierta a cualquier persona con vínculo scout, enfocada a aquellos
+    mayores de 30 años o cercanos a esa edad, incluso si no son miembros activos. También recomendamos tomar en
+    consideración la opción de convertirse en donante para apoyar en el sustento y desarrollo de la Asociación, y a su
+    vez obtener beneficios fiscales. Para más información, haga <a routerLink="/donaciones">click aquí</a>.
+  </p>
+  <p>
+    La solicitud de incorporación implica el conocimiento de los siguientes derechos:
+  </p>
+  <ul>
+    <li>
+      Participación en los eventos y actos de la Sección Sénior y en todos aquellos otros de la Asociación, según
+      opciones previstas a personas participantes o usuarias.
+    </li>
+    <li>
+      Derecho a utilizar y mencionar la condición de persona asociada sénior de la Asociación Scouts-Exploradores
+      Bentaya, declarada de Utilidad Pública.
+    </li>
+    <li>
+      Utilizar los servicios, medios y bienes que la Asociación ofrezca, conforme disponibilidad, bajo las normas o
+      condiciones que se establezcan o previo acuerdo del Consejo de Grupo.
+    </li>
+    <li>
+      Reactivación de tu condición de asociado/a sénior, conservando tu censo originario, o en su caso con asignación
+      de censo. Asociada /a sénior no es miembro asociado activo, a efectos de los censos de SEC, ASDE u OMMS.
+    </li>
+    <li>
+      Acceso al uso reglado de las instalaciones propias de la Asociación, conforme a normas establecidas, sin
+      perjuicio de opciones mejoradas aplicadas a personas donantes o asociadas fundadoras, de honor o
+      protectoras.
+    </li>
+  </ul>
+  <p>
+    Y de las siguientes obligaciones:
+  </p>
+  <ul>
+    <li>
+      No incurrir en actos que menoscaben, de forma directa o indirecta, la dignidad, la imagen o el prestigio de la
+      Asociación o del movimiento scout.
+    </li>
+    <li>
+      Potenciar la imagen y actividad de la Asociación, con los medios disponibles a su alcance y en todas sus
+      facetas.
+    </li>
+  </ul>
+  <p>
+    Para solicitar su incorporación a la Sección Senior, rellene el siguiente formulario. Las entradas marcadas con
+    (<span style="font-weight: bold; color: red;">*</span>) son necesarias. El resto son optativas.
+  </p>
+  <form [formGroup]="seniorForm.form" class="mt-4 form-container">
+    <div class="row">
+      <div class="col-12 col-md-6">
+          <span class="p-float-label">
+            <input
+              formControlName="name"
+              id="name"
+              type="text"
+              pInputText
+              maxlength="255"
+            >
+            <label class="required" for="name">Nombre</label>
+          </span>
+        @if (seniorForm.isDirtyAndInvalid('name')) {
+          <small class="text-danger">Introduzca su nombre</small>
+        }
+      </div>
+      <div class="col-12 col-md-6">
+          <span class="p-float-label">
+            <input
+              formControlName="surname"
+              id="surname"
+              type="text"
+              pInputText
+              maxlength="255"
+            >
+            <label class="required" for="surname">Apellidos</label>
+          </span>
+        @if (seniorForm.isDirtyAndInvalid('surname')) {
+          <small class="text-danger">Introduzca sus apellidos</small>
+        }
+      </div>
+      <div class="col-12 col-md-6">
+          <span class="p-float-label">
+            <input
+              formControlName="email"
+              id="email"
+              type="text"
+              pInputText
+              maxlength="511"
+            >
+            <label class="required" for="email">Correo electrónico</label>
+          </span>
+        @if (seniorForm.isDirtyAndInvalid('email')) {
+          <small class="text-danger">Introduzca un correo electrónico válido</small>
+        }
+      </div>
+      <div class="col-12 col-md-6">
+          <span class="p-float-label">
+            <input
+              formControlName="phone"
+              id="phone"
+              type="text"
+              pInputText
+              maxlength="63"
+            >
+            <label class="required" for="phone">Teléfono de contacto</label>
+          </span>
+
+        @if (seniorForm.isDirtyAndInvalid('phone')) {
+          <small class="text-danger">Introduzca un teléfono</small>
+        }
+      </div>
+      <div class="col-12">
+        <app-form-text-area
+          [maxLength]="510"
+          formControlName="observations"
+          id="observations"
+          floatLabel="Observaciones o sugerencias"
+          [showErrorMessage]="seniorForm.hasSpecificError('observations', 'maxlength')"
+        ></app-form-text-area>
+      </div>
+      <div class="col-12 mb-3">
+        <div class="d-flex align-items-center">
+          <p-checkbox
+            id="acceptMessageGroup"
+            formControlName="acceptMessageGroup"
+            [binary]="true"
+          ></p-checkbox>
+          <div class="mx-1">
+            <label for="acceptMessageGroup">
+              Doy consentimiento para mi incorporación a un grupo de mensajería.
+              (Correo electrónico y whatsapp o similar).
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mb-3">
+        <div class="d-flex align-items-center">
+          <p-checkbox
+            id="acceptNewsletter"
+            formControlName="acceptNewsletter"
+            [binary]="true"
+          ></p-checkbox>
+          <div class="mx-1">
+            <label for="acceptNewsletter">
+              Doy consentimiento para recibir información de actividades o novedades Scouts.
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mb-2">
+        <app-privacy-checkbox-container>
+          <p-checkbox
+            id="privacy"
+            formControlName="privacy"
+            [binary]="true"
+          ></p-checkbox>
+        </app-privacy-checkbox-container>
+        @if (seniorForm.isDirtyAndInvalid('privacy')) {
+          <small class="text-danger">Debe leer y estar de acuerdo con los términos</small>
+        }
+      </div>
+    </div>
+  </form>
+  @if (seniorForm.isDirtyAndInvalid()) {
+    <div class="w-100 text-center mb-2 text-danger">
+      <small>Rellene todos los campos</small>
+    </div>
+  }
+  <app-save-buttons
+    (onSave)="submit()"
+    [saveLoading]="loading"
+    saveLabel="ENVIAR"
+  ></app-save-buttons>
+</div>

@@ -1,0 +1,21 @@
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ButtonDirective} from "primeng/button";
+import {SaveButtonsComponent} from "../save-buttons/save-buttons.component";
+import {FormHelper} from "../../util/form-helper";
+
+@Component({
+  selector: 'app-large-form-buttons',
+  standalone: true,
+  imports: [
+    ButtonDirective,
+    SaveButtonsComponent
+  ],
+  templateUrl: './large-form-buttons.component.html',
+  styleUrl: './large-form-buttons.component.scss'
+})
+export class LargeFormButtonsComponent {
+  @Input() form!: FormHelper;
+  @Input() loading!: boolean;
+  @Input() showPrevAtFirstPage = false;
+  @Output() onSubmit = new EventEmitter<void>();
+}

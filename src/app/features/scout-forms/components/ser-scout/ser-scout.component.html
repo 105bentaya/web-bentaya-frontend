@@ -1,0 +1,522 @@
+<div class="container">
+  @if (successOnSubmit) {
+    <div class="mt-sm-5 text-center">
+      <p>La preinscripción ha sido enviada con éxito</p>
+      <p>Una copia de la preinscripción con la información pertinente ha sido enviada a <b>{{ finalEmail }}</b></p>
+      <p>En caso de duda o de no haber recibido la copia contáctenos enviando un correo a
+        <a href="mailto:informatica@105bentaya.org?subject=DUDAS RESPECTO A LA INSCRIPCIÓN">
+          informatica&#64;105bentaya.org
+        </a></p>
+    </div>
+  } @else {
+    <p class="my-3">
+      Si tienes menos de 21 años y quieres recibir nuestra educación en valores este es tu formulario.
+      Rellénalo y te añadiremos en nuestra lista de espera para ponernos en contacto contigo.
+    </p>
+    <p-steps class="steps-no-label" id="form-steps" [model]="steps" [activeIndex]="preScoutForm.currentPage"></p-steps>
+    <form [formGroup]="preScoutForm.form" (submit)="sendForm()" class="form-container">
+      @switch (preScoutForm.currentPage) {
+        @case (-1) {
+          <div class="pt-4">
+            <p>
+              Es <b>muy importante</b> que pongan la máxima atención en cumplimentar correctamente los datos pedidos.
+              Consignar datos erróneos u omitir datos puede provocar que se le asigne un orden que no le corresponde.
+            </p>
+            <ol>
+              <li>
+                La preinscripción estará abierta para la Ronda Solar (curso) {{ formTerm }} desde el 10 de enero de
+                {{ secondYearOfTerm - 1 }} hasta el 15 de agosto de {{ secondYearOfTerm - 1 }}.
+              </li>
+              <li>
+                Solamente se admitirán preinscripciones para personas que queden comprendidas entre las edades mínima y
+                máxima
+                (nacidas entre <b>{{ secondYearOfTerm - 21 }}</b> y <b>{{ secondYearOfTerm - 7 }}</b>, ambos inclusive).
+              </li>
+              <li>
+                Solamente se admitirán preinscripciones para la Ronda Solar {{ formTerm }}. Dichas preinscripciones, en
+                caso
+                de quedar en lista de espera, <b>no se trasladarán de una ronda a otra</b>, siendo necesario por tanto
+                cumplimentar la preinscripción en cada ronda.
+              </li>
+              <li>
+                En caso de que haya plazas libres este curso, nos pondremos en contacto para ver si
+                quiere entrar. Si no lo desease, mantendremos su solicitud para el curso {{ formTerm }}.
+              </li>
+              <li>
+                Todas las entradas de datos son necesarias en caso de poseerlas. Las entradas marcadas con
+                (<span style="font-weight: bold; color: red;">*</span>) son indispensables.
+              </li>
+              <li>Si tiene cualquier duda o problema puede contactarnos mediante nuestro apartado de
+                <a href="/contacto">contacto</a>
+                o enviando un correo a
+                <a href="mailto:informatica@105bentaya.org?subject=DUDAS RESPECTO A LA INSCRIPCIÓN">
+                  informatica&#64;105bentaya.org
+                </a>
+              </li>
+            </ol>
+            <div class="d-flex justify-content-center px-0 px-md-3 px-lg-5 mb-3">
+              <p-messages severity="warn">
+                <ng-template pTemplate>
+                  <i class="pi pi-exclamation-triangle me-3 fs-3 d-none d-md-block"></i>
+                  <div style="overflow: hidden; text-overflow: ellipsis;">
+                    Debido al limitado número de plazas disponibles respecto a la cantidad de solicitudes, rogamos que
+                    sólo haga la preinscripción si tiene la total seguridad de querer pertenecer a nuestra asociación y
+                    formar parte de nuestras actividades (principalmente campamentos), al objeto de no dejar a otras
+                    personas temporalmente sin plaza.
+                  </div>
+                </ng-template>
+              </p-messages>
+            </div>
+          </div>
+        }
+        @case (0) {
+          <h5 class="step-form-title">
+            <b>Datos Generales</b>
+          </h5>
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="name"
+                  id="name"
+                  type="text"
+                  maxlength="80"
+                >
+                <label class="required" for="name">Nombre</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('name')) {
+                <small class="text-danger">Introduzca un nombre.</small>
+              }
+            </div>
+            <div class="col-12 col-md-4">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="firstSurname"
+                  id="firstSurname"
+                  type="text"
+                  maxlength="80"
+                >
+                <label class="required" for="firstSurname">Primer Apellido</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('firstSurname')) {
+                <small class="text-danger">Introduzca un apellido.</small>
+              }
+            </div>
+            <div class="col-12 col-md-4">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="secondSurname"
+                  id="secondSurname"
+                  type="text"
+                  maxlength="80"
+                >
+                <label for="secondSurname">Segundo Apellido</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-floatLabel>
+                <p-dropdown
+                  formControlName="gender"
+                  id="gender"
+                  [options]="genders"
+                ></p-dropdown>
+                <label class="required" for="gender">Género</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('gender')) {
+                <small class="text-danger">Debe escoger un género</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="dni"
+                  id="dni"
+                  type="text"
+                  maxlength="250"
+                >
+                <label class="required" for="dni">DNI/NIE</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('dni')) {
+                <small class="text-danger">Introduzca un DNI/NIE o 'No tiene' si así corresponde.</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-floatLabel>
+                <p-calendar
+                  id="birthday"
+                  formControlName="birthday"
+                  dataType="string"
+                  [minDate]="minDate"
+                  [maxDate]="maxDate"
+                  [defaultDate]="maxDate"
+                ></p-calendar>
+                <label class="required">Fecha de Nacimiento</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('birthday')) {
+                <small class="text-danger">Introduzca una fecha de nacimiento con formato dd/mm/yyyy</small>
+              } @else {
+                <small class="opacity-75">Formato dd/mm/yyyy.</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-floatLabel>
+                <p-dropdown
+                  formControlName="size"
+                  id="size"
+                  [options]="sizes"
+                ></p-dropdown>
+                <label class="required" for="size">Talla de camiseta</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('size')) {
+                <small class="text-danger">Introduzca la talla de camiseta</small>
+              }
+            </div>
+            <div class="col-12 mb-2">
+              <label class="required" for="medicalData">
+                Aspectos personales (médicos, sociales, afectivos...) que debamos valorar conjuntamente al objeto de
+                determinar si podemos asumir, en su caso, en base a nuestros recursos y formación, ofreciendo la calidad
+                educativa que pretendemos (muy importante relacionar de forma simple, como referencia para abordar en
+                reunión individual con tutores y tutoras)
+              </label>
+              <app-form-text-area
+                [maxLength]="512"
+                formControlName="medicalData"
+                id="medicalData"
+                [showErrorMessage]="preScoutForm.isDirtyAndInvalid('medicalData') && preScoutForm.hasSpecificError('medicalData', 'maxlength')"
+              ></app-form-text-area>
+              @if (preScoutForm.isDirtyAndInvalid('medicalData') && preScoutForm.hasSpecificError('medicalData', 'required')) {
+                <small class="text-danger">
+                  Introduzca un breve comentario. Ponga 'Ninguno' si así lo considera
+                </small>
+              }
+            </div>
+            <div class="col-12">
+              <p-checkbox
+                id="hasBeenInGroup"
+                formControlName="hasBeenInGroup"
+                [binary]="true"
+                label="¿Ha estado antes en el grupo?"
+              ></p-checkbox>
+            </div>
+            @if (preScoutForm.controlValue('hasBeenInGroup')) {
+              <div class="col-12">
+                <p-floatLabel>
+                  <input
+                    pInputText
+                    formControlName="yearAndSection"
+                    id="yearAndSection"
+                    type="text"
+                    maxlength="250"
+                  >
+                  <label class="required" for="yearAndSection">Último año que estuvo y la unidad:</label>
+                </p-floatLabel>
+                @if (preScoutForm.isDirtyAndInvalid('yearAndSection')) {
+                  <small class="text-danger">Introducir los años aproximados y la última unidad en la que
+                    estuvo.</small>
+                }
+              </div>
+            }
+          </div>
+        }
+        @case (1) {
+          <h5 class="step-form-title"><b>Datos de la madre, padre o persona a contactar</b></h5>
+          <div class="row">
+            <div class="col-12 col-lg-4">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="parentsName"
+                  id="parentsName"
+                  type="text"
+                  maxlength="250"
+                >
+                <label class="required" for="parentsName">Nombre del contacto</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('parentsName')) {
+                <small class="text-danger">Introducir los años aproximados y la última unidad en la que estuvo.</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="parentsFirstSurname"
+                  id="parentsFirstSurname"
+                  type="text"
+                  maxlength="250"
+                >
+                <label class="required" for="parentsFirstSurname">Primer apellido del contacto</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('parentsFirstSurname')) {
+                <small class="text-danger">Introduzca el primer apellido del contacto</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="parentsSecondSurname"
+                  id="parentsSecondSurname"
+                  type="text"
+                  maxlength="250"
+                >
+                <label for="parentsSecondSurname">Segundo apellido del contacto</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="relationship"
+                  id="relationship"
+                  type="text"
+                  maxlength="250"
+                >
+                <label class="required" for="relationship">Parentesco</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('relationship')) {
+                <small class="text-danger">Introduzca la relación con la persona educanda del contacto</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="phone"
+                  id="phone"
+                  type="text"
+                  maxlength="250"
+                >
+                <label class="required" for="phone">Teléfono de contacto</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('phone')) {
+                <small class="text-danger">Introduzca el teléfono del contacto</small>
+              }
+            </div>
+            <div class="col-12">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  formControlName="email"
+                  id="email"
+                  type="text"
+                  [pKeyFilter]="noWhiteSpaceFilter"
+                  maxlength="250"
+                >
+                <label class="required" for="email">Correo de contacto</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('email')) {
+                <small class="text-danger">Introduzca un correo electrónico válido</small>
+              }
+            </div>
+          </div>
+        }
+        @case (2) {
+          <h5 class="step-form-title"><b>Grupo de prioridad</b></h5>
+          <div>
+            <p>
+              Es <b>importante</b> escoger el grupo de prioridad adecuado, ya que puede ser determinante a la hora del
+              orden
+              que ocupe en lista de espera. Si detectamos que indica intencionadamente un grupo de prioridad no
+              correcto,
+              se
+              le asignará automáticamente el grupo 4, a pesar de que le corresponda cualquier otro.
+            </p>
+            <p class="mt-2 mb-0">Escoja el <b>primer</b> grupo que coincida con la situación de la persona educanda:</p>
+            <ol>
+              @for (priority of priorities; track $index) {
+                <li>{{ priority }}</li>
+              }
+            </ol>
+          </div>
+          <div class="row py-3">
+            <div class="col mb-2 mb-md-0">
+              <p-floatLabel>
+                <p-dropdown
+                  formControlName="priority"
+                  styleClass="w-100"
+                  [options]="dropdownPriorities"
+                  optionLabel="name"
+                  optionValue="value"
+                ></p-dropdown>
+                <label class="required">Grupo de prioridad</label>
+              </p-floatLabel>
+              @if (preScoutForm.isDirtyAndInvalid('priority')) {
+                <small class="text-danger">Debe escoger el grupo de prioridad correspondiente</small>
+              }
+            </div>
+            @if (preScoutForm.controlValue("priority") > 0 && preScoutForm.controlValue("priority") <= 3) {
+              <div class="col-12 col-md-9 mt-4 mt-md-0 mb-0">
+                <p-floatLabel>
+                  <input
+                    pInputText
+                    formControlName="priorityInfo"
+                    id="priorityInfo"
+                    type="text"
+                    maxlength="250"
+                  >
+                  <label class="required" for="priorityInfo">
+                    @switch (preScoutForm.controlValue('priority')) {
+                      @case (1) {
+                        Nombre y unidad de dicho familiar
+                      }
+                      @case (2) {
+                        Nombre de dicho scout o scouter
+                      }
+                      @case (3) {
+                        Nombre y edad de hermano/a(s)
+                      }
+                    }
+                  </label>
+                </p-floatLabel>
+                @if (preScoutForm.isDirtyAndInvalid('priorityInfo')) {
+                  <small class="text-danger">
+                    Introduzca los datos correspondientes
+                  </small>
+                }
+              </div>
+            }
+          </div>
+        }
+        @case (3) {
+          <h5 class="step-form-title">
+            <b>Otros datos</b>
+          </h5>
+          <div class="row">
+            <div class="col-12 mb-2">
+              <label class="required" for="comment">
+                Breve comentario sobre la motivación para su incorporación a Scouts 105 Bentaya (valoramos la motivación
+                y
+                el compromiso). También pueden añadir cualquier duda, sugerencia o dato que quieran transmitirnos.
+              </label>
+              <app-form-text-area
+                [maxLength]="256"
+                formControlName="comment"
+                id="comment"
+                [showErrorMessage]="preScoutForm.isDirtyAndInvalidWithError('comment', 'maxlength')"
+              ></app-form-text-area>
+              @if (preScoutForm.isDirtyAndInvalidWithError('comment', 'required')) {
+                <small class="text-danger">Introduzca un breve comentario</small>
+              }
+            </div>
+            <div class="col-12">
+              <app-privacy-checkbox-container>
+                <p-checkbox
+                  id="privacy"
+                  formControlName="privacy"
+                  [binary]="true"
+                ></p-checkbox>
+              </app-privacy-checkbox-container>
+              @if (preScoutForm.isDirtyAndInvalid('privacy')) {
+                <small class="text-danger">Debe leer y estar de acuerdo con los términos.</small>
+              }
+            </div>
+          </div>
+        }
+        @case (4) {
+          <h5 class="step-form-title">
+            <b>Confirmación</b>
+          </h5>
+          <div class="row">
+            <div class="col-12">
+              <h4>Persona educanda</h4>
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Nombre:</b>
+              {{ preScout.name || '-' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Apellidos:</b>
+              {{ surname || '-' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Género:</b>
+              {{ preScout.gender || '-' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Fecha de nacimiento:</b>
+              {{ preScout.birthday || '-' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>DNI/NIE:</b>
+              {{ preScout.dni }}
+              {{ preScout.dni?.toLowerCase() == 'no tiene' ? '- (Es recomendable tenerlo para nuestras actividades)' : '' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Talla:</b>
+              {{ preScout.size || '-' }}
+            </div>
+            <div class="col-12">
+              <b>Aspecto médicos:</b>
+              {{ preScout.medicalData || '-' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>¿Ha estado antes?:</b>
+              {{ preScout.hasBeenInGroup ? 'Sí' : 'No' }}
+            </div>
+            @if (preScout.hasBeenInGroup) {
+              <div class="col-12 col-md-6">
+                <b>Años aproximados y unidad:</b>
+                {{ preScout.yearAndSection || '-' }}
+              </div>
+            }
+            <div class="col">
+              <b class="ps-1">Grupo de prioridad:</b>
+              {{ preScout.priority }}.- {{ priorities[preScout.priority - 1] || '-' }}
+            </div>
+            @if (preScout.priorityInfo) {
+              <div class="col-6 ps-2">
+                <b>
+                  @switch (preScoutForm.controlValue('priority')) {
+                    @case (1) {
+                      Nombre y unidad de dicho familiar:
+                    }
+                    @case (2) {
+                      Nombre de dicho scout o scouter, en qué años estuvo y grupo scout:
+                    }
+                    @case (3) {
+                      Nombre y edad de dicho(s) hermano/a(s):
+                    }
+                  }
+                </b>
+                {{ preScout.priorityInfo || '-' }}
+              </div>
+            }
+            <div class="col-12">
+              <h4>Contacto</h4>
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Nombre:</b>
+              {{ preScout.parentsName || '-' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Apellidos:</b>
+              {{ parentsSurname || '-' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Email:</b>
+              {{ preScout.email || '-' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Teléfono:</b>
+              {{ preScout.phone || '-' }}
+            </div>
+            <div class="col-12">
+              <b>Comentario:</b>
+              {{ preScout.comment || '-' }}
+            </div>
+          </div>
+        }
+      }
+      <app-large-form-buttons
+        [form]="preScoutForm"
+        [loading]="loading"
+        [showPrevAtFirstPage]="true"
+      ></app-large-form-buttons>
+    </form>
+  }
+</div>

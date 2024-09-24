@@ -1,0 +1,46 @@
+<div class="mt-4 form-container">
+  <div class="row">
+    <div class="col-12 col-sm-6">
+      <p-floatLabel>
+          <p-dropdown
+            id="group"
+            [options]="groups"
+            [disabled]="!canEditGroup"
+            optionLabel="name"
+            optionValue="id"
+            [(ngModel)]="groupId"
+            styleClass="w-100"
+          ></p-dropdown>
+          <label class="required" for="group">Unidad</label>
+      </p-floatLabel>
+    </div>
+    <div class="col-12 col-sm-6">
+      <p-floatLabel>
+          <p-dropdown
+            id="status"
+            [options]="statuses"
+            optionLabel="name"
+            optionValue="id"
+            [(ngModel)]="status"
+            styleClass="w-100"
+          ></p-dropdown>
+          <label class="required" for="status">Estado</label>
+      </p-floatLabel>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 mb-1">
+      <app-form-text-area
+        id="comment"
+        [maxLength]="1024"
+        [(ngModel)]="comment"
+        [floatLabel]="status == 3 ? 'Motivo del rechazo' : 'Comentarios'"
+      ></app-form-text-area>
+    </div>
+  </div>
+  <app-save-buttons
+    [saveDisabled]="groupId == null || status == null"
+    (onSave)="submit()"
+    (onCancel)="ref.close()"
+  ></app-save-buttons>
+</div>

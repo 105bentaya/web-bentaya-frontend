@@ -1,0 +1,148 @@
+<div class="form-container">
+  <form class="d-flex flex-column" [formGroup]="scoutFormHelper.form">
+    <p-tabView (onChange)="onTabChange($event)">
+      <p-tabPanel header="Datos">
+        <div class="mt-4">
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <p-floatLabel>
+                <input formControlName="name" maxlength="128" pInputText>
+                <label class="required">Nombre</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-floatLabel>
+                <input formControlName="surname" maxlength="128" pInputText>
+                <label class="required">Apellidos</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-floatLabel>
+                <input formControlName="dni" maxlength="64" pInputText>
+                <label>DNI</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-floatLabel>
+                <p-calendar
+                  formControlName="birthday"
+                  appendTo="body"
+                ></p-calendar>
+                <label class="required">Fecha de Nacimiento</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-floatLabel>
+                <p-dropdown
+                  id="groupId"
+                  formControlName="groupId"
+                  [options]="groups"
+                  appendTo="body"
+                  optionLabel="name"
+                  optionValue="id"
+                ></p-dropdown>
+                <label class="required" for="groupId">Unidad</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-floatLabel>
+                <p-dropdown
+                  id="gender"
+                  formControlName="gender"
+                  [options]="genders"
+                  appendTo="body"
+                ></p-dropdown>
+                <label class="required" for="groupId">Género</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+              <p-floatLabel>
+                <input formControlName="shirtSize" maxlength="64" pInputText>
+                <label>Talla</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+              <p-floatLabel>
+                <p-inputNumber
+                  [useGrouping]="false"
+                  formControlName="census"
+                ></p-inputNumber>
+                <label>Censo</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 col-md-4">
+              <p-floatLabel>
+                <input formControlName="municipality" maxlength="256" pInputText>
+                <label>Municipio de Residencia</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-12 mb-2">
+              <p-floatLabel>
+                <app-form-text-area
+                  formControlName="medicalData"
+                  floatLabel="Datos Médicos"
+                  [maxLength]="1024"
+                  [showErrorMessage]="scoutFormHelper.hasSpecificError('medicalData', 'maxlength')"
+                ></app-form-text-area>
+              </p-floatLabel>
+            </div>
+            <div class="col mb-0">
+              <label class="required">Autorización de imagen</label>
+              <p-selectButton
+                [options]="options"
+                formControlName="imageAuthorization"
+              ></p-selectButton>
+            </div>
+          </div>
+          <div class="col-12">
+            <app-contact-form-list
+              [contactList]="scoutContactList"
+              [formGroup]="scoutFormHelper.form"
+              (onAdd)="addContact()"
+              (onDelete)="deleteContact($event)"
+            ></app-contact-form-list>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Datos de Scouters">
+        <div class="py-3">
+          <p-floatLabel>
+            <textarea formControlName="observations" class="w-100" rows="5" maxlength="65535" pInputText></textarea>
+            <label>Observaciones generales</label>
+          </p-floatLabel>
+        </div>
+        <div class="py-3">
+          <p-floatLabel>
+            <textarea formControlName="progressions" class="w-100" rows="5" maxlength="65535" pInputText></textarea>
+            <label>Progresiones</label>
+          </p-floatLabel>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel id="userTab" header="Usuarios asociados">
+        <app-scout-user-form-list
+          #userList
+          [scoutId]="scout?.id"
+        ></app-scout-user-form-list>
+      </p-tabPanel>
+    </p-tabView>
+    <div class="text-center text-danger mb-2">
+      @if (scoutFormHelper.isDirtyAndInvalid()) {
+        <small>Rellene todos los campos obligatorios (<b>*</b>)</small><br>
+        @if (contactWithoutPhoneOrEmail()) {
+          <small>Hay contactos sin teléfono o correo</small><br>
+        }
+      }
+      @if (!usernamesValid) {
+        <small>Hay usuarios con nombres erróneos o repetidos</small><br>
+      }
+    </div>
+    <app-save-buttons
+      [showCancelButton]="!isNew"
+      cancelLabel="Dar de Baja"
+      [cancelLoading]="disableLoading"
+      (onCancel)="disableScout()"
+      [saveLoading]="loading"
+      (onSave)="onSubmit()"
+    ></app-save-buttons>
+  </form>
+</div>

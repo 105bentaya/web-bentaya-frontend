@@ -1,0 +1,134 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between flex-wrap gap-2 align-items-center mb-3">
+    <h1 class="mb-0">Lista de educandas</h1>
+    @if (userGroup) {
+      <p-selectButton
+        [options]="options"
+        [(ngModel)]="showAll"
+        (onChange)="selectButtonChange()"
+      ></p-selectButton>
+    }
+  </div>
+  <p-table
+    #dt
+    styleClass="p-datatable-gridlines"
+    [value]="showAll ? scouts! : groupScouts"
+    responsiveLayout="scroll"
+    sortField="surname"
+    [loading]="showAll ? loading: !groupScouts"
+  >
+    <ng-template pTemplate="caption">
+      <div class="d-flex justify-content-between align-items-center">
+        <span>Número de personas educandas: {{ dt.totalRecords }}</span>
+        <button
+          type="button"
+          pButton
+          [icon]="excelLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
+          [disabled]="excelLoading"
+          (click)="exportExcelScout()"
+          class="p-button-success"
+          title="Descargar scouts como excel"
+        ></button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="surname">
+          Nombre
+          <p-sortIcon field="surname"></p-sortIcon>
+        </th>
+        @if (showAll) {
+          <th pSortableColumn="groupId">
+            Unidad
+            <p-sortIcon field="groupId"></p-sortIcon>
+          </th>
+        } @else {
+          <th class="hide-900">
+            Año
+          </th>
+          <th class="show-900" pSortableColumn="birthday">
+            Año
+            <p-sortIcon field="birthday"></p-sortIcon>
+          </th>
+        }
+        <th class="hide-900" pSortableColumn="birthday">
+          Nacimiento
+          <p-sortIcon field="birthday"></p-sortIcon>
+        </th>
+        <th class="hide-700" pSortableColumn="gender">
+          Género
+          <p-sortIcon field="gender"></p-sortIcon>
+        </th>
+        <th class="hide-1100" pSortableColumn="dni">
+          DNI
+          <p-sortIcon field="dni"></p-sortIcon>
+        </th>
+        <th class="text-center w-min">
+          Acciones
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <input
+            pInputText
+            type="text"
+            class="w-100"
+            (input)="dt.filter($any($event.target).value, 'id', 'name-surname-filter')"/>
+        </th>
+        <th></th>
+        <th class="hide-900"></th>
+        <th class="hide-700"></th>
+        <th class="hide-1100"></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-scout>
+      <tr [ngClass]="{'no-user': !scout.userAssigned}">
+        <td>
+          {{ scout.surname }}, {{ scout.name }}
+        </td>
+        <td>
+          {{ showAll ? (scout.groupId | group) : (currentYear - +(scout.birthday | date: "Y")! | scoutYear:userGroup) }}
+        </td>
+        <td class="hide-900">
+          <span>
+            {{ scout.birthday | date: "dd/MM/Y" }}
+          </span>
+        </td>
+        <td class="hide-700">
+          {{ scout.gender }}
+        </td>
+        <td class="hide-1100">
+          <span>
+            {{ scout.dni || "No tiene" }}
+          </span>
+        </td>
+        <td>
+          <div class="d-flex flex-row gap-2 justify-content-center">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-eye"
+              class="p-button-raised p-button-outlined"
+              title="Ver Información"
+              (click)="viewScout(scout)"
+            ></button>
+            @if (!showAll) {
+              <button
+                pButton
+                type="button"
+                icon="pi pi-user-edit"
+                class="p-button-light p-button-raised p-button-outlined"
+                title="Editar"
+                (click)="openEditDialog(scout)"
+              ></button>
+            }
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  @if (!showAll && groupScouts && groupScouts.length < 1) {
+    No se han encontrado educandas
+  }
+</div>

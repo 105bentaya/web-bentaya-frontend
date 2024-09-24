@@ -1,0 +1,173 @@
+@if (formHelper.form) {
+  <div class="mt-4">
+    <form class="form-container" [formGroup]="formHelper.form">
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <p-floatLabel>
+            <input id="title" formControlName="title" pInputText>
+            <label class="required" for="title">Título</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-6">
+          <p-floatLabel>
+            <p-dropdown
+              id="groupId"
+              formControlName="groupId"
+              [options]="groups"
+              appendTo="body"
+              optionLabel="name"
+              optionValue="id"
+            ></p-dropdown>
+            <label class="required" for="groupId">Unidad</label>
+          </p-floatLabel>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <app-form-text-area
+            id="description"
+            formControlName="description"
+            rows="4"
+            [maxLength]="4095"
+            floatLabel="Descripción"
+            labelClass="required"
+          ></app-form-text-area>
+        </div>
+      </div>
+      <div class="row mt-revert">
+        <div class="col-12 col-sm-6">
+          <p-floatLabel>
+            <p-calendar
+              id="startDate"
+              formControlName="startDate"
+              appendTo="body"
+              [showTime]="!formHelper.controlValue('unknownTime')"
+              [hourFormat]="'24'"
+              [stepMinute]="5"
+              [defaultDate]="defaultStartDate"
+              [hideOnDateTimeSelect]="false"
+              (onSelect)="checkOtherDate()"
+              [class]="formHelper.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
+              [showClear]="true"
+            ></p-calendar>
+            <label class="required" for="startDate">Fecha de Inicio</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-6">
+          <p-floatLabel>
+            <p-calendar
+              id="endDate"
+              formControlName="endDate"
+              appendTo="body"
+              [showTime]="!formHelper.controlValue('unknownTime')"
+              [hourFormat]="'24'"
+              [stepMinute]="5"
+              [defaultDate]="defaultEndDate"
+              [hideOnDateTimeSelect]="false"
+              (onSelect)="checkOtherDate()"
+              [class]="formHelper.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
+              [showClear]="true"
+            ></p-calendar>
+            <label class="required" for="endDate">Fecha de Fin</label>
+          </p-floatLabel>
+        </div>
+      </div>
+      <div class="row mt-revert">
+        <div class="col-12">
+          <p-checkbox
+            formControlName="unknownTime"
+            [binary]="true"
+            label="Hora sin especificar"
+          ></p-checkbox>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p-floatLabel>
+            <input id="location" formControlName="location" pInputText>
+            <label class="required" for="location">Lugar</label>
+          </p-floatLabel>
+        </div>
+      </div>
+      <div class="row mt-revert">
+        <div class="col-12">
+          <p-checkbox
+            [binary]="true"
+            formControlName="addCoordinates"
+            label="Añadir coordenadas"
+          ></p-checkbox>
+        </div>
+      </div>
+      @if (formHelper.controlValue("addCoordinates")) {
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <p-floatLabel>
+              <p-inputNumber
+                id="latitude"
+                formControlName="latitude"
+                [useGrouping]="false"
+                [maxFractionDigits]="6"
+                locale="en"
+                [class]="formHelper.isDirtyAndInvalid() && formHelper.hasFormError('coordinatesNeeded') ? 'ng-invalid ng-dirty' : ''"
+              ></p-inputNumber>
+              <label class="required" for="latitude">Latitud</label>
+            </p-floatLabel>
+          </div>
+          <div class="col-12 col-sm-6">
+            <p-floatLabel>
+              <p-inputNumber
+                id="longitude"
+                formControlName="longitude"
+                [useGrouping]="false"
+                [maxFractionDigits]="6"
+                locale="en"
+                [class]="formHelper.isDirtyAndInvalid() && formHelper.hasFormError('coordinatesNeeded') ? 'ng-invalid ng-dirty' : ''"
+              ></p-inputNumber>
+              <label class="required" for="longitude">Longitud</label>
+            </p-floatLabel>
+          </div>
+        </div>
+      }
+      @if (showAttendanceCheckbox()) {
+        <div class="row">
+          <div class="d-flex flex-column gap-1 mb-4">
+            <p-checkbox
+              [binary]="true"
+              label="Activar asistencia"
+              formControlName="activateAttendanceList"
+            ></p-checkbox>
+            @if (formHelper.controlValue('activateAttendanceList')) {
+              <p-checkbox
+                [binary]="true"
+                label="Activar pago"
+                formControlName="activateAttendancePayment"
+              ></p-checkbox>
+              @if (existingEvent?.activateAttendanceList) {
+                <p-checkbox
+                  [binary]="true"
+                  label="Cerrar asistencia"
+                  formControlName="closeAttendanceList"
+                ></p-checkbox>
+              }
+            }
+          </div>
+        </div>
+      }
+      <div class="d-flex align-items-center flex-column justify-content-center gap-1">
+        @if (formHelper.hasFormError("endDateBefore")) {
+          <small class="text-danger">La fecha de fin debe ser posterior a la de inicio</small>
+        }
+          <app-save-buttons
+            cancelLabel="Borrar"
+            [showCancelButton]="!!this.existingEvent"
+            [cancelLoading]="deleteLoading"
+            (onCancel)="confirmDeletion()"
+            [saveLoading]="saveLoading"
+            (onSave)="onSubmit()"
+          ></app-save-buttons>
+        </div>
+    </form>
+  </div>
+} @else {
+  <app-basic-loading-info></app-basic-loading-info>
+}

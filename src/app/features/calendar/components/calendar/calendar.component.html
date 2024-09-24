@@ -1,0 +1,108 @@
+<div [ngClass]="calendarView ? 'container-fluid' : 'container-md'">
+  <div class="d-flex justify-content-between align-items-end mb-3" #top>
+    <h1 class="mb-0 d-flex me-3">{{ calendarView ? 'Calendario' : 'Lista' }} de actividades</h1>
+    @if (canEdit) {
+      <div class="d-flex gap-2 align-items-end justify-content-end">
+        @if (isAdmin) {
+          <button
+            pButton
+            label="Suscribirse"
+            (click)="subscribeToCalendar()"
+          ></button>
+        }
+        <button
+          pButton
+          icon="pi pi-calendar-plus p-button-rounded"
+          title="Añadir Actividad"
+          (click)="openAddDialog()"
+        ></button>
+      </div>
+    }
+  </div>
+  <div class="d-flex justify-content-center justify-content-between align-items-center">
+    <div class="d-sm-flex gap-2" [ngClass]="calendarView ? 'd-none' : 'd-flex'">
+      @if (calendarView) {
+        <p-buttonGroup>
+          <button
+            pButton
+            icon="pi pi-angle-left"
+            (click)="prev()"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-angle-right"
+            (click)="next()"
+          ></button>
+        </p-buttonGroup>
+      }
+      <ng-container *ngTemplateOutlet="filter"></ng-container>
+    </div>
+    @if (calendarView) {
+      <button
+        pButton
+        class="d-sm-none p-button-outlined"
+        icon="pi pi-angle-left"
+        style="border-radius: 10px 0 0 10px;"
+        (click)="prev()"
+      ></button>
+    }
+    <div class="d-flex justify-content-between align-items-center title-center">
+      <div class="mx-2 gap-2 text-center">
+        @if (loading) {
+          <i class="pi pi-spin pi-spinner fs-2"></i>
+        } @else if (calendarView) {
+          <h3 class="my-0" (click)="today()">
+            {{ calendarDate | date:"MMMM 'de' Y":undefined:'es' | sentence }}
+          </h3>
+        }
+      </div>
+    </div>
+    @if (calendarView) {
+      <button
+        pButton
+        class="d-sm-none p-button-outlined"
+        icon="pi pi-angle-right"
+        style="border-radius: 0 10px 10px 0;"
+        (click)="next()"
+      ></button>
+    }
+    <div class="d-sm-flex" [ngClass]="calendarView ? 'd-none' : 'd-flex'">
+      <ng-container *ngTemplateOutlet="viewSwitch"></ng-container>
+    </div>
+  </div>
+  <full-calendar #calendarComponent class="mx-2" [options]="options"></full-calendar>
+  @if (calendarView) {
+    <div class="d-flex d-sm-none justify-content-between align-items-center mt-2">
+      <ng-container *ngTemplateOutlet="filter"></ng-container>
+      <ng-container *ngTemplateOutlet="viewSwitch"></ng-container>
+    </div>
+  }
+</div>
+
+<ng-template #viewSwitch>
+  <p-selectButton
+    [options]="viewOptions"
+    [(ngModel)]="currentView"
+    (onChange)="changeView()"
+    [allowEmpty]="false"
+    styleClass="p-button-icon-only"
+  >
+    <ng-template let-item pTemplate>
+      <i [class]="item.icon"></i>
+    </ng-template>
+  </p-selectButton>
+</ng-template>
+<ng-template #filter>
+  <div>
+    <p-multiSelect
+      class="calendar-multiselect"
+      [options]="groups"
+      optionLabel="name"
+      optionValue="id"
+      [filter]="false"
+      dropdownIcon="pi pi-filter"
+      [(ngModel)]="filterResults"
+      (onChange)="pushEventsToCalendar()"
+    ></p-multiSelect>
+  </div>
+</ng-template>

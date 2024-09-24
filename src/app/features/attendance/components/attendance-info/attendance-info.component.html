@@ -1,0 +1,109 @@
+@if (assistants) {
+  <div class="d-flex flex-column gap-1">
+    @if (medicalDataList.length > 0) {
+      <p-panel
+        header="Datos médicos de los asistentes"
+        [toggleable]="true"
+        [(collapsed)]="collapsedArray[0]"
+        (onBeforeToggle)="saveToggleStatus(0)"
+      >
+        <ul>
+          @for (txt of medicalDataList; track $index) {
+            <li>{{ txt }}</li>
+          }
+        </ul>
+      </p-panel>
+    }
+    @if (observationsList.length > 0) {
+      <p-panel
+        header="Observaciones de los asistentes"
+        [toggleable]="true"
+        [(collapsed)]="collapsedArray[1]"
+        (onBeforeToggle)="saveToggleStatus(1)"
+      >
+        <ul>
+          @for (txt of observationsList; track $index) {
+            <li>{{ txt }}</li>
+          }
+        </ul>
+      </p-panel>
+    }
+    @if (assistantList && assistants.length > 0) {
+      <p-panel
+        header="Asisten ({{assistants.length}})"
+        [toggleable]="true"
+        [(collapsed)]="collapsedArray[2]"
+        (onBeforeToggle)="saveToggleStatus(2)"
+      >
+        @if (notPayedAssistants > 0) {
+          <small class="mb-2">
+            Hay {{ notPayedAssistants }} {{ notPayedAssistants == 1 ? "persona" : "personas" }} sin pagar
+          </small>
+        } @else if (eventHasPayment) {
+          <small class="mb-2">Han pagado todos los asistentes</small>
+        }
+        <ul>
+          @for (txt of assistantList; track $index) {
+            <li><span [innerHTML]="txt"></span></li>
+          }
+        </ul>
+      </p-panel>
+    }
+    @if (noAssistantList.length > 0) {
+      <p-panel
+        header="No asisten ({{noAssistantList.length}}):"
+        [toggleable]="true"
+        [(collapsed)]="collapsedArray[3]"
+        (onBeforeToggle)="saveToggleStatus(3)"
+      >
+        <ul>
+          @for (txt of noAssistantList; track $index) {
+            <li>{{ txt }}</li>
+          }
+        </ul>
+      </p-panel>
+    }
+    @if (noConfirmedList.length > 0) {
+      <p-panel
+        header="No han confirmado ({{noConfirmedList.length}}):"
+        [toggleable]="true"
+        [(collapsed)]="collapsedArray[4]"
+        (onBeforeToggle)="saveToggleStatus(4)"
+      >
+        <ul>
+          @for (txt of noConfirmedList; track $index) {
+            <li>{{ txt }}</li>
+          }
+        </ul>
+      </p-panel>
+    }
+    <div>
+      @if (eventHasPayment) {
+        <small>{{ paymentText }}<br></small>
+      }
+      @if (noAssistantList.length < 1 && assistants.length < 1 && noConfirmedList.length > 0) {
+        <small>Todavía nadie ha confirmado<br></small>
+      }
+      @if (noConfirmedList.length < 1 && assistants.length < 1 && noAssistantList.length > 0) {
+        <small>Ninguna persona asiste :(<br></small>
+      }
+      @if (noAssistantList.length < 1 && noConfirmedList.length < 1 && assistantList.length > 0) {
+        <small>Todas las personas asisten :)<br></small>
+      }
+      @if (noAssistantList.length > 0 && noConfirmedList.length > 0 && assistantList.length < 1) {
+        <small>Todavía no hay personas que asistan<br></small>
+      }
+      @if (assistants.length > 0 && medicalDataList.length < 1) {
+        <small>No hay personas asistentes con datos médicos.<br></small>
+      }
+      @if (assistants.length > 0 && observationsList.length < 1) {
+        <small>No hay personas asistentes que hayan puesto observaciones.<br></small>
+      }
+      @if (info.length < 1) {
+        <small>No hay personas educandas en la unidad...</small>
+      }
+    </div>
+  </div>
+} @else {
+  <app-basic-loading-info></app-basic-loading-info>
+}

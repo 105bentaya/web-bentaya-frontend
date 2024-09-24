@@ -1,0 +1,185 @@
+<div [formGroup]="formHelper.form" class="form-container">
+  <div class="row">
+    <div class="col">
+      <p-floatLabel>
+        <p-dropdown
+          formControlName="scoutCenter"
+          id="scoutCenter"
+          [options]="scoutCenters"
+          (onChange)="loadCenterData()"
+          appendTo="body"
+        ></p-dropdown>
+        <label class="required" for="scoutCenter">Centro Scout</label>
+      </p-floatLabel>
+      @if (formHelper.isDirtyAndInvalid('scoutCenter')) {
+        <small class="text-danger">Elija un centro Scout</small>
+      } @else if (selectedCenterInfo) {
+        <small>Aforo máximo del centro: {{ selectedCenterInfo.maxCapacity }}</small>
+      }
+    </div>
+    @if (selectedCenterInfo) {
+      <div class="col-12 col-md-6">
+        <p-floatLabel>
+          <input
+            pInputText
+            formControlName="packs"
+            id="packs"
+            type="number"
+            pKeyFilter="pint"
+            min="1"
+            [max]="selectedCenterInfo.maxCapacity"
+          >
+          <label class="required" for="packs">Número de personas participantes</label>
+        </p-floatLabel>
+        @if (formHelper.isDirtyAndInvalidWithError('packs', 'required', 'min')) {
+          <small class="text-danger">Introduzca un número positivo de personas participantes</small>
+        }
+        @if (formHelper.isDirtyAndInvalidWithError('packs', 'max')) {
+          <small class="text-danger">El número de personas participantes no debe superar el aforo
+            máximo</small>
+        }
+      </div>
+    }
+  </div>
+  @if (centerLoaded) {
+    <div [formGroup]="datesForm.form">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <p-floatLabel>
+            <p-calendar
+              id="startDate"
+              formControlName="startDate"
+              dataType="date"
+              [minDate]="defaultDate"
+              [maxDate]="maxDate"
+              [defaultDate]="defaultDate"
+              [showTime]="true"
+              [stepMinute]="15"
+              [showButtonBar]="true"
+              [class]="datesForm.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
+              appendTo="body"
+            >
+              <ng-template pTemplate="date" let-date>
+                <div class="booking-date">
+                  <span [class]="getDateClass(date)">{{ date.day }}</span>
+                </div>
+              </ng-template>
+            </p-calendar>
+            <label class="required" for="startDate">Fecha de entrada</label>
+          </p-floatLabel>
+          @if (datesForm.isDirtyAndInvalidWithError('startDate', 'required')) {
+            <small class="text-danger">Debe introducir una fecha de entrada en formato dd/mm/yyyy</small>
+          }
+        </div>
+        <div class="col-12 col-md-6">
+          <p-floatLabel>
+            <p-calendar
+              id="endDate"
+              formControlName="endDate"
+              dataType="date"
+              [minDate]="defaultDate"
+              [maxDate]="maxDate"
+              [defaultDate]="defaultDate"
+              [showTime]="true"
+              [stepMinute]="15"
+              [showButtonBar]="true"
+              [class]="datesForm.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
+              appendTo="body"
+            >
+              <ng-template pTemplate="date" let-date>
+                <div class="booking-date">
+                  <span [class]="getDateClass(date)">{{ date.day }}</span>
+                </div>
+              </ng-template>
+            </p-calendar>
+            <label class="required" for="endDate">Fecha de salida</label>
+          </p-floatLabel>
+          @if (datesForm.isDirtyAndInvalidWithError('endDate', 'required')) {
+            <small class="text-danger">Debe introducir una fecha de salida en formato dd/mm/yyyy</small>
+          }
+        </div>
+      </div>
+      <div class="row mt-revert">
+        <div class="col-12">
+          @if (datesForm.hasFormError('endDateBefore')) {
+            <small class="text-danger mt-revert">La fecha de salida ser posterior a la de entrada</small><br>
+          }
+          <small>
+            Los colores del calendario son meramente orientativos. Una vez seleccionadas las fechas, se le
+            informará de la situación exacta del aforo.
+          </small>
+          @if (!datesForm.hasFormError('endDateBefore') && !datesForm.isDirtyAndInvalid("startDate") && !datesForm.isDirtyAndInvalid("endDate")) {
+            <div>
+              @if (reservedInfo.length > 0) {
+                <p-messages severity="warn">
+                  <ng-template pTemplate>
+                    <i class="pi pi-exclamation-circle fs-3 me-3"></i>
+                    <div>
+                      Durante las siguientes fechas hay una pre-reserva hecha, por lo que su reserva puede no
+                      ser aceptada si la pre-reserva termina por confirmarse:
+                      <ul>
+                        @for (info of reservedInfo; track $index) {
+                          <li>
+                            {{ info.startDate | date:"dd/MM HH:mm" }} -
+                            {{ info.endDate | date:"dd/MM HH:mm" }}
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  </ng-template>
+                </p-messages>
+              }
+              @if (occupiedInfo.length > 0) {
+                <p-messages severity="warn" styleClass="occupied">
+                  <ng-template pTemplate>
+                    <i class="pi pi-exclamation-circle fs-3 me-3"></i>
+                    <div>
+                      Durante las siguientes fechas el centro está parcialmente ocupado, por lo que su reserva
+                      puede no ser aceptada si sobrepasa el aforo restante:
+                      <ul>
+                        @for (info of occupiedInfo; track $index) {
+                          <li>
+                            {{ info.startDate | date:"dd/MM HH:mm" }} -
+                            {{ info.endDate | date:"dd/MM HH:mm" }}
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  </ng-template>
+                </p-messages>
+              }
+              @if (fullyOccupiedInfo.length > 0) {
+                <p-messages severity="error">
+                  <ng-template pTemplate>
+                    <i class="pi pi-times-circle fs-3 me-3"></i>
+                    <div>
+                      Durante las siguientes fechas el centro está totalmente ocupado, por lo que no se puede
+                      realizar la reserva:
+                      <ul>
+                        @for (info of fullyOccupiedInfo; track $index) {
+                          <li>
+                            {{ info.startDate | date:"dd/MM HH:mm" }} -
+                            {{ info.endDate | date:"dd/MM HH:mm" }}
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  </ng-template>
+                </p-messages>
+              }
+              @if (noOverlapping) {
+                <p-messages severity="success">
+                  <ng-template pTemplate>
+                    <i class="pi pi-check fs-3 me-3"></i>
+                    <div>
+                      No hay ningún conflicto con otras reservas, puede seguir adelante.
+                    </div>
+                  </ng-template>
+                </p-messages>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }</div>

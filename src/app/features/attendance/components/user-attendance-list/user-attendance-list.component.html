@@ -1,0 +1,119 @@
+<div class="container-md">
+  <h1>Asistencia</h1>
+  @if (info) {
+    @if (tabMenuItems) {
+      <div class="mb-2">
+        <p-tabMenu
+          [model]="tabMenuItems"
+          [activeItem]="tabMenuItems[selectedScoutIndex]"
+          [scrollable]="true"
+        >
+          <ng-template pTemplate="item" let-item>
+            <a class="p-menuitem-link">
+              @if (item.badge) {
+                <div pBadge severity="danger">{{ item.label }}</div>
+              } @else {
+                {{ item.label }}
+              }
+            </a>
+          </ng-template>
+        </p-tabMenu>
+      </div>
+    }
+    <div class="d-flex gap-2 justify-content-between align-items-end mb-3">
+      <div class="d-flex w-100">
+        <p-calendar
+          class="input-w-100"
+          styleClass="w-100"
+          placeholder="Filtrar por rango de fechas"
+          selectionMode="range"
+          [showClear]="true"
+          [readonlyInput]="true"
+          [(ngModel)]="filterDates"
+          (onClear)="dt.filter(true, 'eventId', 'date-range')"
+          (onSelect)="dt.filter(false, 'eventId', 'date-range')"
+        ></p-calendar>
+      </div>
+      @if (showClosedButton) {
+        <div>
+          <p-toggleButton
+            title="Mostrar asistencias pasadas"
+            offIcon="pi pi-history"
+            onIcon="pi pi-history"
+            (onChange)="dt.filter($event.checked, 'closed', 'past-attendance')"
+          ></p-toggleButton>
+        </div>
+      }
+    </div>
+    <p-table
+      #dt
+      styleClass="p-datatable-gridlines"
+      [value]="info[selectedScoutIndex].info"
+      responsiveLayout="scroll"
+      [filters]="{closed: { value: false, matchMode: 'past-attendance' }}"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="eventStartDate">
+            Actividad
+            <p-sortIcon field="eventStartDate"></p-sortIcon>
+          </th>
+          <th class="status-width" pSortableColumn="attending">
+            Estado
+            <p-sortIcon field="attending"></p-sortIcon>
+          </th>
+          <th class="w-min">Editar</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-eventInfo>
+        <tr [ngClass]="{'red-row': !eventInfo.closed && eventInfo.attending == null}">
+          <td>
+            <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+              <a class="uncolored" (click)="openInfoDialog(eventInfo.eventId)">
+                {{ eventInfo.eventTitle }} - {{ eventInfo.eventStartDate | date:"dd/MM/yy" }}
+              </a>
+              @if (eventInfo.closed) {
+                <p-tag styleClass="rounded-2" class="d-sm-block" severity="danger">Cerrada</p-tag>
+              }
+            </div>
+          </td>
+          <td>
+            {{
+              eventInfo.attending ? 'Asiste' +
+                (eventInfo.payed ? " (Ha pagado)" : eventInfo.payed == false ? " (No ha pagado)" : "")
+                : eventInfo.attending === false ? 'No asiste' : 'Sin confirmar'
+            }}
+          </td>
+          <td class="text-center">
+            @if (eventInfo.closed) {
+              <button
+                pButton
+                type="button"
+                icon="pi pi-ban"
+                class="p-button-raised p-button-outlined p-button-danger"
+                title="No se pueden editar asistencias pasadas"
+                [disabled]="true"
+              ></button>
+            } @else {
+              <button
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-raised p-button-outlined"
+                title="Editar"
+                (click)="openEditDialog(eventInfo.eventId, info[selectedScoutIndex].scoutId)"
+              ></button>
+            }
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3">No se han encontrado asistencias para esta persona educanda</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>

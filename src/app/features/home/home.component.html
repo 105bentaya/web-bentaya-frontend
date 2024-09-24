@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="image">
+    <a [routerLink]="carouselSlides.link">
+      <img
+        class="d-none d-lg-block"
+        src="assets/home/carousel/big/{{carouselSlides.image}}"
+        [alt]="carouselSlides.alt"
+      >
+      <img
+        class="d-none d-sm-block d-lg-none"
+        src="assets/home/carousel/medium/{{carouselSlides.image}}"
+        [alt]="carouselSlides.alt"
+      >
+      <img
+        class="d-sm-none"
+        src="assets/home/carousel/small/{{carouselSlides.image}}"
+        [alt]="carouselSlides.alt"
+      >
+    </a>
+  </div>
+  <p-divider align="center">
+    <b>Formularios</b>
+  </p-divider>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-5 home-button-container justify-content-center">
+    @for (button of formButtons; track $index) {
+      @if ($index > 0) {
+        <p-divider class="d-sm-none" type="dashed"></p-divider>
+      }
+      <div
+        class="col home-button d-flex flex-column justify-content-center align-items-center text-center"
+        [ngClass]="{'disabled': !button.link}"
+      >
+        <a [routerLink]="button.link">
+          <img
+            [src]="button.imgSrc"
+            [alt]="button.title"
+          >
+        </a>
+        <a [routerLink]="button.link">
+          <h4 class="text-nowrap"><b>{{ button.title | uppercase }}</b></h4>
+        </a>
+        <h5><label>{{ button.subtitle }}</label></h5>
+        <label>
+          {{ button.description }}
+        </label>
+      </div>
+    }
+  </div>
+  <p-divider align="center">
+    <b>Información</b>
+  </p-divider>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-5 home-button-container justify-content-center">
+    @for (button of infoButtons; track $index) {
+      @if ($index > 0) {
+        <p-divider class="d-sm-none" type="dashed"></p-divider>
+      }
+      <div
+        class="col home-button d-flex flex-column justify-content-center align-items-center text-center"
+        [ngClass]="{'disabled': !button.link}"
+      >
+        <a [routerLink]="button.link" [target]="button.target">
+          <img
+            [src]="button.imgSrc"
+            [alt]="button.title"
+          >
+        </a>
+        <a target="_blank" [routerLink]="button.link">
+          <h4><b>{{ button.title | uppercase }}</b></h4>
+        </a>
+        <label>
+          {{ button.description }}
+        </label>
+      </div>
+    }
+  </div>
+</div>

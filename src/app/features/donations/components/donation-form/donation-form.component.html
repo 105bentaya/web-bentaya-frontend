@@ -1,0 +1,366 @@
+<div class="container">
+  <h1 class="text-center">DONACIONES - Formulario</h1>
+  @if (donationSuccess) {
+    <div class="text-center">
+      <p>
+        Los datos de su donación se han enviado con éxito<br>
+        Se le ha enviado una copia con los datos del formulario a
+        @if (donationForm) {
+          <a href="mailto:{{donationForm.email}}}">{{ donationForm.email }}</a>
+        } @else {
+          <span>su correo electrónico</span>
+        }
+        <br>
+        Ante cualquier duda contáctenos a <a href="mailto:tesoreria@105bentaya.org">tesoreria&#64;105bentaya.org</a><br>
+        Ante cualquier problema técnico no dude en escribir a <a href="mailto:informatica@105bentaya.org">informatica&#64;105bentaya.org</a>
+      </p>
+      <a
+        pButton
+        label="Regresar"
+        class="p-button-rounded p-button-outlined"
+        routerLink="/donaciones"
+      ></a>
+    </div>
+  } @else {
+    <p>
+      Desde este formulario puede enviarnos sus datos para incluirle en nuestra Red de Amistad. Si quiere más
+      información sobre nuestra Red de Amistad, los distintos beneficios fiscales y otros, haga click
+      <a routerLink="/assets/donaciones/Triptico Donaciones.pdf" target="_blank">aquí</a>.
+      También puede consultar la normativa actual de donaciones, haciendo
+      <a routerLink="/assets/donaciones/BOE-A-2023-25758-consolidado.pdf" target="_blank">aquí</a>.
+    </p>
+    <p-steps
+      class="steps-no-label"
+      id="form-steps"
+      [model]="steps"
+      [activeIndex]="formHelper.currentPage"
+    ></p-steps>
+    <div>
+      <h5 class="step-form-title">
+        <b>{{ steps[formHelper.currentPage].label }}</b>
+      </h5>
+      <form [formGroup]="formHelper.form" (submit)="sendForm()" class="form-container">
+        @switch (formHelper.currentPage) {
+          @case (0) {
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+              <div class="col">
+                <p-floatLabel>
+                  <input
+                    pInputText
+                    formControlName="name"
+                    id="name"
+                    type="text"
+                    maxlength="80"
+                  >
+                  <label class="required" for="name">Nombre</label>
+                </p-floatLabel>
+                @if (formHelper.isDirtyAndInvalid('name')) {
+                  <small class="text-danger">Introduzca un nombre</small>
+                }
+              </div>
+              <div class="col">
+                <p-floatLabel>
+                  <input
+                    pInputText
+                    formControlName="firstSurname"
+                    id="firstSurname"
+                    type="text"
+                    maxlength="80"
+                  >
+                  <label class="required" for="firstSurname">Primer Apellido</label>
+                </p-floatLabel>
+                @if (formHelper.isDirtyAndInvalid('firstSurname')) {
+                  <small class="text-danger">Introduzca el primer apellido</small>
+                }
+              </div>
+              <div class="col">
+                <p-floatLabel>
+                  <input
+                    pInputText
+                    formControlName="secondSurname"
+                    id="secondSurname"
+                    type="text"
+                    maxlength="80"
+                  >
+                  <label for="secondSurname">Segundo Apellido</label>
+                </p-floatLabel>
+              </div>
+              <div class="col">
+                <p-floatLabel>
+                  <input
+                    pInputText
+                    formControlName="cif"
+                    id="cif"
+                    type="text"
+                    maxlength="80"
+                  >
+                  <label class="required" for="cif">NIF/CIF</label>
+                </p-floatLabel>
+
+                @if (formHelper.isDirtyAndInvalid('cif')) {
+                  <small class="text-danger">Introduzca un CIF o NIF</small>
+                }
+              </div>
+              <div class="col">
+                <p-floatLabel>
+                  <input
+                    pInputText
+                    formControlName="phone"
+                    id="phone"
+                    type="text"
+                    maxlength="80"
+                  >
+                  <label class="required" for="phone">Teléfono</label>
+                </p-floatLabel>
+                @if (formHelper.isDirtyAndInvalid('phone')) {
+                  <small class="text-danger">Introduzca un teléfono</small>
+                }
+              </div>
+              <div class="col">
+                <p-floatLabel>
+                  <input
+                    pInputText
+                    formControlName="email"
+                    id="email"
+                    type="text"
+                    maxlength="80"
+                  >
+                  <label class="required" for="email">Correo electrónico</label>
+                </p-floatLabel>
+                @if (formHelper.isDirtyAndInvalid('email')) {
+                  <small class="text-danger">Introduzca un correo electrónico válido.</small>
+                }
+              </div>
+              <div class="w-100">
+                <label class="required">Quiero desgravar mi aportación en la declaración de la renta:</label>
+                <div class="d-flex flex-column gap-2 mt-1">
+                  <p-radioButton
+                    [value]="true"
+                    formControlName="deduct"
+                    label="Sí"
+                  ></p-radioButton>
+                  <p-radioButton
+                    [value]="false"
+                    formControlName="deduct"
+                    label="No"
+                  ></p-radioButton>
+                </div>
+                @if (formHelper.isDirtyAndInvalid('deduct')) {
+                  <small class="text-danger">Debe elegir una de las opciones</small>
+                }
+              </div>
+            </div>
+          }
+          @case (1) {
+            <div class="row">
+              <div class="col">
+                <p-floatLabel>
+                  <p-inputNumber
+                    class="w-100"
+                    styleClass="w-100"
+                    id="amount"
+                    currency="EUR"
+                    mode="currency"
+                    locale="es-ES"
+                    formControlName="amount"
+                    [showButtons]="true"
+                    [min]="0"
+                  ></p-inputNumber>
+                  <label class="required" for="amount">Importe</label>
+                </p-floatLabel>
+                @if (formHelper.isDirtyAndInvalid('amount')) {
+                  <small class="text-danger">Introduzca un importe mayor a 0,01€</small>
+                }
+              </div>
+              <div class="col-12">
+                <label class="mb-3 required">Periodicidad de la donación:</label>
+                <div class="d-flex flex-column gap-1 mb-2">
+                  <p-radioButton
+                    value="MONTHLY"
+                    formControlName="frequency"
+                    label="Mensual"
+                  ></p-radioButton>
+                  <p-radioButton
+                    value="QUARTERLY"
+                    formControlName="frequency"
+                    label="Trimestral"
+                  ></p-radioButton>
+                  <p-radioButton
+                    value="BIANNUAL"
+                    formControlName="frequency"
+                    label="Semestral"
+                  ></p-radioButton>
+                  <p-radioButton
+                    value="YEARLY"
+                    formControlName="frequency"
+                    label="Anual"
+                  ></p-radioButton>
+                  <p-radioButton
+                    value="SINGLE"
+                    formControlName="frequency"
+                    label="Puntual"
+                  ></p-radioButton>
+                </div>
+                @if (formHelper.isDirtyAndInvalid('frequency')) {
+                  <small class="text-danger">Debe seleccionar una opción</small>
+                }
+              </div>
+            </div>
+          }
+          @case (2) {
+            <div class="row">
+              @if (formHelper.controlValue('frequency') === 'SINGLE') {
+                <div class="col-12 mb-3">
+                  <label class="required mb-2">Elija un método para realizar la donación:</label>
+                  <div class="d-flex flex-column gap-2 justify-content-around mb-2">
+                    <p-radioButton
+                      formControlName="singleDonationPaymentType"
+                      label="Por tarjeta de crédito o débito mediante nuestro TPV"
+                      value="TPV"
+                    ></p-radioButton>
+                    <p-radioButton
+                      value="IBAN"
+                      formControlName="singleDonationPaymentType"
+                      label="Domiciliar la donación directamente a su cuenta bancaria."
+                    ></p-radioButton>
+                    <p-radioButton
+                      value="MANUAL"
+                      formControlName="singleDonationPaymentType"
+                      label="Hacer una transferencia bancaria a nuestra cuenta."
+                    ></p-radioButton>
+                    @if (formHelper.isDirtyAndInvalid('singleDonationPaymentType')) {
+                      <small class="text-danger">Debe elegir una opción</small>
+                    }
+                  </div>
+                  <p class="mt-3">
+                    @if (formHelper.controlValue('singleDonationPaymentType') === 'TPV') {
+                      Si elige realizar la donación mediante tarjeta a través de nuestro TPV, una vez confirme los datos
+                        se le redirigirá a nuestro TPV virtual. Cuando complete el pago se le enviará un correo
+                        confirmando la donación.
+                    } @else if (formHelper.controlValue('singleDonationPaymentType') === 'MANUAL') {
+                      Si opta por ingreso en nuestra cuenta, debe identificar el ingreso como 'Donación' y, en su caso,
+                        señalar 'Nombre y Apellidos' o 'Razón Social'. El ingreso se hará a la cuenta:
+                      <b>ES63 3058 6103 2527 2000 6238</b>. Haga el ingreso una vez haya completado este formulario.
+                    } @else if (formHelper.controlValue('singleDonationPaymentType') === 'IBAN') {
+                      Si decide domiciliar la donación, nosotros nos encargaremos de cobrarle. Para ello, tiene que
+                        facilitarnos el número IBAN de su cuenta.
+                    }
+                  </p>
+                </div>
+              } @else {
+                <div class="col-12">
+                  Ha seleccionado realizar una donación periódica. Para ello, tiene que facilitarnos el número IBAN de
+                  su
+                  cuenta, a la que realizaremos un cobro
+                  <b>cada {{ formHelper.controlValue('frequency') | donationFrequency }}</b>.
+                </div>
+              }
+              @if (ibanIsRequired()) {
+                <div class="col-12">
+                  <p-floatLabel>
+                    <input
+                      pInputText
+                      formControlName="iban"
+                      id="iban"
+                      type="text"
+                      maxlength="80"
+                    >
+                    <label class="required" for="iban">IBAN</label>
+                  </p-floatLabel>
+                  @if (formHelper.isDirtyAndInvalid('iban')) {
+                    <small class="text-danger">Introduzca su número IBAN</small>
+                  }
+                </div>
+              }
+              <div class="col-12">
+                <app-privacy-checkbox-container>
+                  <p-checkbox
+                    id="privacy"
+                    formControlName="privacy"
+                    [binary]="true"
+                  ></p-checkbox>
+                </app-privacy-checkbox-container>
+                @if (formHelper.isDirtyAndInvalid('privacy')) {
+                  <small class="text-danger">Debe leer y estar de acuerdo con los términos</small>
+                }
+              </div>
+            </div>
+          }
+          @case (3) {
+            <div class="row">
+              <div class="col-12 mb-1">
+                <h4>Datos de Donante</h4>
+              </div>
+              <div class="col-12 col-lg-6">
+                <b>Nombre:</b>
+                {{ donationForm.name || '-' }}
+              </div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <b>Primer Apellido:</b>
+                {{ donationForm.firstSurname || '-' }}
+              </div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <b>Segundo Apellido:</b>
+                {{ donationForm.secondSurname || '-' }}
+              </div>
+              <div class="col-12 col-md-6">
+                <b>CIF o NIF:</b>
+                {{ donationForm.cif || '-' }}
+              </div>
+              <div class="col-12 col-md-6">
+                <b>Teléfono:</b>
+                {{ donationForm.phone || '-' }}
+              </div>
+              <div class="col-12 col-lg-6">
+                <b>Correo electrónico:</b>
+                {{ donationForm.email || '-' }}
+              </div>
+              <div class="col-12 col-lg-6">
+                <b>Desea desgravar:</b>
+                {{ donationForm.deduct ? 'Sí' : 'No' }}
+              </div>
+              <div class="col-12 mb-1">
+                <h4>Datos de Donación</h4>
+              </div>
+              <div class="col-12 col-sm-6">
+                <b>Importe:</b>
+                {{ donationForm.amount! / 100 | currency:'EUR':undefined:undefined:'ES-es' }}
+              </div>
+              <div class="col-12 col-sm-6">
+                <b>Periodicidad:</b>
+                {{ donationForm.frequency | donationFrequency:true }}
+              </div>
+              @if (donationForm.frequency == 'SINGLE') {
+                <div class="col-12 col-sm-6">
+                  <b>Forma de donación:</b>
+                  @if (donationForm.singleDonationPaymentType == 'TPV') {
+                    Mediante TPV
+                  } @else if (donationForm.singleDonationPaymentType == 'IBAN') {
+                    Domiciliado
+                  } @else {
+                    Mediante ingreso
+                  }
+                </div>
+              }
+              @if (ibanIsRequired()) {
+                <div class="col">
+                  <b>IBAN:</b>
+                  {{ donationForm.iban }}
+                </div>
+              }
+            </div>
+          }
+        }
+        <app-large-form-buttons
+          [form]="formHelper"
+          [loading]="loading"
+        ></app-large-form-buttons>
+      </form>
+    </div>
+  }
+</div>
+<form #tpvForm action="{{url}}" method="POST" class="d-none">
+  <input #i1 type="hidden" name="Ds_SignatureVersion"/>
+  <input #i2 type="hidden" name="Ds_MerchantParameters"/>
+  <input #i3 type="hidden" name="Ds_Signature"/>
+</form>

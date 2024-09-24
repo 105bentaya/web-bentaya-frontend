@@ -1,0 +1,95 @@
+@if (scouts) {
+  <p-tabView>
+    <p-tabPanel header="Datos">
+      <div class="mb-1">
+        <div>
+          <b>Apellidos, Nombre: </b>
+          <span>{{ scouts[currentIndex].surname }}, {{ scouts[currentIndex].name }}</span>
+        </div>
+        <div>
+          <b>DNI o NIE: </b>
+          <span>{{ scouts[currentIndex].dni || "No especificado" }}</span>
+        </div>
+        <div>
+          <b>Género: </b>
+          <span>{{ scouts[currentIndex].gender }}</span>
+        </div>
+        <div>
+          <b>Fecha de Nacimiento: </b>
+          <span>{{ scouts[currentIndex].birthday | date:"dd/MM/yyyy" }}</span>
+        </div>
+        <div>
+          <b>Talla: </b>
+          <span>{{ scouts[currentIndex].shirtSize || "No especificada" }}</span>
+        </div>
+        <div>
+          <b>Municipio de residencia: </b>
+          <span>{{ scouts[currentIndex].municipality || "No especificado" }}</span>
+        </div>
+        <div>
+          <b>Autorización de imagen: </b>
+          <span>{{ scouts[currentIndex].imageAuthorization ? "Sí" : "No" }}</span>
+        </div>
+        <div>
+          <b>Datos Médicos: </b>
+          <span>{{ scouts[currentIndex].medicalData || "Ninguno" }}</span>
+        </div>
+        <div>
+          <b>Unidad: </b>
+          <span>{{ scouts[currentIndex].groupId | group }}</span>
+        </div>
+        @if (!isUser) {
+          <div>
+            <b>Observaciones: </b>
+            <span>{{ scouts[currentIndex].observations || "-" }}</span>
+          </div>
+          <div>
+            <b>Progresiones: </b>
+            <span>{{ scouts[currentIndex].progressions || "-" }}</span>
+          </div>
+          <div>
+            <b>Censo: </b>
+            <span>{{ scouts[currentIndex].census || "-" }}</span>
+          </div>
+        }
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Contactos">
+      @for (contact of scouts[currentIndex].contactList; track contact.id) {
+        <div>
+          <b>Nombre: </b>
+          <span>{{ contact.name }}</span>
+        </div>
+        <div>
+          <b>Parentesco: </b>
+          <span>{{ contact.relationship || "No especificado" }}</span>
+        </div>
+        @if (contact.phone) {
+          <div>
+            <b>Teléfono: </b>
+            <a class="uncolored text-decoration-none" href="tel:{{contact.phone}}">{{ contact.phone }}</a>
+          </div>
+        }
+        @if (contact.email) {
+          <div>
+            <b>Correo: </b>
+            <a class="uncolored text-decoration-none" href="mailto:{{contact.email}}">{{ contact.email }}</a>
+          </div>
+        }
+        <hr>
+      }
+    </p-tabPanel>
+    @if (isUser) {
+      <small>Si detecta cualquier error por favor comuníquelo a los scouters de unidad</small>
+    }
+  </p-tabView>
+  @if (scouts.length > 1) {
+    <div class="mb-2">
+      <p-tabMenu class="invert-tab-menu" [model]="items" [activeItem]="items[0]" [scrollable]="true"></p-tabMenu>
+    </div>
+  } @else if (scouts.length < 1 && isUser) {
+    No se han encontrado personas educandas asociadas a este usuario
+  }
+} @else {
+  <app-basic-loading-info></app-basic-loading-info>
+}

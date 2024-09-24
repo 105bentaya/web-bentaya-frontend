@@ -1,0 +1,149 @@
+<div class="container">
+  <h1 class="text-center"><b>Canal anónimo de denuncias</b></h1>
+  <h3 class="pb-2 text-center">Gestionando la seguridad en Scouts 105 Bentaya</h3>
+  <p>Este canal posibilita una comunicación anónima y segura de las denuncias que se presenten.</p>
+  <p>
+    El objetivo de este canal es que cualquier persona o entidad pueda denunciar y/o comunicar cualquier posible
+    conducta irregular, poco ética o inapropiada de cualquier persona que esté empleada, represente o participe de
+    alguna forma en nuestra Asociación.
+  </p>
+  <p>
+    Animamos a cualquier persona o entidad a comunicarse con nuestra organización y a hacernos llegar sus sugerencias,
+    denuncias o cualquier indicio o prueba que pueda sernos de utilidad en los procesos de investigación o estudio que
+    se abran.
+  </p>
+  <p>
+    Le agradecemos que nos indique cualquier tipo de datos de los que disponga (fechas, nombre, lugares, etc.) que
+    pueda ayudarnos en un posible proceso de investigación interno, a fin de tener las máximas evidencias posibles.
+  </p>
+  <p>
+    Las entradas marcadas con (<span class="fw-bold" style="color: red;">*</span>) son necesarias. El resto son
+    optativas.
+  </p>
+  <form [formGroup]="complaintForm.form" class="form-container">
+    <div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <p-floatLabel>
+            <input
+              pInputText
+              formControlName="phone"
+              id="phone"
+              type="text"
+            >
+            <label for="phone">Teléfono</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-md-6">
+          <p-floatLabel>
+            <input
+              formControlName="email"
+              id="email"
+              type="text"
+              pInputText
+            >
+            <label for="email">Email</label>
+          </p-floatLabel>
+          @if (complaintForm.isDirtyAndInvalid('email')) {
+            <small class="text-danger">Introduzca un correo válido.</small>
+          }
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-3">
+          <p-floatLabel>
+            <p-dropdown
+              id="category"
+              formControlName="category"
+              [options]="categories"
+            ></p-dropdown>
+            <label for="category" class="required">Categoría</label>
+          </p-floatLabel>
+          @if (complaintForm.isDirtyAndInvalid('category')) {
+            <small class="text-danger">Introduzca la categoría de la queja.</small>
+          }
+        </div>
+        <div class="col-12 col-lg-3">
+          <p-floatLabel>
+            <p-dropdown
+              id="type"
+              formControlName="type"
+              [options]="types"
+            ></p-dropdown>
+            <label class="required" for="type">Tipo</label>
+          </p-floatLabel>
+          @if (complaintForm.isDirtyAndInvalid('type')) {
+            <small class="text-danger">Introduzca el tipo de queja.</small>
+          }
+        </div>
+        <div class="col-12 col-lg-3">
+          <p-floatLabel>
+            <input
+              formControlName="name"
+              id="name"
+              type="text"
+              pInputText
+            >
+            <label for="name">Nombre</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-lg-3">
+          <p-floatLabel>
+            <input
+              formControlName="surname"
+              id="surname"
+              type="text"
+              pInputText
+            >
+            <label for="surname">Apellidos</label>
+          </p-floatLabel>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-2">
+        <app-form-text-area
+          formControlName="text"
+          id="text"
+          [maxLength]="65535"
+          floatLabel="Descripción de los hechos"
+          labelClass="required"
+        ></app-form-text-area>
+        @if (complaintForm.isDirtyAndInvalid('text')) {
+          <small class="text-danger">
+            @if (complaintForm.hasSpecificError('text', 'maxlength')) {
+              Introduzca un comentario más corto.
+            } @else {
+              Introduzca un breve comentario.
+            }
+          </small>
+        }
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-2">
+        <app-privacy-checkbox-container>
+          <p-checkbox
+            id="privacy"
+            formControlName="privacy"
+            [binary]="true"
+          ></p-checkbox>
+        </app-privacy-checkbox-container>
+        @if (complaintForm.isDirtyAndInvalid('privacy')) {
+          <small class="text-danger">Debe leer y estar de acuerdo con los términos.</small>
+        }
+      </div>
+    </div>
+    <app-save-buttons
+      saveLabel="ENVIAR"
+      (onSave)="submit()"
+      [saveLoading]="loading"
+      [blockOverlay]="true"
+    ></app-save-buttons>
+    @if (complaintForm.isDirtyAndInvalid()) {
+      <div class="w-100 text-center">
+        <small class="text-danger">Rellene todos los campos.</small>
+      </div>
+    }
+  </form>
+</div>

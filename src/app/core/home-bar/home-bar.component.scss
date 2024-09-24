@@ -1,0 +1,16 @@
+.logo {
+ img {
+   cursor: pointer;
+   &:hover {
+     background: rgb(54, 82, 153);
+     border-radius: 12px;
+   }
+ }
+}
+
+.buttons-right {
+  top: 0;
+  position: absolute;
+  right: 0;
+  margin-top: 5px;
+}

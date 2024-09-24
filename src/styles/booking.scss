@@ -1,0 +1,103 @@
+$xs: 0;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1400px;
+
+
+.booking-calendar {
+  .p-datepicker table th, .p-datepicker table td {
+    padding: .3rem !important;
+    @media screen and (max-width: $xxl) {
+      padding: .25rem !important;
+    }
+    @media screen and (max-width: $xl) {
+      padding: .1rem !important;
+    }
+    @media screen and (max-width: 1100px) {
+      padding: 0 !important;
+    }
+  }
+}
+
+$reserved: #ead705;
+$occupied: #fa9f13;
+$fully-occupied: #c50909;
+
+.booking-date {
+  > span:hover {
+    background-color: unset !important;
+  }
+
+  .reserved {
+    border-radius: 50%;
+    padding: .25em;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    display: block;
+    background-color: $reserved !important;
+    font-weight: bolder;
+
+    &:hover {
+      background-color: $reserved !important;
+    }
+  }
+
+  .occupied {
+    border-radius: 50%;
+    padding: .25em;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    display: block;
+    background-color: $occupied !important;
+    font-weight: bolder;
+
+    &:hover {
+      background-color: $occupied !important;
+    }
+  }
+
+  .fully-occupied {
+    border-radius: 50%;
+    padding: .25em;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    display: block;
+    background-color: $fully-occupied !important;
+    color: white;
+    font-weight: bolder;
+
+    &:hover {
+      background-color: $fully-occupied !important;
+    }
+  }
+}
+
+p-messages .occupied {
+  .p-message.p-message-warn {
+    background: #FDC399;
+    color: #6d2400;
+    border-color: #d95c00;
+  }
+}
+
+.booking-follow-up {
+  a {
+    padding: .5rem !important;
+    text-decoration: none;
+  }
+
+  .p-fieldset {
+    &:not(.p-fieldset-expanded) {
+      border: none;
+    }
+
+    &.p-fieldset-expanded {
+      margin-bottom: 1rem;
+    }
+  }
+}

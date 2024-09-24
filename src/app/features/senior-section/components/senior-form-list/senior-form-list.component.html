@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <h1 class="mb-0 d-flex me-3">Peticiones Sección Sénior</h1>
+    <div>
+      <button
+        type="button"
+        pButton
+        icon="pi pi-file-excel"
+        [loading]="excelLoading"
+        (click)="exportExcel()"
+        class="p-button-success"
+        title="Descargar excel"
+      ></button>
+    </div>
+  </div>
+  @if (data) {
+    <p-table
+      #tab
+      styleClass="p-datatable-gridlines"
+      [value]="data"
+      responsiveLayout="scroll"
+      sortField="id"
+      [sortOrder]="-1"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id">
+            ID
+            <p-sortIcon field="id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="name">
+            Nombre
+            <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="surname" colspan="2">
+            Apellidos
+            <p-sortIcon field="surname"></p-sortIcon>
+          </th>
+        </tr>
+        <tr>
+          <th colspan="4">
+            <input
+              pInputText
+              type="text"
+              class="w-100"
+              placeholder="ID o nombre"
+              (input)="tab.filter($any($event.target).value, 'id', 'custom-filter')"/>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-form>
+        <tr>
+          <td>
+            {{ form.id }}
+          </td>
+          <td>
+            {{ form.name }}
+          </td>
+          <td>
+            {{ form.surname }}
+          </td>
+          <td class="w-min">
+            <div class="d-flex flex-row gap-2">
+              <app-general-icon-button
+                icon="pi pi-trash"
+                [disabled]="loading"
+                class="p-button-danger"
+                title="Eliminar"
+                (click)="deleteForm(form)"
+              ></app-general-icon-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>

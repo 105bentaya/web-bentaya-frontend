@@ -1,0 +1,9 @@
+form.ng-submitted {
+  .ng-invalid {
+    border-color: #f44336;
+  }
+
+  .p-float-label > .ng-invalid + label {
+    color: #f44336;
+  }
+}

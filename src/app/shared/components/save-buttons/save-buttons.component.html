@@ -1,0 +1,30 @@
+<div [class]="class">
+  <div class="d-flex justify-content-center gap-2 align-items-center">
+    @if (showCancelButton) {
+      <button
+        pButton
+        [disabled]="saveLoading || cancelDisabled"
+        [loading]="cancelLoading"
+        [label]="cancelLabel"
+        class="p-button-danger"
+        (click)="onCancel.emit()"
+        [type]="cancelType"
+      ></button>
+    }
+    @if (showSaveButton) {
+      <button
+        pButton
+        [disabled]="cancelLoading || saveDisabled"
+        [loading]="saveLoading"
+        [label]="saveLabel"
+        (click)="onSave.emit()"
+        [class]="saveClass"
+        [icon]="saveIcon"
+        [type]="saveType"
+      ></button>
+    }
+  </div>
+</div>
+@if (blockOverlay && (saveLoading || cancelLoading)) {
+  <div class="block-overlay"></div>
+}

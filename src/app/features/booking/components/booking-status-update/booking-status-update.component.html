@@ -1,0 +1,41 @@
+<div class="mb-5" [ngClass]="{'mt-4': !message}">
+  @if (message) {
+    <p style="margin-bottom: 2rem;">{{ message }}</p>
+  }
+  @if (showPrice) {
+    <div class="mb-4">
+      <p-floatLabel>
+        <p-inputNumber
+          [inputStyle]="{'border-radius': '.375rem 0 0 .375rem'}"
+          class="w-100 input-number-button"
+          styleClass="w-100"
+          id="amount"
+          currency="EUR"
+          mode="currency"
+          locale="es-ES"
+          [(ngModel)]="price"
+          [showButtons]="true"
+          [min]="0"
+        ></p-inputNumber>
+        <label class="required" for="amount">Precio total de la actividad (€)</label>
+      </p-floatLabel>
+    </div>
+  }
+  <app-form-text-area
+    id="comment"
+    [maxLength]="2047"
+    [(ngModel)]="comment"
+    [floatLabel]="floatLabel"
+    [labelClass]="required ? 'required' : ''"
+    rows="6"
+    (isValid)="validText = $event"
+    class="mt-1"
+  ></app-form-text-area>
+</div>
+<app-save-buttons
+  [showCancelButton]="true"
+  (onCancel)="ref.close()"
+  saveLabel="Actualizar"
+  [saveDisabled]="disableUpdateButton()"
+  (onSave)="submit()"
+></app-save-buttons>

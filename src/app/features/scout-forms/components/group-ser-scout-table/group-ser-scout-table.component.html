@@ -1,0 +1,125 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <h1 class="mb-0 d-flex me-3">Lista de Preinscripciones</h1>
+    @if (hasRejected) {
+      <div>
+        <p-toggleButton
+          offIcon="fa-solid fa-file-circle-xmark"
+          onIcon="fa-solid fa-file-circle-xmark"
+          (onChange)="filterRejected($event.checked!)"
+          [(ngModel)]="showRejected"
+          title="Mostrar rechazadas"
+        ></p-toggleButton>
+      </div>
+    }
+  </div>
+  <p-table
+    #tab
+    styleClass="p-datatable-gridlines"
+    [value]="filteredPreScouts"
+    [loading]="!filteredPreScouts"
+    responsiveLayout="scroll"
+  >
+    <ng-template pTemplate="caption">
+      <div class="d-flex justify-content-between gap-2 flex-wrap">
+        <span>Las preinscripciones se encuentran por orden de prioridad</span>
+        @if (tab.processedData.length == tab.totalRecords) {
+          Hay {{ tab.processedData.length }} {{ tab.processedData.length == 1 ? 'preinscripción' : 'preinscripciones' }}
+        } @else {
+          {{ tab.processedData.length }}
+          {{ tab.processedData.length == 1 ? 'preinscripción hecha' : 'preinscripciones hechas' }} con estas condiciones
+        }
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          Nombre
+        </th>
+        <th>
+          Estado
+        </th>
+        <th>
+          Comentarios
+        </th>
+        <th></th>
+      </tr>
+      <tr class="input-max-width">
+        <th>
+          <input
+            pInputText
+            type="text"
+            placeholder="Filtrar"
+            (input)="tab.filter($any($event.target).value, 'id', 'name-surname-filter')"/>
+        </th>
+        <th>
+          <p-multiSelect
+            [options]="statuses"
+            (onChange)="tab.filter($event.value, 'status', 'in')"
+            [showHeader]="false"
+            [showClear]="true"
+            appendTo="body"
+            scrollHeight="300px"
+            optionValue="id"
+            optionLabel="name"
+            placeholder="Filtrar"
+          ></p-multiSelect>
+        </th>
+        <th>
+          <input
+            pInputText
+            type="text"
+            placeholder="Filtrar"
+            (input)="tab.filter($any($event.target).value, 'assignationComment', 'contains')"/>
+        </th>
+        <th class="w-min"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-preScout>
+      <tr>
+        <td>
+          {{ preScout.surname }}, {{ preScout.name }}
+        </td>
+        <td>
+          {{ preScout.status | status }}
+        </td>
+        <td>
+          {{ preScout.assignationComment || '-' }}
+        </td>
+        <td>
+          <div class="d-flex flex-row gap-2">
+            <button
+              type="button"
+              pButton
+              icon="pi pi-file-pdf"
+              (click)="downloadPreScoutAsPdf(preScout)"
+              [disabled]="loading"
+              class="p-button-raised p-button-outlined"
+              title="Exportar como PDF"
+            ></button>
+            <button
+              type="button"
+              pButton
+              icon="pi pi-th-large"
+              (click)="openForm(preScout)"
+              [disabled]="loading"
+              class="p-button-raised p-button-light p-button-outlined"
+              title="Editar"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4">
+          @if (filteredPreScouts.length == 0) {
+            No hay preinscripciones asignadas a esta unidad :(
+          } @else {
+            No hay resultados
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

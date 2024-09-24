@@ -1,0 +1,114 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-end">
+    <h1 class="mb-0 me-3">Lista de usuarios</h1>
+    <div>
+      <button
+        pButton
+        label="Añadir"
+        title="Añadir Usuario"
+        icon="pi pi-user-plus"
+        routerLink="/users/new"
+      ></button>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end mt-3 mb-2">
+    <p-checkbox
+      [binary]="true"
+      (onChange)="dt.filter($event.checked,'showHidden', 'custom')"
+      label="Mostrar usuarios inactivos"
+    ></p-checkbox>
+  </div>
+  <div class="d-flex flex-column gap-2 mb-2">
+    <input
+      pInputText
+      class="w-100"
+      placeholder="Filtrar nombre de usuario"
+      type="text"
+      (input)="dt.filter($any($event.target).value, 'description', 'custom')"
+    />
+    <p-multiSelect
+      placeholder="Filtrar roles"
+      [options]="roles"
+      optionValue="id"
+      styleClass="w-100"
+      (onChange)="dt.filter($event.value,'roleIds', 'custom')"
+    >
+      <ng-template let-selectedIds pTemplate="selectedItems">
+        @if (!selectedIds || selectedIds.length === 0) {
+          <div>Filtrar roles</div>
+        } @else {
+          {{ selectedIds | roles:true }}
+        }
+      </ng-template>
+      <ng-template let-role pTemplate="item">
+        <div>{{ role.name | role }}</div>
+      </ng-template>
+    </p-multiSelect>
+  </div>
+  <p-table
+    #dt
+    styleClass="p-datatable-gridlines"
+    [value]="userList"
+    responsiveLayout="stack"
+    [lazy]="true"
+    [totalRecords]="totalRecords"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[5,10,25,50]"
+    (onLazyLoad)="loadUsersWithFilter($event)"
+    breakpoint="430px"
+    [loading]="loading"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} usuarios"
+    [filters]="{showHidden: { value: false, matchMode: 'custom' }}"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nombre de usuario</th>
+        <th>Activo</th>
+        <th>Roles</th>
+        <th class="w-min">Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>
+          <span class="p-column-title">Nombre de usuario</span>
+          {{ user.username }}
+        </td>
+        <td>
+          <span class="p-column-title">Activo</span>
+          {{ user.enabled ? "Sí" : "No" }}
+        </td>
+        <td>
+          <span class="p-column-title">Roles</span>
+          <span class="stack-table-title">{{ user.roles | roles:false:user.groupId }}</span>
+        </td>
+        <td>
+          <div class="d-flex flex-row gap-2 justify-content-center">
+            <app-general-icon-button
+              icon="pi pi-user-edit"
+              title="Editar"
+              [disabled]="loading"
+              routerLink="/users/{{user.id}}"
+            ></app-general-icon-button>
+            @if (user.enabled) {
+              <app-general-icon-button
+                icon="pi pi-times"
+                [disabled]="loading"
+                title="Desactivar"
+                class="p-button-danger"
+                (click)="deleteUser(user.id)"
+              ></app-general-icon-button>
+            }
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4">No se han encontrado usuarios bajo estos parámetros</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

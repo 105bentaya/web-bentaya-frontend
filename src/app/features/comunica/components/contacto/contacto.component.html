@@ -1,0 +1,138 @@
+<div class="container justify-content-center">
+  <h1 class="text-center">Contacto</h1>
+  <div class="row">
+    <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+      <p>Puedes ponerte en contacto con nosotros y enviarnos tus sugerencias en:</p>
+      <ul>
+        <li>(+34) 928 24 21 21</li>
+        <li>
+          <a href="mailto:scouts@105bentaya.org">scouts&#64;105bentaya.org</a>
+        </li>
+        <li>
+          <a href="mailto:informatica@105bentaya.org">informatica&#64;105bentaya.org</a> (dudas o errores de la web)
+        </li>
+        <li class="mb-4">C/Arco, 77, 35004 Las Palmas de Gran Canaria</li>
+      </ul>
+      <div class="w-100">
+        <iframe
+          width="100%"
+          height="500"
+          src="https://maps.google.com/maps?q=asociacion%20juvenil%20scouts%20exploradores%20de%20gran%20canaria%20bentaya&z=13&ie=UTF8&output=embed"
+        ></iframe>
+        <a href="https://123movies-to.org"></a>
+        <br>
+        <a href="https://www.embedgooglemap.net"></a>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <p class="mb-4">
+        También puedes contactarnos rellenando el siguiente formulario con tu información personal:
+      </p>
+      <form [formGroup]="contactForm.form" class="form-container">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <p-floatLabel>
+              <input
+                pInputText
+                formControlName="name"
+                id="name"
+                type="text"
+              >
+              <label class="required" for="name">Nombre</label>
+            </p-floatLabel>
+            @if (contactForm.isDirtyAndInvalid('name')) {
+              <small class="text-danger">Introduzca un nombre.</small>
+            }
+          </div>
+          <div class="col-12 col-sm-6">
+            <p-floatLabel>
+              <input
+                pInputText
+                formControlName="surname"
+                id="surname"
+                type="text"
+              >
+              <label for="surname">Apellidos</label>
+            </p-floatLabel>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-6 col-lg-12 col-xl-6">
+            <p-floatLabel>
+              <input
+                formControlName="email"
+                id="email"
+                type="text"
+                pInputText
+              >
+              <label class="required" for="email">Email</label>
+            </p-floatLabel>
+            @if (contactForm.isDirtyAndInvalid('email')) {
+              <small class="text-danger">Introduzca un correo válido.</small>
+            }
+          </div>
+          <div class="col-12 col-sm-6 col-lg-12 col-xl-6">
+            <p-floatLabel>
+              <input
+                pInputText
+                formControlName="subject"
+                id="subject"
+                type="text"
+              >
+              <label class="required" for="subject">Asunto</label>
+            </p-floatLabel>
+            @if (contactForm.isDirtyAndInvalid('subject')) {
+              <small class="text-danger">Introduzca un asunto.</small>
+            }
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-0">
+            <label class="required" for="message">
+              Breve comentario sobre la colaboración que desea realizar.
+            </label>
+            <app-form-text-area
+              id="message"
+              formControlName="message"
+              [maxLength]="65535"
+            ></app-form-text-area>
+            @if (contactForm.isDirtyAndInvalid('message')) {
+              <small class="text-danger">
+                @if (contactForm.hasSpecificError('message', 'maxlength')) {
+                  Introduzca un comentario más corto.
+                } @else {
+                  Introduzca un breve comentario.
+                }
+              </small>
+            }
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-2">
+            <app-privacy-checkbox-container>
+              <p-checkbox
+                id="privacy"
+                formControlName="privacy"
+                [binary]="true"
+              ></p-checkbox>
+            </app-privacy-checkbox-container>
+            @if (contactForm.isDirtyAndInvalid('privacy')) {
+              <small class="text-danger">Debe leer y estar de acuerdo con los términos.</small>
+            }
+          </div>
+        </div>
+        <app-save-buttons
+          saveLabel="ENVIAR"
+          (onSave)="submit()"
+          [saveLoading]="loading"
+          [blockOverlay]="true"
+        ></app-save-buttons>
+        @if (contactForm.isDirtyAndInvalid()) {
+          <div class="w-100 text-center">
+            <small class="text-danger">Rellene todos los campos.</small>
+          </div>
+        }
+      </form>
+    </div>
+  </div>
+</div>
