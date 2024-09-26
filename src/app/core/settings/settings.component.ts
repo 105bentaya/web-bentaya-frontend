@@ -8,6 +8,10 @@ import {FormsModule} from '@angular/forms';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {BasicLoadingInfoComponent} from "../../shared/components/basic-loading-info/basic-loading-info.component";
 import {SaveButtonsComponent} from "../../shared/components/save-buttons/save-buttons.component";
+import {UserService} from "../../features/users/services/user.service";
+import {Page} from "../../shared/model/page.model";
+import {User} from "../../features/users/models/user.model";
+import {HttpClient, HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-settings',
@@ -27,6 +31,7 @@ export class SettingsComponent implements OnInit {
 
   private settingsService = inject(SettingsService);
   private alertService = inject(AlertService);
+  private http = inject(HttpClient);
 
   private originalCurrentFormYear!: number;
   protected currentFormYear!: number;
@@ -47,6 +52,23 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllSettings();
+    this.test();
+  }
+
+  private test() {
+    const newD = new Date().getSeconds();
+    let pet;
+    if (newD % 3 == 0) {
+      console.log("oldbackend")
+      pet = this.http.get<Page<User>>("https://webbentaya.azurewebsites.net/api/user?page=0&countPerPage=50&showHidden=false")
+    } else if (newD % 3 == 1) {
+      console.log("new backend api")
+      pet = this.http.get<Page<User>>("https://web-bentaya-backend.azurewebsites.net/api/user?page=0&countPerPage=50&showHidden=false")
+    } else {
+      console.log("new backend azure")
+      pet = this.http.get<Page<User>>("https://api.105bentaya.org/api/user?page=0&countPerPage=50&showHidden=false")
+    }
+    pet.subscribe(res => console.log(res))
   }
 
   private getAllSettings(): void {
