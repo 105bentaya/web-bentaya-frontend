@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: "https://webbentaya.azurewebsites.net/api",
+  apiUrl: "https://web-bentaya-backend.azurewebsites.net/api",
   tpvUrl: "https://sis.redsys.es/sis/realizarPago"
 };
