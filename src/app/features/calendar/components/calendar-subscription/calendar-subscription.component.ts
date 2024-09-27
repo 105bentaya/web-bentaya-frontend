@@ -1,8 +1,7 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ButtonDirective} from "primeng/button";
 import {environment} from "../../../../../environments/environment";
 import {EventService} from "../../services/event.service";
-import {map} from "rxjs";
 
 @Component({
   selector: 'app-calendar-subscription',
@@ -13,23 +12,24 @@ import {map} from "rxjs";
   templateUrl: './calendar-subscription.component.html',
   styleUrl: './calendar-subscription.component.scss'
 })
-export class CalendarSubscriptionComponent {
+export class CalendarSubscriptionComponent implements OnInit {
 
   protected copied = false;
   private url = environment.apiUrl;
+  private link!: string;
   private event = inject(EventService);
 
+  ngOnInit() {
+    this.getCalendarToken();
+  }
+
   protected openAppleLink() {
-    this.getCalendarToken().subscribe({
-      next: link => window.open(`webcal${link.substring(link.indexOf(":"))}`)
-    });
+    window.open(`webcal${this.link.substring(this.link.indexOf(":"))}`, "_blank");
   }
 
   protected copyLink() {
     this.copied = true;
-    this.getCalendarToken().subscribe({
-      next: link => navigator.clipboard.writeText(link).then(() => this.reactivateCopyButton())
-    });
+    navigator.clipboard.writeText(this.link).then(() => this.reactivateCopyButton());
   }
 
   protected reactivateCopyButton() {
@@ -37,8 +37,8 @@ export class CalendarSubscriptionComponent {
   }
 
   private getCalendarToken() {
-    return this.event.subscribeToCalendar().pipe(
-      map(token => `${this.url}/event/public/calendar?token=${token}`)
-    );
+    return this.event.subscribeToCalendar().subscribe({
+      next: token => this.link = `${this.url}/event/public/calendar?token=${token}`
+    });
   }
 }
