@@ -1,0 +1,44 @@
+<div>
+  Puedes sincronizar el calendario de la web con tu aplicación de calendario mediante una suscripción. Para lograrlo te
+  ofrecemos dos opciones:
+  <ul class="mt-1">
+    <li>
+      Copia el enlace de suscripción, haciendo click en el siguiente botón. Luego, abre tu aplicación de
+      calendario, busca la opción "Suscribirse a un calendario" y pega el enlace copiado.
+    </li>
+    <div class="d-flex justify-content-center my-3">
+      @if (copied) {
+        <button
+          pButton
+          icon="pi pi-copy"
+          class="opacity-75"
+          [disabled]="true"
+          label="¡Link copiado!"
+        ></button>
+      } @else {
+        <button
+          pButton
+          icon="pi pi-link"
+          label="Copiar Link"
+          (click)="copyLink()"
+        ></button>
+      }
+    </div>
+    <li>
+      Si usas un dispositivo Apple, también puedes hacer click en el siguiente botón y se abrirá automáticamente la
+      aplicación de calendario.
+    </li>
+    <div class="d-flex justify-content-center my-3">
+      <button
+        pButton
+        icon="pi pi-calendar"
+        label="Abrir en Apple"
+        (click)="openAppleLink()"
+      ></button>
+    </div>
+  </ul>
+  <p class="mt-4">
+    <b>Importante:</b> Si pegas el enlace en el navegador e importas a tu aplicación el calendario que se descarga, no
+    se sincronizarán los futuros cambios ya que esto solo guardará una copia del calendario actual.
+  </p>
+</div>
