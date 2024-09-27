@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CalendarOptions} from "@fullcalendar/core";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
@@ -26,7 +26,7 @@ import {SelectButtonModule} from "primeng/selectbutton";
 import {MultiSelectModule} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
 import {DateUtils} from "../../../../shared/util/date-utils";
-import {FormEvent} from "../../models/form-event.model";
+import {CalendarSubscriptionComponent} from "../calendar-subscription/calendar-subscription.component";
 
 @Component({
   selector: 'app-calendar',
@@ -49,25 +49,25 @@ import {FormEvent} from "../../models/form-event.model";
 })
 export class CalendarComponent implements OnInit, OnDestroy {
 
+  private dialogService = inject(DialogService);
+  private eventService = inject(EventService);
+  private authService = inject(AuthService);
+  private alertService = inject(AlertService);
+  private route = inject(ActivatedRoute);
+  private eventStatusService = inject(EventStatusService);
+
   protected options: CalendarOptions;
   protected ref!: DynamicDialogRef;
-
   protected events!: BasicEvent[];
-
   protected calendarDate: Date;
   protected calendarView: boolean = true;
-
   protected viewOptions: any[];
   protected currentView: string = "dayGridMonth";
-
   protected canEdit: boolean = false;
-
   protected groups = [...unitGroups, groups[0]];
   protected filterResults!: number[];
   private loggedUser: User;
-
   protected loading = true;
-
   private newEventSubscription: Subscription;
   private updatedEventSubscription: Subscription;
   private deletedEventSubscription: Subscription;
@@ -77,18 +77,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   @ViewChild('calendarComponent')
   private calendarComponent!: FullCalendarComponent;
 
-  isAdmin = false;
-
   constructor(
-    private dialogService: DialogService,
-    private eventService: EventService,
-    private authService: AuthService,
-    private alertService: AlertService,
-    private route: ActivatedRoute,
-    private eventStatusService: EventStatusService
   ) {
     this.loggedUser = LoggedUserInformationService.getUserInformation();
-    this.isAdmin = this.authService.hasRequiredPermission(["ROLE_ADMIN"]);
     this.options = {
       initialView: 'dayGridMonth',
       plugins: [dayGridPlugin, listPlugin, interactionPlugin],
@@ -298,12 +289,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.pushEventsToCalendar();
   }
 
-  protected subscribeToCalendar() {
-    this.eventService.subscribeToCalendar().subscribe({
-      next: res => {
-        console.log(`webcal://105bentaya.org/api/event/public/calendar?token=${res}`);
-      },
-      error: () => this.alertService.sendBasicErrorMessage("error")
+  protected openSubscribeDialog() {
+    this.ref = this.dialogService.open(CalendarSubscriptionComponent, {
+      header: 'Suscribirse al Calendario',
+      styleClass: 'small dialog-width'
     });
   }
 }

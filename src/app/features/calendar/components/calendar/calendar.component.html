@@ -1,23 +1,22 @@
 <div [ngClass]="calendarView ? 'container-fluid' : 'container-md'">
   <div class="d-flex justify-content-between align-items-end mb-3" #top>
     <h1 class="mb-0 d-flex me-3">{{ calendarView ? 'Calendario' : 'Lista' }} de actividades</h1>
-    @if (canEdit) {
-      <div class="d-flex gap-2 align-items-end justify-content-end">
-        @if (isAdmin) {
+      <div class="d-flex align-items-end justify-content-end" [class]="calendarView ? 'gap-2 gap-sm-3' : 'gap-3'">
           <button
             pButton
-            label="Suscribirse"
-            (click)="subscribeToCalendar()"
+            icon="pi pi-bell p-button-rounded"
+            title="Suscribirse"
+            (click)="openSubscribeDialog()"
+          ></button>
+        @if (canEdit) {
+          <button
+            pButton
+            icon="pi pi-calendar-plus p-button-rounded"
+            title="Añadir Actividad"
+            (click)="openAddDialog()"
           ></button>
         }
-        <button
-          pButton
-          icon="pi pi-calendar-plus p-button-rounded"
-          title="Añadir Actividad"
-          (click)="openAddDialog()"
-        ></button>
       </div>
-    }
   </div>
   <div class="d-flex justify-content-center justify-content-between align-items-center">
     <div class="d-sm-flex gap-2" [ngClass]="calendarView ? 'd-none' : 'd-flex'">
