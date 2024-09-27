@@ -2,12 +2,14 @@ import {Component, inject, OnInit} from '@angular/core';
 import {ButtonDirective} from "primeng/button";
 import {environment} from "../../../../../environments/environment";
 import {EventService} from "../../services/event.service";
+import {DialogModule} from "primeng/dialog";
 
 @Component({
   selector: 'app-calendar-subscription',
   standalone: true,
   imports: [
-    ButtonDirective
+    ButtonDirective,
+    DialogModule
   ],
   templateUrl: './calendar-subscription.component.html',
   styleUrl: './calendar-subscription.component.scss'
@@ -15,6 +17,7 @@ import {EventService} from "../../services/event.service";
 export class CalendarSubscriptionComponent implements OnInit {
 
   protected copied = false;
+  protected showInfo = false;
   private url = environment.apiUrl;
   private link!: string;
   private event = inject(EventService);

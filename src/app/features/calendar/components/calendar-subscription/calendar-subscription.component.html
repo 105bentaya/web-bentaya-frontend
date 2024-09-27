@@ -5,6 +5,7 @@
     <li>
       Copia el enlace de suscripción, haciendo click en el siguiente botón. Luego, abre tu aplicación de
       calendario, busca la opción "Suscribirse a un calendario" y pega el enlace copiado.
+      <a class="link cursor-pointer" (click)="showInfo = true">Ayuda</a>
     </li>
     <div class="d-flex justify-content-center my-3">
       @if (copied) {
@@ -42,3 +43,32 @@
     se sincronizarán los futuros cambios ya que esto solo guardará una copia del calendario actual.
   </p>
 </div>
+<p-dialog
+  appendTo="body"
+  styleClass="small dialog-width"
+  [(visible)]="showInfo"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  header="Ayuda para suscribirse"
+>
+  <p>
+    <b>Suscribirse en Google Calendar</b><br>
+    En la aplicación móvil de 'Google Calendar' puedes mostrar u ocultar los calendarios a los que ya te hayas suscrito,
+    pero no puedes suscribirte a un calendario. Solo puedes suscribirte a un calendario en la web desde
+    <a href="https://calendar.google.com" target="_blank">calendar.google.com</a>.
+    Para más info accede a la
+    <a href="https://support.google.com/calendar/answer/37100?hl=es" target="_blank">página de google</a>,
+    en el apartado 'Usar un enlace para añadir un calendario público'.
+  </p>
+  <p>
+    <b>Suscribirse en otras aplicaciones</b><br>
+    Para otras aplicaciones, busca en Internet como suscribirse a un calendario externo en dicha aplicación.
+  </p>
+  <p>
+    <b>El calendario no se sincroniza</b><br>
+    Los calendarios pueden tardar varias horas en actualizarse (el de Google a veces hasta 24 horas). En caso de que no
+    se sincronice tras un largo periodo de tiempo, comprueba que estás suscrito al calendario y no lo hayas importado
+    una única vez.
+  </p>
+</p-dialog>
