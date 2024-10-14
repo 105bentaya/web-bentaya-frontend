@@ -31,7 +31,7 @@
         title="Mostrar asistencias pasadas"
         offIcon="pi pi-history"
         onIcon="pi pi-history"
-        (onChange)="dt.filter($event.checked, 'eventIsClosed', 'past-attendance')"
+        (onChange)="dt.filter($event.checked, 'eventEndDate', 'past-attendance')"
       ></p-toggleButton>
     </div>
   </div>
@@ -42,7 +42,7 @@
     [loading]="!info"
     responsiveLayout="stack"
     breakpoint="575px"
-    [filters]="{eventIsClosed: { value: false, matchMode: 'past-attendance' }}"
+    [filters]="{eventEndDate: { value: false, matchMode: 'past-attendance' }}"
   >
     <ng-template pTemplate="header">
       <tr>

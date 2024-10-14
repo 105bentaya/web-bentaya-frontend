@@ -73,4 +73,10 @@ export class DateUtils {
     date.setDate(date.getDate() + 1);
     return date;
   }
+
+  static plusDays(date: Date, days: number): Date {
+    date = new Date(date);
+    date.setDate(date.getDate() + days);
+    return date;
+  }
 }

@@ -18,7 +18,6 @@ import {Confirmation} from "../../models/confirmation.model";
 import {AttendanceFormComponent} from "../attendance-form/attendance-form.component";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
-import FilterUtils from "../../../../shared/util/filter-utils";
 
 @Component({
   selector: 'app-user-attendance-list',
@@ -53,6 +52,7 @@ export class UserAttendanceListComponent implements OnInit {
   protected filterDates!: Date[];
   protected showClosedButton = false;
   private ref!: DynamicDialogRef;
+  private yesterday = DateUtils.plusDays(new Date(), -1);
 
   ngOnInit(): void {
     this.confirmationService.getAllBasicUserInfo().subscribe({
@@ -83,7 +83,7 @@ export class UserAttendanceListComponent implements OnInit {
 
         if (this.info.length > 1) {
           this.tabMenuItems.find(item => item.id === scoutId.toString())!.badge = editedScout.info
-            .some(info => !info.closed && info.attending == null) ? "1" : "0";
+            .some(info => !info.closed && info.attending == null) ? "1" : undefined;
         }
 
         if (!this.info.some(scout => scout.info.some(info => !info.closed && info.attending == null))) {
@@ -111,14 +111,20 @@ export class UserAttendanceListComponent implements OnInit {
   }
 
   private registerFilters() {
-    this.filterService.register("past-attendance", FilterUtils.showAllOnTrueFilter());
+    this.filterService.register("past-attendance", (eventEndDate: Date, filterValue: boolean): boolean => {
+      if (filterValue === undefined || filterValue === null) return true;
+      if (eventEndDate === undefined || eventEndDate === null) return false;
+      if (filterValue) return true;
+      return new Date(eventEndDate) >= this.yesterday;
+    });
     this.filterService.register("date-range", (objectId: number, hasBeenCleared: boolean): boolean => {
-      if (hasBeenCleared || !this.filterDates || this.filterDates[0] == null || this.filterDates[1] == null) return true;
+      if (hasBeenCleared || this.filterDates?.[0] == null || this.filterDates[1] == null) return true;
       const filterStartDate = new Date(this.filterDates[0]);
       const filterEndDate = DateUtils.dateAtLastSecondOfDay(this.filterDates[1]);
       return this.info[this.selectedScoutIndex].info.some(data => {
         const startDate = new Date(data.eventStartDate);
-        return data.eventId === objectId && startDate >= filterStartDate && startDate <= filterEndDate;
+        const endDate = new Date(data.eventEndDate);
+        return data.eventId === objectId && (startDate <= filterEndDate && endDate >= filterStartDate);
       });
     });
   }
