@@ -48,6 +48,7 @@ export class ScouterAttendanceListComponent implements OnInit {
   protected filterDates!: Date[];
   private ref!: DynamicDialogRef;
   private yesterday = DateUtils.plusDays(new Date(), -1);
+  protected showClosedButton = false;
 
   ngOnInit(): void {
     this.getInfo(true);
@@ -57,6 +58,7 @@ export class ScouterAttendanceListComponent implements OnInit {
     this.confirmationService.getAllBasicScouterInfo().subscribe({
       next: info => {
         this.info = this.generateList(info);
+        this.showClosedButton = info.some(info => info.eventIsClosed && new Date(info.eventEndDate) <= this.yesterday);
         this.registerFilters();
         if (query) {
           this.checkQueryParams();

@@ -26,14 +26,16 @@
         (onSelect)="dt.filter(false, 'eventId', 'date-range')"
       ></p-calendar>
     </div>
-    <div>
+    @if (showClosedButton) {
+      <div>
       <p-toggleButton
         title="Mostrar asistencias pasadas"
         offIcon="pi pi-history"
         onIcon="pi pi-history"
         (onChange)="dt.filter($event.checked, 'eventEndDate', 'past-attendance')"
       ></p-toggleButton>
-    </div>
+      </div>
+    }
   </div>
   <p-table
     #dt

@@ -59,7 +59,7 @@ export class UserAttendanceListComponent implements OnInit {
       next: scouts => {
         this.info = scouts.sort((s1, s2) => s1.name.localeCompare(s2.name));
         this.info.forEach(scout => scout.info.sort((e1, e2) => DateUtils.dateSorter(e1.eventStartDate, e2.eventStartDate)));
-        this.showClosedButton = scouts.some(scout => scout.info.some(info => info.closed));
+        this.showClosedButton = scouts.some(scout => scout.info.some(info => info.closed && new Date(info.eventEndDate) <= this.yesterday));
         if (scouts.length > 1) this.generateMenuItems();
         this.registerFilters();
       },
