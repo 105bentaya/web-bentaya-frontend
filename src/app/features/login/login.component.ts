@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
       },
       error: err => {
         if (err.status === 410) { //todo message, do not keep loading when user does not exist.
-          this.alertService.sendBasicErrorMessage("Este usuario ya ha restablecido su contraseña recientemente. Inténtelo más tarde.");
+          this.alertService.sendBasicErrorMessage("Este usuario ya ha restablecido su contraseña recientemente. Inténtelo de nuevo en 5 minutos.");
         } else {
           this.alertService.sendBasicErrorMessage("No ha sido posible enviar un correo. Contacte con un scouter o inténtelo más tarde.");
         }
