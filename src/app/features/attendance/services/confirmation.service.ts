@@ -55,7 +55,7 @@ export class ConfirmationService {
       )
       .pipe(tap((data: Blob) => {
         saveAs(data,
-          `Asistencia_${new GroupPipe().transform(LoggedUserInformationService.getUserInformation().groupId!)}_RS_Actual.xlsx`);
+          `Asistencia_${new GroupPipe().transform(LoggedUserInformationService.getUserInformation().groupId!)}_RS_Actual.xlsx`); //todo auth
       }));
   }
 }

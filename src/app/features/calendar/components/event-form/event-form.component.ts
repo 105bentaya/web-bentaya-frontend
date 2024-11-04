@@ -67,7 +67,7 @@ export class EventFormComponent implements OnInit {
 
   constructor() {
     this.groups = [];
-    const groupId = LoggedUserInformationService.getUserInformation().groupId;
+    const groupId = LoggedUserInformationService.getUserInformation().groupId; //todo auth
     if (this.authService.hasRequiredPermission(["ROLE_SCOUTER"])) {
       if (groupId) this.groups.push(groups[groupId]);
       this.groups = this.groups.concat(getGeneralGroups());

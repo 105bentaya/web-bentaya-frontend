@@ -78,7 +78,7 @@ export class BookingFormComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
-      this.currentUser = LoggedUserInformationService.getUserInformation().username;
+      this.currentUser = LoggedUserInformationService.getUserInformation().username; //todo
     }
     if (this.authService.hasRequiredPermission(["ROLE_SCOUT_CENTER_REQUESTER"])) {
       this.bookingService.getLatestByCurrentUser().subscribe({

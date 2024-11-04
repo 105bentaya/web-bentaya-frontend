@@ -13,6 +13,8 @@ import {environment} from "../../../../environments/environment";
 })
 export class AuthService {
 
+  //todo big rework
+
   private readonly http = inject(HttpClient);
   private readonly tokenService = inject(TokenService);
 

@@ -9,6 +9,7 @@ import {MessageService, PrimeNGConfig} from "primeng/api";
 import {SettingsService} from "./core/settings/settings.service";
 import localeEs from '@angular/common/locales/es'
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {AuthService} from "./core/auth/services/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -26,12 +27,19 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 })
 export class AppComponent implements OnInit {
 
-  private alertService = inject(AlertService);
-  private messageService = inject(MessageService);
-  private config = inject(PrimeNGConfig);
-  private settingsService = inject(SettingsService);
+  private readonly alertService = inject(AlertService);
+  private readonly messageService = inject(MessageService);
+  private readonly config = inject(PrimeNGConfig);
+  private readonly settingsService = inject(SettingsService);
+  private readonly authService = inject(AuthService);
+
+  protected loading = true;
 
   ngOnInit(): void {
+    if (this.isLoggedIn) {
+      this.authService.loadUserInfo();
+    }
+
     registerLocaleData(localeEs, 'es');
 
     this.alertService.getObservable().subscribe(message =>

@@ -65,7 +65,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
       `https://www.google.com/maps/place/${event.latitude},${event.longitude}` : undefined;
     this.config.header = `Actividad - ${event.title}`;
     this.userCanEditEvent = this.authService.hasRequiredPermission(["ROLE_SCOUTER"]) &&
-      (event.groupId == LoggedUserInformationService.getUserInformation().groupId || isNoAttendanceGroup(event.groupId));
+      (event.groupId == LoggedUserInformationService.getUserInformation().groupId || isNoAttendanceGroup(event.groupId)); //todo auth
     event.startDate = this.getEventDate(event.startDate, event.unknownTime);
     event.endDate = this.getEventDate(event.endDate, event.unknownTime);
     this.buildAttendance(event);

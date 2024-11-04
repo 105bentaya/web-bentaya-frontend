@@ -4,7 +4,7 @@ import {User} from "../../../features/users/models/user.model";
 @Injectable({
   providedIn: "root"
 })
-export class LoggedUserInformationService {
+export class LoggedUserInformationService { //todo remove and make private in auth service
   constructor() {
   }
 

@@ -52,7 +52,7 @@ export class GroupScoutListComponent implements OnInit {
   protected scouts: Scout[] | undefined;
   protected loading = false;
   protected groupScouts!: Scout[];
-  protected userGroup = LoggedUserInformationService.getUserInformation().groupId;
+  protected userGroup = LoggedUserInformationService.getUserInformation().groupId; //todo auth
   private readonly name: string = "";
   private ref!: DynamicDialogRef;
   protected currentYear!: number;

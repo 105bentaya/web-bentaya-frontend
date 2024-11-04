@@ -77,7 +77,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   constructor(
   ) {
-    this.loggedUser = LoggedUserInformationService.getUserInformation();
+    this.loggedUser = LoggedUserInformationService.getUserInformation(); //todo auth
     this.options = {
       initialView: 'dayGridMonth',
       plugins: [dayGridPlugin, listPlugin, interactionPlugin],

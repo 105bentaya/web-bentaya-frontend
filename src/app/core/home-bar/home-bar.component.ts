@@ -40,13 +40,13 @@ import {BadgeModule} from "primeng/badge";
 })
 export class HomeBarComponent implements OnInit, OnDestroy {
 
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private dialogService = inject(DialogService);
-  private paymentService = inject(PaymentService);
-  private notificationService = inject(NotificationService);
-  private excelService = inject(ExcelService);
-  private scoutService = inject(ScoutService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly dialogService = inject(DialogService);
+  private readonly paymentService = inject(PaymentService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly excelService = inject(ExcelService);
+  private readonly scoutService = inject(ScoutService);
 
   protected menu!: MenuItem[];
   protected menuItems: MenuItem[] = [];
@@ -61,9 +61,6 @@ export class HomeBarComponent implements OnInit, OnDestroy {
     this.watchIfIsLoggedIn();
     this.watchUserInfo();
     this.watchUserAttendanceNotifications();
-    if (this.isLoggedIn) { //todo change to app.ts
-      this.authService.loadUserInfo();
-    }
   }
 
   ngOnDestroy(): void {
@@ -114,7 +111,7 @@ export class HomeBarComponent implements OnInit, OnDestroy {
   }
 
   private watchUserInfo() {
-    this.authService.loggedUser$.subscribe(() => this.buildSplitMenu());
+    this.authService.loggedUser$.subscribe(() => this.buildSplitMenu()); //todo auth
   }
 
   private watchIfIsLoggedIn() {
