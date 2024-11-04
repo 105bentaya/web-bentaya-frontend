@@ -75,8 +75,7 @@ export class ScouterAttendanceFormComponent implements OnInit {
         next: data => {
           this.info = data.sort((a, b) => a.surname.localeCompare(b.surname));
           this.generateGroupedInfo();
-        },
-        error: err => this.alertService.sendBasicErrorMessage(err.error.message)
+        }
       });
     }
   }
@@ -191,8 +190,7 @@ export class ScouterAttendanceFormComponent implements OnInit {
         subj.next();
         subj.complete();
       },
-      error: error => {
-        this.alertService.sendBasicErrorMessage(error.error.message);
+      error: () => {
         subj.next();
         subj.complete();
       }

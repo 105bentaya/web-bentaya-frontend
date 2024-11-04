@@ -103,16 +103,9 @@ export class UserFormComponent implements OnInit {
             title: "Usuario guardado",
             severity: 'success'
           });
-          this.router.navigate(["/users"]).then();
-        },
-        error: error => {
-          this.alertService.sendMessage({
-            title: "Error al guardar",
-            message: error.error.message,
-            severity: 'error'
-          });
           this.loading = false;
-        }
+        },
+        error: () => this.loading = false
       });
     }
   }
@@ -135,12 +128,7 @@ export class UserFormComponent implements OnInit {
         this.user = user;
         if (user.scoutList?.length! > 0) this.getScouts().subscribe(() => this.newForm());
         else this.newForm();
-      },
-      error: error => this.alertService.sendMessage({
-        title: "Error al cargar",
-        message: error.error.message,
-        severity: 'error'
-      })
+      }
     });
   }
 
@@ -150,12 +138,7 @@ export class UserFormComponent implements OnInit {
 
   private getScouts() {
     return this.scoutService.getAll().pipe(tap({
-      next: result => this.scouts = result,
-      error: err => this.alertService.sendMessage({
-        title: "Error al cargar los educandos",
-        message: err.error.message,
-        severity: "error"
-      })
+      next: result => this.scouts = result
     }));
   }
 }

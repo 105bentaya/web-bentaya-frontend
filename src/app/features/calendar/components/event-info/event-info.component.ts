@@ -1,6 +1,5 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {AlertService} from "../../../../shared/services/alert-service.service";
 import {EventService} from "../../services/event.service";
 import {ScoutEvent} from "../../models/scout-event.model";
 import {EventBasicAttendanceInfo} from "../../../attendance/models/event-basic-attendance-info.model";
@@ -36,7 +35,6 @@ export class EventInfoComponent implements OnInit, OnDestroy {
 
   private config = inject(DynamicDialogConfig);
   private ref = inject(DynamicDialogRef);
-  private alertService = inject(AlertService);
   private eventService = inject(EventService);
   private confirmationService = inject(ConfirmationService);
   private authService = inject(AuthService);
@@ -53,10 +51,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.eventService.getInfoById(this.config.data).subscribe({
       next: data => this.buildEventData(data),
-      error: () => {
-        this.alertService.sendBasicErrorMessage("Error al cargar el evento");
-        this.ref.close();
-      }
+      error: () => this.ref.close()
     });
     this.subscription = this.eventStatusService.updatedEvent.subscribe(event => this.buildEventData(event));
   }

@@ -1,7 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ScouterListInfo} from "../../models/scouter-list-info.model";
 import {ConfirmationService} from "../../services/confirmation.service";
-import {AlertService} from "../../../../shared/services/alert-service.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {AttendanceInfoComponent} from "../attendance-info/attendance-info.component";
 import {EventInfoComponent} from "../../../calendar/components/event-info/event-info.component";
@@ -36,7 +35,6 @@ export class ScouterAttendanceListComponent implements OnInit {
 
   private confirmationService = inject(ConfirmationService);
   private confirmationMessageService = inject(ConfirmationMessageService);
-  private alertService = inject(AlertService);
   private dialogService = inject(DialogService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -63,8 +61,7 @@ export class ScouterAttendanceListComponent implements OnInit {
         if (query) {
           this.checkQueryParams();
         }
-      },
-      error: err => this.alertService.sendBasicErrorMessage(err.error.message)
+      }
     });
   }
 
@@ -140,10 +137,7 @@ export class ScouterAttendanceListComponent implements OnInit {
     this.loading = true;
     this.confirmationService.downloadCourseAttendanceExcelReport().subscribe({
       next: () => this.loading = false,
-      error: () => {
-        this.alertService.sendBasicErrorMessage("Error al descargar la asistencia");
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 

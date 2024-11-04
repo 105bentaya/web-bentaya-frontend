@@ -46,7 +46,6 @@ export class GroupScoutListComponent implements OnInit {
   private scoutService = inject(ScoutService);
   private dialogService = inject(DialogService);
   private filterService = inject(FilterService);
-  private alertService = inject(AlertService);
   private settingService = inject(SettingsService);
   private excelService = inject(ExcelService);
 
@@ -82,8 +81,7 @@ export class GroupScoutListComponent implements OnInit {
       next: scouts => {
         this.groupScouts = scouts;
         this.filterService.register("name-surname-filter", FilterUtils.nameSurnameFilter(this.groupScouts));
-      },
-      error: error => this.alertService.sendBasicErrorMessage(error.error.message)
+      }
     });
   }
 
@@ -101,10 +99,7 @@ export class GroupScoutListComponent implements OnInit {
         this.filterService.register("name-surname-filter", FilterUtils.nameSurnameFilter(this.scouts));
         this.loading = false;
       },
-      error: error => {
-        this.alertService.sendBasicErrorMessage(error.error.message);
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 

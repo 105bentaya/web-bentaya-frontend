@@ -62,10 +62,7 @@ export class OwnBookingFormComponent implements OnInit {
         this.alertService.sendBasicSuccessMessage("Reserva guardada con éxito");
         this.ref.close(true);
       },
-      error: () => {
-        this.alertService.sendBasicErrorMessage("Error al guardar la reserva");
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 

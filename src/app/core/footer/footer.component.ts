@@ -12,5 +12,4 @@ import {socialMediaButtons} from "../../shared/constant";
 })
 export class FooterComponent {
   protected readonly socialMediaButtons = socialMediaButtons;
-  year = new Date().getFullYear();
 }

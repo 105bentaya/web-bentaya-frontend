@@ -90,10 +90,7 @@ export class BookingDetailComponent implements OnInit {
         this.booking = result;
         this.loading = false;
         this.alertService.sendBasicSuccessMessage("Reserva actualizada con éxito");
-      }, error: err => {
-        this.loading = false;
-        this.alertService.sendBasicErrorMessage(err.error.message);
-      }
+      }, error: () => this.loading = false
     });
   }
 
@@ -133,10 +130,7 @@ export class BookingDetailComponent implements OnInit {
             this.files.splice(this.files.indexOf(file), 1);
             this.loading = false;
           },
-          error: () => {
-            this.alertService.sendBasicErrorMessage("No se pudo eliminar el documento");
-            this.loading = false;
-          }
+          error: () => this.loading = false
         });
       }
     });
@@ -150,10 +144,7 @@ export class BookingDetailComponent implements OnInit {
         document.status = status;
         this.loading = false;
       },
-      error: () => {
-        this.alertService.sendBasicErrorMessage("No se pudo eliminar el documento");
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 }

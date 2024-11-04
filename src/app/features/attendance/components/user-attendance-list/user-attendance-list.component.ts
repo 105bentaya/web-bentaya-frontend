@@ -44,7 +44,6 @@ export class UserAttendanceListComponent implements OnInit {
   private confirmationService = inject(ConfirmationService);
   private dialogService = inject(DialogService);
   private notificationService = inject(NotificationService);
-  private alertService = inject(AlertService);
 
   protected tabMenuItems!: MenuItem[];
   protected info!: UserListInfo[];
@@ -62,8 +61,7 @@ export class UserAttendanceListComponent implements OnInit {
         this.showClosedButton = scouts.some(scout => scout.info.some(info => info.closed && new Date(info.eventEndDate) <= this.yesterday));
         if (scouts.length > 1) this.generateMenuItems();
         this.registerFilters();
-      },
-      error: error => this.alertService.sendBasicErrorMessage(error.error.message)
+      }
     });
   }
 

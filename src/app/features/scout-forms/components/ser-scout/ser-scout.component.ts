@@ -16,7 +16,7 @@ import {FloatLabelModule} from "primeng/floatlabel";
 import {
   PrivacyCheckboxContainerComponent
 } from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
-import {genders} from "../../../../shared/constant";
+import {genders, maintenanceEmail} from "../../../../shared/constant";
 import {LargeFormButtonsComponent} from "../../../../shared/components/large-form-buttons/large-form-buttons.component";
 import {MessagesModule} from "primeng/messages";
 
@@ -52,6 +52,7 @@ export class SerScoutComponent implements OnInit {
     {label: 'Otros Datos'},
     {label: 'Confirmación'}
   ];
+  protected readonly maintenanceEmail = maintenanceEmail;
   protected finalEmail = "";
   protected preScout!: PreScout;
   protected preScoutForm = new FormHelper();
@@ -149,14 +150,7 @@ export class SerScoutComponent implements OnInit {
         this.initializeForm();
         this.successOnSubmit = true;
       },
-      error: () => {
-        this.alertService.sendMessage({
-          title: "Error al enviar la preinscripción",
-          message: "Vuelva a intentarlo o envíe un correo a informatica@105bentaya.org",
-          severity: "error"
-        });
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 

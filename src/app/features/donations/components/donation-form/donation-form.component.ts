@@ -20,6 +20,7 @@ import {
   PrivacyCheckboxContainerComponent
 } from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
 import {LargeFormButtonsComponent} from "../../../../shared/components/large-form-buttons/large-form-buttons.component";
+import {maintenanceEmail} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-donation-form',
@@ -49,6 +50,7 @@ export class DonationFormComponent implements OnInit {
   private confirmationService = inject(ConfirmationService);
   private route = inject(ActivatedRoute);
 
+  protected readonly maintenanceEmail = maintenanceEmail;
   protected loading = false;
   protected donationSuccess = false;
   protected formHelper = new FormHelper();
@@ -74,7 +76,7 @@ export class DonationFormComponent implements OnInit {
     const successParam = this.route.snapshot.queryParams["success"];
     if (successParam) {
       if (successParam === "0") {
-        this.alertService.sendBasicErrorMessage("No se ha podido completar su donación.");
+        this.alertService.sendBasicErrorMessage(`No se ha podido completar su donación. Si cree que esto es un error contacte a ${maintenanceEmail}`);
       } else if (successParam === "1") {
         this.donationSuccess = true;
       }
@@ -131,10 +133,7 @@ export class DonationFormComponent implements OnInit {
               this.donationSuccess = true;
             }
           },
-          error: () => {
-            this.alertService.sendBasicErrorMessage("Error al enviar los datos de donación. Vuelva a intentarlo o escríbanos directamente a informatica@105bentaya.org");
-            this.loading = false;
-          }
+          error: () => this.loading = false
         });
       }
     });
@@ -153,14 +152,7 @@ export class DonationFormComponent implements OnInit {
         this.signature.nativeElement.value = data.ds_Signature;
         this.tpvForm.nativeElement.submit();
       },
-      error: err => {
-        this.alertService.sendMessage({
-          title: "Error al cargar los datos de donación",
-          message: err.error.message,
-          severity: "error"
-        });
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 

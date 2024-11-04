@@ -26,6 +26,7 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
 import {
   BookingFormCenterSelectionComponent
 } from "../booking-form-center-selection/booking-form-center-selection.component";
+import {maintenanceEmail} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-booking-form',
@@ -73,6 +74,7 @@ export class BookingFormComponent implements OnInit {
   protected mail!: string;
   @ViewChild('centerSelection')
   protected centerSelectionComponent!: BookingFormCenterSelectionComponent;
+  protected readonly maintenanceEmail = maintenanceEmail;
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
@@ -81,10 +83,7 @@ export class BookingFormComponent implements OnInit {
     if (this.authService.hasRequiredPermission(["ROLE_SCOUT_CENTER_REQUESTER"])) {
       this.bookingService.getLatestByCurrentUser().subscribe({
         next: res => this.initializeForm(res),
-        error: err => {
-          this.alertService.sendBasicErrorMessage(err.error.message);
-          this.initializeForm();
-        }
+        error: () => this.initializeForm()
       });
     } else {
       this.initializeForm();
@@ -134,13 +133,8 @@ export class BookingFormComponent implements OnInit {
         this.alertService.sendBasicSuccessMessage("La reserva se ha realizado con éxito");
         this.loading = false;
       },
-      error: err => {
+      error: () => {
         this.centerSelectionComponent.loadCenterData();
-        if (err.status === 400) {
-          this.alertService.sendBasicErrorMessage(err.error.message);
-        } else {
-          this.alertService.sendBasicErrorMessage("Vuelva a intentarlo o envíe un correo a informatica@105bentaya.org");
-        }
         this.loading = false;
       }
     });

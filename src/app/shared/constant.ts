@@ -10,3 +10,5 @@ export const sections = [
 ];
 
 export const genders = ["Masculino", "Femenino", "No Binario", "Otro"];
+
+export const maintenanceEmail = "informatica@105bentaya.org";

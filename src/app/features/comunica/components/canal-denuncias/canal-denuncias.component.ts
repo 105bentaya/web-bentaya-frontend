@@ -145,14 +145,7 @@ export class CanalDenunciasComponent implements OnInit {
         this.loading = false;
         this.initializeForm();
       },
-      error: () => {
-        this.alertService.sendMessage({
-          title: "Error al enviar la denuncia",
-          message: "Vuelva a intentarlo o envíe un correo a presidencia@105bentaya.org",
-          severity: "error"
-        });
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 }

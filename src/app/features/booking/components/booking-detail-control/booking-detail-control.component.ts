@@ -6,7 +6,6 @@ import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.com
 import {BookingService} from "../../service/booking.service";
 import {Booking} from "../../model/booking.model";
 import {ScoutCenter} from "../../constant/scout-center.constant";
-import {AlertService} from "../../../../shared/services/alert-service.service";
 import {BookingDate} from "../../model/booking-date.model";
 import {BookingDetailComponent} from "../booking-detail/booking-detail.component";
 import {OwnBookingDetailComponent} from "../own-booking-detail/own-booking-detail.component";
@@ -30,7 +29,6 @@ export class BookingDetailControlComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private bookingService = inject(BookingService);
-  private alertService = inject(AlertService);
 
   protected id!: number;
   protected booking: Booking | undefined;
@@ -44,8 +42,7 @@ export class BookingDetailControlComponent implements OnInit {
         next: (result) => {
           this.booking = result;
           this.getDateRanges(result.scoutCenter);
-        },
-        error: () => this.alertService.sendBasicErrorMessage("Error al cargar la reserva")
+        }
       });
     });
   }

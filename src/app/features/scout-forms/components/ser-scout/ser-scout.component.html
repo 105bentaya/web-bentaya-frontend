@@ -4,9 +4,8 @@
       <p>La preinscripción ha sido enviada con éxito</p>
       <p>Una copia de la preinscripción con la información pertinente ha sido enviada a <b>{{ finalEmail }}</b></p>
       <p>En caso de duda o de no haber recibido la copia contáctenos enviando un correo a
-        <a href="mailto:informatica@105bentaya.org?subject=DUDAS RESPECTO A LA INSCRIPCIÓN">
-          informatica&#64;105bentaya.org
-        </a></p>
+        <a href="mailto:{{maintenanceEmail}}?subject=DUDAS RESPECTO A LA INSCRIPCIÓN">{{ maintenanceEmail }}</a>
+      </p>
     </div>
   } @else {
     <p class="my-3">
@@ -49,8 +48,8 @@
               <li>Si tiene cualquier duda o problema puede contactarnos mediante nuestro apartado de
                 <a href="/contacto">contacto</a>
                 o enviando un correo a
-                <a href="mailto:informatica@105bentaya.org?subject=DUDAS RESPECTO A LA INSCRIPCIÓN">
-                  informatica&#64;105bentaya.org
+                <a href="mailto:{{maintenanceEmail}}?subject=DUDAS RESPECTO A LA INSCRIPCIÓN">
+                  {{ maintenanceEmail }}
                 </a>
               </li>
             </ol>

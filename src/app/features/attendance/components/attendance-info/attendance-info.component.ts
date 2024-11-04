@@ -43,11 +43,10 @@ export class AttendanceInfoComponent implements OnInit {
         next: data => {
           this.info = data.sort((a, b) => a.surname.localeCompare(b.surname));
           this.generateInfoLists();
-        },
-        error: err => this.alertService.sendBasicErrorMessage(err.error.message)
+        }
       });
     } else {
-      this.alertService.sendBasicErrorMessage("Error al cargar la asistencia");
+      this.alertService.sendBasicErrorMessage("Error al cargar la asistencia, no se han cargado los datos necesarios");
     }
   }
 

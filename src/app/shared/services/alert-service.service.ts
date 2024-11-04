@@ -16,9 +16,9 @@ export class AlertService {
     this.alertObservable.next(message);
   };
 
-  sendBasicErrorMessage(message: string) {
+  sendBasicErrorMessage(message: string, title = "Error") {
     this.sendMessage({
-      title: "Error",
+      title: title,
       message: message,
       severity: "error"
     });

@@ -73,10 +73,7 @@ export class GroupSerScoutTableComponent implements OnInit {
     const newTab = window.open("", "_blank");
     this.preScoutService.getPreScoutPDF(preScout.id!).subscribe({
       next: pdf => newTab!.location.href = this.blobPdfToUrl(pdf),
-      error: () => {
-        newTab?.close();
-        this.alertService.sendBasicErrorMessage("Error al cargar el PDF");
-      }
+      error: () => newTab?.close()
     });
   }
 
@@ -110,10 +107,7 @@ export class GroupSerScoutTableComponent implements OnInit {
             this.alertService.sendBasicSuccessMessage("Preinscripción guardada con éxito");
             this.getAssignedInscriptions();
           },
-          error: (error) => {
-            this.alertService.sendBasicErrorMessage(error.error.message);
-            this.loading = false;
-          }
+          error: () => this.loading = false
         }
       );
     } else {

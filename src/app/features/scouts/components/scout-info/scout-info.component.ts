@@ -3,7 +3,6 @@ import {Scout} from "../../models/scout.model";
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {ScoutService} from "../../services/scout.service";
 import {MenuItem} from "primeng/api";
-import {AlertService} from "../../../../shared/services/alert-service.service";
 import {GroupPipe} from '../../../../shared/pipes/group.pipe';
 import {TabMenuModule} from 'primeng/tabmenu';
 import {TabViewModule} from 'primeng/tabview';
@@ -27,7 +26,6 @@ export class ScoutInfoComponent implements OnInit {
 
   private config = inject(DynamicDialogConfig);
   private scoutService = inject(ScoutService);
-  private alertService = inject(AlertService);
   protected scouts!: Scout[];
   protected isUser = false;
   protected items!: MenuItem[];
@@ -44,7 +42,7 @@ export class ScoutInfoComponent implements OnInit {
             this.generateMenuItems(scouts);
           }
           this.scouts = scouts.sort((a, b) => a.name.localeCompare(b.name));
-        }, error: () => this.alertService.sendBasicErrorMessage("Error al cargar")
+        }
       });
     }
   }

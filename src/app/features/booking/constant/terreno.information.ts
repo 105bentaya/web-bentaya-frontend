@@ -20,7 +20,6 @@ export const terreno: CenterInformation = {
     "Espacios donde realizar actividades y juegos",
     "Aparcamiento a la entrada",
     "Aportación de mantenimiento: 2€ por persona y día",
-    "ASDE: 2€ por persona y día",
     "Aforo máximo: 390 personas. (Varias zonas de acampada con suficiente espacio para distintos grupos)",
     "Temporalmente solo admitimos reservas de Asociaciones Scout"
   ],

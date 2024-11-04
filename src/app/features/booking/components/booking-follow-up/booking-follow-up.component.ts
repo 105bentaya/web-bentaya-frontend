@@ -82,7 +82,6 @@ export class BookingFollowUpComponent implements OnInit {
     const fileUploadPetitions = event.files.map(file => this.bookingService.uploadBookingDocument(booking.id, file));
 
     forkJoin(fileUploadPetitions).subscribe({
-      error: () => this.alertService.sendBasicErrorMessage("Ha fallado la subida de algunos documentos"),
       complete: () => {
         this.alertService.sendBasicSuccessMessage("Documentos subidos correctamente");
         this.getFiles(booking.id);
@@ -128,10 +127,7 @@ export class BookingFollowUpComponent implements OnInit {
             this.files.splice(this.files.indexOf(file), 1);
             this.loading = false;
           },
-          error: () => {
-            this.alertService.sendBasicErrorMessage("No se pudo eliminar el documento");
-            this.loading = false;
-          }
+          error: () => this.loading = false
         });
       }
     });
@@ -165,10 +161,7 @@ export class BookingFollowUpComponent implements OnInit {
         this.bookings[index].userConfirmedDocuments = result.userConfirmedDocuments;
         this.loading = false;
         this.alertService.sendBasicSuccessMessage("Reserva actualizada con éxito");
-      }, error: err => {
-        this.loading = false;
-        this.alertService.sendBasicErrorMessage(err.error.message);
-      }
+      }, error: () => this.loading = false
     });
   }
 
@@ -201,8 +194,7 @@ export class BookingFollowUpComponent implements OnInit {
       accept: () => {
         if (hasUploadedDocument) {
           this.bookingService.uploadBookingDocument(booking.id, this.incidentUploader.files[0]).subscribe({
-            next: () => this.updateBookingStatus("LEFT", "Documents uploaded", booking),
-            error: () => this.alertService.sendBasicErrorMessage("La carga del archivo ha fallado.")
+            next: () => this.updateBookingStatus("LEFT", "Documents uploaded", booking)
           });
         } else {
           this.updateBookingStatus("LEFT", "", booking);

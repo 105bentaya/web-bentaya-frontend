@@ -54,12 +54,7 @@ export class SettingsComponent implements OnInit {
       next: settings => {
         settings.forEach(setting => this.setSettingValue(setting));
         this.settingsLoaded = true;
-      },
-      error: error => this.alertService.sendMessage({
-        title: "Error al cargar los ajustes",
-        message: error.error.message,
-        severity: "error"
-      })
+      }
     });
   }
 
@@ -137,14 +132,7 @@ export class SettingsComponent implements OnInit {
           });
           this.loading -= 1;
         },
-        error: error => {
-          this.alertService.sendMessage({
-            title: "Error al guardar",
-            message: `No se ha podido guardar el ajuste "${settingName}": ${error.error.message}`,
-            severity: "error"
-          });
-          this.loading -= 1;
-        }
+        error: () => this.loading -= 1
       });
     }
   }

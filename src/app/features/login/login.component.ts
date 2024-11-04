@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
 
   protected loginForm: FormHelper = new FormHelper();
   protected loading = false;
-  private attempts = 0;
   protected login = true;
   protected forgotUsername!: string;
 
@@ -55,24 +54,7 @@ export class LoginComponent implements OnInit {
       next: () => {
         this.ref.close(true);
       },
-      error: error => {
-        this.loading = false;
-        this.attempts++;
-        let msg;
-        if (error.status === 401) {
-          msg = "Usuario o contraseña incorrectos.";
-          if (this.attempts > 7) {
-            msg += " Múltiples accesos erróneos podrían bloquear esta IP por un tiempo.";
-          }
-        } else {
-          msg = "No ha sido posible acceder. Inténtelo más tarde.";
-        }
-        this.alertService.sendMessage({
-          title: "Error en el inicio de sesión",
-          message: msg,
-          severity: "error",
-        });
-      }
+      error: () => this.loading = false
     });
   }
 
@@ -80,17 +62,10 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.userService.forgotPassword(this.forgotUsername).subscribe({
       next: () => {
-        this.alertService.sendBasicSuccessMessage(`El usuario ${this.forgotUsername} ha recibido un correo, en caso de que este exista.`);
+        this.alertService.sendBasicSuccessMessage(`El usuario ${this.forgotUsername} ha recibido un correo, en caso de que este exista`);
         this.ref.close();
       },
-      error: err => {
-        if (err.status === 410) { //todo message, do not keep loading when user does not exist.
-          this.alertService.sendBasicErrorMessage("Este usuario ya ha restablecido su contraseña recientemente. Inténtelo de nuevo en 5 minutos.");
-        } else {
-          this.alertService.sendBasicErrorMessage("No ha sido posible enviar un correo. Contacte con un scouter o inténtelo más tarde.");
-        }
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 }

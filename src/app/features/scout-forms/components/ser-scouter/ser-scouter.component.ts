@@ -95,14 +95,7 @@ export class SerScouterComponent implements OnInit {
         this.initializeForm();
         this.loading = false;
       },
-      error: () => {
-        this.alertService.sendMessage({
-          title: "Error al enviar la preinscripción",
-          message: "Vuelva a intentarlo o envíe un correo a informatica@105bentaya.org",
-          severity: "error"
-        });
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 

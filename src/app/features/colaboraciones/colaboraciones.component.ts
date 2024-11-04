@@ -77,14 +77,7 @@ export class ColaboracionesComponent implements OnInit {
         this.loading = false;
         this.initializeForm();
       },
-      error: () => {
-        this.alertService.sendMessage({
-          title: "Error al enviar su mensaje",
-          message: "Vuelva a intentarlo o escríbanos directamente a scouts@105bentaya.org",
-          severity: "error"
-        });
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 }

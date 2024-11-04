@@ -1,6 +1,5 @@
 import {Component, inject, Input} from '@angular/core';
 import {BookingService} from "../../service/booking.service";
-import {AlertService} from "../../../../shared/services/alert-service.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ScoutCenterStatusPipe} from "../../pipe/scout-center-status.pipe";
 import {Booking} from "../../model/booking.model";
@@ -36,7 +35,6 @@ import {BookingStatusUpdateComponent} from "../booking-status-update/booking-sta
 export class OwnBookingDetailComponent {
 
   private bookingService = inject(BookingService);
-  private alertService = inject(AlertService);
   private dialogService = inject(DialogService);
 
   @Input() booking!: Booking;
@@ -56,8 +54,7 @@ export class OwnBookingDetailComponent {
 
   protected realCancelBooking(comment: string) {
     this.bookingService.cancelOwnBooking(this.booking.id, comment).subscribe({
-      next: booking => this.booking = booking,
-      error: err => this.alertService.sendBasicErrorMessage(err)
+      next: booking => this.booking = booking
     });
   }
 }

@@ -54,8 +54,7 @@ export class ScoutListComponent implements OnInit {
       next: scouts => {
         this.scouts = scouts;
         this.filterService.register("name-surname-filter", FilterUtils.nameSurnameFilter(this.scouts));
-      },
-      error: error => this.alertService.sendBasicErrorMessage(error.error.message)
+      }
     });
   }
 
@@ -89,10 +88,7 @@ export class ScoutListComponent implements OnInit {
               this.alertService.sendBasicSuccessMessage("Éxito al borrar");
               this.loading = false;
             },
-            error: () => {
-              this.alertService.sendBasicErrorMessage("Error al borrar");
-              this.loading = false;
-            }
+            error: () => this.loading = false
           });
         }
       }

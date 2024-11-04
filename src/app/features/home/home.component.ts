@@ -17,9 +17,9 @@ import {NgClass, UpperCasePipe} from '@angular/common';
 })
 export class HomeComponent {
 
-  carouselSlides = {image: "quienes-somos.webp", alt: "Qué hacemos", link: "/asociacion/quienes-somos"};
+  protected readonly carouselSlides = {image: "quienes-somos.webp", alt: "Qué hacemos", link: "/asociacion/quienes-somos"};
 
-  protected formButtons: { subtitle: string; link: string; description: string; title: string; imgSrc: string }[] = [
+  protected readonly  formButtons: { subtitle: string; link: string; description: string; title: string; imgSrc: string }[] = [
     {
       link: '/colaboraciones',
       imgSrc: 'assets/home/colaboraciones.png',
@@ -57,7 +57,7 @@ export class HomeComponent {
     }
   ];
 
-  protected infoButtons: { link: string; description: string; title: string; imgSrc: string, target?: string }[] = [
+  protected readonly  infoButtons: { link: string; description: string; title: string; imgSrc: string, target?: string }[] = [
     {
       link: '/transparencia',
       imgSrc: 'assets/home/transparencia.png',

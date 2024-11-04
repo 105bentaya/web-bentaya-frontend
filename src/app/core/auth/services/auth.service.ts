@@ -13,13 +13,13 @@ import {environment} from "../../../../environments/environment";
 })
 export class AuthService {
 
-  private http = inject(HttpClient);
-  private tokenService = inject(TokenService);
+  private readonly http = inject(HttpClient);
+  private readonly tokenService = inject(TokenService);
 
-  private isLoggedInSubject: BehaviorSubject<boolean>;
-  public isLoggedIn$: Observable<boolean>;
-  private loggedUserSubject: BehaviorSubject<User>;
-  public loggedUser$: Observable<User>;
+  private readonly isLoggedInSubject: BehaviorSubject<boolean>;
+  public readonly isLoggedIn$: Observable<boolean>;
+  private readonly loggedUserSubject: BehaviorSubject<User>;
+  public readonly loggedUser$: Observable<User>;
 
   constructor() {
     const token = !!this.tokenService.getToken();
@@ -38,11 +38,9 @@ export class AuthService {
   }
 
   login(credentials: Credentials) {
-    return this.http
-      .post(`${environment.apiUrl}/login`, credentials, {
-        observe: "response"
-      })
-      .pipe(tap(response => this.postLogin(response)));
+    return this.http.post(`${environment.apiUrl}/login`, credentials, {observe: "response"}).pipe(
+      tap(response => this.postLogin(response))
+    );
   }
 
   private postLogin(response: any) {

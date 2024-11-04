@@ -1,10 +1,14 @@
 import {inject} from "@angular/core";
 import {HttpEvent, HttpHandlerFn, HttpRequest} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {noop, Observable} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {AlertService} from "../../../shared/services/alert-service.service";
+import {maintenanceEmail} from "../../../shared/constant";
+
+const authException = "webBentayaAuthError";
+const bentayaException = "webBentayaError";
 
 export function authInterceptor(request: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> {
   const authService = inject(AuthService);
@@ -12,14 +16,16 @@ export function authInterceptor(request: HttpRequest<any>, next: HttpHandlerFn):
   const alertService = inject(AlertService);
   return next(request).pipe(
     catchError(error => {
-      // console.log(error.error.bentayaMessage);
-      if (error.status === 401) {
+      if (error.error[authException]) {
+        alertService.sendBasicErrorMessage(error.error[authException]);
         authService.logout();
-        router.navigate(["/home"]);
-      }
-      if (error.status === 403) {
-        alertService.sendBasicErrorMessage("Error al cargar los datos de usuario. Vuelva a iniciar sesión o " +
-          "inténtelo más tarde. Si el problema persiste póngase en contacto con algún scouter.");
+        router.navigate(["/home"]).then(noop); //todo cambiar por la página de login cuando exista, ya que ahora si estás en otra página te lleva al home.
+      } else if (error.error[bentayaException]) {
+        alertService.sendBasicErrorMessage(error.error[bentayaException]);
+      } else if (error.status === 403 || error.status === 401) {
+        alertService.sendBasicErrorMessage("No cuenta con los permisos para realizar esta operación");
+      } else {
+        alertService.sendBasicErrorMessage(`Ha ocurrido un error desconocido. Vuelva a intentarlo o envíe un correo a ${maintenanceEmail}`);
       }
       throw error;
     })

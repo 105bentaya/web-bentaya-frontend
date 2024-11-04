@@ -71,12 +71,7 @@ export class ChangePasswordComponent implements OnInit {
         this.alertService.sendBasicSuccessMessage("Contraseña cambiada con éxito");
         this.ref.close();
       },
-      error: error => {
-        error.status === 409 ?
-          this.alertService.sendBasicErrorMessage("La contraseña actual es incorrecta") :
-          this.alertService.sendBasicErrorMessage("Error al cambiar la contraseña");
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 

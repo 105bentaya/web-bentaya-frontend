@@ -40,14 +40,9 @@ export class AttendanceFormComponent implements OnInit {
         next: data => {
           this.confirmation = data;
         },
-        error: () => this.errorMessageAndClose()
+        error: () => this.ref.close()
       });
     }
-  }
-
-  private errorMessageAndClose() {
-    this.alertService.sendBasicErrorMessage("Error al intentar cargar el formulario de asistencia");
-    this.ref.close();
   }
 
   protected onSubmit() {
@@ -57,10 +52,7 @@ export class AttendanceFormComponent implements OnInit {
         this.ref.close(value);
         this.loading = false;
       },
-      error: () => {
-        this.alertService.sendBasicErrorMessage("Error al guardar el formulario de asistencia");
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 }

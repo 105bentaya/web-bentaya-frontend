@@ -6,7 +6,8 @@ import {
   FormArray,
   FormBuilder,
   FormGroup,
-  ReactiveFormsModule, ValidationErrors,
+  ReactiveFormsModule,
+  ValidationErrors,
   ValidatorFn,
   Validators
 } from "@angular/forms";
@@ -218,10 +219,7 @@ export class ScoutFormComponent implements OnInit {
         if (users) this.sendUsernamesUpdate(savedScout.id!, users);
         else this.ref.close(true);
       },
-      error: () => {
-        this.alertService.sendBasicErrorMessage("Error al guardar los datos de la persona educanda");
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 
@@ -239,10 +237,7 @@ export class ScoutFormComponent implements OnInit {
         if (users) this.sendUsernamesUpdate(scout.id!, users);
         else this.ref.close(true);
       },
-      error: () => {
-        this.alertService.sendBasicErrorMessage("Error al actualizar los datos de la persona educanda");
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 
@@ -252,10 +247,7 @@ export class ScoutFormComponent implements OnInit {
         this.alertService.sendBasicSuccessMessage("Éxito al actualizar los usuarios de la persona educanda");
         this.ref.close(true);
       },
-      error: () => {
-        this.alertService.sendBasicErrorMessage("Error al actualizar los usuarios de la persona educanda");
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 
@@ -284,10 +276,7 @@ export class ScoutFormComponent implements OnInit {
               this.alertService.sendBasicSuccessMessage("Éxito al dar de baja");
               this.ref.close(true);
             },
-            error: () => {
-              this.alertService.sendBasicErrorMessage("Error al dar de baja");
-              this.disableLoading = false;
-            }
+            error: () => this.disableLoading = false
           });
         }
       }

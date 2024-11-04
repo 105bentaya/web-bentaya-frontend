@@ -86,16 +86,11 @@ export class EventFormComponent implements OnInit {
           this.existingEvent = data;
           this.initForm(this.existingEvent);
         },
-        error: () => this.errorMessageAndClose()
+        error: () => this.ref.close()
       });
     } else {
       this.initForm();
     }
-  }
-
-  private errorMessageAndClose() {
-    this.alertService.sendBasicErrorMessage("Error al intentar editar el evento");
-    this.ref.close();
   }
 
   private initForm(event?: FormEvent) {
@@ -195,14 +190,11 @@ export class EventFormComponent implements OnInit {
     this.saveLoading = true;
     this.eventService.save(event).subscribe({
       next: result => {
-        this.sendAlertMessage(true, true);
+        this.alertService.sendBasicSuccessMessage("Éxisto al crear el evento");
         this.eventStatusService.addEvent(result);
         this.ref.close();
       },
-      error: () => {
-        this.sendAlertMessage(false, true);
-        this.saveLoading = false;
-      }
+      error: () => this.saveLoading = false
     });
   }
 
@@ -210,23 +202,11 @@ export class EventFormComponent implements OnInit {
     this.saveLoading = true;
     this.eventService.update(event).subscribe({
       next: result => {
-        this.sendAlertMessage(true, false);
+        this.alertService.sendBasicSuccessMessage("Éxisto al actualizar el evento");
         this.eventStatusService.updateEvent(result);
         this.ref.close();
       },
-      error: () => {
-        this.sendAlertMessage(false, false);
-        this.saveLoading = false;
-      }
-    });
-  }
-
-  private sendAlertMessage(success: boolean, save: boolean) {
-    const tit = success ? "Éxito" : "Error";
-    this.alertService.sendMessage({
-      title: tit,
-      message: `${tit} al ${save ? 'crear' : 'actualizar'} el evento`,
-      severity: success ? "success" : "error"
+      error: () => this.saveLoading = false
     });
   }
 
@@ -246,14 +226,7 @@ export class EventFormComponent implements OnInit {
         this.eventStatusService.deleteEvent(this.existingEvent.id!);
         this.ref.close(true);
       },
-      error: error => {
-        this.alertService.sendMessage({
-          title: "Error al borrar",
-          message: error.error.message,
-          severity: "error"
-        });
-        this.deleteLoading = false;
-      }
+      error: () => this.deleteLoading = false
     });
   }
 

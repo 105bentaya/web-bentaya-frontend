@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {maintenanceEmail} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-closed-ser-scout',
@@ -10,4 +11,5 @@ import {Component, Input} from '@angular/core';
 export class ClosedSerScoutComponent {
   @Input() secondYearOfClosedTerm!: number;
   @Input() error = false;
+  protected readonly maintenanceEmail = maintenanceEmail;
 }

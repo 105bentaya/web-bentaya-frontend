@@ -11,7 +11,6 @@ import {FullCalendarComponent, FullCalendarModule} from "@fullcalendar/angular";
 import {BasicEvent} from "../../models/basic-event.model";
 import {AuthService} from "../../../../core/auth/services/auth.service";
 import {LoggedUserInformationService} from "../../../../core/auth/services/logged-user-information.service";
-import {AlertService} from "../../../../shared/services/alert-service.service";
 import {ActivatedRoute} from "@angular/router";
 import {groups, unitGroups} from "../../../../shared/model/group.model";
 import {User} from "../../../users/models/user.model";
@@ -52,7 +51,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   private dialogService = inject(DialogService);
   private eventService = inject(EventService);
   private authService = inject(AuthService);
-  private alertService = inject(AlertService);
   private route = inject(ActivatedRoute);
   private eventStatusService = inject(EventStatusService);
 
@@ -166,10 +164,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         });
         this.pushEventsToCalendar();
         this.checkQueryParams();
-      }, error: () => {
-        this.alertService.sendBasicErrorMessage("Error al cargar las actividades");
-        this.loading = false;
-      }
+      }, error: () => this.loading = false
     });
   }
 

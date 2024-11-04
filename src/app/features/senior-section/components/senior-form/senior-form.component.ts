@@ -68,10 +68,7 @@ export class SeniorFormComponent implements OnInit {
         this.alertService.sendBasicSuccessMessage("Formulario recibido");
         this.createForm();
         this.loading = false;
-      }, error: () => {
-        this.alertService.sendBasicErrorMessage("Vuelva a intentarlo o envíe un correo a informatica@105bentaya.org");
-        this.loading = false;
-      }
+      }, error: () => this.loading = false
     });
   }
 }

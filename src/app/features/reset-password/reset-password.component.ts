@@ -55,11 +55,7 @@ export class ResetPasswordComponent implements OnInit {
           this.alertService.sendBasicSuccessMessage("La contraseña ha sido cambiada con éxito");
           this.router.navigate(["home"]).then();
         },
-        error: err => {
-          if (err.status === 410) this.alertService.sendBasicErrorMessage("Este link no es válido o ya ha expirado.");
-          else this.alertService.sendBasicErrorMessage("Este link no es válido o ya ha expirado.");
-          this.loading = false;
-        }
+        error: () => this.loading = false
       });
     }
   }

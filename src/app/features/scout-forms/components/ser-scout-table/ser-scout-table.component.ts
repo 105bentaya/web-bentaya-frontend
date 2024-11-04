@@ -82,10 +82,7 @@ export class SerScoutTableComponent implements OnInit {
         this.filterService.register("name-surname-filter", FilterUtils.nameSurnameIdFilter(this.preScouts));
         this.loading = false;
       },
-      error: () => {
-        this.alertService.sendBasicErrorMessage("Error al cargar las preinscripciones");
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 
@@ -138,10 +135,7 @@ export class SerScoutTableComponent implements OnInit {
     const newTab = window.open("", "_blank");
     this.preScoutService.getPreScoutPDF(preScout.id!).subscribe({
       next: pdf => newTab!.location.href = this.blobPdfToUrl(pdf),
-      error: () => {
-        newTab?.close();
-        this.alertService.sendBasicErrorMessage("Error al cargar el PDF");
-      }
+      error: () => newTab?.close()
     });
   }
 
@@ -170,10 +164,7 @@ export class SerScoutTableComponent implements OnInit {
             this.alertService.sendBasicSuccessMessage("Preinscripción guardada con éxito");
             this.getPreInscriptions();
           },
-          error: (error) => {
-            this.alertService.sendBasicErrorMessage(error.error.message);
-            this.loading = false;
-          }
+          error: () => this.loading = false
         }
       );
     } else {

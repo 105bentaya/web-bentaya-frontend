@@ -12,6 +12,7 @@ import {
 import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {FloatLabelModule} from "primeng/floatlabel";
+import {maintenanceEmail} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-contacto',
@@ -34,6 +35,7 @@ export class ContactoComponent implements OnInit {
   private emailService = inject(EmailService);
   protected loading = false;
   protected contactForm = new FormHelper();
+  protected readonly maintenanceEmail = maintenanceEmail;
 
   ngOnInit(): void {
     this.initializeForm();
@@ -70,14 +72,7 @@ export class ContactoComponent implements OnInit {
         this.loading = false;
         this.initializeForm();
       },
-      error: () => {
-        this.alertService.sendMessage({
-          title: "Error al enviar su mensaje",
-          message: "Vuelva a intentarlo o escríbanos directamente a informatica@105bentaya.org",
-          severity: "error"
-        });
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 }
