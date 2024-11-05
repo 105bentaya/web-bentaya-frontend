@@ -1,0 +1,146 @@
+<div class="form-container">
+  <form class="d-flex flex-column" [formGroup]="invoiceFormHelper.form">
+    <div class="mt-4">
+      <div class="row">
+        <div class="col-12 col-sm-8">
+          <p-floatLabel>
+            <input id="issuer" formControlName="issuer" maxlength="255" pInputText>
+            <label class="required" for="issuer">Emisor</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-4">
+          <p-floatLabel>
+            <input id="nif" formControlName="nif" maxlength="255" pInputText>
+            <label class="required" for="nif">NIF/CIF</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-8">
+          <p-floatLabel>
+            <input id="invoiceNumber" formControlName="invoiceNumber" maxlength="255" pInputText>
+            <label class="required" for="invoiceNumber">Número de factura</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-4">
+          <p-floatLabel>
+            <input type="number" id="amount" min="0" step="0.01" formControlName="amount" pInputText>
+            <label class="required" for="amount">Importe</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-8">
+          <p-floatLabel>
+            <p-dropdown
+              id="expenseType"
+              formControlName="expenseType"
+              appendTo="body"
+              [options]="expenseTypes"
+              optionLabel="expenseType"
+            ></p-dropdown>
+            <label class="required" for="expenseType">Concepto</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-4">
+          <p-floatLabel>
+            <p-dropdown
+              id="payer"
+              formControlName="payer"
+              appendTo="body"
+              [options]="payers"
+              optionLabel="payer"
+            ></p-dropdown>
+            <label class="required" for="payer">Genera</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-4">
+          <p-floatLabel>
+            <input id="method" formControlName="method" maxlength="255" pInputText>
+            <label class="required" for="method">Forma de pago</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-4">
+          <p-floatLabel>
+            <p-calendar
+              id="invoiceDate"
+              formControlName="invoiceDate"
+              appendTo="body"
+              (onSelect)="onDateSelect($event)"
+              [showClear]="true"
+            ></p-calendar>
+            <label class="required" for="invoiceDate">Fecha de Factura</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 col-sm-4">
+          <p-floatLabel>
+            <p-calendar
+              id="paymentDate"
+              formControlName="paymentDate"
+              appendTo="body"
+              (onSelect)="onDateSelect($event)"
+              [showClear]="true"
+            ></p-calendar>
+            <label class="required" for="paymentDate">Fecha de Pago</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12">
+          <p-floatLabel>
+            <p-dropdown
+              id="grant"
+              formControlName="grant"
+              appendTo="body"
+              [options]="grants"
+              optionLabel="grantName"
+              [showClear]="true"
+            ></p-dropdown>
+            <label for="payer">Usada en Subvención</label>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 mb-2">
+          <p-floatLabel>
+            <app-form-text-area
+              formControlName="observations"
+              floatLabel="Observaciones"
+              [maxLength]="4095"
+              [showErrorMessage]="invoiceFormHelper.hasSpecificError('observations', 'maxlength')"
+            ></app-form-text-area>
+          </p-floatLabel>
+        </div>
+        <div class="col-12 mb-2 d-flex gap-3 flex-wrap">
+          <p-checkbox
+            formControlName="receipt"
+            [binary]="true"
+            label="Recibí"
+            labelStyleClass="ms-1"
+          ></p-checkbox>
+          <p-checkbox
+            formControlName="complies"
+            [binary]="true"
+            label="Cumple"
+            labelStyleClass="ms-1"
+          ></p-checkbox>
+          <p-checkbox
+            formControlName="liquidated"
+            [binary]="true"
+            label="Liquidada"
+            labelStyleClass="ms-1"
+          ></p-checkbox>
+        </div>
+      </div>
+    </div>
+    <div class="text-center text-danger mb-2">
+      @if (invoiceFormHelper.isDirtyAndInvalid()) {
+        <small>Rellene todos los campos obligatorios (<b>*</b>)</small><br>
+      }
+    </div>
+    <p-splitButton
+      class="text-center"
+      [label]="saveAndContinue ? 'Guardar y seguir' : 'Guardar'"
+      (onClick)="onSubmit(saveAndContinue)"
+      [model]="buttons"
+      appendTo="body"
+    ></p-splitButton>
+<!--    <app-save-buttons-->
+<!--      cancelLabel="Dar de Baja"-->
+<!--      [saveLoading]="loading"-->
+<!--      (onSave)="onSubmit()"-->
+<!--    ></app-save-buttons>-->
+  </form>
+</div>

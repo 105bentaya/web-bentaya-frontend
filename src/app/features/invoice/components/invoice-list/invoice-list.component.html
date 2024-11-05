@@ -1,0 +1,139 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <h1 class="mb-0 d-flex me-3">Lista de facturas</h1>
+    <div>
+      <button
+        pButton
+        title="Añadir factura"
+        icon="pi pi-plus"
+        (click)="openInvoiceDialog()"
+      ></button>
+    </div>
+  </div>
+  <p-table
+    #dt
+    styleClass="p-datatable-gridlines"
+    [value]="invoices"
+    [lazy]="true"
+    [totalRecords]="totalRecords"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[10,25,50,100,300]"
+    (onLazyLoad)="loadUsersWithFilter($event)"
+    [loading]="loading"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} facturas"
+    sortField="invoiceDate"
+    [sortOrder]="-1"
+  >
+    <ng-template pTemplate="caption">
+      <div class="d-flex justify-content-between align-items-center">
+        <span>Número de facturas: {{ dt.totalRecords }}</span>
+        <!--<button
+          type="button"
+          pButton
+          [icon]="excelLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
+          [disabled]="excelLoading"
+          (click)="exportExcelScout()"
+          class="p-button-success"
+          title="Descargar scouts como excel"
+        ></button>-->
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <!--<th pSortableColumn="invoiceDate">
+          Fecha de Factura
+          <p-sortIcon field="surname"></p-sortIcon>
+        </th>-->
+        <th>
+          Fecha de Factura
+        </th>
+        <th>
+          Genera
+        </th>
+        <th>
+          NIF/CIF Emisor
+        </th>
+        <th>
+          Importe
+        </th>
+        <th class="text-center w-min">
+          Editar
+        </th>
+      </tr>
+      <!--<tr class="input-max-width">
+        <th>
+          <input
+            pInputText
+            type="text"
+            (input)="dt.filter($any($event.target).value, 'id', 'name-surname-filter')"/>
+        </th>
+        <th>
+          <p-multiSelect
+            [options]="groups"
+            (onChange)="dt.filter($event.value, 'groupId', 'in')"
+            [showHeader]="false"
+            [showClear]="true"
+            appendTo="body"
+            scrollHeight="300px"
+            optionLabel="name"
+            optionValue="id"
+          ></p-multiSelect>
+        </th>
+        <th class="text-center">
+          <p-columnFilter
+            type="boolean"
+            field="enabled"
+            matchMode="equals"
+            [showClearButton]="false"
+          ></p-columnFilter>
+        </th>
+        <th></th>
+      </tr>-->
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-invoice
+    >
+      <tr>
+        <td>
+          {{ invoice.invoiceDate }}
+        </td>
+        <td>
+          {{ invoice.payer.payer }}
+        </td>
+        <td>
+          {{ invoice.nif }}
+        </td>
+        <td>
+          {{ invoice.amount / 100 | currency:'EUR':undefined:undefined:'es' }}
+        </td>
+        <td>
+          <div class="d-flex flex-row gap-2 justify-content-center">
+            <button
+              pButton
+              icon="pi pi-pencil"
+              class="p-button-outlined p-button-raised"
+              title="Editar"
+              (click)="openInvoiceDialog(invoice)"
+            ></button>
+            <button
+              pButton
+              [disabled]="loading"
+              icon="pi pi-trash"
+              title="Eliminar"
+              class="p-button-danger p-button-outlined p-button-raised"
+              (click)="askForDeletion(invoice)"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">No se han encontrado facturas</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

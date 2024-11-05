@@ -80,7 +80,13 @@ export default class FilterUtils {
       page: event.first! / event.rows!,
       countPerPage: event.rows!
     };
-    for (let filtersKey in event.filters) {
+
+    if (event.sortField) {
+      filter.sortedBy = event.sortField;
+      filter.asc = event.sortOrder === 1;
+    }
+
+    for (const filtersKey in event.filters) {
       filter[filtersKey] = event.filters[filtersKey].value;
     }
     return filter;

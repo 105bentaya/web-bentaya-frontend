@@ -71,9 +71,14 @@ hr {
 //padding adjustments
 .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item,
 .p-panel .p-panel-header, .p-panel .p-panel-content,
-.p-multiselect-panel .p-multiselect-items .p-multiselect-item
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item,
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item
 {
   padding: 0.5rem 1rem;
+}
+
+.p-dropdown-panel .p-dropdown-items {
+  padding: 0;
 }
 
 .p-paginator .p-dropdown {

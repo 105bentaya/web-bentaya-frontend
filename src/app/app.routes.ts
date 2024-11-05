@@ -102,6 +102,13 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: {roles: ["ROLE_TRANSACTION"]}
   },
+  //Facturas
+  {
+    path: "facturas",
+    loadComponent: () => import('./features/invoice/components/invoice-list/invoice-list.component').then(c => c.InvoiceListComponent),
+    canActivate: [authGuard],
+    data: {roles: ["ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]}
+  },
   //Links del home
   {
     path: "transparencia",

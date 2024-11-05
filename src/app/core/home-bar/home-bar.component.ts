@@ -268,6 +268,11 @@ export class HomeBarComponent implements OnInit, OnDestroy {
         icon: "pi pi-folder",
         command: () => this.router.navigate(["/unidad/preinscripciones"])
       },
+      {
+        label: "Facturas",
+        icon: "pi pi-receipt",
+        command: () => this.router.navigate(["/facturas"])
+      }
     );
   }
 
@@ -282,6 +287,11 @@ export class HomeBarComponent implements OnInit, OnDestroy {
         label: "Educandas",
         icon: "pi pi-users",
         command: () => this.router.navigate(["/unidad/educandos"])
+      },
+      {
+        label: "Facturas",
+        icon: "pi pi-receipt",
+        command: () => this.router.navigate(["/facturas"])
       }
     );
   }
