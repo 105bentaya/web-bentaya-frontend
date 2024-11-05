@@ -2,7 +2,7 @@ import {AbstractControlOptions, FormBuilder, FormGroup} from "@angular/forms";
 import {inject} from "@angular/core";
 
 export class FormHelper {
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   public form!: FormGroup;
   private hasBeenValidated = false;
