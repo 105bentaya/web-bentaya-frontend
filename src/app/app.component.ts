@@ -36,12 +36,16 @@ export class AppComponent implements OnInit {
   protected loading = true;
 
   ngOnInit(): void {
-    if (this.isLoggedIn) {
-      this.authService.loadUserInfo();
+    if (this.authService.isLoggedIn()) {
+      this.startUserPetitions();
+    } else {
+      this.startBasicPetitions();
     }
+    this.configureApp();
+  }
 
+  private configureApp() {
     registerLocaleData(localeEs, 'es');
-
     this.alertService.getObservable().subscribe(message =>
       this.messageService.add({
         severity: message.severity,
@@ -50,17 +54,28 @@ export class AppComponent implements OnInit {
         life: 7200
       })
     );
-
     this.setTranslation();
+  }
+
+  private startUserPetitions() {
+    this.authService.loadUserInfo().subscribe({
+      next: () => this.startBasicPetitions(),
+      error: () => this.startBasicPetitions()
+    });
+  }
+
+  private startBasicPetitions() {
     this.checkForMaintenance();
   }
 
   private checkForMaintenance() {
-    this.settingsService.getByName("maintenance").subscribe(
-      result => {
+    this.settingsService.getByName("maintenance").subscribe({
+      next: result => {
         if (result.value !== "0") this.addMaintenanceMessage(new Date(result.value));
-      }
-    );
+        this.loading = false;
+      },
+      error: () => this.loading = false
+    });
   }
 
   private addMaintenanceMessage(date: Date) {

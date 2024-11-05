@@ -41,7 +41,7 @@ export class AuthService {
 
   login(credentials: Credentials) {
     return this.http.post(`${environment.apiUrl}/login`, credentials, {observe: "response"}).pipe(
-      tap(response => this.postLogin(response))
+      tap(response => this.postLogin(response).subscribe())
     );
   }
 
@@ -69,10 +69,10 @@ export class AuthService {
   }
 
   loadUserInfo() {
-    return this.getUserInfo().subscribe(userData => {
+    return this.getUserInfo().pipe(tap(userData => {
       LoggedUserInformationService.saveUserInformation(userData);
       this.loggedUserSubject.next(userData);
-    });
+    }));
   }
 
   private getUserInfo() {
