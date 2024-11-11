@@ -26,71 +26,76 @@
     sortField="invoiceDate"
     [sortOrder]="-1"
   >
-    <ng-template pTemplate="caption">
-      <div class="d-flex justify-content-between align-items-center">
-        <span>Número de facturas: {{ dt.totalRecords }}</span>
-        <!--<button
-          type="button"
-          pButton
-          [icon]="excelLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
-          [disabled]="excelLoading"
-          (click)="exportExcelScout()"
-          class="p-button-success"
-          title="Descargar scouts como excel"
-        ></button>-->
-      </div>
-    </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <!--<th pSortableColumn="invoiceDate">
+        <th scope="col" pSortableColumn="invoiceDate">
           Fecha de Factura
-          <p-sortIcon field="surname"></p-sortIcon>
-        </th>-->
-        <th>
-          Fecha de Factura
+          <p-sortIcon field="invoiceDate"></p-sortIcon>
         </th>
-        <th>
+        <th scope="col">
           Genera
         </th>
-        <th>
-          NIF/CIF Emisor
+        <th scope="col">
+          Emisor
         </th>
-        <th>
+        <th scope="col">
+          Subvención
+        </th>
+        <th scope="col">
+          Concepto
+        </th>
+        <th scope="col">
           Importe
         </th>
-        <th class="text-center w-min">
+        <th scope="col" class="text-center w-min">
           Editar
         </th>
       </tr>
-      <!--<tr class="input-max-width">
-        <th>
-          <input
-            pInputText
-            type="text"
-            (input)="dt.filter($any($event.target).value, 'id', 'name-surname-filter')"/>
-        </th>
-        <th>
+      <tr class="input-max-width">
+        <th scope="col"></th>
+        <th scope="col">
           <p-multiSelect
-            [options]="groups"
-            (onChange)="dt.filter($event.value, 'groupId', 'in')"
-            [showHeader]="false"
-            [showClear]="true"
+            [options]="invoiceData?.payers"
+            (onChange)="dt.filter($event.value, 'payers', 'custom')"
+            [autofocusFilter]="false"
+            [maxSelectedLabels]="1"
             appendTo="body"
-            scrollHeight="300px"
-            optionLabel="name"
+            optionLabel="payer"
             optionValue="id"
           ></p-multiSelect>
         </th>
-        <th class="text-center">
-          <p-columnFilter
-            type="boolean"
-            field="enabled"
-            matchMode="equals"
-            [showClearButton]="false"
-          ></p-columnFilter>
+        <th scope="col">
+          <input
+            pInputText
+            type="text"
+            (input)="dt.filter($any($event.target).value, 'issuer', 'custom')"
+          />
         </th>
-        <th></th>
-      </tr>-->
+        <th scope="col">
+          <p-multiSelect
+            [options]="invoiceData?.grants"
+            (onChange)="dt.filter($event.value, 'grants', 'custom')"
+            [autofocusFilter]="false"
+            [maxSelectedLabels]="1"
+            appendTo="body"
+            optionLabel="grantName"
+            optionValue="id"
+          ></p-multiSelect>
+        </th>
+        <th scope="col">
+          <p-multiSelect
+            [options]="invoiceData?.expenseTypes"
+            (onChange)="dt.filter($event.value, 'expenseTypes', 'custom')"
+            [autofocusFilter]="false"
+            [maxSelectedLabels]="1"
+            appendTo="body"
+            optionLabel="expenseType"
+            optionValue="id"
+          ></p-multiSelect>
+        </th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
     </ng-template>
     <ng-template
       pTemplate="body"
@@ -104,7 +109,13 @@
           {{ invoice.payer.payer }}
         </td>
         <td>
-          {{ invoice.nif }}
+          {{ invoice.nif }} - {{invoice.issuer}}
+        </td>
+        <td>
+          {{ invoice.grant?.grantName ?? 'Ninguna' }}
+        </td>
+        <td>
+          {{ invoice.expenseType.expenseType }}
         </td>
         <td>
           {{ invoice.amount / 100 | currency:'EUR':undefined:undefined:'es' }}
