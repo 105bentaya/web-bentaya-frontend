@@ -29,6 +29,7 @@
     <p-multiSelect
       placeholder="Filtrar roles"
       [options]="roles"
+      [autofocusFilter]="false"
       optionValue="id"
       styleClass="w-100"
       (onChange)="dt.filter($event.value,'roleIds', 'custom')"

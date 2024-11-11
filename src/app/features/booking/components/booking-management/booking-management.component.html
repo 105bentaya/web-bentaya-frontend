@@ -37,6 +37,7 @@
                 <th></th>
                 <th>
                   <p-multiSelect
+                    [autofocusFilter]="false"
                     [options]="statusesOptions"
                     (onChange)="tab.filter($event.value, 'status', 'in')"
                     [showHeader]="false"

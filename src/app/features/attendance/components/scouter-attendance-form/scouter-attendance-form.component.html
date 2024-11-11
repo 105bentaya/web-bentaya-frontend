@@ -10,6 +10,7 @@
   ></p-checkbox>
   @if (multiple) {
     <p-multiSelect
+      [autofocusFilter]="false"
       [options]="groupedInfo"
       [group]="true"
       [(ngModel)]="selectedInfo"

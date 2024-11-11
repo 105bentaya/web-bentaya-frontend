@@ -57,6 +57,7 @@
             [options]="statuses"
             (onChange)="tab.filter($event.value, 'status', 'in')"
             [showHeader]="false"
+            [autofocusFilter]="false"
             [showClear]="true"
             appendTo="body"
             scrollHeight="300px"

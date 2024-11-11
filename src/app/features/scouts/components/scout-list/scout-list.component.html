@@ -64,6 +64,7 @@
             [options]="groups"
             (onChange)="dt.filter($event.value, 'groupId', 'in')"
             [showHeader]="false"
+            [autofocusFilter]="false"
             [showClear]="true"
             appendTo="body"
             scrollHeight="300px"
