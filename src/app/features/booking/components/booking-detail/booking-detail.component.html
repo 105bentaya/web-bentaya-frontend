@@ -176,11 +176,11 @@
                   loadingIcon="pi pi-spin pi-spinner"
                   (click)="openStatusForm('FULLY_OCCUPIED')"
                 ></button>
-              } @else if (!centerIsAlwaysExclusive(booking.scoutCenter)) {
+              } @else {
                 <button
                   pButton
                   icon="pi pi-check"
-                  [label]="booking.exclusiveReservation ? 'Confirmar Reserva sin exclusividad' : 'Confirmar Reserva'"
+                  [label]="!centerIsAlwaysExclusive(booking.scoutCenter) && booking.exclusiveReservation ? 'Confirmar Reserva sin exclusividad' : 'Confirmar Reserva'"
                   class="p-button-success"
                   [loading]="loading"
                   loadingIcon="pi pi-spin pi-spinner"
