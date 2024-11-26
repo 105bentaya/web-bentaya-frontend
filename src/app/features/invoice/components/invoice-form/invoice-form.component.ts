@@ -1,16 +1,11 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {CalendarModule} from "primeng/calendar";
-import {ContactFormListComponent} from "../../../scouts/components/contact-form-list/contact-form-list.component";
 import {DropdownModule} from "primeng/dropdown";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputNumberModule} from "primeng/inputnumber";
 import {InputTextModule} from "primeng/inputtext";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
-import {
-  ScoutUserFormListComponent
-} from "../../../scouts/components/scout-user-form-list/scout-user-form-list.component";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {TabViewModule} from "primeng/tabview";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
@@ -21,13 +16,13 @@ import {CheckboxModule} from "primeng/checkbox";
 import {InvoiceService} from "../../invoice.service";
 import {SplitButtonModule} from "primeng/splitbutton";
 import {MenuItem} from "primeng/api";
+import {DateUtils} from "../../../../shared/util/date-utils";
 
 @Component({
   selector: 'app-invoice-form',
   standalone: true,
   imports: [
     CalendarModule,
-    ContactFormListComponent,
     DropdownModule,
     FloatLabelModule,
     FormTextAreaComponent,
@@ -35,8 +30,6 @@ import {MenuItem} from "primeng/api";
     InputNumberModule,
     InputTextModule,
     ReactiveFormsModule,
-    SaveButtonsComponent,
-    ScoutUserFormListComponent,
     SelectButtonModule,
     TabViewModule,
     CheckboxModule,
@@ -71,6 +64,7 @@ export class InvoiceFormComponent implements OnInit {
       this.grants = this.config.data.invoiceData.grants;
       this.payers = this.config.data.invoiceData.payers;
       if (this.config.data.invoice) {
+        this.dateHasBeenSelected = true;
         this.invoiceToUpdate = this.config.data.invoice;
         this.initForm(this.invoiceToUpdate);
       } else {
@@ -115,6 +109,8 @@ export class InvoiceFormComponent implements OnInit {
     if (this.invoiceFormHelper.valid) {
       const invoice: Invoice = {...this.invoiceFormHelper.value};
       invoice.amount *= 100;
+      invoice.invoiceDate = DateUtils.toLocalDate(invoice.invoiceDate);
+      invoice.paymentDate = DateUtils.toLocalDate(invoice.paymentDate);
       this.saveOrUpdate(invoice).subscribe({
         next: invoice => {
           this.alertService.sendBasicSuccessMessage("Éxito al guardar la factura");

@@ -7,7 +7,7 @@ import {ConfirmationService, PrimeTemplate} from "primeng/api";
 import {Table, TableModule} from "primeng/table";
 import {InvoiceService} from "../../invoice.service";
 import {Invoice, InvoiceData} from "../../invoice.model";
-import {CurrencyPipe} from "@angular/common";
+import {CurrencyPipe, DatePipe} from "@angular/common";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {DialogService} from "primeng/dynamicdialog";
 import {InvoiceFormComponent} from "../invoice-form/invoice-form.component";
@@ -25,7 +25,8 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
     MultiSelectModule,
     PrimeTemplate,
     TableModule,
-    CurrencyPipe
+    CurrencyPipe,
+    DatePipe
   ],
   templateUrl: './invoice-list.component.html',
   styleUrl: './invoice-list.component.scss',

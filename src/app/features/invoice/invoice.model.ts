@@ -1,13 +1,13 @@
 export interface Invoice {
   id: number;
-  invoiceDate: Date;
+  invoiceDate: Date | string;
   issuer: string;
   invoiceNumber: string;
   nif: string;
   amount: number;
   receipt: boolean;
   complies: boolean;
-  paymentDate: Date;
+  paymentDate: Date | string;
   method: string;
   liquidated: boolean;
   observations?: string;

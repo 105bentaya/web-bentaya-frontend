@@ -34,7 +34,7 @@ export class DateUtils {
     return new Date(a).toISOString().localeCompare(new Date(b).toISOString());
   }
 
-  public static toLocalDate(date: Date) {
+  public static toLocalDate(date: Date | string) {
     date = new Date(date);
     return `${this.getYear(date)}-${this.getMonth(date)}-${this.getDay(date)}`;
   }

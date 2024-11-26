@@ -103,7 +103,7 @@
     >
       <tr>
         <td>
-          {{ invoice.invoiceDate }}
+          {{ invoice.invoiceDate | date:"dd/MM/yyyy" }}
         </td>
         <td>
           {{ invoice.payer.payer }}

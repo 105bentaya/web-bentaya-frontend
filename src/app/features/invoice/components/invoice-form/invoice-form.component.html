@@ -22,7 +22,13 @@
         </div>
         <div class="col-12 col-sm-4">
           <p-floatLabel>
-            <input type="number" id="amount" min="0" step="0.01" formControlName="amount" pInputText>
+            <p-inputNumber
+              id="amount"
+              mode="currency"
+              currency="EUR"
+              formControlName="amount"
+              [min]="0"
+            ></p-inputNumber>
             <label class="required" for="amount">Importe</label>
           </p-floatLabel>
         </div>
@@ -137,10 +143,5 @@
       [model]="buttons"
       appendTo="body"
     ></p-splitButton>
-<!--    <app-save-buttons-->
-<!--      cancelLabel="Dar de Baja"-->
-<!--      [saveLoading]="loading"-->
-<!--      (onSave)="onSubmit()"-->
-<!--    ></app-save-buttons>-->
   </form>
 </div>
