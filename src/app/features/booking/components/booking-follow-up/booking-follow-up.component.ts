@@ -24,6 +24,7 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
 import {
   GeneralIconButtonComponent
 } from "../../../../shared/components/general-icon-button/general-icon-button.component";
+import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../constant/confirm-messages.constants";
 
 @Component({
   selector: 'app-booking-follow-up',
@@ -80,14 +81,15 @@ export class BookingFollowUpComponent implements OnInit {
 
   protected uploadFiles(event: FileUploadHandlerEvent, booking: Booking) {
     const fileUploadPetitions = event.files.map(file => this.bookingService.uploadBookingDocument(booking.id, file));
-
     forkJoin(fileUploadPetitions).subscribe({
       complete: () => {
         this.alertService.sendBasicSuccessMessage("Documentos subidos correctamente");
         this.getFiles(booking.id);
+      },
+      error: () => {
+        this.getFiles(booking.id);
       }
     });
-    this.bookingService.uploadBookingDocument(booking.id, event.files[0]);
   }
 
   private getFiles(id: number) {
@@ -168,8 +170,7 @@ export class BookingFollowUpComponent implements OnInit {
   protected confirmDocuments(booking: Booking) {
     this.confirmationService.confirm({
       header: "Confirmar",
-      message: "Se informará a la gestión que revise sus documentos y no podrá editarlos. " +
-        "En caso de error se le avisará para subsanarlos. ¿Desea continuar?",
+      message: booking.userConfirmedDocuments ? confirmDocumentsAgainMessage : confirmDocumentsMessage,
       accept: () => this.updateBookingStatus("RESERVED", "", booking)
     });
   }

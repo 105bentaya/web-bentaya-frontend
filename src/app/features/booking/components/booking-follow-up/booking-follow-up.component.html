@@ -153,14 +153,12 @@
                     invalidFileLimitMessageDetail="el límite es de {0} archivos."
                     [showUploadButton]="false"
                     [showCancelButton]="false"
-                    [disabled]="booking.userConfirmedDocuments"
                     [auto]="true"
-                    [chooseStyleClass]="booking.userConfirmedDocuments ? 'd-none': ''"
                   >
                     <ng-template pTemplate="toolbar">
                       <div class="py-3">
                         @if (booking.userConfirmedDocuments) {
-                          Sus documentos están siendo revisados, por lo que no puede editarlos. Cuando finalice la revisión le informaremos de si su reserva ha sido aceptada o si ha habido algún error en los documentos para que pueda corregirlos.
+                          Sus documentos están siendo revisados. Cuando finalice la revisión le informaremos de si su reserva ha sido aceptada o si ha habido algún error en los documentos para que pueda corregirlos.
                         } @else {
                           Suba aquí todos los archivos en formato <b>pdf</b>. El tamaño máximo de cada archivo es de
                           <b>1MB</b>.<br>
@@ -216,15 +214,13 @@
                     </ng-template>
                   </p-fileUpload>
                   <div class="d-flex justify-content-center mt-3 gap-2 flex-wrap">
-                    @if (!booking.userConfirmedDocuments) {
-                      <button
-                        pButton
-                        class="p-button-success"
-                        label="CONFIRMAR DOCUMENTOS"
-                        [loading]="loading"
-                        (click)="confirmDocuments(booking)"
-                      ></button>
-                    }
+                    <button
+                      pButton
+                      class="p-button-success"
+                      label="CONFIRMAR DOCUMENTOS"
+                      [loading]="loading"
+                      (click)="confirmDocuments(booking)"
+                    ></button>
                     <ng-container *ngTemplateOutlet="cancelButton"></ng-container>
                   </div>
                 }
