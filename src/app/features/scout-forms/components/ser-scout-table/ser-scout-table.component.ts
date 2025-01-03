@@ -43,13 +43,13 @@ import {sections} from "../../../../shared/constant";
 })
 export class SerScoutTableComponent implements OnInit {
 
-  private preScoutService = inject(ScoutFormsService);
-  private filterService = inject(FilterService);
-  private confirmationService = inject(ConfirmationService);
-  private settingService = inject(SettingsService);
-  private alertService = inject(AlertService);
-  private dialogService = inject(DialogService);
-  private excelService = inject(ExcelService);
+  private readonly preScoutService = inject(ScoutFormsService);
+  private readonly filterService = inject(FilterService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly settingService = inject(SettingsService);
+  private readonly alertService = inject(AlertService);
+  private readonly dialogService = inject(DialogService);
+  private readonly excelService = inject(ExcelService);
 
   protected preScouts!: PreScout[];
   protected yearList!: MenuItem[];
@@ -134,7 +134,11 @@ export class SerScoutTableComponent implements OnInit {
   protected downloadPreScoutAsPdf(preScout: PreScout) {
     const newTab = window.open("", "_blank");
     this.preScoutService.getPreScoutPDF(preScout.id!).subscribe({
-      next: pdf => newTab!.location.href = this.blobPdfToUrl(pdf),
+      next: pdf => {
+        const url = this.blobPdfToUrl(pdf);
+        newTab!.location.href = url;
+        URL.revokeObjectURL(url);
+      },
       error: () => newTab?.close()
     });
   }

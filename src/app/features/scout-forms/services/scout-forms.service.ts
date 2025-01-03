@@ -4,14 +4,15 @@ import {Observable} from 'rxjs';
 import {environment} from "../../../../environments/environment";
 import {PreScout} from '../models/pre-scout.model';
 import {PreScoutAssignation} from "../models/pre-scout-assignation.model";
+import {PreScoutForm} from "../models/pre-scout-form.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScoutFormsService {
 
-  private http = inject(HttpClient);
-  private preScoutUrl = `${environment.apiUrl}/pre-scout`;
+  private readonly http = inject(HttpClient);
+  private readonly preScoutUrl = `${environment.apiUrl}/pre-scout`;
 
   getAll(): Observable<PreScout[]> {
     return this.http.get<PreScout[]>(this.preScoutUrl);
@@ -21,8 +22,8 @@ export class ScoutFormsService {
     return this.http.get<PreScout[]>(`${this.preScoutUrl}/assignation`);
   }
 
-  sendScoutFormMail(preScout: PreScout): Observable<PreScout> {
-    return this.http.post<PreScout>(`${this.preScoutUrl}/form`, preScout);
+  sendScoutFormMail(preScout: PreScoutForm): Observable<void> {
+    return this.http.post<void>(`${this.preScoutUrl}/form`, preScout);
   }
 
   savePreScoutAssignation(assignation: PreScoutAssignation) {
@@ -38,8 +39,6 @@ export class ScoutFormsService {
   }
 
   getPreScoutPDF(id: number): Observable<Blob> {
-    return this.http.get(`${this.preScoutUrl}/pdf/${id}`,
-      {responseType: "blob"}
-    );
+    return this.http.get(`${this.preScoutUrl}/pdf/${id}`, {responseType: "blob"});
   }
 }

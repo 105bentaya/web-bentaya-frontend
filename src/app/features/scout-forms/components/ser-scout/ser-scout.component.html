@@ -2,10 +2,11 @@
   @if (successOnSubmit) {
     <div class="mt-sm-5 text-center">
       <p>La preinscripción ha sido enviada con éxito</p>
-      <p>Una copia de la preinscripción con la información pertinente ha sido enviada a <b>{{ finalEmail }}</b></p>
+      <p>Una copia de la preinscripción con la información pertinente ha sido enviada a <b>{{ preScout.email }}</b></p>
       <p>En caso de duda o de no haber recibido la copia contáctenos enviando un correo a
         <a href="mailto:{{maintenanceEmail}}?subject=DUDAS RESPECTO A LA INSCRIPCIÓN">{{ maintenanceEmail }}</a>
       </p>
+      <p>Si desea volver a rellenar el formulario, haga click <a href="/ser-scout">aquí</a></p>
     </div>
   } @else {
     <p class="my-3">
@@ -19,12 +20,14 @@
           <div class="pt-4">
             <p>
               Es <b>muy importante</b> que pongan la máxima atención en cumplimentar correctamente los datos pedidos.
-              Consignar datos erróneos u omitir datos puede provocar que se le asigne un orden que no le corresponde.
+              <b>Consignar datos erróneos u omitir datos</b>
+              puede provocar que
+              <b>no se le asigne el orden que le corresponde, cuestión que a posteriori no podremos corregir</b>.
             </p>
             <ol>
               <li>
                 La preinscripción estará abierta para la Ronda Solar (curso) {{ formTerm }} desde el 10 de enero de
-                {{ secondYearOfTerm - 1 }} hasta el 15 de agosto de {{ secondYearOfTerm - 1 }}.
+                {{ secondYearOfTerm - 1 }} hasta el 31 de julio de {{ secondYearOfTerm - 1 }}.
               </li>
               <li>
                 Solamente se admitirán preinscripciones para personas que queden comprendidas entre las edades mínima y
@@ -54,10 +57,10 @@
               </li>
             </ol>
             <div class="d-flex justify-content-center px-0 px-md-3 px-lg-5 mb-3">
-              <p-messages severity="warn">
+              <p-messages severity="error">
                 <ng-template pTemplate>
                   <i class="pi pi-exclamation-triangle me-3 fs-3 d-none d-md-block"></i>
-                  <div style="overflow: hidden; text-overflow: ellipsis;">
+                  <div style="overflow: hidden; text-overflow: ellipsis; font-size: 17px;">
                     Debido al limitado número de plazas disponibles respecto a la cantidad de solicitudes, rogamos que
                     sólo haga la preinscripción si tiene la total seguridad de querer pertenecer a nuestra asociación y
                     formar parte de nuestras actividades (principalmente campamentos), al objeto de no dejar a otras
@@ -69,9 +72,9 @@
           </div>
         }
         @case (0) {
-          <h5 class="step-form-title">
+          <h4 class="step-form-title">
             <b>Datos Generales</b>
-          </h5>
+          </h4>
           <div class="row">
             <div class="col-12 col-md-4">
               <p-floatLabel>
@@ -153,7 +156,7 @@
                   [maxDate]="maxDate"
                   [defaultDate]="maxDate"
                 ></p-calendar>
-                <label class="required">Fecha de Nacimiento</label>
+                <label class="required" for="birthday">Fecha de Nacimiento</label>
               </p-floatLabel>
               @if (preScoutForm.isDirtyAndInvalid('birthday')) {
                 <small class="text-danger">Introduzca una fecha de nacimiento con formato dd/mm/yyyy</small>
@@ -222,7 +225,7 @@
           </div>
         }
         @case (1) {
-          <h5 class="step-form-title"><b>Datos de la madre, padre o persona a contactar</b></h5>
+          <h4 class="step-form-title"><b>Datos de la madre, padre o persona a contactar</b></h4>
           <div class="row">
             <div class="col-12 col-lg-4">
               <p-floatLabel>
@@ -315,20 +318,17 @@
           </div>
         }
         @case (2) {
-          <h5 class="step-form-title"><b>Grupo de prioridad</b></h5>
+          <h4 class="step-form-title mb-3"><b>Grupo de prioridad</b></h4>
           <div>
             <p>
               Es <b>importante</b> escoger el grupo de prioridad adecuado, ya que puede ser determinante a la hora del
-              orden
-              que ocupe en lista de espera. Si detectamos que indica intencionadamente un grupo de prioridad no
-              correcto,
-              se
-              le asignará automáticamente el grupo 4, a pesar de que le corresponda cualquier otro.
+              orden que ocupe en lista de espera. Si detectamos que indica intencionadamente un grupo de prioridad no
+              correcto, se le asignará automáticamente el grupo 3, a pesar de que le corresponda cualquier otro.
             </p>
             <p class="mt-2 mb-0">Escoja el <b>primer</b> grupo que coincida con la situación de la persona educanda:</p>
             <ol>
               @for (priority of priorities; track $index) {
-                <li>{{ priority }}</li>
+                <li>{{ priority.message }}</li>
               }
             </ol>
           </div>
@@ -336,19 +336,19 @@
             <div class="col mb-2 mb-md-0">
               <p-floatLabel>
                 <p-dropdown
+                  id="priority"
                   formControlName="priority"
                   styleClass="w-100"
-                  [options]="dropdownPriorities"
+                  [options]="priorities"
                   optionLabel="name"
-                  optionValue="value"
                 ></p-dropdown>
-                <label class="required">Grupo de prioridad</label>
+                <label class="required" for="priority">Grupo de prioridad</label>
               </p-floatLabel>
               @if (preScoutForm.isDirtyAndInvalid('priority')) {
                 <small class="text-danger">Debe escoger el grupo de prioridad correspondiente</small>
               }
             </div>
-            @if (preScoutForm.controlValue("priority") > 0 && preScoutForm.controlValue("priority") <= 3) {
+            @if (priority?.requiresExtraInfo) {
               <div class="col-12 col-md-9 mt-4 mt-md-0 mb-0">
                 <p-floatLabel>
                   <input
@@ -359,17 +359,7 @@
                     maxlength="250"
                   >
                   <label class="required" for="priorityInfo">
-                    @switch (preScoutForm.controlValue('priority')) {
-                      @case (1) {
-                        Nombre y unidad de dicho familiar
-                      }
-                      @case (2) {
-                        Nombre de dicho scout o scouter
-                      }
-                      @case (3) {
-                        Nombre y edad de hermano/a(s)
-                      }
-                    }
+                    {{ priority.label }}
                   </label>
                 </p-floatLabel>
                 @if (preScoutForm.isDirtyAndInvalid('priorityInfo')) {
@@ -379,12 +369,20 @@
                 }
               </div>
             }
+            <p-messages severity="info" class="mt-4">
+              <ng-template pTemplate>
+                <div style="overflow: hidden; text-overflow: ellipsis; font-size: 17px;">
+                  En cualquier caso, se antepone a los grupos de prioridad el equilibrio entre géneros en cada una de
+                  las unidades educativas.
+                </div>
+              </ng-template>
+            </p-messages>
           </div>
         }
         @case (3) {
-          <h5 class="step-form-title">
+          <h4 class="step-form-title mb-3">
             <b>Otros datos</b>
-          </h5>
+          </h4>
           <div class="row">
             <div class="col-12 mb-2">
               <label class="required" for="comment">
@@ -417,12 +415,12 @@
           </div>
         }
         @case (4) {
-          <h5 class="step-form-title">
+          <h4 class="step-form-title mb-2">
             <b>Confirmación</b>
-          </h5>
-          <div class="row">
+          </h4>
+          <div class="row confirmation-container">
             <div class="col-12">
-              <h4>Persona educanda</h4>
+              <h5>Persona educanda</h5>
             </div>
             <div class="col-12 col-md-6">
               <b>Nombre:</b>
@@ -430,7 +428,7 @@
             </div>
             <div class="col-12 col-md-6">
               <b>Apellidos:</b>
-              {{ surname || '-' }}
+              {{ preScout.firstSurname }} {{ preScout.secondSurname }}
             </div>
             <div class="col-12 col-md-6">
               <b>Género:</b>
@@ -453,36 +451,26 @@
               <b>Aspecto médicos:</b>
               {{ preScout.medicalData || '-' }}
             </div>
+            <div class="col">
+              <b>Grupo de prioridad:</b>
+              {{ priority.summary }}
+            </div>
+            @if (priority.requiresExtraInfo) {
+              <div class="col-12 col-md-6">
+                <b>
+                  {{ priority.label }}:
+                </b>
+                {{ preScout.priorityInfo || '-' }}
+              </div>
+            }
             <div class="col-12 col-md-6">
-              <b>¿Ha estado antes?:</b>
+              <b>Ha estado antes en el grupo:</b>
               {{ preScout.hasBeenInGroup ? 'Sí' : 'No' }}
             </div>
             @if (preScout.hasBeenInGroup) {
               <div class="col-12 col-md-6">
                 <b>Años aproximados y unidad:</b>
                 {{ preScout.yearAndSection || '-' }}
-              </div>
-            }
-            <div class="col">
-              <b class="ps-1">Grupo de prioridad:</b>
-              {{ preScout.priority }}.- {{ priorities[preScout.priority - 1] || '-' }}
-            </div>
-            @if (preScout.priorityInfo) {
-              <div class="col-6 ps-2">
-                <b>
-                  @switch (preScoutForm.controlValue('priority')) {
-                    @case (1) {
-                      Nombre y unidad de dicho familiar:
-                    }
-                    @case (2) {
-                      Nombre de dicho scout o scouter, en qué años estuvo y grupo scout:
-                    }
-                    @case (3) {
-                      Nombre y edad de dicho(s) hermano/a(s):
-                    }
-                  }
-                </b>
-                {{ preScout.priorityInfo || '-' }}
               </div>
             }
             <div class="col-12">
@@ -494,7 +482,7 @@
             </div>
             <div class="col-12 col-md-6">
               <b>Apellidos:</b>
-              {{ parentsSurname || '-' }}
+              {{ preScout.parentsFirstSurname }} {{ preScout.parentsSecondSurname }}
             </div>
             <div class="col-12 col-md-6">
               <b>Email:</b>

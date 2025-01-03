@@ -2,7 +2,6 @@ import {Component, inject, Input, OnInit} from '@angular/core';
 import {AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {MenuItem} from 'primeng/api';
 import {AlertService} from "../../../../shared/services/alert-service.service";
-import {PreScout} from '../../models/pre-scout.model';
 import {ScoutFormsService} from '../../services/scout-forms.service';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {CheckboxModule} from 'primeng/checkbox';
@@ -19,6 +18,8 @@ import {
 import {genders, maintenanceEmail} from "../../../../shared/constant";
 import {LargeFormButtonsComponent} from "../../../../shared/components/large-form-buttons/large-form-buttons.component";
 import {MessagesModule} from "primeng/messages";
+import {preScoutPriorities, PreScoutPriority} from "../../priority.constant";
+import {PreScoutForm} from "../../models/pre-scout-form.model";
 
 @Component({
   selector: 'app-ser-scout',
@@ -42,49 +43,32 @@ import {MessagesModule} from "primeng/messages";
 })
 export class SerScoutComponent implements OnInit {
 
-  private serScoutService = inject(ScoutFormsService);
-  private alertService = inject(AlertService);
+  private readonly serScoutService = inject(ScoutFormsService);
+  private readonly alertService = inject(AlertService);
 
-  protected steps: MenuItem[] = [
+  protected readonly steps: MenuItem[] = [
     {label: 'Datos Generales'},
     {label: 'Datos de Contacto'},
     {label: 'Grupos de Prioridad'},
     {label: 'Otros Datos'},
     {label: 'Confirmación'}
   ];
+  protected readonly genders = genders;
+  protected readonly priorities = preScoutPriorities;
   protected readonly maintenanceEmail = maintenanceEmail;
-  protected finalEmail = "";
-  protected preScout!: PreScout;
+  protected readonly sizes: string[] = ["5/6", "7/8", "9/10", "11/12", "XS", "S", "M", "L", "XL", "2XL"];
+  protected preScout!: PreScoutForm;
   protected preScoutForm = new FormHelper();
   protected minDate: Date = new Date(2000, 0, 1);
   protected maxDate: Date = new Date(2100, 11, 31);
-  @Input()
-  secondYearOfTerm!: number;
+  @Input() secondYearOfTerm!: number;
   protected formTerm!: string;
-  protected readonly genders = genders;
-  protected priorities = [
-    "Tiene hermanos/as o es hija de scouters que están en el grupo en la Ronda Solar de la inscripción.",
-    "Es hija de scouters o scouts que hayan pertenecido al grupo o a Scouts de Canarias / ASDE.",
-    "Tiene hermanos o hermanas en la lista de espera para la misma ronda.",
-    "Ninguna de las anteriores"
-  ];
-  protected dropdownPriorities = [
-    {name: "Grupo 1", value: 1},
-    {name: "Grupo 2", value: 2},
-    {name: "Grupo 3", value: 3},
-    {name: "Ninguna de las anteriores", value: 4},
-  ];
   protected successOnSubmit = false;
   protected loading = false;
   protected noWhiteSpaceFilter = /\S/;
-  protected surname = "";
-  protected parentsSurname = "";
-  protected sizes: string[] = ["5/6", "7/8", "9/10", "11/12", "XS", "S", "M", "L", "XL", "2XL"];
 
   ngOnInit(): void {
     this.formTerm = `${this.secondYearOfTerm - 1}/${this.secondYearOfTerm - 2000}`;
-    this.priorities[0] = `Tiene hermanos/as o es hija de scouters que están en el grupo en la Ronda Solar
-      ${this.formTerm}.`;
     this.minDate = new Date(this.secondYearOfTerm - 21, 0, 1);
     this.maxDate = new Date(this.secondYearOfTerm - 7, 11, 31);
     this.initializeForm();
@@ -92,30 +76,30 @@ export class SerScoutComponent implements OnInit {
 
   private initializeForm() {
     this.preScoutForm.createForm({
-      name: ['', Validators.required],
-      firstSurname: ['', Validators.required],
-      secondSurname: [''],
+      name: [null, Validators.required],
+      firstSurname: [null, Validators.required],
+      secondSurname: [null],
       birthday: [null, Validators.required],
-      dni: ['', Validators.required],
       gender: [null, Validators.required],
-      size: ['', Validators.required],
-      medicalData: ['', [Validators.required, Validators.maxLength(512)]], //512??
-      parentsName: ['', Validators.required],
-      parentsFirstSurname: ['', Validators.required],
-      parentsSecondSurname: ['', Validators.required],
-      relationship: ['', Validators.required],
-      phone: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      comment: ['', [Validators.required, Validators.maxLength(256)]], //samehere
-      priority: [null, Validators.required],
-      priorityInfo: ['', this.priorityValidation()],
+      dni: [null, Validators.required],
+      size: [null, Validators.required],
+      medicalData: [null, [Validators.required, Validators.maxLength(512)]],
       hasBeenInGroup: [false],
-      yearAndSection: ['', [this.hasBeenBeforeValidation()]],
+      yearAndSection: [null, this.hasBeenBeforeValidation()],
+      parentsName: [null, Validators.required],
+      parentsFirstSurname: [null, Validators.required],
+      parentsSecondSurname: [null],
+      relationship: [null, Validators.required],
+      phone: [null, Validators.required],
+      email: [null, [Validators.required, Validators.email]],
+      priority: [null, Validators.required],
+      priorityInfo: [null, this.priorityValidation()],
+      comment: [null, [Validators.required, Validators.maxLength(256)]],
       privacy: [false, Validators.requiredTrue]
     });
     this.preScoutForm.setPages([
-      ["name", "firstSurname", "birthday", "gender", "medicalData", "yearAndSection", "dni", "size"],
-      ["parentsName", "parentsFirstSurname", "relationship", "phone", "email"],
+      ["name", "firstSurname", "secondSurname", "birthday", "gender", "dni", "size", "medicalData", "hasBeenInGroup", "yearAndSection"],
+      ["parentsName", "parentsFirstSurname", "parentsSecondSurname", "relationship", "phone", "email"],
       ["priority", "priorityInfo"],
       ["comment", "privacy"]
     ]);
@@ -123,12 +107,9 @@ export class SerScoutComponent implements OnInit {
   }
 
   private createPreScoutForm() {
-    this.surname = `${this.preScoutForm.controlValue('firstSurname')} ${this.preScoutForm.controlValue('secondSurname')}`.trim();
-    this.parentsSurname = `${this.preScoutForm.controlValue('parentsFirstSurname')} ${this.preScoutForm.controlValue('parentsSecondSurname')}`.trim();
     this.preScout = {
       ...this.preScoutForm.value,
-      surname: this.surname.replace(/\s/g, '-'),
-      parentsSurname: this.parentsSurname.replace(/\s/g, '-')
+      priority: this.priority.value
     };
   }
 
@@ -142,10 +123,9 @@ export class SerScoutComponent implements OnInit {
     this.serScoutService.sendScoutFormMail(this.preScout).subscribe({
       next: () => {
         this.alertService.sendMessage({
-          title: "Formulario enviado con éxito.",
+          title: "Formulario enviado con éxito",
           severity: "success"
         });
-        this.finalEmail = this.preScout.email;
         this.loading = false;
         this.initializeForm();
         this.successOnSubmit = true;
@@ -154,16 +134,15 @@ export class SerScoutComponent implements OnInit {
     });
   }
 
-  private hasBeenBeforeValidation = (): ValidatorFn => (control: AbstractControl): ValidationErrors | null => {
-    return this.preScoutForm?.form?.controls["hasBeenInGroup"]?.value === true && !control.value ? {required: true} : null;
+  private readonly hasBeenBeforeValidation = (): ValidatorFn => (control: AbstractControl): ValidationErrors | null => {
+    return this.preScoutForm.controlValue("hasBeenInGroup") === true && !control.value ? {required: true} : null;
   };
 
-  private priorityValidation = (): ValidatorFn => (control: AbstractControl): ValidationErrors | null => {
-    const priority = this.preScoutForm?.form?.controls["priority"]?.value;
-    return this.priorityNeedsInfo(priority) && !control.value ? {required: true} : null;
+  private readonly priorityValidation = (): ValidatorFn => (control: AbstractControl): ValidationErrors | null => {
+    return this.priority?.requiresExtraInfo && !control.value ? {required: true} : null;
   };
 
-  protected priorityNeedsInfo(priorityValue: number): boolean {
-    return priorityValue > 0 && priorityValue <= 3;
+  protected get priority(): PreScoutPriority {
+    return this.preScoutForm.controlValue("priority");
   }
 }
