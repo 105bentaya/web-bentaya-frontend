@@ -128,7 +128,7 @@
             {{ preScout.gender }}
           </td>
           <td>
-            {{ preScout.creationDate }}
+            {{ preScout.creationDate | date:"dd/MM/yyyy HH:mm" }}
           </td>
           <td>
             {{ preScout.status | status:preScout.groupId }}

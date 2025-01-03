@@ -21,6 +21,7 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {TabMenuModule} from "primeng/tabmenu";
 import {sections} from "../../../../shared/constant";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-ser-scout-table',
@@ -38,7 +39,8 @@ import {sections} from "../../../../shared/constant";
     MultiSelectModule,
     ScoutYearPipe,
     StatusPipe,
-    BasicLoadingInfoComponent
+    BasicLoadingInfoComponent,
+    DatePipe
   ]
 })
 export class SerScoutTableComponent implements OnInit {
@@ -88,7 +90,7 @@ export class SerScoutTableComponent implements OnInit {
 
   private createYearMenu(preScouts: PreScout[]) {
     const years = new Set<number>();
-    preScouts.forEach(preScout => years.add(+preScout.inscriptionYear!));
+    preScouts.forEach(preScout => years.add(preScout.inscriptionYear!));
     const yearList = [...years].sort((n1, n2) => n2 - n1);
     this.yearList = yearList.map(year => ({label: `RS ${year - 1}/${year - 2000}`, id: year.toString()}));
   }
@@ -194,18 +196,9 @@ export class SerScoutTableComponent implements OnInit {
   protected customSort(event: SortEvent) {
     if (event.field == "section") {
       event.data?.sort((one, two) => this.sectionSort(one.section, two.section) * event.order!);
-    } else if (event.field == "creationDate") {
-      event.data?.sort((one, two) => (this.reorderDate(one.creationDate).localeCompare(this.reorderDate(two.creationDate)) * event.order!));
     } else {
       event.data?.sort((one, two) => (one[event.field!].localeCompare(two[event.field!])) * event.order!);
     }
-  }
-
-  //todo change in database to date type
-  private reorderDate(s: string) {
-    const [date, time] = s.split(' ');
-    const [day, month, year] = date.split('/');
-    return `${year}/${month}/${day} ${time}`;
   }
 
   private sectionSort(one: any, two: any) {

@@ -34,6 +34,10 @@ export class DateUtils {
     return new Date(a).toISOString().localeCompare(new Date(b).toISOString());
   }
 
+  public static toLocalDateFromString(date: string): string {
+    return date.split("/").reverse().join("-");
+  }
+
   public static toLocalDate(date: Date | string) {
     date = new Date(date);
     return `${this.getYear(date)}-${this.getMonth(date)}-${this.getDay(date)}`;

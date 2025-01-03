@@ -17,12 +17,12 @@ export interface PreScout {
   comment: string;
   priority: number;
   priorityInfo?: string;
-  creationDate?: string;
+  creationDate?: Date;
   age?: string;
   status?: number
   groupId?: number
   assignationComment?: string;
   assignationDate?: Date;
   size?: string;
-  inscriptionYear?: string;
+  inscriptionYear?: number;
 }
