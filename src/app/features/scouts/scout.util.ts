@@ -18,7 +18,7 @@ export default class ScoutHelper {
       tempScout = {
         ...tempScout,
         dni: scout.dni,
-        birthday: datePipe.transform(scout.birthday, "dd/MM/Y"),
+        birthday: datePipe.transform(scout.birthday, "dd/MM/y"),
         gender: scout.gender,
         municipality: scout.municipality,
         size: scout.shirtSize,

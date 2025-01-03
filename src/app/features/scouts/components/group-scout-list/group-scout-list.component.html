@@ -88,11 +88,11 @@
           {{ scout.surname }}, {{ scout.name }}
         </td>
         <td>
-          {{ showAll ? (scout.groupId | group) : (currentYear - +(scout.birthday | date: "Y")! | scoutYear:userGroup) }}
+          {{ showAll ? (scout.groupId | group) : (currentYear - +(scout.birthday | date: "y")! | scoutYear:userGroup) }}
         </td>
         <td class="hide-900">
           <span>
-            {{ scout.birthday | date: "dd/MM/Y" }}
+            {{ scout.birthday | date: "dd/MM/y" }}
           </span>
         </td>
         <td class="hide-700">
