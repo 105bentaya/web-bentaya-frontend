@@ -193,7 +193,7 @@ export class SerScoutTableComponent implements OnInit {
     } else if (event.field == "creationDate") {
       event.data?.sort((one, two) => (this.reorderDate(one.creationDate).localeCompare(this.reorderDate(two.creationDate)) * event.order!));
     } else {
-      event.data?.sort((one, two) => (one[event.field!].toUpperCase() > two[event.field!].toUpperCase() ? 1 : -1) * event.order!);
+      event.data?.sort((one, two) => (one[event.field!].localeCompare(two[event.field!])) * event.order!);
     }
   }
 
