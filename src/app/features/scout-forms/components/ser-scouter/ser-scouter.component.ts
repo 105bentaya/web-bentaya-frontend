@@ -89,7 +89,7 @@ export class SerScouterComponent implements OnInit {
     this.serScouterService.sendScouterFormMail(preScouter).subscribe({
       next: () => {
         this.alertService.sendMessage({
-          title: "Formulario enviado con éxito.",
+          title: "Formulario enviado con éxito",
           severity: "success"
         });
         this.initializeForm();

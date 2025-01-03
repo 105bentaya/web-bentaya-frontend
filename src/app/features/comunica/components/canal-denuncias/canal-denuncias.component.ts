@@ -138,7 +138,7 @@ export class CanalDenunciasComponent implements OnInit {
     this.serScoutService.sendComplaintMail(complaint).subscribe({
       next: () => {
         this.alertService.sendMessage({
-          title: "Formulario enviado con éxito.",
+          title: "Formulario enviado con éxito",
           message: this.createAlertMsg(complaint.email),
           severity: "success"
         });
