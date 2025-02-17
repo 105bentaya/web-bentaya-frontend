@@ -1,6 +1,6 @@
 ## PRODUCTION APP
 
-name: Azure Static Web Apps CI/CD
+name: Web Bentaya Frontend Production Deployment
 
 on:
   push:

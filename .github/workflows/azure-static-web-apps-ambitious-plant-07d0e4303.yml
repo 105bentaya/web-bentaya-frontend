@@ -1,6 +1,6 @@
 ## TEST APP
 
-name: Azure Static Web Apps CI/CD
+name: Web Bentaya Frontend Test Deployment
 
 on:
   push:
