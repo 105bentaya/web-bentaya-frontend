@@ -183,16 +183,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
     return {
       id: basicEvent.id.toString(),
       title: basicEvent.title,
-      start: this.getEventDate(basicEvent.startDate, basicEvent.unknownTime),
-      end: this.getEventDate(basicEvent.endDate, basicEvent.unknownTime),
+      start: this.getEventDate(basicEvent.startDate, basicEvent),
+      end: this.getEventDate(basicEvent.endDate, basicEvent),
       color: this.getEventColor(basicEvent.groupId),
       extendedProps: basicEvent,
       className: eventClasses.join(" ")
     };
   }
 
-  getEventDate(date: Date, unknownTime: boolean) {
-    return unknownTime ?
+  protected getEventDate(date: Date, event: BasicEvent) {
+    return event.unknownTime ?
       DateUtils.shiftDateToUTC(date) :
       new Date(date);
   }

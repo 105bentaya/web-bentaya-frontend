@@ -25,9 +25,17 @@
   </ng-template>
 </p-drawer>
 <p-button
+  class="d-none d-md-inline"
+  styleClass="home-bar-button menu"
   (onClick)="sidebarVisible = true"
   icon="pi pi-bars"
   label="Menú"
-  [text]="true"
-  [plain]="true"
+  text
+></p-button>
+<p-button
+  class="d-md-none"
+  styleClass="home-bar-button menu"
+  (onClick)="sidebarVisible = true"
+  icon="pi pi-bars"
+  text
 ></p-button>

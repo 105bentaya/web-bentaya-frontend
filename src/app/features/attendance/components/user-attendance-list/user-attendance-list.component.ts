@@ -4,7 +4,6 @@ import {UserListInfo} from "../../models/user-list-info.model";
 import {FilterService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {NotificationService} from "../../../../core/notification/notification.service";
-import {EventInfoComponent} from "../../../calendar/components/event-info/event-info.component";
 import {TagModule} from 'primeng/tag';
 import {TableModule} from 'primeng/table';
 import {BadgeModule} from 'primeng/badge';
@@ -21,12 +20,14 @@ import {Tab, TabList, Tabs} from "primeng/tabs";
 import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {EventInfoComponent} from "../../../calendar/components/event-info/event-info.component";
 
 @Component({
   selector: 'app-user-attendance-list',
   templateUrl: './user-attendance-list.component.html',
   styleUrls: ['./user-attendance-list.component.scss'],
-  providers: [DialogService],
+  providers: [DynamicDialogService, DialogService],
   imports: [
     FormsModule,
     ToggleButtonModule,
@@ -48,7 +49,7 @@ export class UserAttendanceListComponent implements OnInit {
 
   private readonly filterService = inject(FilterService);
   private readonly confirmationService = inject(ConfirmationService);
-  private readonly dialogService = inject(DialogService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly notificationService = inject(NotificationService);
 
   private readonly yesterday = DateUtils.plusDays(new Date(), -1);
@@ -72,11 +73,7 @@ export class UserAttendanceListComponent implements OnInit {
   }
 
   protected openEditDialog(eventId: number, scoutId: number) {
-    this.ref = this.dialogService.open(AttendanceFormComponent, {
-      header: 'Asistencia',
-      styleClass: 'dialog-width',
-      data: {eventId: eventId, scoutId: scoutId}
-    });
+    this.ref = this.dialogService.openDialog(AttendanceFormComponent, 'Asistencia', "small", {eventId: eventId, scoutId: scoutId});
     this.ref.onClose.subscribe((data: Confirmation) => {
       if (data) {
         const editedScout = this.info.find(scout => scout.scoutId == data.scoutId)!;
@@ -103,11 +100,7 @@ export class UserAttendanceListComponent implements OnInit {
   }
 
   protected openInfoDialog(eventId: number) {
-    this.ref = this.dialogService.open(EventInfoComponent, {
-      header: 'Actividad',
-      styleClass: 'small-dw dialog-width',
-      data: eventId
-    });
+    this.ref = this.dialogService.openDialog(EventInfoComponent, 'Actividad', "small", eventId);
   }
 
   private generateMenuItems() {

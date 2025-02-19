@@ -22,11 +22,11 @@
         <p-datePicker
           icon="pi pi-calendar"
           [showIcon]="true"
-          class="input-w-100"
+          class="range-datepicker"
           styleClass="w-100"
           placeholder="Filtrar por rango de fechas"
           selectionMode="range"
-          [showClear]="true"
+          showClear
           [readonlyInput]="true"
           [(ngModel)]="filterDates"
           (onClear)="dt.filter(true, 'eventId', 'date-range')"

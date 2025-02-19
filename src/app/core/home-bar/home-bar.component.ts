@@ -3,9 +3,9 @@ import {RouterLink} from '@angular/router';
 import {DialogService} from 'primeng/dynamicdialog';
 import {AuthService} from '../auth/services/auth.service';
 import {NotificationService} from "../notification/notification.service";
-import {Button} from 'primeng/button';
 import {BadgeModule} from "primeng/badge";
 import {SidebarComponent} from "../sidebar/sidebar.component";
+import {GeneralAButtonComponent} from "../../shared/components/buttons/general-a-button/general-a-button.component";
 
 @Component({
   selector: 'app-home-bar',
@@ -15,8 +15,8 @@ import {SidebarComponent} from "../sidebar/sidebar.component";
   imports: [
     RouterLink,
     BadgeModule,
-    Button,
-    SidebarComponent
+    SidebarComponent,
+    GeneralAButtonComponent
   ]
 })
 export class HomeBarComponent implements OnInit {

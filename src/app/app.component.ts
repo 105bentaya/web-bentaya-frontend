@@ -13,6 +13,7 @@ import {noop} from "rxjs";
 import {PrimeNG} from "primeng/config";
 import Lara from '@primeng/themes/lara';
 import {definePreset} from "@primeng/themes";
+import {HomeBarComponent} from "./core/home-bar/home-bar.component";
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ import {definePreset} from "@primeng/themes";
     RouterOutlet,
     FooterComponent,
     ToastModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    HomeBarComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

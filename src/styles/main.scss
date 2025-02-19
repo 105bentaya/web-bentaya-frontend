@@ -17,6 +17,10 @@ a {
   }
 }
 
+a.p-button {
+  text-decoration: none;
+}
+
 hr {
   margin: .75rem;
 }
@@ -247,5 +251,22 @@ h1 {
 .opaque {
   .p-toast .p-toast-message.p-toast-message-warn {
     background-color: #fff2e2;
+  }
+}
+
+.home-bar-button {
+  color: var(--bentaya-dark-color);
+  transition: 0.5s;
+
+  &.mi-vivac a:hover {
+    background: rgba(211, 182, 29, 0.45);
+  }
+
+  &.menu:hover {
+    background: rgba(159, 188, 197, 0.45);
+  }
+
+  .p-button-label {
+    background: unset !important;
   }
 }
