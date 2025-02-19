@@ -1,75 +1,114 @@
-<div class="container-fluid">
-  <div class="image">
-    <a [routerLink]="carouselSlides.link">
-      <img
-        class="d-none d-lg-block"
-        src="assets/home/carousel/big/{{carouselSlides.image}}"
-        [alt]="carouselSlides.alt"
+<div class="container">
+  <div class="image-container w-100 d-flex align-items-center">
+    <div class="text-center ms-5">
+      <h1 class="trueno-title text-white">SCOUTS 105<br>BENTAYA</h1>
+      <h2 class="inspiration-title text-white">¡La Aventura de Ser Scout!</h2>
+      <button
+        class="btn btn-warning rounded-3"
+        routerLink="/ser-scout"
       >
-      <img
-        class="d-none d-sm-block d-lg-none"
-        src="assets/home/carousel/medium/{{carouselSlides.image}}"
-        [alt]="carouselSlides.alt"
-      >
-      <img
-        class="d-sm-none"
-        src="assets/home/carousel/small/{{carouselSlides.image}}"
-        [alt]="carouselSlides.alt"
-      >
-    </a>
+        <b>ÚNETE</b>
+      </button>
+    </div>
   </div>
-  <p-divider align="center">
-    <b>Formularios</b>
+  <p-divider class="mt-3">
+    <b class="trueno-title fs-3">FORMULARIOS</b>
   </p-divider>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-5 home-button-container justify-content-center">
-    @for (button of formButtons; track $index) {
-      @if ($index > 0) {
-        <p-divider class="d-sm-none" type="dashed"></p-divider>
-      }
+  <div class="d-flex flex-row">
+    @for (card of formButtons; track $index) {
       <div
-        class="col home-button d-flex flex-column justify-content-center align-items-center text-center"
-        [ngClass]="{'disabled': !button.link}"
+        class="text-center flex-fill w-100 m-2"
+        [ngClass]="{'disabled': !card.link}"
       >
-        <a [routerLink]="button.link">
-          <img
-            [src]="button.imgSrc"
-            [alt]="button.title"
-          >
+        <a class="text-decoration-none" [routerLink]="card.link">
+          <div class="card mb-3">
+            <img src="{{card.imgSrc}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title trueno-title fs-5">{{card.title | uppercase}}</h5>
+              <h5 class="card-text trueno-title fs-5 text-blue">{{card.subtitle | uppercase}}</h5>
+              <p class="card-text">{{card.description}}</p>
+            </div>
+          </div>
         </a>
-        <a [routerLink]="button.link">
-          <h4 class="text-nowrap"><b>{{ button.title | uppercase }}</b></h4>
-        </a>
-        <h5><label>{{ button.subtitle }}</label></h5>
-        <label>
-          {{ button.description }}
-        </label>
       </div>
     }
   </div>
-  <p-divider align="center">
-    <b>Información</b>
-  </p-divider>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-5 home-button-container justify-content-center">
-    @for (button of infoButtons; track $index) {
-      @if ($index > 0) {
-        <p-divider class="d-sm-none" type="dashed"></p-divider>
-      }
-      <div
-        class="col home-button d-flex flex-column justify-content-center align-items-center text-center"
-        [ngClass]="{'disabled': !button.link}"
-      >
-        <a [routerLink]="button.link" [target]="button.target">
-          <img
-            [src]="button.imgSrc"
-            [alt]="button.title"
-          >
-        </a>
-        <a target="_blank" [routerLink]="button.link">
-          <h4><b>{{ button.title | uppercase }}</b></h4>
-        </a>
-        <label>
-          {{ button.description }}
-        </label>
+  <div class="scouts-center-container mt-5 justify-content-center">
+    <div class="text-center">
+      <h2 class="inspiration-title mb-0 pt-3">Vive la aventura en nuestros<br></h2>
+      <h2 class="trueno-title mb-0">CENTROS SCOUT</h2>
+    </div>
+    <div class="row m-0 p-4 align-items-center">
+      <div class="col-7">
+        <p-galleria
+          [value]="this.images"
+          [containerStyle]="{'max-width':'auto'}"
+          [showItemNavigators]="true"
+          [showThumbnails]="false"
+          [showItemNavigatorsOnHover]="false"
+        >
+          <ng-template pTemplate="item" let-item>
+            <img [src]="item.src" style="width: 100%;" alt="" class="rounded-3">
+          </ng-template>
+        </p-galleria>
+      </div>
+      <div class="col text-center">
+        <p class="flex-column">
+          Los Centros Scout son el lugar perfecto para disfrutar de actividades al aire libre y
+          aprender en plena naturaleza. Ofrecemos espacios únicos para que los niños, niñas y
+          jóvenes se conecten con el entorno y crezcan juntos.
+        </p>
+        <p>
+          ¿Estás pensando en organizar una convivencia o actividad al aire libre con tu grupo o escuela?
+          ¡Solicita uno de nuestros centros y haz que la experiencia sea inolvidable!
+        </p>
+        <button
+          class="btn btn-warning mt-3 rounded-3"
+          routerLink="/centros-scout/informacion"
+        >
+          <b>SOLICITAR</b>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="justify-content-center text-center mt-4">
+    <h2 class="trueno-title fs-1">¿Qué hacemos?</h2>
+    <div class="d-flex flex-row justify-content-center mt-3">
+      <div class="d-flex flex-column m-2">
+        <img src="assets/home/valores.png" alt="">
+        <img src="assets/home/grupos.png" alt="" class="mt-2">
+      </div>
+      <div class="d-flex flex-column m-2">
+        <img src="assets/home/hacemos.jpg" alt="" class="rounded-4">
+        <button
+          class="btn mt-3"
+          routerLink="/asociacion" fragment="que-hacemos"
+        >
+          LEER MÁS
+        </button>
+      </div>
+      <div class="d-flex flex-column m-2">
+        <img src="assets/home/aprender-jugando.png" alt="">
+        <img src="assets/home/actividades.png" alt="" class="mt-2">
+      </div>
+    </div>
+  </div>
+  <div class="info-container mt-4 d-flex flex-wrap justify-content-center">
+    <div class="info-card">
+      <h3>Información Sobre Nuestra Asociación</h3>
+      <p>Cosas rápidas que puedes leer y aprender</p>
+    </div>
+    @for(card of cards; track card){
+      <div class="association-card">
+        <div [routerLink]="card.link" [target]="card.target">
+          <div class="association-card-header">
+            <h2>{{card.id}}</h2>
+            <h3>{{card.title}}</h3>
+          </div>
+          <div class="association-card-content">
+            <p>{{card.description}}</p>
+          </div>
+        </div>
       </div>
     }
   </div>

@@ -1,17 +1,38 @@
-<footer class="d-flex flex-column flex-wrap align-items-center">
-  <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 top-buttons">
-    <a routerLink="/condiciones-de-uso">CONDICIONES DE USO</a>
-    <a routerLink="/aviso-legal">AVISO LEGAL</a>
-    <a routerLink="/politica-privacidad">POLÍTICA DE PRIVACIDAD</a>
-  </div>
-  <div class="d-flex gap-2 my-1">
-    @for (button of socialMediaButtons; track $index) {
-      <a
-        pButton
-        [href]="button.link"
-        [icon]="button.icon"
-        class="p-button-rounded p-button-text text-white"
-      ></a>
-    }
+<footer>
+  <div class="container">
+    <div class="d-flex flex-row flex-wrap justify-content-center">
+      <div class="d-flex flex-column m-4 footer-contents text-center">
+        <h5 class="text-white"><b>NUESTRAS POLÍTICAS</b></h5>
+        <a pButton  class="p-button-rounded p-button-text text-white" routerLink="/condiciones-de-uso">Condiciones de Uso</a>
+        <a  pButton  class="p-button-rounded p-button-text text-white" routerLink="/aviso-legal">Aviso Legal</a>
+        <a  pButton  class="p-button-rounded p-button-text text-white" routerLink="/politica-privacidad">Política de Privacidad</a>
+      </div>
+      <div class="d-flex flex-column m-4 footer-contents text-center">
+        <h5 class="text-white"><b>CONTACTO</b></h5>
+        <a pButton  class="p-button-rounded p-button-text text-white" href="mailto:scouts@105bentaya.org">scouts&#64;105bentaya.org</a>
+        <a
+          pButton
+          class="p-button-rounded p-button-text text-white"
+          routerLink="/contacto"
+          icon=" pi pi-phone"
+        >
+          <label class="ms-1"> Mándanos un mensaje</label>
+        </a>
+      </div>
+      <div class="d-flex flex-column m-4 text-center">
+        <h5 class="text-white"><b>SÍGUENOS</b></h5>
+        <p-divider></p-divider>
+        <div class="d-flex flex-wrap">
+          @for (button of socialMediaButtons; track $index) {
+            <a
+              pButton
+              [href]="button.link"
+              [icon]="button.icon"
+              class="p-button-rounded p-button-text text-white"
+            ></a>
+          }
+        </div>
+      </div>
+    </div>
   </div>
 </footer>

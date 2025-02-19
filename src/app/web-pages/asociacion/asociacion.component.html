@@ -1,0 +1,151 @@
+<div class="container">
+  <div class="section" id="quienes-somos">
+    <h1 class="trueno-title fs-1">Scouts 105 Bentaya</h1>
+    <p>
+      Scouts 105 Bentaya se define como una organización de carácter no lucrativo,
+      cívica de utilidad pública, de libre adhesión, de participación democrática,
+      con actividad en política asociativa, no partidista, pluriconfesional, corresponsable con los
+      valores de cada persona, solidaria, tolerante e integradora de las realidades sociales y/o
+      personales más desfavorecidas, comprometida con la conservación y mejora del medio ambiente,
+      propulsora de nuestra identidad canaria y scout en su sentir, modo de hacer e historia.
+    </p>
+    <p>
+      Trabajamos por la educación de niños, niñas, adolescentes y jóvenes, entre los 6 y los 21 años.
+      Nuestro método educativo se basa en la acción, la responsabilidad y la confianza. A través del tiempo libre,
+      les formamos en varios planos: social, psicológica, intelectual, emocional y espiritualmente. Para desarrollarlo
+      nos organizamos en las siguientes secciones educativas:
+    </p>
+    <ul>
+      <li>
+        <b>Castoras</b> de 6 a 8 años
+      </li>
+      <li>
+        <b>Lobatas</b> de 8 a 11 años
+      </li>
+      <li>
+        <b>Scouts</b> de 11 a 14 años
+      </li>
+      <li>
+        <b>Escultas</b> de 14 a 17 años
+      </li>
+      <li>
+        <b>Rovers</b> de 17 a 21 años
+      </li>
+      <li>
+        <b>Scouters</b> (voluntariado) +21 años
+      </li>
+    </ul>
+    <div class="d-flex flex-row">
+      @for (group of scoutGroups; track $index) {
+        <div class="text-center flex-fill w-100 m-2">
+          <a class="text-decoration-none" [routerLink]="group.link">
+            <div class="card" [ngStyle]="{'background-color':group.color}">
+              <img class="card-img" alt="" src="{{group.src}}}">
+              <div class="card-body">
+                <h2 class="card-title trueno-title text-black fs-4">{{group.name}}</h2>
+              </div>
+            </div>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="section mt-4" id="que-hacemos">
+    <h1 class="trueno-title fs-1">¿Qué hacemos?</h1>
+    <p>
+      La Asociación Scouts-Exploradores 105 Bentaya ofrece a todas las edades una actividad que no sólo es formativa, sino de carácter social.
+    </p>
+    <div class="d-flex flex-row">
+      <div class="d-flex flex-fill w-75 justify-content-center">
+        <img src="assets/web-pages/asociacion/que-hacemos.jpg" alt="" class="rounded-3">
+      </div>
+      <div class="d-flex flex-column flex-fill w-100">
+        <p>
+          Las actividades realizadas semana a semana buscan ser divertidas, dinámicas e invitan a los educandos/as a conocer a otros iguales y
+          a fomentar la vida en pequeños grupos.
+        </p>
+        <p>
+          La acción social desarrollada en este aspecto tiene como fin animar a los niños/as nuevos que entran, a disfrutar de una nueva realidad,
+          una en la que conocen a gente nueva, descubren juegos y dinámicas que hasta ahora eran desconocidos, y aprenden a respetar todo lo que les rodea.
+          Todo ello gracias a una continua educación por la acción por parte de los scouters, así como una importante educación en valores, donde facilitamos
+          la integración, la participación y animamos a que realicen actividades por ellos mismos.
+        </p>
+        <p>
+          Además, el grupo apuesta por las nuevas tecnologías, desde la realización de reuniones a distancia mediante videollamadas, interactuando
+          por las redes sociales y fomentando un uso responsable de las TIC.
+        </p>
+        <p>
+          Trabajamos por y para el desarrollo de los niños/niñas y jóvenes de la sociedad usando el método scout, unos objetivos educativos y una organización interna.
+        </p>
+      </div>
+    </div>
+    <div class="d-flex flex-row mt-3">
+      <div class="flex-fill w-100">
+        <p-panel header="Objetivos Educativos" [toggleable]="true" [collapsed]="true">
+          <p>
+            A principio de la ronda, las personas voluntarias del grupo definen un plan educativo para ese año en concreto. Ese plan anual está definido según las
+            necesidades observadas en las educandas y de los hitos a plantear durante el año en cuestión. En base a dicho plan se desarrollan, posteriormente,
+            los planes de cada una de las secciones educativas y desde cada uno de estos salen todas las actividades de nuestra actividad anual.
+          </p>
+        </p-panel>
+      </div>
+      <div class="flex-fill w-100 ms-2">
+        <p-panel header="Organización Interna" [toggleable]="true" [collapsed]="true">
+          <p>
+            Desde el grupo creemos fervientemente en el movimiento scout. Por ello, siempre intentamos dar lo mejor de nosotras mismas en todas las actividades
+            que desarrollamos.
+          </p>
+          <p>
+            Para poder desarrollar esas actividades adecuadamente, las personas voluntarias de la asociación nos reunimos varias veces al año para
+            realizar la programación de las actividades, así como evaluarlas y llevar un seguimiento de la situación de la unidad o del grupo. De esta forma,
+            disponemos de un seguimiento de todas las secciones educativas y dotamos a las scouters de las herramientas necesarias para la realización y mejora de
+            estas actividades.
+          </p>
+          <p>
+            Además, Scouts de Canarias dispone de una escuela para la formación de scouters, de la cual obtenemos una educación progresiva que nos ayuda a realizar los programas
+            educativos para las unidades. Esta formación permite aumentar la calidad asegurando así unas actividades completas que nos permitan cumplir los objetivos propuestos.
+          </p>
+        </p-panel>
+      </div>
+    </div>
+  </div>
+  <div class="section mt-4" id="mvv">
+    <h1 class="trueno-title fs-1">Nuestra Misión, Visión y Valores</h1>
+  </div>
+  <div class="section mt-4" id="escultismo">
+    <h1 class="trueno-title fs-1">El Escultismo como Método Educativo</h1>
+    <p>
+      El Escultismo es un sistema pedagógico cuyo objetivo principal es trabajar para lograr un desarrollo pleno e integral en
+      niños, niñas y jóvenes, de tal manera que lleguen al cumplimiento cabal de todos los aspectos que los conforman, mediante el
+      desarrollo armónico de todas las etapas de su crecimiento. Una vez cumplido este desarrollo, se habrá capacitado para,
+      como bien dice el lema de la Organización Scout Mundial, "Construir un Mundo Mejor".
+    </p>
+    <div class="d-flex flex-row">
+      <div class="flex-fill w-100 mt-5 me-3">
+        <h4>{{ selectedItem?.label }}</h4>
+        <p>{{ selectedItem?.info }}</p>
+      </div>
+      <div
+        class="flex-fill w-75 mt-4 rounded-3"
+        style="background-color:#F8DE9C"
+      >
+        <h2 class="text-center mt-2">El método Scout está basado en:</h2>
+        <ul class="list-unstyled">
+          @for (item of scoutMethodItems; track $index) {
+            <li
+              (click)="selectItem(item)"
+              class="m-2 fs-5"
+            >
+              <input type="checkbox" [checked]="item.selected" /> {{ item.label }}
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+    <p class="mt-4">
+      Todo ello puesto en práctica a través de proyectos de actividades atrayentes y progresivas donde las participantes se vean involucradas desde la
+      elección y planificación de estas. Dentro del método educativo, cada sección educativa está adaptada para que los conceptos mostrados anteriormente
+      sean apropiados para las edades que se corresponden.
+    </p>
+  </div>
+</div>

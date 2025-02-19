@@ -11,12 +11,13 @@ a:hover {
   cursor: pointer;
 }
 
-.top-buttons {
+.footer-contents {
   a {
-    border-radius: 25px;
-    border: 3px solid #004b93;
     color: white;
     text-decoration: none;
-    padding: 2px;
+  }
+
+  p {
+    color: white;
   }
 }

@@ -21,6 +21,11 @@
   height: $button-icon-width-height;
 }
 
+.p-tooltip .p-tooltip-text {
+  padding: 0.25rem 0.5rem !important;
+  font-size: 14px;
+}
+
 html {
   height: 100%;
 }
@@ -356,13 +361,30 @@ p-message {
 }
 
 @font-face {
-  font-family: 'Souses';
-  src: url('/assets/fonts/souses.regular.otf') format('opentype');
+  font-family: 'Inspiration-Regular';
+  src: url('/assets/fonts/Inspiration-Regular.ttf') format('opentype');
+}
+
+.inspiration-title {
+  font-family: Inspiration-Regular, sans-serif, Inter;
+  color: #365299FF;
+  font-size: 4em;
+}
+
+@font-face {
+  font-family: 'Trueno-Black';
+  src: url('/assets/fonts/TruenoBlk.otf') format('opentype');
+}
+
+.trueno-title {
+  font-family: Trueno-Black, sans-serif;
+  color: #014B94;
+  font-size: 4em;
 }
 
 h1 {
-  font-family: Souses, sans-serif;
-  color: #365299FF;
+  font-family: Trueno-Black, sans-serif;
+  color: #014B94;
   margin-bottom: 1rem;
 }
 

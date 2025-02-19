@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
-import {NgClass, UpperCasePipe} from '@angular/common';
+import {NgClass, NgOptimizedImage, UpperCasePipe} from '@angular/common';
+import {GalleriaModule} from "primeng/galleria";
 
 @Component({
   selector: 'app-home',
@@ -12,82 +13,101 @@ import {NgClass, UpperCasePipe} from '@angular/common';
     DividerModule,
     NgClass,
     RouterLink,
-    UpperCasePipe
+    UpperCasePipe,
+    GalleriaModule,
+    NgOptimizedImage
   ]
 })
 export class HomeComponent {
 
-  protected readonly carouselSlides = {image: "quienes-somos.webp", alt: "Qué hacemos", link: "/asociacion/quienes-somos"};
+  protected images: {src: string; alt: string}[] = [
+    {
+      src: "/assets/centros-scout/palmital/menu.png",
+      alt: "Aula de la Naturaleza El Palmital"
+    },
+    {
+      src: "/assets/centros-scout/terreno/menu.jpg",
+      alt: "Campamento Bentaya"
+    },
+    {
+      src: "/assets/centros-scout/refugio/menu.jpg",
+      alt: "Refugio Luis Martín"
+    },
+    {
+      src: "/assets/centros-scout/tejeda/menu.jpg",
+      alt: "Refugio Bentayga"
+    }
+  ];
 
-  protected readonly  formButtons: { subtitle: string; link: string; description: string; title: string; imgSrc: string }[] = [
+  protected formButtons: { subtitle: string; link: string; description: string; title: string; imgSrc: string }[] = [
     {
       link: '/colaboraciones',
-      imgSrc: 'assets/home/colaboraciones.png',
+      imgSrc: 'assets/home/forms/colaboraciones.jpg',
       title: 'Colaboraciones',
       subtitle: 'Ser Solidaria',
       description: 'Para realizar alguna actividad conjunta, escríbenos aquí'
     },
     {
       link: '/donaciones',
-      imgSrc: 'assets/home/donaciones.png',
+      imgSrc: 'assets/home/forms/donaciones.jpg',
       title: 'Donaciones',
       subtitle: 'Ser Amiga',
       description: 'Si deseas hacer alguna aportación, este es tu portal'
     },
     {
       link: '/ser-scout',
-      imgSrc: 'assets/home/ser-scout.png',
+      imgSrc: 'assets/home/forms/ser-scout.jpg',
       title: 'Preinscripciones',
       subtitle: 'Ser Scout',
       description: 'Si quieres ser Scout entra aquí'
     },
     {
       link: '/ser-scouter',
-      imgSrc: 'assets/home/ser-scouter.png',
+      imgSrc: 'assets/home/forms/voluntariado.jpg',
       title: 'Voluntariado',
       subtitle: 'Ser Scouter',
       description: '¿Quieres hacer voluntariado? ¡Este es tu sitio!'
     },
     {
       link: '/seccion-senior',
-      imgSrc: 'assets/home/senior.png',
+      imgSrc: 'assets/home/forms/siempre-scout.jpg',
       title: 'Sección Senior',
       subtitle: 'Siempre Scout',
       description: 'Para continuar siendo parte activa del grupo, únete aquí'
     }
   ];
 
-  protected readonly  infoButtons: { link: string; description: string; title: string; imgSrc: string, target?: string }[] = [
+  protected  cards: { id: string; title: string; description: string; link: string; target?: string }[] = [
     {
-      link: '/transparencia',
-      imgSrc: 'assets/home/transparencia.png',
+      id: '01',
       title: 'Transparencia',
-      description: 'Accede aquí a nuestro portal de transparencia'
+      description: 'Accede aquí a nuestro portal de transparencia.',
+      link: '/transparencia',
     },
     {
+      id: '02',
+      title: 'Ética Scout',
+      description: 'Lee el código ético de Scouts de España, al que nosotros nos acogemos como asociación perteneciente.',
       link: '/assets/archivos/codigo-etico-scouts-de-españa.pdf',
       target: '_blank',
-      imgSrc: 'assets/home/etica.png',
-      title: 'Ética',
-      description: 'Lea el código ético de Scouts de España, al que nosotros nos acogemos como asociación perteneciente'
     },
     {
-      link: '/centros-scout/informacion',
-      imgSrc: 'assets/home/centros-scout.png',
+      id: '03',
       title: 'Centros Scout',
-      description: 'Un hogar en la naturaleza. Haz tu reserva aquí'
+      description: '¿Piensas en educación al aire libre? Reserva uno de nuestros centros scout.',
+      link: '/centros-scout/informacion',
     },
     {
-      link: '/igualdad',
-      imgSrc: 'assets/home/igualdad.png',
+      id: '04',
       title: 'Igualdad',
-      description: 'Este es nuestro portal de Igualdad'
+      description: 'En nuestro portal de igualdad podrás encontrar nuestros planes y protocolos.',
+      link: '/igualdad',
     },
     {
-      link: '/calidad',
-      imgSrc: 'assets/home/calidad.png',
+      id: '05',
       title: 'Calidad',
-      description: 'Protección, buen gobierno y buen trato'
-    },
+      description: 'Protección, buen gobierno y buen trato, ese es nuestro mayor compromiso.',
+      link: '/calidad',
+    }
   ];
 }

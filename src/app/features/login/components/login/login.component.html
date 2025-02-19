@@ -1,0 +1,60 @@
+<div style="max-width: 500px" class="container-fluid">
+  @if (login) {
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm.form" class="form-container mt-2">
+      <div class="row row-cols-1">
+        <div class="col mb-3">
+          <input
+            pInputText
+            name="bentaya-username"
+            id="username"
+            placeholder="Nombre de usuario (correo electrónico)"
+            formControlName="username"
+            type="text"
+          />
+        </div>
+        <div class="col mb-3">
+          <div class="d-flex flex-column gap-1">
+            <p-password
+              id="password"
+              placeholder="Contraseña"
+              formControlName="password"
+              [toggleMask]="true"
+              [feedback]="false"
+            ></p-password>
+            <a class="forgot" (click)="login = false">
+              <small>Olvidé la contraseña</small>
+            </a>
+          </div>
+        </div>
+        <div class="col mb-3">
+          <app-save-buttons
+            [saveDisabled]="loginForm.invalid"
+            [saveLoading]="loading"
+            saveIcon="pi pi-user"
+            saveLabel="Iniciar Sesión"
+            saveType="submit"
+          ></app-save-buttons>
+        </div>
+      </div>
+    </form>
+  } @else {
+    <div>
+      <small>Introduzca su nombre de usuario y recibirá un correo para restablecer su contraseña.</small>
+      <input
+        pInputText
+        id="email"
+        class="w-100 mt-2 mb-3"
+        placeholder="Nombre de usuario"
+        type="text"
+        [(ngModel)]="forgotUsername"
+      />
+      <app-save-buttons
+        [saveDisabled]="!forgotUsername"
+        [saveLoading]="loading"
+        saveIcon="pi pi-user"
+        saveLabel="Enviar"
+        (onSave)="forgotPassword()"
+      ></app-save-buttons>
+    </div>
+  }
+</div>

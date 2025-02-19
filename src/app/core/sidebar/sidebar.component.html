@@ -1,0 +1,33 @@
+<p-sidebar [(visible)]="sidebarVisible">
+  <ng-template pTemplate="body">
+    <p-panelMenu [model]="items" ></p-panelMenu>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <p-divider></p-divider>
+      <div>
+        <a
+          routerLink="/contacto"
+          (click)="sidebarVisible = false"
+        >
+          Contacto
+        </a>
+      </div>
+      <div>
+        <a
+          routerLink="/canal-de-denuncias"
+          (click)="sidebarVisible = false"
+        >
+          Canal de Denuncias
+        </a>
+      </div>
+    </div>
+  </ng-template>
+</p-sidebar>
+<p-button
+  (onClick)="sidebarVisible = true"
+  icon="pi pi-bars"
+  label="Menú"
+  [text]="true"
+  [plain]="true"
+></p-button>
