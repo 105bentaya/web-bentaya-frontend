@@ -1,15 +1,20 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {filter, ReplaySubject, Subject} from 'rxjs';
 import {AlertMessage} from '../model/alert-message.model';
+import {identity} from "lodash";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertService {
-  private alertObservable: Subject<AlertMessage> = new Subject();
+  private readonly alertObservable: Subject<AlertMessage | undefined> = new ReplaySubject(1);
+
+  flushMessageBuffer() {
+    this.alertObservable.next(undefined);
+  }
 
   getObservable = () => {
-    return this.alertObservable.asObservable();
+    return this.alertObservable.asObservable().pipe(filter(identity));
   };
 
   sendMessage = (message: AlertMessage) => {

@@ -13,8 +13,6 @@ import {EventService} from "../../services/event.service";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {FormEvent} from "../../models/form-event.model";
 import {ConfirmationService} from "primeng/api";
-import {LoggedUserInformationService} from "../../../../core/auth/services/logged-user-information.service";
-import {AuthService} from "../../../../core/auth/services/auth.service";
 import {EventStatusService} from "../../services/event-status.service";
 import {InputNumberModule} from 'primeng/inputnumber';
 import {CheckboxModule} from 'primeng/checkbox';
@@ -27,6 +25,7 @@ import {DateUtils} from "../../../../shared/util/date-utils";
 import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {FormHelper} from "../../../../shared/util/form-helper";
+import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 
 @Component({
   selector: 'app-event-form',
@@ -49,13 +48,13 @@ import {FormHelper} from "../../../../shared/util/form-helper";
 })
 export class EventFormComponent implements OnInit {
 
-  private config = inject(DynamicDialogConfig);
-  private ref = inject(DynamicDialogRef);
-  private eventService = inject(EventService);
-  private alertService = inject(AlertService);
-  private confirmationService = inject(ConfirmationService);
-  private authService = inject(AuthService);
-  private eventStatusService = inject(EventStatusService);
+  private readonly config = inject(DynamicDialogConfig);
+  private readonly ref = inject(DynamicDialogRef);
+  private readonly eventService = inject(EventService);
+  private readonly alertService = inject(AlertService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly loggedUserData = inject(LoggedUserDataService);
+  private readonly eventStatusService = inject(EventStatusService);
 
   protected existingEvent!: FormEvent;
   protected formHelper = new FormHelper();
@@ -67,11 +66,11 @@ export class EventFormComponent implements OnInit {
 
   constructor() {
     this.groups = [];
-    const groupId = LoggedUserInformationService.getUserInformation().groupId; //todo auth
-    if (this.authService.hasRequiredPermission(["ROLE_SCOUTER"])) {
+    const groupId = this.loggedUserData.getGroupId();
+    if (this.loggedUserData.hasRequiredPermission(["ROLE_SCOUTER"])) {
       if (groupId) this.groups.push(groups[groupId]);
       this.groups = this.groups.concat(getGeneralGroups());
-    } else if (this.authService.hasRequiredPermission(["ROLE_ADMIN", "ROLE_GROUP_SCOUTER"])) {
+    } else if (this.loggedUserData.hasRequiredPermission(["ROLE_GROUP_SCOUTER"])) {
       this.groups = getGeneralGroups();
     }
   }

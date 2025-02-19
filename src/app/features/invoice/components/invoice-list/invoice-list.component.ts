@@ -1,6 +1,5 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {ButtonDirective} from "primeng/button";
-import {GroupPipe} from "../../../../shared/pipes/group.pipe";
 import {InputTextModule} from "primeng/inputtext";
 import {MultiSelectModule} from "primeng/multiselect";
 import {ConfirmationService, PrimeTemplate} from "primeng/api";
@@ -20,7 +19,6 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
   standalone: true,
   imports: [
     ButtonDirective,
-    GroupPipe,
     InputTextModule,
     MultiSelectModule,
     PrimeTemplate,

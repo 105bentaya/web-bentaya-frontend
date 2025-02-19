@@ -2,10 +2,11 @@
 
 name: Web Bentaya Frontend Test Deployment
 
+## Branch can be changed depending on what you are testing, but default should always be 'test'
 on:
   push:
     branches:
-      - develop
+      - test
 
 jobs:
   build_and_deploy_job:

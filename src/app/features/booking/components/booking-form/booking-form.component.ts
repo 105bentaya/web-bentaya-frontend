@@ -6,7 +6,6 @@ import {BookingForm} from "../../model/booking-form.model";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {AuthService} from "../../../../core/auth/services/auth.service";
 import {Booking} from "../../model/booking.model";
-import {LoggedUserInformationService} from "../../../../core/auth/services/logged-user-information.service";
 import {ScoutCenterPipe} from '../../pipe/scout-center.pipe';
 import {CheckboxModule} from 'primeng/checkbox';
 import {KeyFilterModule} from 'primeng/keyfilter';
@@ -27,6 +26,7 @@ import {
   BookingFormCenterSelectionComponent
 } from "../booking-form-center-selection/booking-form-center-selection.component";
 import {maintenanceEmail} from "../../../../shared/constant";
+import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 
 @Component({
   selector: 'app-booking-form',
@@ -54,9 +54,10 @@ import {maintenanceEmail} from "../../../../shared/constant";
 })
 export class BookingFormComponent implements OnInit {
 
-  private bookingService = inject(BookingService);
-  private alertService = inject(AlertService);
-  private authService = inject(AuthService);
+  private readonly bookingService = inject(BookingService);
+  private readonly alertService = inject(AlertService);
+  private readonly authService = inject(AuthService);
+  private readonly loggedUserData = inject(LoggedUserDataService);
 
   protected steps: MenuItem[] = [
     {label: 'Datos de la Entidad'},
@@ -78,9 +79,9 @@ export class BookingFormComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
-      this.currentUser = LoggedUserInformationService.getUserInformation().username; //todo
+      this.currentUser = this.loggedUserData.getUsername();
     }
-    if (this.authService.hasRequiredPermission(["ROLE_SCOUT_CENTER_REQUESTER"])) {
+    if (this.loggedUserData.hasRequiredPermission(["ROLE_SCOUT_CENTER_REQUESTER"])) {
       this.bookingService.getLatestByCurrentUser().subscribe({
         next: res => this.initializeForm(res),
         error: () => this.initializeForm()

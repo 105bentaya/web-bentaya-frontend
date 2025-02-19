@@ -10,14 +10,16 @@ import {EventBasicAttendanceInfo} from "../models/event-basic-attendance-info.mo
 import {saveAs} from "file-saver";
 import {LoggedUserInformationService} from "../../../core/auth/services/logged-user-information.service";
 import {GroupPipe} from "../../../shared/pipes/group.pipe";
+import {LoggedUserDataService} from "../../../core/auth/services/logged-user-data.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfirmationService {
 
-  private http = inject(HttpClient);
-  private confirmationUrl = `${environment.apiUrl}/confirmation`;
+  private readonly http = inject(HttpClient);
+  private readonly loggedUserData = inject(LoggedUserDataService);
+  private readonly confirmationUrl = `${environment.apiUrl}/confirmation`;
 
   getAllBasicScouterInfo(): Observable<ScouterListInfo[]> {
     return this.http.get<ScouterListInfo[]>(`${this.confirmationUrl}/basic`);
@@ -55,7 +57,7 @@ export class ConfirmationService {
       )
       .pipe(tap((data: Blob) => {
         saveAs(data,
-          `Asistencia_${new GroupPipe().transform(LoggedUserInformationService.getUserInformation().groupId!)}_RS_Actual.xlsx`); //todo auth
+          `Asistencia_${new GroupPipe().transform(this.loggedUserData.getGroupId())}_RS_Actual.xlsx`);
       }));
   }
 }

@@ -4,80 +4,96 @@ import {
   GestionEconomicaComponent
 } from "./web-pages/transparencia/components/gestion-economica/gestion-economica.component";
 import {CargosComponent} from "./web-pages/transparencia/components/cargos/cargos.component";
-import {QuienesSomosComponent} from "./web-pages/quienes-somos/quienes-somos.component";
-import {QueHacemosComponent} from "./web-pages/que-hacemos/que-hacemos.component";
-import {MisionVisionValoresComponent} from "./web-pages/mision-vision-valores/mision-vision-valores.component";
-import {HistoriaComponent} from "./web-pages/historia/historia.component";
-import {ReconocimientosComponent} from "./web-pages/reconocimientos/reconocimientos.component";
+import {AsociacionComponent} from "./web-pages/asociacion/asociacion.component";
 import {authGuard} from "./core/auth/guards/auth.guard";
+import {noAuthGuard} from "./core/auth/guards/no-auth.guard";
 
 export const routes: Routes = [
   {
-    path: "home",
+    path: "inicio",
     loadComponent: () => import('./features/home/home.component').then(c => c.HomeComponent),
   },
   {
     path: "",
-    redirectTo: "home",
+    redirectTo: "inicio",
     pathMatch: "full"
   },
+  // {
+  //   path: "mi-vivac",
+  //   loadComponent: () => import('./features/home/home.component').then(c => c.HomeComponent),
+  // },
   {
-    path: "calendar",
+    path: "calendario",
     loadComponent: () => import('./features/calendar/components/calendar/calendar.component').then(c => c.CalendarComponent),
     canActivate: [authGuard]
   },
+  {
+    path: "login",
+    loadComponent: () => import('./features/login/components/login/login.component').then(c => c.LoginComponent),
+    canActivate: [noAuthGuard]
+  },
+  {
+    path: "olvide-la-clave",
+    loadComponent: () => import('./features/login/components/forgot-password/forgot-password.component').then(c => c.ForgotPasswordComponent),
+    canActivate: [noAuthGuard]
+  },
+  //todo: merge with change-password
+  {
+    path: "restablecer-clave/:token",
+    loadComponent: () => import('./features/login/components/reset-password/reset-password.component').then(c => c.ResetPasswordComponent),
+  },
   //ADMIN
   {
-    path: "settings",
+    path: "ajustes",
     loadComponent: () => import('./core/settings/settings.component').then(c => c.SettingsComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_ADMIN"]}
   },
   {
-    path: "users",
+    path: "usuarios",
     loadComponent: () => import('./features/users/components/user-list/user-list.component').then(c => c.UserListComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_ADMIN"]}
   },
   {
-    path: "users/:userId",
+    path: "usuarios/:userId",
     loadComponent: () => import('./features/users/components/user-form/user-form.component').then(c => c.UserFormComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_ADMIN"]}
   },
   {
-    path: "users/new",
+    path: "usuarios/new",
     loadComponent: () => import('./features/users/components/user-form/user-form.component').then(c => c.UserFormComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_ADMIN"]}
   },
   {
-    path: "preinscriptions",
+    path: "preinscripciones",
     loadComponent: () => import('./features/scout-forms/components/ser-scout-table/ser-scout-table.component').then(c => c.SerScoutTableComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_FORM"]}
   },
   {
-    path: "scouter-preinscriptions",
+    path: "preinscripciones-scouters",
     loadComponent: () => import('./features/scout-forms/components/ser-scouter-table/ser-scouter-table.component').then(c => c.SerScouterTableComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_FORM"]}
   },
   {
-    path: "educandos",
+    path: "educandas",
     loadComponent: () => import('./features/scouts/components/scout-list/scout-list.component').then(c => c.ScoutListComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_ADMIN"]}
   },
   //Unidad
   {
-    path: "unidad/educandos",
+    path: "unidad/educandas",
     loadComponent: () => import('./features/scouts/components/group-scout-list/group-scout-list.component').then(c => c.GroupScoutListComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]}
   },
   {
-    path: "unidad/asistencia",
+    path: "unidad/asistencias",
     loadComponent: () => import('./features/attendance/components/scouter-attendance-list/scouter-attendance-list.component').then(c => c.ScouterAttendanceListComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_SCOUTER"]}
@@ -160,24 +176,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: {roles: ["ROLE_FORM"]}
   },
-  //Organización Scout
-  {
-    path: "selp",
-    loadComponent: () => import('./web-pages/scout-las-palmas/scout-las-palmas.component').then(c => c.ScoutLasPalmasComponent),
-  },
-  {
-    path: 'fee',
-    loadComponent: () => import('./web-pages/fee/fee.component').then(c => c.FeeComponent),
-  },
   //Asociación Bentaya
   {
     path: "asociacion",
-    loadChildren: () => Asociacion
-  },
-  //Educación Scout
-  {
-    path: "educacion/metodo-educativo",
-    loadComponent: () => import('./web-pages/metodo-educativo/metodo-educativo.component').then(c => c.MetodoEducativoComponent),
+    loadComponent: () => AsociacionComponent
   },
   //Centros Scout
   {
@@ -197,14 +199,10 @@ export const routes: Routes = [
     path: "politica-privacidad",
     loadComponent: () => import('./web-pages/politica-privacidad/politica-privacidad.component').then(c => c.PoliticaPrivacidadComponent),
   },
-  {
-    path: "reset-password/:token",
-    loadComponent: () => import('./features/reset-password/reset-password.component').then(c => c.ResetPasswordComponent),
-  },
   //Error
   {
     path: "**",
-    redirectTo: "home",
+    redirectTo: "inicio",
     pathMatch: "full"
   },
 ];
@@ -224,31 +222,12 @@ const Transparencia: Route[] = [
   }
 ];
 
-
-const Asociacion: Route[] = [
-  {
-    path: "quienes-somos",
-    component: QuienesSomosComponent
-  },
-  {
-    path: "que-hacemos",
-    component: QueHacemosComponent
-  },
-  {
-    path: "mision-vision-valores",
-    component: MisionVisionValoresComponent
-  },
-  {
-    path: "historia",
-    component: HistoriaComponent
-  },
-  {
-    path: "reconocimientos",
-    component: ReconocimientosComponent
-  }
-];
-
 const Booking: Route[] = [
+  {
+    path: '',
+    redirectTo: "informacion",
+    pathMatch: "full"
+  },
   {
     path: "informacion",
     loadComponent: () => import('./features/booking/components/booking-menu/booking-menu.component').then(c => c.BookingMenuComponent)
@@ -276,3 +255,4 @@ const Booking: Route[] = [
     data: {roles: ["ROLE_SCOUT_CENTER_MANAGER"]}
   }
 ];
+

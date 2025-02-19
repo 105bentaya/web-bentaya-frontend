@@ -9,11 +9,8 @@ import {EventService} from "../../services/event.service";
 import {EventInfoComponent} from "../event-info/event-info.component";
 import {FullCalendarComponent, FullCalendarModule} from "@fullcalendar/angular";
 import {BasicEvent} from "../../models/basic-event.model";
-import {AuthService} from "../../../../core/auth/services/auth.service";
-import {LoggedUserInformationService} from "../../../../core/auth/services/logged-user-information.service";
 import {ActivatedRoute} from "@angular/router";
 import {groups, unitGroups} from "../../../../shared/model/group.model";
-import {User} from "../../../users/models/user.model";
 import {EventStatusService} from "../../services/event-status.service";
 import {Subscription} from "rxjs";
 import {ScoutEvent} from "../../models/scout-event.model";
@@ -26,6 +23,7 @@ import {MultiSelectModule} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {CalendarSubscriptionComponent} from "../calendar-subscription/calendar-subscription.component";
+import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 
 @Component({
   selector: 'app-calendar',
@@ -48,11 +46,11 @@ import {CalendarSubscriptionComponent} from "../calendar-subscription/calendar-s
 })
 export class CalendarComponent implements OnInit, OnDestroy {
 
-  private dialogService = inject(DialogService);
-  private eventService = inject(EventService);
-  private authService = inject(AuthService);
-  private route = inject(ActivatedRoute);
-  private eventStatusService = inject(EventStatusService);
+  private readonly dialogService = inject(DialogService);
+  private readonly eventService = inject(EventService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly eventStatusService = inject(EventStatusService);
+  private readonly loggedUserData = inject(LoggedUserDataService);
 
   protected options: CalendarOptions;
   protected ref!: DynamicDialogRef;
@@ -64,7 +62,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   protected canEdit: boolean = false;
   protected groups = [...unitGroups, groups[0]];
   protected filterResults!: number[];
-  private loggedUser: User;
   protected loading = true;
   private newEventSubscription: Subscription;
   private updatedEventSubscription: Subscription;
@@ -77,7 +74,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   constructor(
   ) {
-    this.loggedUser = LoggedUserInformationService.getUserInformation(); //todo auth
     this.options = {
       initialView: 'dayGridMonth',
       plugins: [dayGridPlugin, listPlugin, interactionPlugin],
@@ -118,7 +114,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     this.calendarDate = new Date();
     this.viewOptions = [{value: 'dayGridMonth', icon: 'pi pi-calendar'}, {value: 'customList', icon: 'pi pi-list'}];
-    this.canEdit = this.authService.hasRequiredPermission(["ROLE_ADMIN", "ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]);
+    this.canEdit = this.loggedUserData.hasRequiredPermission(["ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]);
 
     this.deletedEventSubscription = this.eventStatusService.deletedEvent.subscribe(id => this.onEventDelete(id));
     this.updatedEventSubscription = this.eventStatusService.updatedEvent.subscribe(event => this.onEventUpdate(event));
@@ -150,8 +146,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.groups.push(groups[8]);
     }
 
-    if (this.loggedUser.groupId) filter.add(this.loggedUser.groupId);
-    if (this.loggedUser.scoutList) this.loggedUser.scoutList.forEach(scout => filter.add(scout.groupId));
+    const loggedUserGroupId = this.loggedUserData.getGroupId();
+    if (loggedUserGroupId) filter.add(loggedUserGroupId);
+    this.loggedUserData.getScoutGroupIds().forEach(groupId => filter.add(groupId));
 
     this.filterResults = [...filter];
   }
@@ -263,7 +260,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   private checkQueryParams() {
     this.route.queryParams.subscribe(params => {
-      if (params['eventId']) this.openInfoDialog(params['eventId']);
+      const eventId = params['actividad'];
+      if (eventId) this.openInfoDialog(eventId);
     });
   }
 

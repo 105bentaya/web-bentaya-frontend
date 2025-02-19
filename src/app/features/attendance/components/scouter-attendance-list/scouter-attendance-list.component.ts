@@ -105,17 +105,17 @@ export class ScouterAttendanceListComponent implements OnInit {
 
   private checkQueryParams() {
     this.route.queryParams.subscribe(params => {
-        if (params['list']) {
-          const info = this.info.find(event => event.eventId == params['list']);
-          if (info) {
-            this.queryParam = true;
-            this.viewInfo(info.eventId, info.eventTitle, info.eventHasPayment);
-          } else {
-            this.router.navigate([], {replaceUrl: true}).then();
-          }
+      const eventId = params['actividad'];
+      if (eventId) {
+        const info = this.info.find(event => event.eventId == eventId);
+        if (info) {
+          this.queryParam = true;
+          this.viewInfo(info.eventId, info.eventTitle, info.eventHasPayment);
+        } else {
+          this.router.navigate([], {replaceUrl: true}).then();
         }
       }
-    );
+    });
   }
 
   protected downloadAttendanceExcel() {

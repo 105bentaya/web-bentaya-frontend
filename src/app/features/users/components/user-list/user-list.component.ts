@@ -35,11 +35,11 @@ import {
 })
 export class UserListComponent {
 
-  private userService = inject(UserService);
-  private confirmationService = inject(ConfirmationService);
+  private readonly userService = inject(UserService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   @ViewChild('dt')
-  private dt!: Table;
+  private readonly dt!: Table;
   protected totalRecords: number = 0;
   protected loading = true;
   protected readonly roles = roles;

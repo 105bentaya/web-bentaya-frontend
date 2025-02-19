@@ -2,7 +2,7 @@ import {DatePipe} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
 import {AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Observable, tap} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {User} from '../../models/user.model';
 import {UserService} from '../../services/user.service';
@@ -20,6 +20,7 @@ import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/s
 import {JoinPipe} from "../../../../shared/pipes/join.pipe";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
+import {UserForm} from "../../models/user-form.model";
 
 @Component({
   selector: 'app-user-form',
@@ -53,7 +54,7 @@ export class UserFormComponent implements OnInit {
   protected scouts!: Scout[];
   protected groups = unitGroups;
   private userId!: string;
-  protected user!: User;
+  protected user!: UserForm;
   protected loading = false;
 
   ngOnInit(): void {
@@ -68,7 +69,7 @@ export class UserFormComponent implements OnInit {
       password: [this.user?.password, Validators.required],
       roles: [this.user?.roles, Validators.required],
       groupId: [this.user?.groupId, this.groupIdValidator],
-      scoutList: [this.user?.scoutList, this.scoutListValidator],
+      scoutIds: [this.user?.scoutIds, this.scoutListValidator],
     });
   }
 
@@ -81,7 +82,7 @@ export class UserFormComponent implements OnInit {
   };
 
   private saveOrUpdateUser(): Observable<User> {
-    const userToUpdate: User = {...this.userForm.value};
+    const userToUpdate: UserForm = {...this.userForm.value};
     if (this.user) {
       userToUpdate.enabled = this.user.enabled;
       return this.userService.update(userToUpdate, this.userId);
@@ -92,8 +93,6 @@ export class UserFormComponent implements OnInit {
   }
 
   protected onSubmit() {
-    this.userForm.get("groupId").updateValueAndValidity();
-    this.userForm.get("scoutList").updateValueAndValidity();
     this.userForm.validateAll();
     if (this.userForm.valid) {
       this.loading = true;
@@ -123,10 +122,10 @@ export class UserFormComponent implements OnInit {
   }
 
   private getUserById(): void {
-    this.userService.findById(this.userId).subscribe({
+    this.userService.findFormById(this.userId).subscribe({
       next: user => {
         this.user = user;
-        if (user.scoutList?.length! > 0) this.getScouts().subscribe(() => this.newForm());
+        if (user.scoutIds?.length! > 0) this.getScouts().subscribe(() => this.newForm());
         else this.newForm();
       }
     });
@@ -137,8 +136,8 @@ export class UserFormComponent implements OnInit {
   }
 
   private getScouts() {
-    return this.scoutService.getAll().pipe(tap({
-      next: result => this.scouts = result
-    }));
+    return this.scoutService.getAll().pipe(
+      map(result => this.scouts = result)
+    );
   }
 }

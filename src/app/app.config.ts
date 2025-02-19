@@ -1,4 +1,4 @@
-import {ApplicationConfig} from '@angular/core';
+import {APP_INITIALIZER, ApplicationConfig} from '@angular/core';
 import {InMemoryScrollingOptions, provideRouter, withInMemoryScrolling} from '@angular/router';
 
 import {routes} from './app.routes';
@@ -7,6 +7,7 @@ import {ConfirmationService} from "primeng/api";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {httpTokenInterceptor} from "./core/auth/interceptors/http-token.interceptor";
 import {authInterceptor} from "./core/auth/interceptors/auth.interceptor";
+import {AuthService} from "./core/auth/services/auth.service";
 
 const scrollConfig: InMemoryScrollingOptions = {
   scrollPositionRestoration: 'top',
@@ -18,7 +19,28 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withInMemoryScrolling(scrollConfig)),
     provideHttpClient(withInterceptors([httpTokenInterceptor, authInterceptor])),
     provideAnimations(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [AuthService],
+      multi: true,
+    },
     ConfirmationService
   ]
-  //todo: jajja no puedo más, ver si meter aqui providers está bienm generalizar todas las confirmaciones
 };
+
+//todo change with provideAppInitializer when possible
+export function initializeApp(authService: AuthService) {
+  return async () => {
+    if (authService.isLoggedIn()) {
+      return new Promise<void>((resolve) => {
+        authService.loadUserInfo().subscribe({
+          next: () => resolve(),
+          error: () => resolve(),
+        });
+      });
+    } else {
+      return Promise.resolve();
+    }
+  };
+}

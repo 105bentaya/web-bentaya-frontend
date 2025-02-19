@@ -1,8 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {AuthService} from "../auth/services/auth.service";
 import {environment} from "../../../environments/environment";
+import {LoggedUserDataService} from "../auth/services/logged-user-data.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
 export class NotificationService {
 
   private http = inject(HttpClient);
-  private authService = inject(AuthService);
+  private loggedUserData = inject(LoggedUserDataService);
 
   private hasNotificationsSubject: BehaviorSubject<boolean>;
   public userHasNotifications$: Observable<boolean>;
@@ -21,7 +21,7 @@ export class NotificationService {
   }
 
   public checkIfHasNotifications() {
-    if (this.authService.hasRequiredPermission(["ROLE_USER"])) {
+    if (this.loggedUserData.hasRequiredPermission(["ROLE_USER"])) {
       this.getNotificationInfo().subscribe(result => {
         this.hasNotificationsSubject.next(result);
       });

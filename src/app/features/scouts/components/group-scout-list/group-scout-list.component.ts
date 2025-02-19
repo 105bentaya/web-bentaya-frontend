@@ -22,6 +22,7 @@ import {TableModule} from 'primeng/table';
 import {FormsModule} from '@angular/forms';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {DatePipe, NgClass} from '@angular/common';
+import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 
 @Component({
   selector: 'app-group-scout-list',
@@ -43,16 +44,16 @@ import {DatePipe, NgClass} from '@angular/common';
 })
 export class GroupScoutListComponent implements OnInit {
 
-  private scoutService = inject(ScoutService);
-  private dialogService = inject(DialogService);
-  private filterService = inject(FilterService);
-  private settingService = inject(SettingsService);
-  private excelService = inject(ExcelService);
+  private readonly scoutService = inject(ScoutService);
+  private readonly dialogService = inject(DialogService);
+  private readonly filterService = inject(FilterService);
+  private readonly settingService = inject(SettingsService);
+  private readonly excelService = inject(ExcelService);
 
   protected scouts: Scout[] | undefined;
   protected loading = false;
   protected groupScouts!: Scout[];
-  protected userGroup = LoggedUserInformationService.getUserInformation().groupId; //todo auth
+  protected userGroup = inject(LoggedUserDataService).getGroupId();
   private readonly name: string = "";
   private ref!: DynamicDialogRef;
   protected currentYear!: number;
@@ -70,8 +71,7 @@ export class GroupScoutListComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.userGroup) this.getGroupScouts();
-    else this.getScouts();
+    !!this.userGroup ? this.getGroupScouts() : this.getScouts();
   }
 
   private getGroupScouts() {

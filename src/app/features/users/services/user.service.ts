@@ -2,10 +2,11 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {User} from '../models/user.model';
-import {ForgotPassword} from "../../reset-password/forgot-password.model";
+import {ForgotPassword} from "../../login/components/reset-password/forgot-password.model";
 import {Page} from "../../../shared/model/page.model";
 import {environment} from "../../../../environments/environment";
 import {Filter} from "../../../shared/model/filter.model";
+import {UserForm} from "../models/user-form.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,15 +22,15 @@ export class UserService {
     });
   }
 
-  findById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.userUrl}/${id}`);
+  findFormById(id: string): Observable<UserForm> {
+    return this.http.get<UserForm>(`${this.userUrl}/form/${id}`);
   }
 
-  save(user: User): Observable<User> {
+  save(user: UserForm): Observable<User> {
     return this.http.post<User>(this.userUrl, user);
   }
 
-  update(user: User, id: string): Observable<User> {
+  update(user: UserForm, id: string): Observable<User> {
     return this.http.put<User>(`${this.userUrl}/${id}`, user);
   }
 

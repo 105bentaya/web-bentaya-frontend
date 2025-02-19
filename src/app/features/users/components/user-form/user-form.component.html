@@ -5,30 +5,33 @@
       <form (submit)="onSubmit()" [formGroup]="userForm.form" class="form-container">
         <div class="row">
           <div class="col-6">
-            <label class="required">
+            <label class="required" for="username">
               Nombre de Usuario
             </label>
             <input
+              id="username"
               pInputText
               type="text"
               formControlName="username"
             >
           </div>
           <div class="col-6">
-            <label class="required">
+            <label class="required" for="password">
               Contraseña
             </label>
             <p-password
+              id="password"
               formControlName="password"
               [toggleMask]="true"
               [feedback]="false"
             ></p-password>
           </div>
           <div class="col-12">
-            <label class="required">
+            <label class="required" for="roles">
               Roles
             </label>
             <p-multiSelect
+              id="roles"
               placeholder="Seleccionar roles"
               [options]="roles"
               [filter]="false"
@@ -51,10 +54,11 @@
           </div>
           @if (isScouter()) {
             <div class="col">
-              <label class="required">
+              <label class="required" for="groupId">
                 Unidad del Scouter
               </label>
               <p-dropdown
+                id="groupId"
                 [options]="groups"
                 formControlName="groupId"
                 optionLabel="name"
@@ -65,13 +69,15 @@
           }
           @if (isUser()) {
             <div class="col">
-              <label class="required">
+              <label class="required" for="scoutIds">
                 Educanda(s) asociados
               </label>
               <p-multiSelect
+                id="scoutIds"
                 [options]="scouts"
-                formControlName="scoutList"
+                formControlName="scoutIds"
                 optionLabel="name"
+                optionValue="id"
                 placeholder="Seleccionar educandas"
                 [loading]="!scouts"
               >

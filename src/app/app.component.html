@@ -1,11 +1,8 @@
 <div class="d-flex flex-column min-vh-100">
-  @if (loading) {
-  } @else {
-    <app-home-bar></app-home-bar>
-    <div class="content-container">
-      <router-outlet></router-outlet>
-    </div>
-  }
+  <app-home-bar></app-home-bar>
+  <div class="content-container">
+    <router-outlet></router-outlet>
+  </div>
   <app-footer class="mt-auto"></app-footer>
 </div>
 

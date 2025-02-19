@@ -10,6 +10,7 @@ import {SettingsService} from "./core/settings/settings.service";
 import localeEs from '@angular/common/locales/es'
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {AuthService} from "./core/auth/services/auth.service";
+import {noop} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -31,51 +32,34 @@ export class AppComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly config = inject(PrimeNGConfig);
   private readonly settingsService = inject(SettingsService);
-  private readonly authService = inject(AuthService);
-
-  protected loading = true;
+  protected readonly authService = inject(AuthService);
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) {
-      this.startUserPetitions();
-    } else {
-      this.startBasicPetitions();
-    }
     this.configureApp();
+    this.activateMessagingService();
+    this.checkForMaintenance();
   }
 
   private configureApp() {
     registerLocaleData(localeEs, 'es');
-    this.alertService.getObservable().subscribe(message =>
-      this.messageService.add({
-        severity: message.severity,
-        summary: message.title,
-        detail: message.message,
-        life: 7200
-      })
-    );
     this.setTranslation();
   }
 
-  private startUserPetitions() {
-    this.authService.loadUserInfo().subscribe({
-      next: () => this.startBasicPetitions(),
-      error: () => this.startBasicPetitions()
-    });
-  }
-
-  private startBasicPetitions() {
-    this.checkForMaintenance();
+  private activateMessagingService() {
+    this.alertService.getObservable().subscribe(message =>
+      this.messageService.add({
+        severity: message!.severity,
+        summary: message!.title,
+        detail: message!.message,
+        life: 7200
+      })
+    );
   }
 
   private checkForMaintenance() {
-    this.settingsService.getByName("maintenance").subscribe({
-      next: result => {
-        if (result.value !== "0") this.addMaintenanceMessage(new Date(result.value));
-        this.loading = false;
-      },
-      error: () => this.loading = false
-    });
+    this.settingsService.getByName("maintenance").subscribe(
+      result => result.value !== "0" ? this.addMaintenanceMessage(new Date(result.value)) : noop()
+    );
   }
 
   private addMaintenanceMessage(date: Date) {

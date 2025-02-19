@@ -1,82 +1,65 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {find} from 'lodash';
-import {BehaviorSubject, Observable, tap} from 'rxjs';
+import {BehaviorSubject, map, Observable, switchMap} from 'rxjs';
 import {Credentials} from '../credentials.model';
-import {LoggedUserInformationService} from './logged-user-information.service';
-import {TokenService} from './token.service';
-import {User} from "../../../features/users/models/user.model";
 import {environment} from "../../../../environments/environment";
+import {LoggedUserDataService} from "./logged-user-data.service";
+import {UserProfile} from "../user-profile.model";
+import {UserDataStorageHelper} from "./user-data-storage.helper";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  //todo big rework
-
   private readonly http = inject(HttpClient);
-  private readonly tokenService = inject(TokenService);
+  private readonly userDataService = inject(LoggedUserDataService);
 
   private readonly isLoggedInSubject: BehaviorSubject<boolean>;
   public readonly isLoggedIn$: Observable<boolean>;
-  private readonly loggedUserSubject: BehaviorSubject<User>;
-  public readonly loggedUser$: Observable<User>;
+  public static readonly userInfoUrl = `${environment.apiUrl}/user/me`;
 
   constructor() {
-    const token = !!this.tokenService.getToken();
-    this.isLoggedInSubject = new BehaviorSubject<boolean>(token);
+    const isLoggedIn = !!UserDataStorageHelper.getToken();
+    if (!isLoggedIn) UserDataStorageHelper.removeUserInformation();
+    this.isLoggedInSubject = new BehaviorSubject<boolean>(!!UserDataStorageHelper.getToken());
     this.isLoggedIn$ = this.isLoggedInSubject.asObservable();
-    this.loggedUserSubject = new BehaviorSubject(LoggedUserInformationService.getUserInformation());
-    this.loggedUser$ = this.loggedUserSubject.asObservable();
   }
 
   public getAuthHeader() {
-    return `Bearer ${this.tokenService.getToken()}`;
+    return `Bearer ${UserDataStorageHelper.getToken()}`;
   }
 
   isLoggedIn(): boolean {
     return this.isLoggedInSubject.getValue();
   }
 
-  login(credentials: Credentials) {
+  public login(credentials: Credentials): Observable<void> {
     return this.http.post(`${environment.apiUrl}/login`, credentials, {observe: "response"}).pipe(
-      tap(response => this.postLogin(response).subscribe())
+      switchMap(response => this.postLogin(response))
     );
   }
 
   private postLogin(response: any) {
     this.isLoggedInSubject.next(true);
-    this.tokenService.saveToken(response.headers.get("Authorization").split(" ")[1]);
+    UserDataStorageHelper.saveToken(response.headers.get("Authorization").split(" ")[1]);
     return this.loadUserInfo();
   }
 
-  logout() {
-    this.tokenService.removeToken();
-    LoggedUserInformationService.removeUserInformation();
+  public logout() {
+    UserDataStorageHelper.removeToken();
+    UserDataStorageHelper.removeUserInformation();
     this.isLoggedInSubject.next(false);
   }
 
-  hasRequiredPermission(requiredPermissions: Array<any>) {
-    const loggedUser = LoggedUserInformationService.getUserInformation();
-    return (
-      loggedUser &&
-      find(
-        requiredPermissions,
-        role => loggedUser.roles.indexOf(role) !== -1
-      )
+  public loadUserInfo() {
+    return this.getUserInfo().pipe(
+      map(userData => this.userDataService.saveInfo(userData))
     );
   }
 
-  loadUserInfo() {
-    return this.getUserInfo().pipe(tap(userData => {
-      LoggedUserInformationService.saveUserInformation(userData);
-      this.loggedUserSubject.next(userData);
-    }));
-  }
-
   private getUserInfo() {
-    return this.http.get<User>(`${environment.apiUrl}/user/me`);
+    return this.http.get<UserProfile>(AuthService.userInfoUrl);
   }
-
 }
+
