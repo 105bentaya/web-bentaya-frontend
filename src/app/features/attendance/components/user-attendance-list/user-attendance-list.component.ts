@@ -1,32 +1,33 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ConfirmationService} from "../../services/confirmation.service";
 import {UserListInfo} from "../../models/user-list-info.model";
-import {FilterService, MenuItem} from "primeng/api";
+import {FilterService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {NotificationService} from "../../../../core/notification/notification.service";
-import {AlertService} from "../../../../shared/services/alert-service.service";
 import {EventInfoComponent} from "../../../calendar/components/event-info/event-info.component";
 import {TagModule} from 'primeng/tag';
 import {TableModule} from 'primeng/table';
 import {BadgeModule} from 'primeng/badge';
 import {TabMenuModule} from 'primeng/tabmenu';
 import {FormsModule} from '@angular/forms';
-import {CalendarModule} from 'primeng/calendar';
 import {DatePipe, NgClass} from '@angular/common';
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {Confirmation} from "../../models/confirmation.model";
 import {AttendanceFormComponent} from "../attendance-form/attendance-form.component";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
+import {DatePicker} from "primeng/datepicker";
+import {Tab, TabList, Tabs} from "primeng/tabs";
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 
 @Component({
   selector: 'app-user-attendance-list',
   templateUrl: './user-attendance-list.component.html',
   styleUrls: ['./user-attendance-list.component.scss'],
   providers: [DialogService],
-  standalone: true,
   imports: [
-    CalendarModule,
     FormsModule,
     ToggleButtonModule,
     TabMenuModule,
@@ -35,23 +36,28 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
     NgClass,
     TagModule,
     DatePipe,
-    BasicLoadingInfoComponent
+    BasicLoadingInfoComponent,
+    DatePicker,
+    Tabs,
+    TabList,
+    Tab,
+    TableIconButtonComponent
   ]
 })
 export class UserAttendanceListComponent implements OnInit {
 
-  private filterService = inject(FilterService);
-  private confirmationService = inject(ConfirmationService);
-  private dialogService = inject(DialogService);
-  private notificationService = inject(NotificationService);
+  private readonly filterService = inject(FilterService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly dialogService = inject(DialogService);
+  private readonly notificationService = inject(NotificationService);
 
-  protected tabMenuItems!: MenuItem[];
+  private readonly yesterday = DateUtils.plusDays(new Date(), -1);
+  protected tabItems!: { scoutName: string; showBadge: boolean, scoutId: number }[];
   protected info!: UserListInfo[];
   protected selectedScoutIndex = 0;
   protected filterDates!: Date[];
   protected showClosedButton = false;
   private ref!: DynamicDialogRef;
-  private yesterday = DateUtils.plusDays(new Date(), -1);
 
   ngOnInit(): void {
     this.confirmationService.getAllBasicUserInfo().subscribe({
@@ -80,8 +86,7 @@ export class UserAttendanceListComponent implements OnInit {
         result.payed = data.payed;
 
         if (this.info.length > 1) {
-          this.tabMenuItems.find(item => item.id === scoutId.toString())!.badge = editedScout.info
-            .some(info => !info.closed && info.attending == null) ? "1" : undefined;
+          this.updateBadge(scoutId, editedScout);
         }
 
         if (!this.info.some(scout => scout.info.some(info => !info.closed && info.attending == null))) {
@@ -91,20 +96,25 @@ export class UserAttendanceListComponent implements OnInit {
     });
   }
 
+  private updateBadge(scoutId: number, editedScout: UserListInfo) {
+    const scoutHasUnconfirmedAttendances = editedScout.info.some(info => !info.closed && info.attending == null);
+    const scoutTab = this.tabItems.find(item => item.scoutId === scoutId)!;
+    scoutTab.showBadge = scoutHasUnconfirmedAttendances;
+  }
+
   protected openInfoDialog(eventId: number) {
     this.ref = this.dialogService.open(EventInfoComponent, {
       header: 'Actividad',
-      styleClass: 'small dialog-width',
+      styleClass: 'small-dw dialog-width',
       data: eventId
     });
   }
 
   private generateMenuItems() {
-    this.tabMenuItems = this.info.map(scout => ({
-      label: scout.name,
-      badge: scout.info.some(info => !info.closed && info.attending == null) ? "1" : undefined,
-      id: scout.scoutId.toString(),
-      command: () => this.selectedScoutIndex = this.info.indexOf(scout)
+    this.tabItems = this.info.map(scout => ({
+      scoutName: scout.name,
+      showBadge: scout.info.some(info => !info.closed && info.attending == null),
+      scoutId: scout.scoutId
     }));
   }
 

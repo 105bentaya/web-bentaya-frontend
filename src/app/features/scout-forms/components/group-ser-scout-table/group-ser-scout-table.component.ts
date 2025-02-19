@@ -11,19 +11,20 @@ import {noop} from "rxjs";
 import {FilterService} from "primeng/api";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {StatusPipe} from '../../../../shared/pipes/status.pipe';
-import {ButtonDirective} from 'primeng/button';
 import {FormsModule} from '@angular/forms';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {InputTextModule} from 'primeng/inputtext';
 import {TableModule} from 'primeng/table';
 import {ToggleButtonModule} from "primeng/togglebutton";
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 
 @Component({
   selector: 'app-group-ser-scout-table',
   templateUrl: './group-ser-scout-table.component.html',
   styleUrls: ['./group-ser-scout-table.component.scss'],
   providers: [DialogService],
-  standalone: true,
   imports: [
     ToggleButtonModule,
     TableModule,
@@ -31,15 +32,15 @@ import {ToggleButtonModule} from "primeng/togglebutton";
     MultiSelectModule,
     StatusPipe,
     FormsModule,
-    ButtonDirective
+    TableIconButtonComponent
   ]
 })
 export class GroupSerScoutTableComponent implements OnInit {
 
-  private preScoutService = inject(ScoutFormsService);
-  private dialogService = inject(DialogService);
-  private alertService = inject(AlertService);
-  private filterService = inject(FilterService);
+  private readonly preScoutService = inject(ScoutFormsService);
+  private readonly dialogService = inject(DialogService);
+  private readonly alertService = inject(AlertService);
+  private readonly filterService = inject(FilterService);
 
   private allPreScouts!: PreScout[];
   protected filteredPreScouts!: PreScout[];

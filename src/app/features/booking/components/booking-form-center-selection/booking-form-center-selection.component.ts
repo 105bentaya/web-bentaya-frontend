@@ -5,9 +5,8 @@ import {
   ScoutCentersDropdown,
   ScoutCentersInfo
 } from "../../constant/scout-center.constant";
-import {CalendarModule} from "primeng/calendar";
 import {DatePipe} from "@angular/common";
-import {DropdownModule} from "primeng/dropdown";
+import {SelectModule} from "primeng/select";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
 import {KeyFilterModule} from "primeng/keyfilter";
@@ -29,20 +28,20 @@ import {map, Observable} from "rxjs";
 import {BookingInterval} from "../../model/booking-interval.model";
 import {CenterInformation} from "../../model/center-information.model";
 import {BookingService} from "../../service/booking.service";
+import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: 'app-booking-form-center-selection',
-  standalone: true,
   imports: [
-    CalendarModule,
     DatePipe,
-    DropdownModule,
+    SelectModule,
     FloatLabelModule,
     InputTextModule,
     KeyFilterModule,
     MessagesModule,
     PrimeTemplate,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DatePicker
   ],
   templateUrl: './booking-form-center-selection.component.html',
   styleUrl: './booking-form-center-selection.component.scss'

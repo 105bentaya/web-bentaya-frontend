@@ -8,7 +8,6 @@ import {SerScoutComponent} from '../ser-scout/ser-scout.component';
   selector: 'app-ser-scout-control',
   templateUrl: './ser-scout-control.component.html',
   styleUrls: ['./ser-scout-control.component.scss'],
-  standalone: true,
   imports: [
     SerScoutComponent,
     ClosedSerScoutComponent,

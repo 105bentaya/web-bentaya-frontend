@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {ButtonDirective} from "primeng/button";
+import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {MultiSelectModule} from "primeng/multiselect";
 import {ConfirmationService, PrimeTemplate} from "primeng/api";
@@ -16,14 +16,13 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
 
 @Component({
   selector: 'app-invoice-list',
-  standalone: true,
   imports: [
-    ButtonDirective,
     InputTextModule,
     MultiSelectModule,
     PrimeTemplate,
     TableModule,
     CurrencyPipe,
+    Button,
     DatePipe
   ],
   templateUrl: './invoice-list.component.html',
@@ -64,7 +63,7 @@ export class InvoiceListComponent implements OnInit {
   protected openInvoiceDialog(invoice?: Invoice) {
     const ref = this.dialogService.open(InvoiceFormComponent, {
       header: invoice ? 'Editar Factura' : 'Añadir Factura',
-      styleClass: 'dialog-width medium',
+      styleClass: 'dialog-width medium-dw',
       data: {invoiceData: cloneDeep(this.invoiceData), invoice}
     });
     ref.onClose.subscribe(() => this.dt._filter());

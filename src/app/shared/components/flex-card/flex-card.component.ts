@@ -5,7 +5,6 @@ import {NgClass} from '@angular/common';
   selector: 'app-flex-card',
   templateUrl: './flex-card.component.html',
   styleUrls: ['./flex-card.component.scss'],
-  standalone: true,
   imports: [NgClass]
 })
 export class FlexCardComponent {

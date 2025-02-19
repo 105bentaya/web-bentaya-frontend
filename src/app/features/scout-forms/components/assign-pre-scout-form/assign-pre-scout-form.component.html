@@ -1,8 +1,8 @@
 <div class="mt-4 form-container">
   <div class="row">
     <div class="col-12 col-sm-6">
-      <p-floatLabel>
-          <p-dropdown
+      <p-floatlabel>
+          <p-select
             id="group"
             [options]="groups"
             [disabled]="!canEditGroup"
@@ -10,22 +10,22 @@
             optionValue="id"
             [(ngModel)]="groupId"
             styleClass="w-100"
-          ></p-dropdown>
+          ></p-select>
           <label class="required" for="group">Unidad</label>
-      </p-floatLabel>
+      </p-floatlabel>
     </div>
     <div class="col-12 col-sm-6">
-      <p-floatLabel>
-          <p-dropdown
+      <p-floatlabel>
+          <p-select
             id="status"
             [options]="statuses"
             optionLabel="name"
             optionValue="id"
             [(ngModel)]="status"
             styleClass="w-100"
-          ></p-dropdown>
+          ></p-select>
           <label class="required" for="status">Estado</label>
-      </p-floatLabel>
+      </p-floatlabel>
     </div>
   </div>
   <div class="row">

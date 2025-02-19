@@ -17,29 +17,32 @@ import FilterUtils from "../../../../shared/util/filter-utils";
 import {ScoutYearPipe} from '../../../../shared/pipes/scout-year.pipe';
 import {GroupPipe} from '../../../../shared/pipes/group.pipe';
 import {InputTextModule} from 'primeng/inputtext';
-import {ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {FormsModule} from '@angular/forms';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {DatePipe, NgClass} from '@angular/common';
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 
 @Component({
   selector: 'app-group-scout-list',
   templateUrl: './group-scout-list.component.html',
   styleUrls: ['./group-scout-list.component.scss'],
   providers: [DialogService],
-  standalone: true,
   imports: [
     SelectButtonModule,
     FormsModule,
     TableModule,
-    ButtonDirective,
     InputTextModule,
     NgClass,
     GroupPipe,
     DatePipe,
-    ScoutYearPipe
+    ScoutYearPipe,
+    Button,
+    TableIconButtonComponent
   ]
 })
 export class GroupScoutListComponent implements OnInit {
@@ -106,7 +109,7 @@ export class GroupScoutListComponent implements OnInit {
   protected viewScout(scout: Scout) {
     this.ref = this.dialogService.open(ScoutInfoComponent, {
       header: `Datos de ${scout.name}`,
-      styleClass: 'small dialog-width',
+      styleClass: 'small-dw dialog-width',
       data: scout
     });
   }
@@ -114,7 +117,7 @@ export class GroupScoutListComponent implements OnInit {
   protected openEditDialog(scout: Scout) {
     this.ref = this.dialogService.open(ScoutFormComponent, {
       header: 'Editar Educanda',
-      styleClass: 'medium dialog-width',
+      styleClass: 'medium-dw dialog-width',
       data: {scout: scout}
     });
     this.ref.onClose.subscribe(saved => saved ? this.getGroupScouts() : noop());

@@ -14,7 +14,6 @@ import {StatusPipe} from '../../../../shared/pipes/status.pipe';
 import {ScoutYearPipe} from '../../../../shared/pipes/scout-year.pipe';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {InputTextModule} from 'primeng/inputtext';
-import {ButtonDirective} from 'primeng/button';
 import {Table, TableModule} from 'primeng/table';
 import {FormsModule} from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
@@ -22,25 +21,27 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
 import {TabMenuModule} from "primeng/tabmenu";
 import {sections} from "../../../../shared/constant";
 import {DatePipe} from "@angular/common";
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 
 @Component({
   selector: 'app-ser-scout-table',
   templateUrl: './ser-scout-table.component.html',
   styleUrls: ['./ser-scout-table.component.scss'],
   providers: [DialogService],
-  standalone: true,
   imports: [
     CheckboxModule,
     FormsModule,
     TabMenuModule,
     TableModule,
-    ButtonDirective,
     InputTextModule,
     MultiSelectModule,
     ScoutYearPipe,
     StatusPipe,
     BasicLoadingInfoComponent,
-    DatePipe
+    DatePipe,
+    TableIconButtonComponent
   ]
 })
 export class SerScoutTableComponent implements OnInit {

@@ -3,25 +3,25 @@
     <div class="mt-4">
       <div class="row">
         <div class="col-12 col-sm-8">
-          <p-floatLabel>
+          <p-floatlabel>
             <input id="issuer" formControlName="issuer" maxlength="255" pInputText>
             <label class="required" for="issuer">Emite</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatLabel>
+          <p-floatlabel>
             <input id="nif" formControlName="nif" maxlength="255" pInputText>
             <label class="required" for="nif">NIF/CIF</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-sm-8">
-          <p-floatLabel>
+          <p-floatlabel>
             <input id="invoiceNumber" formControlName="invoiceNumber" maxlength="255" pInputText>
             <label class="required" for="invoiceNumber">Número de factura</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatLabel>
+          <p-floatlabel>
             <p-inputNumber
               id="amount"
               mode="currency"
@@ -30,84 +30,84 @@
               [min]="0"
             ></p-inputNumber>
             <label class="required" for="amount">Importe</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-sm-8">
-          <p-floatLabel>
-            <p-dropdown
+          <p-floatlabel>
+            <p-select
               id="expenseType"
               formControlName="expenseType"
               appendTo="body"
               [options]="expenseTypes"
               optionLabel="expenseType"
-            ></p-dropdown>
+            ></p-select>
             <label class="required" for="expenseType">Concepto</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatLabel>
-            <p-dropdown
+          <p-floatlabel>
+            <p-select
               id="payer"
               formControlName="payer"
               appendTo="body"
               [options]="payers"
               optionLabel="payer"
-            ></p-dropdown>
+            ></p-select>
             <label class="required" for="payer">Genera</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatLabel>
+          <p-floatlabel>
             <input id="method" formControlName="method" maxlength="255" pInputText>
             <label class="required" for="method">Forma de pago</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatLabel>
-            <p-calendar
+          <p-floatlabel>
+            <p-datePicker
               id="invoiceDate"
               formControlName="invoiceDate"
               appendTo="body"
               (onSelect)="onDateSelect($event)"
               [showClear]="true"
-            ></p-calendar>
+            ></p-datePicker>
             <label class="required" for="invoiceDate">Fecha de Factura</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatLabel>
-            <p-calendar
+          <p-floatlabel>
+            <p-datePicker
               id="paymentDate"
               formControlName="paymentDate"
               appendTo="body"
               (onSelect)="onDateSelect($event)"
               [showClear]="true"
-            ></p-calendar>
+            ></p-datePicker>
             <label class="required" for="paymentDate">Fecha de Pago</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12">
-          <p-floatLabel>
-            <p-dropdown
+          <p-floatlabel>
+            <p-select
               id="grant"
               formControlName="grant"
               appendTo="body"
               [options]="grants"
               optionLabel="grantName"
               [showClear]="true"
-            ></p-dropdown>
+            ></p-select>
             <label for="payer">Usada en Subvención</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 mb-2">
-          <p-floatLabel>
+          <p-floatlabel>
             <app-form-text-area
               formControlName="observations"
               floatLabel="Observaciones"
               [maxLength]="4095"
               [showErrorMessage]="invoiceFormHelper.hasSpecificError('observations', 'maxlength')"
             ></app-form-text-area>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 mb-2 d-flex gap-3 flex-wrap">
           <p-checkbox

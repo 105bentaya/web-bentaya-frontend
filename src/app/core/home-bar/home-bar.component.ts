@@ -12,7 +12,6 @@ import {SidebarComponent} from "../sidebar/sidebar.component";
   templateUrl: './home-bar.component.html',
   styleUrls: ['./home-bar.component.scss'],
   providers: [DialogService],
-  standalone: true,
   imports: [
     RouterLink,
     BadgeModule,

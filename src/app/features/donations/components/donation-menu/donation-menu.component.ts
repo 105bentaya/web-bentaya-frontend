@@ -7,7 +7,6 @@ import {RouterLink} from '@angular/router';
   selector: 'app-donation-menu',
   templateUrl: './donation-menu.component.html',
   styleUrls: ['./donation-menu.component.scss'],
-  standalone: true,
   imports: [
     RouterLink,
     ImageModule,

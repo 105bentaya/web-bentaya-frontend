@@ -10,13 +10,13 @@ import {unitGroups} from "../../../../shared/model/group.model";
 import {Scout} from "../../../scouts/models/scout.model";
 import {ScoutService} from "../../../scouts/services/scout.service";
 import {roles} from "../../models/role.model";
-import {DropdownModule} from 'primeng/dropdown';
+import {SelectModule} from 'primeng/select';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {PasswordModule} from 'primeng/password';
 import {InputTextModule} from 'primeng/inputtext';
 import {RolePipe} from "../../../../shared/pipes/role.pipe";
 import {RolesPipe} from "../../../../shared/pipes/roles.pipe";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {JoinPipe} from "../../../../shared/pipes/join.pipe";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
@@ -26,7 +26,6 @@ import {UserForm} from "../../models/user-form.model";
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     InputTextModule,
@@ -34,7 +33,7 @@ import {UserForm} from "../../models/user-form.model";
     MultiSelectModule,
     RolesPipe,
     RolePipe,
-    DropdownModule,
+    SelectModule,
     DatePipe,
     JoinPipe,
     SaveButtonsComponent,

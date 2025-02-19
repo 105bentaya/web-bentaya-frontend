@@ -15,7 +15,7 @@ import {EventStatusService} from "../../services/event-status.service";
 import {Subscription} from "rxjs";
 import {ScoutEvent} from "../../models/scout-event.model";
 import {DatePipe, NgClass, NgTemplateOutlet} from "@angular/common";
-import {ButtonDirective} from "primeng/button";
+import {Button} from "primeng/button";
 import {ButtonGroupModule} from "primeng/buttongroup";
 import {SentenceCasePipe} from "../../../../shared/pipes/sentence-case.pipe";
 import {SelectButtonModule} from "primeng/selectbutton";
@@ -30,10 +30,8 @@ import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   providers: [DialogService],
-  standalone: true,
   imports: [
     NgClass,
-    ButtonDirective,
     ButtonGroupModule,
     DatePipe,
     SentenceCasePipe,
@@ -41,7 +39,8 @@ import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-
     SelectButtonModule,
     MultiSelectModule,
     FormsModule,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    Button
   ]
 })
 export class CalendarComponent implements OnInit, OnDestroy {
@@ -63,14 +62,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   protected groups = [...unitGroups, groups[0]];
   protected filterResults!: number[];
   protected loading = true;
-  private newEventSubscription: Subscription;
-  private updatedEventSubscription: Subscription;
-  private deletedEventSubscription: Subscription;
+  private readonly newEventSubscription: Subscription;
+  private readonly updatedEventSubscription: Subscription;
+  private readonly deletedEventSubscription: Subscription;
 
   @ViewChild('top')
-  private topOfList!: ElementRef;
+  private readonly topOfList!: ElementRef;
   @ViewChild('calendarComponent')
-  private calendarComponent!: FullCalendarComponent;
+  private readonly calendarComponent!: FullCalendarComponent;
 
   constructor(
   ) {
@@ -223,8 +222,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   private openInfoDialog(eventId: number) {
     this.ref = this.dialogService.open(EventInfoComponent, {
       header: 'Actividad',
-      styleClass: 'small dialog-width',
-      data: eventId
+      styleClass: 'small-dw dialog-width',
+      data: eventId,
+      modal: true,
+      closable: true
     });
   }
 
@@ -285,7 +286,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   protected openSubscribeDialog() {
     this.ref = this.dialogService.open(CalendarSubscriptionComponent, {
       header: 'Suscribirse al Calendario',
-      styleClass: 'small dialog-width'
+      styleClass: 'small-dw dialog-width'
     });
   }
 }

@@ -2,17 +2,16 @@ import {Component, inject, OnInit} from '@angular/core';
 import {PreScouter} from "../../models/pre-scouter.model";
 import {ScouterFormsService} from "../../services/scouter-forms.service";
 import {ConfirmationService} from "primeng/api";
-import {ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 
 @Component({
   selector: 'app-ser-scouter-table',
   templateUrl: './ser-scouter-table.component.html',
   styleUrls: ['./ser-scouter-table.component.scss'],
-  standalone: true,
   imports: [
     TableModule,
-    ButtonDirective
+    Button
   ]
 })
 export class SerScouterTableComponent implements OnInit {

@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, ApplicationConfig} from '@angular/core';
+import {ApplicationConfig, inject, provideAppInitializer} from '@angular/core';
 import {InMemoryScrollingOptions, provideRouter, withInMemoryScrolling} from '@angular/router';
 
 import {routes} from './app.routes';
@@ -19,19 +19,13 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withInMemoryScrolling(scrollConfig)),
     provideHttpClient(withInterceptors([httpTokenInterceptor, authInterceptor])),
     provideAnimations(),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [AuthService],
-      multi: true,
-    },
+    provideAppInitializer(initializeApp),
     ConfirmationService
   ]
 };
 
-//todo change with provideAppInitializer when possible
-export function initializeApp(authService: AuthService) {
-  return async () => {
+export function initializeApp() {
+  const authService = inject(AuthService);
     if (authService.isLoggedIn()) {
       return new Promise<void>((resolve) => {
         authService.loadUserInfo().subscribe({
@@ -42,5 +36,4 @@ export function initializeApp(authService: AuthService) {
     } else {
       return Promise.resolve();
     }
-  };
 }

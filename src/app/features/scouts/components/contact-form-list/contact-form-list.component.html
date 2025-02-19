@@ -8,12 +8,12 @@
   >
     <ng-template pTemplate="caption">
       <div class="text-md-end">
-        <app-general-icon-button
+        <app-table-icon-button
           icon="pi pi-user-plus"
           title="Añadir contacto"
-          style="width: 2rem; height: 2rem;"
+          [style]="{'width': '2rem', 'height': '2rem'}"
           (click)="onAdd.emit()"
-        ></app-general-icon-button>
+        ></app-table-icon-button>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -46,12 +46,12 @@
           <input type="text" formControlName="phone" pInputText>
         </td>
         <td>
-          <app-general-icon-button
+          <app-table-icon-button
             icon="pi pi-user-minus"
             title="Eliminar contacto"
             class="p-button-danger"
             (click)="onDelete.emit(ri)"
-          ></app-general-icon-button>
+          ></app-table-icon-button>
         </td>
       </tr>
     </ng-template>

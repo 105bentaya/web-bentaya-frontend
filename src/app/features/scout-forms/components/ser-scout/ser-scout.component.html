@@ -77,7 +77,7 @@
           </h4>
           <div class="row">
             <div class="col-12 col-md-4">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="name"
@@ -86,13 +86,13 @@
                   maxlength="80"
                 >
                 <label class="required" for="name">Nombre</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('name')) {
                 <small class="text-danger">Introduzca un nombre.</small>
               }
             </div>
             <div class="col-12 col-md-4">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="firstSurname"
@@ -101,13 +101,13 @@
                   maxlength="80"
                 >
                 <label class="required" for="firstSurname">Primer Apellido</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('firstSurname')) {
                 <small class="text-danger">Introduzca un apellido.</small>
               }
             </div>
             <div class="col-12 col-md-4">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="secondSurname"
@@ -116,23 +116,23 @@
                   maxlength="80"
                 >
                 <label for="secondSurname">Segundo Apellido</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-              <p-floatLabel>
-                <p-dropdown
+              <p-floatlabel>
+                <p-select
                   formControlName="gender"
                   id="gender"
                   [options]="genders"
-                ></p-dropdown>
+                ></p-select>
                 <label class="required" for="gender">Género</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('gender')) {
                 <small class="text-danger">Debe escoger un género</small>
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="dni"
@@ -141,23 +141,23 @@
                   maxlength="250"
                 >
                 <label class="required" for="dni">DNI/NIE</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('dni')) {
                 <small class="text-danger">Introduzca un DNI/NIE o 'No tiene' si así corresponde.</small>
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-              <p-floatLabel>
-                <p-calendar
+              <p-floatlabel>
+                <p-datePicker
                   id="birthday"
                   formControlName="birthday"
                   dataType="string"
                   [minDate]="minDate"
                   [maxDate]="maxDate"
                   [defaultDate]="maxDate"
-                ></p-calendar>
+                ></p-datePicker>
                 <label class="required" for="birthday">Fecha de Nacimiento</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('birthday')) {
                 <small class="text-danger">Introduzca una fecha de nacimiento con formato dd/mm/yyyy</small>
               } @else {
@@ -165,14 +165,14 @@
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-              <p-floatLabel>
-                <p-dropdown
+              <p-floatlabel>
+                <p-select
                   formControlName="size"
                   id="size"
                   [options]="sizes"
-                ></p-dropdown>
+                ></p-select>
                 <label class="required" for="size">Talla de camiseta</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('size')) {
                 <small class="text-danger">Introduzca la talla de camiseta</small>
               }
@@ -196,6 +196,7 @@
                 </small>
               }
             </div>
+<!--            todo-->
             <div class="col-12">
               <p-checkbox
                 id="hasBeenInGroup"
@@ -206,7 +207,7 @@
             </div>
             @if (preScoutForm.controlValue('hasBeenInGroup')) {
               <div class="col-12">
-                <p-floatLabel>
+                <p-floatlabel>
                   <input
                     pInputText
                     formControlName="yearAndSection"
@@ -215,7 +216,7 @@
                     maxlength="250"
                   >
                   <label class="required" for="yearAndSection">Último año que estuvo y la unidad:</label>
-                </p-floatLabel>
+                </p-floatlabel>
                 @if (preScoutForm.isDirtyAndInvalid('yearAndSection')) {
                   <small class="text-danger">Introducir los años aproximados y la última unidad en la que
                     estuvo.</small>
@@ -228,7 +229,7 @@
           <h4 class="step-form-title"><b>Datos de la madre, padre o persona a contactar</b></h4>
           <div class="row">
             <div class="col-12 col-lg-4">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="parentsName"
@@ -237,13 +238,13 @@
                   maxlength="250"
                 >
                 <label class="required" for="parentsName">Nombre del contacto</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('parentsName')) {
                 <small class="text-danger">Introducir los años aproximados y la última unidad en la que estuvo.</small>
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="parentsFirstSurname"
@@ -252,13 +253,13 @@
                   maxlength="250"
                 >
                 <label class="required" for="parentsFirstSurname">Primer apellido del contacto</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('parentsFirstSurname')) {
                 <small class="text-danger">Introduzca el primer apellido del contacto</small>
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="parentsSecondSurname"
@@ -267,10 +268,10 @@
                   maxlength="250"
                 >
                 <label for="parentsSecondSurname">Segundo apellido del contacto</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="relationship"
@@ -279,13 +280,13 @@
                   maxlength="250"
                 >
                 <label class="required" for="relationship">Parentesco</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('relationship')) {
                 <small class="text-danger">Introduzca la relación con la persona educanda del contacto</small>
               }
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="phone"
@@ -294,13 +295,13 @@
                   maxlength="250"
                 >
                 <label class="required" for="phone">Teléfono de contacto</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('phone')) {
                 <small class="text-danger">Introduzca el teléfono del contacto</small>
               }
             </div>
             <div class="col-12">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input
                   pInputText
                   formControlName="email"
@@ -310,7 +311,7 @@
                   maxlength="250"
                 >
                 <label class="required" for="email">Correo de contacto</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('email')) {
                 <small class="text-danger">Introduzca un correo electrónico válido</small>
               }
@@ -334,23 +335,23 @@
           </div>
           <div class="row py-3">
             <div class="col mb-2 mb-md-0">
-              <p-floatLabel>
-                <p-dropdown
+              <p-floatlabel>
+                <p-select
                   id="priority"
                   formControlName="priority"
                   styleClass="w-100"
                   [options]="priorities"
                   optionLabel="name"
-                ></p-dropdown>
+                ></p-select>
                 <label class="required" for="priority">Grupo de prioridad</label>
-              </p-floatLabel>
+              </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('priority')) {
                 <small class="text-danger">Debe escoger el grupo de prioridad correspondiente</small>
               }
             </div>
             @if (priority?.requiresExtraInfo) {
               <div class="col-12 col-md-9 mt-4 mt-md-0 mb-0">
-                <p-floatLabel>
+                <p-floatlabel>
                   <input
                     pInputText
                     formControlName="priorityInfo"
@@ -361,7 +362,7 @@
                   <label class="required" for="priorityInfo">
                     {{ priority.label }}
                   </label>
-                </p-floatLabel>
+                </p-floatlabel>
                 @if (preScoutForm.isDirtyAndInvalid('priorityInfo')) {
                   <small class="text-danger">
                     Introduzca los datos correspondientes

@@ -19,14 +19,15 @@ import {FloatLabelModule} from "primeng/floatlabel";
 import {
   PrivacyCheckboxContainerComponent
 } from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
-import {LargeFormButtonsComponent} from "../../../../shared/components/large-form-buttons/large-form-buttons.component";
+import {
+  LargeFormButtonsComponent
+} from "../../../../shared/components/buttons/large-form-buttons/large-form-buttons.component";
 import {maintenanceEmail} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-donation-form',
   templateUrl: './donation-form.component.html',
   styleUrls: ['./donation-form.component.scss'],
-  standalone: true,
   imports: [
     ButtonDirective,
     RouterLink,

@@ -3,25 +3,26 @@ import {CenterInformation} from "../../model/center-information.model";
 import {BookingDateService} from "../../service/booking-date.service";
 import {GalleriaModule} from 'primeng/galleria';
 import {RouterLink} from '@angular/router';
-import {CalendarModule} from 'primeng/calendar';
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {AutoFocus} from "primeng/autofocus";
+import {DatePicker} from "primeng/datepicker";
+import {Button} from "primeng/button";
 
 @Component({
   selector: 'app-booking-information',
   templateUrl: './booking-information.component.html',
   styleUrls: ['./booking-information.component.scss'],
-  standalone: true,
   imports: [
-    CalendarModule,
     RouterLink,
     GalleriaModule,
-    AutoFocus
+    AutoFocus,
+    DatePicker,
+    Button
   ]
 })
 export class BookingInformationComponent implements OnChanges {
 
-  private bookingDateService = inject(BookingDateService);
+  private readonly bookingDateService = inject(BookingDateService);
 
   @Input() information!: CenterInformation;
   @Input() color: any;

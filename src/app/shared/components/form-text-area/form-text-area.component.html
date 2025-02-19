@@ -22,7 +22,7 @@
       title="No superar los {{maxLength}} caracteres"
       [severity]="
       valueLength > maxLength ? 'danger' :
-      maxLength > 30 && valueLength >= maxLength-20 ? 'warning' : 'success'"
+      maxLength > 30 && valueLength >= maxLength-20 ? 'warn' : 'success'"
       [rounded]="true"
       [value]="valueLength + '/' + maxLength"
     ></p-tag>

@@ -31,7 +31,7 @@
       <form [formGroup]="contactForm.form" class="form-container">
         <div class="row">
           <div class="col-12 col-sm-6">
-            <p-floatLabel>
+            <p-floatlabel>
               <input
                 pInputText
                 formControlName="name"
@@ -39,13 +39,13 @@
                 type="text"
               >
               <label class="required" for="name">Nombre</label>
-            </p-floatLabel>
+            </p-floatlabel>
             @if (contactForm.isDirtyAndInvalid('name')) {
               <small class="text-danger">Introduzca un nombre.</small>
             }
           </div>
           <div class="col-12 col-sm-6">
-            <p-floatLabel>
+            <p-floatlabel>
               <input
                 pInputText
                 formControlName="surname"
@@ -53,12 +53,12 @@
                 type="text"
               >
               <label for="surname">Apellidos</label>
-            </p-floatLabel>
+            </p-floatlabel>
           </div>
         </div>
         <div class="row">
           <div class="col-12 col-sm-6 col-lg-12 col-xl-6">
-            <p-floatLabel>
+            <p-floatlabel>
               <input
                 formControlName="email"
                 id="email"
@@ -66,13 +66,13 @@
                 pInputText
               >
               <label class="required" for="email">Email</label>
-            </p-floatLabel>
+            </p-floatlabel>
             @if (contactForm.isDirtyAndInvalid('email')) {
               <small class="text-danger">Introduzca un correo válido.</small>
             }
           </div>
           <div class="col-12 col-sm-6 col-lg-12 col-xl-6">
-            <p-floatLabel>
+            <p-floatlabel>
               <input
                 pInputText
                 formControlName="subject"
@@ -80,7 +80,7 @@
                 type="text"
               >
               <label class="required" for="subject">Asunto</label>
-            </p-floatLabel>
+            </p-floatlabel>
             @if (contactForm.isDirtyAndInvalid('subject')) {
               <small class="text-danger">Introduzca un asunto.</small>
             }

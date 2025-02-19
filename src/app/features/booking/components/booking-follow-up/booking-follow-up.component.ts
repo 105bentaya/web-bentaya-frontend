@@ -22,8 +22,9 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {BookingBetaAlertComponent} from "../booking-beta-alert/booking-beta-alert.component";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {
-  GeneralIconButtonComponent
-} from "../../../../shared/components/general-icon-button/general-icon-button.component";
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {Button} from "primeng/button";
 import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../constant/confirm-messages.constants";
 
 @Component({
@@ -31,7 +32,6 @@ import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../const
   templateUrl: './booking-follow-up.component.html',
   styleUrls: ['./booking-follow-up.component.scss'],
   providers: [DialogService],
-  standalone: true,
   imports: [
     BookingBetaAlertComponent,
     TabViewModule,
@@ -44,9 +44,10 @@ import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../const
     NgTemplateOutlet,
     FileUploadModule,
     DocumentStatusPipe,
-    GeneralIconButtonComponent,
+    TableIconButtonComponent,
     BasicLoadingInfoComponent,
-    RouterLink
+    RouterLink,
+    Button
   ]
 })
 export class BookingFollowUpComponent implements OnInit {
@@ -138,7 +139,7 @@ export class BookingFollowUpComponent implements OnInit {
   protected cancelReservation(booking: Booking) {
     this.ref = this.dialogService.open(BookingStatusUpdateComponent, {
       header: `Cancelar reserva`,
-      styleClass: 'dialog-width small',
+      styleClass: 'dialog-width small-dw',
       data: {
         floatLabel: "Motivo de la cancelación",
         required: true,

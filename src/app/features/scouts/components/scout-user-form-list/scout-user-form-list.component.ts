@@ -3,25 +3,25 @@ import {ScoutService} from "../../services/scout.service";
 import {FormControl, FormsModule, Validators} from "@angular/forms";
 import {NgClass} from '@angular/common';
 import {InputTextModule} from 'primeng/inputtext';
-import {ButtonDirective} from 'primeng/button';
 import {TableModule} from 'primeng/table';
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 
 @Component({
   selector: 'app-scout-user-form-list',
   templateUrl: './scout-user-form-list.component.html',
   styleUrls: ['./scout-user-form-list.component.scss'],
-  standalone: true,
   imports: [
     TableModule,
-    ButtonDirective,
     InputTextModule,
     FormsModule,
-    NgClass
+    NgClass,
+    TableIconButtonComponent
   ]
 })
 export class ScoutUserFormListComponent {
-
-  private scoutService = inject(ScoutService);
+  private readonly scoutService = inject(ScoutService);
 
   @Input() scoutId: number | undefined;
   private originalUsers!: string[];

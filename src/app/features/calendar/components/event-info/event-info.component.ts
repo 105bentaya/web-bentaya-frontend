@@ -10,7 +10,7 @@ import {EventStatusService} from "../../services/event-status.service";
 import {isNoAttendanceGroup} from "../../../../shared/model/group.model";
 import {GroupPipe} from '../../../../shared/pipes/group.pipe';
 import {SkeletonModule} from 'primeng/skeleton';
-import {ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 import {DatePipe} from '@angular/common';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {DateUtils} from "../../../../shared/util/date-utils";
@@ -23,26 +23,25 @@ import {TooltipModule} from "primeng/tooltip";
   selector: 'app-event-info',
   templateUrl: './event-info.component.html',
   styleUrls: ['./event-info.component.scss'],
-  standalone: true,
   imports: [
     DatePipe,
     GroupPipe,
     SkeletonModule,
     BasicLoadingInfoComponent,
-    ButtonDirective,
-    TooltipModule
+    TooltipModule,
+    Button
   ]
 })
 export class EventInfoComponent implements OnInit, OnDestroy {
 
-  private config = inject(DynamicDialogConfig);
+  private readonly config = inject(DynamicDialogConfig);
+  private readonly eventService = inject(EventService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly dialogService = inject(DialogService);
+  private readonly eventStatusService = inject(EventStatusService);
+  private readonly loggedUserData = inject(LoggedUserDataService);
+  private readonly router = inject(Router);
   protected ref = inject(DynamicDialogRef);
-  private eventService = inject(EventService);
-  private confirmationService = inject(ConfirmationService);
-  private dialogService = inject(DialogService);
-  private eventStatusService = inject(EventStatusService);
-  private loggedUserData = inject(LoggedUserDataService);
-  private router = inject(Router);
 
   protected event!: ScoutEvent;
   protected locationLink?: string;

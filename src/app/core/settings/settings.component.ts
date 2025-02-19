@@ -2,25 +2,24 @@ import {Component, inject, OnInit} from '@angular/core';
 import {SettingsService} from "./settings.service";
 import {Setting} from "./setting.model";
 import {AlertService} from "../../shared/services/alert-service.service";
-import {CalendarModule} from 'primeng/calendar';
 import {CheckboxModule} from 'primeng/checkbox';
 import {FormsModule} from '@angular/forms';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {BasicLoadingInfoComponent} from "../../shared/components/basic-loading-info/basic-loading-info.component";
-import {SaveButtonsComponent} from "../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../shared/components/buttons/save-buttons/save-buttons.component";
+import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
-  standalone: true,
   imports: [
     InputNumberModule,
     FormsModule,
     CheckboxModule,
-    CalendarModule,
     SaveButtonsComponent,
-    BasicLoadingInfoComponent
+    BasicLoadingInfoComponent,
+    DatePicker
   ]
 })
 export class SettingsComponent implements OnInit {

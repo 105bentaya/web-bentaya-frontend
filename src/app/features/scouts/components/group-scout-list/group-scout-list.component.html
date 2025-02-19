@@ -11,7 +11,7 @@
   </div>
   <p-table
     #dt
-    styleClass="p-datatable-gridlines"
+    showGridlines
     [value]="showAll ? scouts! : groupScouts"
     responsiveLayout="scroll"
     sortField="surname"
@@ -20,15 +20,13 @@
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center">
         <span>Número de personas educandas: {{ dt.totalRecords }}</span>
-        <button
-          type="button"
-          pButton
+        <p-button
           [icon]="excelLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
           [disabled]="excelLoading"
           (click)="exportExcelScout()"
           class="p-button-success"
           title="Descargar scouts como excel"
-        ></button>
+        ></p-button>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -105,23 +103,20 @@
         </td>
         <td>
           <div class="d-flex flex-row gap-2 justify-content-center">
-            <button
-              pButton
+            <app-table-icon-button
               type="button"
               icon="pi pi-eye"
-              class="p-button-raised p-button-outlined"
               title="Ver Información"
               (click)="viewScout(scout)"
-            ></button>
+            ></app-table-icon-button>
             @if (!showAll) {
-              <button
-                pButton
+              <app-table-icon-button
                 type="button"
                 icon="pi pi-user-edit"
-                class="p-button-light p-button-raised p-button-outlined"
+                severity="info"
                 title="Editar"
                 (click)="openEditDialog(scout)"
-              ></button>
+              ></app-table-icon-button>
             }
           </div>
         </td>

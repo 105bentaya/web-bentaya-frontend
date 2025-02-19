@@ -5,25 +5,24 @@ import {ConfirmationService, FilterService} from "primeng/api";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {ExcelService} from "../../../../shared/services/excel.service";
 import {AlertService} from "../../../../shared/services/alert-service.service";
-import {ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {InputTextModule} from "primeng/inputtext";
 import {
-  GeneralIconButtonComponent
-} from "../../../../shared/components/general-icon-button/general-icon-button.component";
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 
 @Component({
   selector: 'app-senior-form-list',
   templateUrl: './senior-form-list.component.html',
   styleUrls: ['./senior-form-list.component.scss'],
-  standalone: true,
   imports: [
     BasicLoadingInfoComponent,
     TableModule,
-    ButtonDirective,
     InputTextModule,
-    GeneralIconButtonComponent
+    TableIconButtonComponent,
+    Button
   ]
 })
 export class SeniorFormListComponent implements OnInit {

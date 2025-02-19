@@ -1,25 +1,23 @@
 <div class="d-flex justify-content-between align-items-center">
   @if (form.showPrev(showPrevAtFirstPage)) {
-    <button
-      pButton
+    <p-button
       type="button"
       class="me-auto"
       icon="pi pi-chevron-left"
       label="Atrás"
       (click)="form.goToPrevPage()"
       [disabled]="loading"
-    ></button>
+    ></p-button>
   }
   @if (form.showNext()) {
-    <button
-      pButton
+    <p-button
       type="button"
       class="ms-auto"
       icon="pi pi-chevron-right"
       iconPos="right"
       label="Continuar"
       (click)="form.goToNextPage()"
-    ></button>
+    ></p-button>
   }
   @if (form.isConfirmationPage()) {
     <app-save-buttons
@@ -31,14 +29,13 @@
       [saveLoading]="loading"
     ></app-save-buttons>
   } @else if (form.isStartPage()) {
-    <button
-      pButton
+    <p-button
       type="button"
       class="ms-auto"
       icon="pi pi-arrow-circle-right"
       iconPos="right"
       label="Comenzar"
       (click)="form.currentPage = 0"
-    ></button>
+    ></p-button>
   }
 </div>

@@ -4,7 +4,7 @@ import {ExcelService} from "../../../../shared/services/excel.service";
 import {Donation} from "../../model/donation.model";
 import {DonationTypePipe} from "../../donation-type.pipe";
 import {CurrencyPipe, DatePipe} from '@angular/common';
-import {ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 
 @Component({
@@ -12,13 +12,12 @@ import {TableModule} from 'primeng/table';
   templateUrl: './donation-list.component.html',
   styleUrls: ['./donation-list.component.scss'],
   providers: [DonationTypePipe],
-  standalone: true,
   imports: [
     TableModule,
     CurrencyPipe,
     DonationTypePipe,
     DatePipe,
-    ButtonDirective
+    Button
   ]
 })
 export class DonationListComponent implements OnInit {

@@ -1,12 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ButtonDirective} from "primeng/button";
+import {Button} from "primeng/button";
 
 @Component({
   selector: 'app-save-buttons',
-  standalone: true,
-    imports: [
-        ButtonDirective
-    ],
+  imports: [
+    Button
+  ],
   templateUrl: './save-buttons.component.html',
   styleUrl: './save-buttons.component.scss'
 })

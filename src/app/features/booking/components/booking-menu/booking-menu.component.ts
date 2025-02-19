@@ -11,7 +11,6 @@ import {RouterLink} from '@angular/router';
   selector: 'app-booking-menu',
   templateUrl: './booking-menu.component.html',
   styleUrls: ['./booking-menu.component.scss'],
-  standalone: true,
   imports: [
     RouterLink,
     FlexCardComponent,

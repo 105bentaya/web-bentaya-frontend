@@ -6,7 +6,7 @@ import {FormTextAreaComponent} from "../../../../shared/components/form-text-are
 import {CheckboxModule} from "primeng/checkbox";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {OwnBookingForm} from "../../model/own-booking-form.model";
 import {DynamicDialogRef} from "primeng/dynamicdialog";
 import {BookingService} from "../../service/booking.service";
@@ -14,7 +14,6 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
 
 @Component({
   selector: 'app-own-booking-form',
-  standalone: true,
   imports: [
     BookingFormCenterSelectionComponent,
     FormTextAreaComponent,

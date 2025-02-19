@@ -2,19 +2,18 @@
   <div class="d-flex justify-content-between align-items-end mb-3">
     <h1 class="d-flex mb-0">Listas de asistencia</h1>
     <div>
-      <button
-        pButton
+      <p-button
         class="p-button-success"
         title="Descargar excel de asistencia"
         icon="pi pi-download"
         (click)="downloadAttendanceExcel()"
         [loading]="loading"
-      ></button>
+      ></p-button>
     </div>
   </div>
   <div class="d-flex gap-2 justify-content-between align-items-end mb-3">
     <div class="d-flex w-100">
-      <p-calendar
+      <p-datePicker
         class="input-w-100"
         styleClass="w-100"
         placeholder="Filtrar por rango de fechas"
@@ -24,7 +23,7 @@
         [(ngModel)]="filterDates"
         (onClear)="dt.filter(true, 'eventId', 'date-range')"
         (onSelect)="dt.filter(false, 'eventId', 'date-range')"
-      ></p-calendar>
+      ></p-datePicker>
     </div>
     @if (showClosedButton) {
       <div>
@@ -39,7 +38,7 @@
   </div>
   <p-table
     #dt
-    styleClass="p-datatable-gridlines"
+    showGridlines
     [value]="info"
     [loading]="!info"
     responsiveLayout="stack"
@@ -98,22 +97,20 @@
         </td>
         <td>
           <div class="d-flex flex-row gap-2 justify-content-end w-100">
-            <button
-              pButton
+            <p-button
               type="button"
               icon="pi pi-eye"
               class="p-button-outlined p-button-raised"
               title="Ver Información"
               (click)="viewInfo(eventInfo.eventId, eventInfo.eventTitle, eventInfo.eventHasPayment)"
-            ></button>
-            <button
-              pButton
+            ></p-button>
+            <app-table-icon-button
               type="button"
               icon="pi pi-pencil"
-              class="p-button-outlined p-button-raised p-button-light"
+              severity="info"
               title="Editar Asistencia"
               (click)="openEditDialog(eventInfo)"
-            ></button>
+            ></app-table-icon-button>
           </div>
         </td>
       </tr>

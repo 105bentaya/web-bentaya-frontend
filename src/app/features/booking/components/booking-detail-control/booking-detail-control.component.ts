@@ -12,7 +12,6 @@ import {OwnBookingDetailComponent} from "../own-booking-detail/own-booking-detai
 
 @Component({
   selector: 'app-booking-detail-control',
-  standalone: true,
   imports: [
     BasicLoadingInfoComponent,
     ButtonDirective,

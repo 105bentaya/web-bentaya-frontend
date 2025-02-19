@@ -24,7 +24,7 @@
     <div>
       <div class="row">
         <div class="col-12 col-md-6">
-          <p-floatLabel>
+          <p-floatlabel>
             <input
               pInputText
               formControlName="phone"
@@ -32,10 +32,10 @@
               type="text"
             >
             <label for="phone">Teléfono</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-md-6">
-          <p-floatLabel>
+          <p-floatlabel>
             <input
               formControlName="email"
               id="email"
@@ -43,7 +43,7 @@
               pInputText
             >
             <label for="email">Email</label>
-          </p-floatLabel>
+          </p-floatlabel>
           @if (complaintForm.isDirtyAndInvalid('email')) {
             <small class="text-danger">Introduzca un correo válido.</small>
           }
@@ -51,33 +51,33 @@
       </div>
       <div class="row">
         <div class="col-12 col-lg-3">
-          <p-floatLabel>
-            <p-dropdown
+          <p-floatlabel>
+            <p-select
               id="category"
               formControlName="category"
               [options]="categories"
-            ></p-dropdown>
+            ></p-select>
             <label for="category" class="required">Categoría</label>
-          </p-floatLabel>
+          </p-floatlabel>
           @if (complaintForm.isDirtyAndInvalid('category')) {
             <small class="text-danger">Introduzca la categoría de la queja.</small>
           }
         </div>
         <div class="col-12 col-lg-3">
-          <p-floatLabel>
-            <p-dropdown
+          <p-floatlabel>
+            <p-select
               id="type"
               formControlName="type"
               [options]="types"
-            ></p-dropdown>
+            ></p-select>
             <label class="required" for="type">Tipo</label>
-          </p-floatLabel>
+          </p-floatlabel>
           @if (complaintForm.isDirtyAndInvalid('type')) {
             <small class="text-danger">Introduzca el tipo de queja.</small>
           }
         </div>
         <div class="col-12 col-lg-3">
-          <p-floatLabel>
+          <p-floatlabel>
             <input
               formControlName="name"
               id="name"
@@ -85,10 +85,10 @@
               pInputText
             >
             <label for="name">Nombre</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="col-12 col-lg-3">
-          <p-floatLabel>
+          <p-floatlabel>
             <input
               formControlName="surname"
               id="surname"
@@ -96,7 +96,7 @@
               pInputText
             >
             <label for="surname">Apellidos</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
       </div>
     </div>

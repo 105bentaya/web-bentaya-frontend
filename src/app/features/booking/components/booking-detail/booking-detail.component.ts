@@ -1,6 +1,5 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {BookingService} from "../../service/booking.service";
-import {RouterLink} from "@angular/router";
 import {Booking} from "../../model/booking.model";
 import {centerIsAlwaysExclusive, documents} from "../../constant/scout-center.constant";
 import {Status} from "../../constant/status.constant";
@@ -11,16 +10,14 @@ import {ScoutCenterStatusPipe} from "../../pipe/scout-center-status.pipe";
 import {BookingDocument, DocumentStatus} from "../../model/booking-document.model";
 import {saveAs} from "file-saver";
 import {ConfirmationService} from "primeng/api";
-import {ButtonDirective} from "primeng/button";
+import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {ScoutCenterPipe} from "../../pipe/scout-center.pipe";
 import {DividerModule} from "primeng/divider";
 import {DocumentStatusPipe} from "../../pipe/dcoument-status.pipe";
 import {
-  GeneralIconButtonComponent
-} from "../../../../shared/components/general-icon-button/general-icon-button.component";
-import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.component";
-import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DialogModule} from "primeng/dialog";
 
 @Component({
@@ -28,20 +25,16 @@ import {DialogModule} from "primeng/dialog";
   templateUrl: './booking-detail.component.html',
   styleUrls: ['./booking-detail.component.scss'],
   providers: [DialogService, ScoutCenterStatusPipe],
-  standalone: true,
   imports: [
-    ButtonDirective,
-    RouterLink,
     DatePipe,
     ScoutCenterPipe,
     CurrencyPipe,
     ScoutCenterStatusPipe,
     DividerModule,
     DocumentStatusPipe,
-    GeneralIconButtonComponent,
-    BookingCalendarComponent,
-    BasicLoadingInfoComponent,
-    DialogModule
+    TableIconButtonComponent,
+    DialogModule,
+    Button
   ]
 })
 export class BookingDetailComponent implements OnInit {
@@ -75,7 +68,7 @@ export class BookingDetailComponent implements OnInit {
       `Actualizar a '${this.pipe.transform(newStatus)}'`;
     this.ref = this.dialogService.open(BookingStatusUpdateComponent, {
       header: header,
-      styleClass: 'dialog-width small',
+      styleClass: 'dialog-width small-dw',
       data: {floatLabel, required: data?.required, message: data?.message, showPrice: data?.showPrice}
     });
     this.ref.onClose.subscribe(result => {

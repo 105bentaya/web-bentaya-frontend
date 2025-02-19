@@ -5,7 +5,6 @@ import {RouterLink} from '@angular/router';
   selector: 'app-transparencia',
   templateUrl: './transparencia.component.html',
   styleUrls: ['./transparencia.component.scss'],
-  standalone: true,
   imports: [RouterLink]
 })
 export class TransparenciaComponent {

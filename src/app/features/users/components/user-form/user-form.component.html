@@ -57,14 +57,14 @@
               <label class="required" for="groupId">
                 Unidad del Scouter
               </label>
-              <p-dropdown
+              <p-select
                 id="groupId"
                 [options]="groups"
                 formControlName="groupId"
                 optionLabel="name"
                 optionValue="id"
                 placeholder="Unidad del Scouter"
-              ></p-dropdown>
+              ></p-select>
             </div>
           }
           @if (isUser()) {

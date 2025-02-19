@@ -1,35 +1,45 @@
 <footer>
-  <div class="container">
+  <div class="container footer-contents">
     <div class="d-flex flex-row flex-wrap justify-content-center">
-      <div class="d-flex flex-column m-4 footer-contents text-center">
-        <h5 class="text-white"><b>NUESTRAS POLÍTICAS</b></h5>
-        <a pButton  class="p-button-rounded p-button-text text-white" routerLink="/condiciones-de-uso">Condiciones de Uso</a>
-        <a  pButton  class="p-button-rounded p-button-text text-white" routerLink="/aviso-legal">Aviso Legal</a>
-        <a  pButton  class="p-button-rounded p-button-text text-white" routerLink="/politica-privacidad">Política de Privacidad</a>
+      <div class="d-flex flex-column m-4 text-center">
+        <h5><b>NUESTRAS POLÍTICAS</b></h5>
+        <a class="p-button-rounded p-button-text" routerLink="/condiciones-de-uso">Condiciones de Uso</a>
+        <a class="p-button-rounded p-button-text" routerLink="/aviso-legal">Aviso Legal</a>
+        <a class="p-button-rounded p-button-text" routerLink="/politica-privacidad">Política de Privacidad</a>
       </div>
-      <div class="d-flex flex-column m-4 footer-contents text-center">
-        <h5 class="text-white"><b>CONTACTO</b></h5>
-        <a pButton  class="p-button-rounded p-button-text text-white" href="mailto:scouts@105bentaya.org">scouts&#64;105bentaya.org</a>
+      <div class="d-flex flex-column m-4 text-center">
+        <h5><b>CONTACTO</b></h5>
+        <a
+          class="p-button-rounded p-button-text"
+          href="mailto:scouts@105bentaya.org"
+        >
+          scouts&#64;105bentaya.org
+        </a>
         <a
           pButton
-          class="p-button-rounded p-button-text text-white"
           routerLink="/contacto"
-          icon=" pi pi-phone"
+          target="_blank"
+          [text]="true"
+          [rounded]="true"
         >
-          <label class="ms-1"> Mándanos un mensaje</label>
+          <i pButtonIcon class="pi pi-phone"></i>
+          <span pButtonLabel>Mándanos un mensaje</span>
         </a>
       </div>
       <div class="d-flex flex-column m-4 text-center">
-        <h5 class="text-white"><b>SÍGUENOS</b></h5>
+        <h5><b>SÍGUENOS</b></h5>
         <p-divider></p-divider>
         <div class="d-flex flex-wrap">
           @for (button of socialMediaButtons; track $index) {
             <a
               pButton
               [href]="button.link"
-              [icon]="button.icon"
-              class="p-button-rounded p-button-text text-white"
-            ></a>
+              target="_blank"
+              [text]="true"
+              [rounded]="true"
+            >
+              <i pButtonIcon [class]="button.icon"></i>
+            </a>
           }
         </div>
       </div>

@@ -1,0 +1,28 @@
+@if (routerLink) {
+  <a
+    pButton
+    [class]="class"
+    [routerLink]="routerLink"
+    [raised]="true"
+    [type]="type"
+    [style]="style"
+    [outlined]="true"
+    [title]="title"
+    [severity]="severity"
+  >
+    <i pButtonIcon [class]="icon"></i>
+  </a>
+} @else {
+  <p-button
+    styleClass="wh-2rem"
+    [type]="type"
+    [style]="style"
+    [raised]="true"
+    [outlined]="true"
+    [title]="title"
+    [disabled]="disabled"
+    [severity]="severity"
+  >
+    <i pButtonIcon [class]="icon"></i>
+  </p-button>
+}

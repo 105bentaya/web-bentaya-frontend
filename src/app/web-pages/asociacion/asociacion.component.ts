@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterLink} from "@angular/router";
-import {NgOptimizedImage, NgStyle} from "@angular/common";
+import {NgStyle} from "@angular/common";
 import {PanelModule} from "primeng/panel";
 
 @Component({
   selector: 'app-asociacion',
-  standalone: true,
   imports: [
     RouterLink,
     NgStyle,

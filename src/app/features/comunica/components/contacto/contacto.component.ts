@@ -9,7 +9,7 @@ import {FormHelper} from "../../../../shared/util/form-helper";
 import {
   PrivacyCheckboxContainerComponent
 } from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {maintenanceEmail} from "../../../../shared/constant";
@@ -18,7 +18,6 @@ import {maintenanceEmail} from "../../../../shared/constant";
   selector: 'app-contacto',
   templateUrl: './contacto.component.html',
   styleUrls: ['./contacto.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     FloatLabelModule,

@@ -1,21 +1,19 @@
 import {Component} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
-import {NgClass, NgOptimizedImage, UpperCasePipe} from '@angular/common';
+import {NgClass, UpperCasePipe} from '@angular/common';
 import {GalleriaModule} from "primeng/galleria";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  standalone: true,
   imports: [
     DividerModule,
     NgClass,
     RouterLink,
     UpperCasePipe,
-    GalleriaModule,
-    NgOptimizedImage
+    GalleriaModule
   ]
 })
 export class HomeComponent {

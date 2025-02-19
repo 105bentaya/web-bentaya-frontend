@@ -11,13 +11,12 @@ import {FormHelper} from "../../../../shared/util/form-helper";
 import {
   PrivacyCheckboxContainerComponent
 } from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 
 @Component({
   selector: 'app-senior-form',
   templateUrl: './senior-form.component.html',
   styleUrls: ['./senior-form.component.scss'],
-  standalone: true,
   imports: [
     RouterLink,
     ReactiveFormsModule,

@@ -15,7 +15,9 @@ import {DatePipe, NgClass} from '@angular/common';
 import {StepsModule} from 'primeng/steps';
 import {RouterLink} from '@angular/router';
 import {FormHelper} from "../../../../shared/util/form-helper";
-import {LargeFormButtonsComponent} from "../../../../shared/components/large-form-buttons/large-form-buttons.component";
+import {
+  LargeFormButtonsComponent
+} from "../../../../shared/components/buttons/large-form-buttons/large-form-buttons.component";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {
   PrivacyCheckboxContainerComponent
@@ -32,7 +34,6 @@ import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-
   selector: 'app-booking-form',
   templateUrl: './booking-form.component.html',
   styleUrls: ['./booking-form.component.scss'],
-  standalone: true,
   imports: [
     BookingBetaAlertComponent,
     RouterLink,

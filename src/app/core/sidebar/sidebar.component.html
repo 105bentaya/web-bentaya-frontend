@@ -1,4 +1,4 @@
-<p-sidebar [(visible)]="sidebarVisible">
+<p-drawer [(visible)]="sidebarVisible">
   <ng-template pTemplate="body">
     <p-panelMenu [model]="items" ></p-panelMenu>
   </ng-template>
@@ -23,7 +23,7 @@
       </div>
     </div>
   </ng-template>
-</p-sidebar>
+</p-drawer>
 <p-button
   (onClick)="sidebarVisible = true"
   icon="pi pi-bars"

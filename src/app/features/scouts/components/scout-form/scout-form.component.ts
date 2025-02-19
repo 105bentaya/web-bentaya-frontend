@@ -24,45 +24,44 @@ import {TitleCasePipe} from "@angular/common";
 import {ContactFormListComponent} from '../contact-form-list/contact-form-list.component';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {InputNumberModule} from 'primeng/inputnumber';
-import {DropdownModule} from 'primeng/dropdown';
-import {CalendarModule} from 'primeng/calendar';
+import {SelectModule} from 'primeng/select';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {genders} from "../../../../shared/constant";
 import {FloatLabelModule} from "primeng/floatlabel";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import FormUtils from "../../../../shared/util/form-utils";
 import {Contact} from "../../models/contact.model";
+import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: 'app-scout-form',
   templateUrl: './scout-form.component.html',
   styleUrls: ['./scout-form.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     TabViewModule,
     FloatLabelModule,
     InputTextModule,
-    CalendarModule,
-    DropdownModule,
+    SelectModule,
     InputNumberModule,
     FormTextAreaComponent,
     SelectButtonModule,
     ContactFormListComponent,
     ScoutUserFormListComponent,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    DatePicker
   ]
 })
 export class ScoutFormComponent implements OnInit {
 
-  private ref = inject(DynamicDialogRef);
-  private alertService = inject(AlertService);
-  private config = inject(DynamicDialogConfig);
-  private formBuilder = inject(FormBuilder);
-  private scoutService = inject(ScoutService);
-  private confirmationService = inject(ConfirmationService);
+  private readonly ref = inject(DynamicDialogRef);
+  private readonly alertService = inject(AlertService);
+  private readonly config = inject(DynamicDialogConfig);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly scoutService = inject(ScoutService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   protected readonly groups = unitGroups;
   protected readonly genders = genders;
@@ -73,7 +72,7 @@ export class ScoutFormComponent implements OnInit {
   protected loading = false;
   protected disableLoading = false;
   protected isNew = false;
-  @ViewChild("userList") private userTable!: ScoutUserFormListComponent;
+  @ViewChild("userList") private userTable!: ScoutUserFormListComponent; //todo
   protected usernamesValid = true;
   private preScoutId!: number;
 
@@ -284,7 +283,7 @@ export class ScoutFormComponent implements OnInit {
   }
 
   protected contactWithoutPhoneOrEmail(): boolean {
-    return this.scoutContactList.controls.some(control => control.errors && control.errors['noPhoneOrEmail']);
+    return this.scoutContactList.controls.some(control => control.errors?.['noPhoneOrEmail']);
   }
 
   private generateUsernameChangeMessage(usernameInfo: ScoutUsernamesUpdate, empty: boolean) {
@@ -319,7 +318,7 @@ export class ScoutFormComponent implements OnInit {
     return addedUser;
   }
 
-  private contactValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  private readonly contactValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const name = control.get('email');
     const role = control.get('phone');
     return name && role && !name.value && !role.value ? {noPhoneOrEmail: true} : null;

@@ -10,7 +10,6 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
   selector: 'app-attendance-info',
   templateUrl: './attendance-info.component.html',
   styleUrls: ['./attendance-info.component.scss'],
-  standalone: true,
   imports: [
     PanelModule,
     BasicLoadingInfoComponent

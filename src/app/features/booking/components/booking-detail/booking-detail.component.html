@@ -156,57 +156,52 @@
           <b>Actualizar Estado</b>
           <div class="d-flex gap-2 flex-wrap">
             @if (booking.status == 'NEW') {
-              <button
-                pButton
+              <p-button
                 icon="pi pi-check"
                 label="Aceptar Pre Reserva"
                 class="p-button-success"
                 [loading]="loading"
                 loadingIcon="pi pi-spin pi-spinner"
                 (click)="openStatusForm('RESERVED', {showPrice: true})"
-              ></button>
+              ></p-button>
             } @else if (booking.status == 'RESERVED') {
               @if (booking.exclusiveReservation) {
-                <button
-                  pButton
+                <p-button
                   icon="pi pi-check"
                   label="Confirmar Reserva en exclusividad"
                   class="p-button-success"
                   [loading]="loading"
                   loadingIcon="pi pi-spin pi-spinner"
                   (click)="openStatusForm('FULLY_OCCUPIED')"
-                ></button>
+                ></p-button>
               } @else {
-                <button
-                  pButton
+                <p-button
                   icon="pi pi-check"
                   [label]="!centerIsAlwaysExclusive(booking.scoutCenter) && booking.exclusiveReservation ? 'Confirmar Reserva sin exclusividad' : 'Confirmar Reserva'"
                   class="p-button-success"
                   [loading]="loading"
                   loadingIcon="pi pi-spin pi-spinner"
                   (click)="openStatusForm('OCCUPIED',{required: booking.exclusiveReservation},booking.exclusiveReservation ? 'Motivo por el rechazo de la exclusividad' : undefined)"
-                ></button>
+                ></p-button>
               }
-              <button
-                pButton
+              <p-button
                 icon="pi pi-exclamation-triangle"
                 label="Subsanar Documentos"
                 class="p-button-warning"
                 [loading]="loading"
                 loadingIcon="pi pi-spin pi-spinner"
                 (click)="openStatusForm('RESERVED', {required: true},'Motivo de la subsanación')"
-              ></button>
+              ></p-button>
             }
             @if (booking.status == 'NEW' || booking.status == 'RESERVED') {
-              <button
-                pButton
+              <p-button
                 icon="pi pi-times"
                 label="Denegar Pre Reserva"
                 class="p-button-danger"
                 [loading]="loading"
                 loadingIcon="pi pi-spin pi-spinner"
                 (click)="openStatusForm('REJECTED', {required: true},'Motivo de la denegación')"
-              ></button>
+              ></p-button>
             } @else if (booking.status == 'OCCUPIED' || booking.status == 'FULLY_OCCUPIED' || booking.status == 'LEFT') {
               <!--TODO: esto cambiarlo por un botón de cancelar y un aviso al darle. Buscar una manera de que siga mostrándose en el calendario público-->
               <p>
@@ -214,15 +209,14 @@
                 lugar, o cuando quieras cancelarla, ya que la reserva dejará de aparecer en el calendario público. En
                 el futuro próximo se arreglará esto.
               </p>
-              <button
-                pButton
+              <p-button
                 icon="pi pi-check"
                 label="Lugar Revisado"
                 class="p-button-success"
                 [loading]="loading"
                 loadingIcon="pi pi-spin pi-spinner"
                 (click)="openStatusForm('FINISHED', {required: true},'Resultado de la revisión')"
-              ></button>
+              ></p-button>
             }
           </div>
         </div>
@@ -232,13 +226,12 @@
   @if (booking.status !== 'NEW') {
     <p-divider align="left" type="solid">
       <div class="d-flex align-items-center gap-1">
-        <button
-          pButton
+        <p-button
           [icon]="showDocuments ? 'pi pi-eye-slash' : 'pi pi-eye'"
           class="p-button-secondary p-button-outlined p-button-text p-button-rounded"
           (click)="showDocuments = !showDocuments"
           title="Descargar"
-        ></button>
+        ></p-button>
         <b class="cursor-pointer" (click)="showDocuments = !showDocuments">
             <span>
               @if (showDocuments) {
@@ -271,55 +264,54 @@
               ></b>
             </span>
             <div class="d-flex gap-2">
-              <app-general-icon-button
+              <app-table-icon-button
                 icon="pi pi-download"
                 class="p-button-info"
                 [disabled]="loading"
                 (click)="downloadFile(file)"
                 title="Descargar"
-              ></app-general-icon-button>
+              ></app-table-icon-button>
               @if (file.fileName.endsWith('pdf')) {
-                <app-general-icon-button
+                <app-table-icon-button
                   icon="pi pi-eye"
-                  class="p-button-light"
+                  severity="info"
                   [disabled]="loading"
                   (click)="showFile(file)"
                   title="Abrir"
-                ></app-general-icon-button>
+                ></app-table-icon-button>
               }
-              <app-general-icon-button
+              <app-table-icon-button
                 icon="pi pi-trash"
                 class="p-button-danger"
                 [disabled]="loading"
                 (click)="deleteFile(file)"
                 title="Borrar"
-              ></app-general-icon-button>
-              <app-general-icon-button
+              ></app-table-icon-button>
+              <app-table-icon-button
                 icon="pi pi-check"
                 class="p-button-success"
                 [disabled]="loading"
                 (click)="updateFile(file, 'ACCEPTED')"
                 title="Marcar como válido"
-              ></app-general-icon-button>
-              <app-general-icon-button
+              ></app-table-icon-button>
+              <app-table-icon-button
                 icon="pi pi-times"
                 class="p-button-danger"
                 [disabled]="loading"
                 (click)="updateFile(file, 'REJECTED')"
                 title="Marcar como inválido"
-              ></app-general-icon-button>
+              ></app-table-icon-button>
             </div>
           </div>
         }
-        <button
-          pButton
+        <p-button
           icon='fa-solid fa-file-circle-question'
           class="p-button-secondary p-button-outlined p-button-rounded my-2"
           size="small"
           title="Ver Documentos"
           label="Documentos a entregar"
           (click)="dialogVisible = true"
-        ></button>
+        ></p-button>
       }
     </div>
   }
@@ -330,7 +322,7 @@
   [modal]="true"
   [draggable]="false"
   [resizable]="false"
-  styleClass="small dialog-width"
+  styleClass="small-dw dialog-width"
 >
   <ul>
     @for (document of documents; track $index) {

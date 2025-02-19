@@ -7,7 +7,6 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
   selector: 'app-gestion-economica',
   templateUrl: './gestion-economica.component.html',
   styleUrls: ['./gestion-economica.component.scss'],
-  standalone: true,
   imports: [
     TabViewModule,
     ChartModule,

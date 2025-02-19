@@ -6,8 +6,7 @@ import {ScoutFormsService} from '../../services/scout-forms.service';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {CheckboxModule} from 'primeng/checkbox';
 import {FormTextAreaComponent} from '../../../../shared/components/form-text-area/form-text-area.component';
-import {CalendarModule} from 'primeng/calendar';
-import {DropdownModule} from 'primeng/dropdown';
+import {SelectModule} from 'primeng/select';
 import {InputTextModule} from 'primeng/inputtext';
 import {StepsModule} from 'primeng/steps';
 import {FormHelper} from "../../../../shared/util/form-helper";
@@ -16,29 +15,31 @@ import {
   PrivacyCheckboxContainerComponent
 } from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
 import {genders, maintenanceEmail} from "../../../../shared/constant";
-import {LargeFormButtonsComponent} from "../../../../shared/components/large-form-buttons/large-form-buttons.component";
+import {
+  LargeFormButtonsComponent
+} from "../../../../shared/components/buttons/large-form-buttons/large-form-buttons.component";
 import {MessagesModule} from "primeng/messages";
 import {preScoutPriorities, PreScoutPriority} from "../../priority.constant";
 import {PreScoutForm} from "../../models/pre-scout-form.model";
+import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: 'app-ser-scout',
   templateUrl: './ser-scout.component.html',
   styleUrls: ['./ser-scout.component.scss'],
-  standalone: true,
   imports: [
     StepsModule,
     ReactiveFormsModule,
     FloatLabelModule,
     InputTextModule,
-    DropdownModule,
-    CalendarModule,
+    SelectModule,
     FormTextAreaComponent,
     CheckboxModule,
     KeyFilterModule,
     PrivacyCheckboxContainerComponent,
     LargeFormButtonsComponent,
-    MessagesModule
+    MessagesModule,
+    DatePicker
   ]
 })
 export class SerScoutComponent implements OnInit {

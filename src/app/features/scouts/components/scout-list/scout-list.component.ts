@@ -14,20 +14,19 @@ import {GroupPipe} from '../../../../shared/pipes/group.pipe';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {InputTextModule} from 'primeng/inputtext';
 import {TableModule} from 'primeng/table';
-import {ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-scout-list',
   templateUrl: 'scout-list.component.html',
   styleUrls: ['scout-list.component.scss'],
   providers: [DialogService],
-  standalone: true,
   imports: [
-    ButtonDirective,
     TableModule,
     InputTextModule,
     MultiSelectModule,
-    GroupPipe
+    GroupPipe,
+    Button
   ]
 })
 
@@ -61,7 +60,7 @@ export class ScoutListComponent implements OnInit {
   protected openAddDialog() {
     this.ref = this.dialogService.open(ScoutFormComponent, {
       header: 'Añadir Persona Educanda',
-      styleClass: 'medium dialog-width'
+      styleClass: 'medium-dw dialog-width'
     });
     this.ref.onClose.subscribe(saved => saved ? this.getScouts() : noop());
   }
@@ -69,7 +68,7 @@ export class ScoutListComponent implements OnInit {
   protected openEditDialog(scout: Scout) {
     this.ref = this.dialogService.open(ScoutFormComponent, {
       header: 'Editar Persona Educanda',
-      styleClass: 'medium dialog-width',
+      styleClass: 'medium-dw dialog-width',
       data: {scout: scout}
     });
     this.ref.onClose.subscribe(saved => saved ? this.getScouts() : noop());

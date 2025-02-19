@@ -45,7 +45,7 @@
           @case (0) {
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
               <div class="col">
-                <p-floatLabel>
+                <p-floatlabel>
                   <input
                     pInputText
                     formControlName="name"
@@ -54,13 +54,13 @@
                     maxlength="80"
                   >
                   <label class="required" for="name">Nombre</label>
-                </p-floatLabel>
+                </p-floatlabel>
                 @if (formHelper.isDirtyAndInvalid('name')) {
                   <small class="text-danger">Introduzca un nombre</small>
                 }
               </div>
               <div class="col">
-                <p-floatLabel>
+                <p-floatlabel>
                   <input
                     pInputText
                     formControlName="firstSurname"
@@ -69,13 +69,13 @@
                     maxlength="80"
                   >
                   <label class="required" for="firstSurname">Primer Apellido</label>
-                </p-floatLabel>
+                </p-floatlabel>
                 @if (formHelper.isDirtyAndInvalid('firstSurname')) {
                   <small class="text-danger">Introduzca el primer apellido</small>
                 }
               </div>
               <div class="col">
-                <p-floatLabel>
+                <p-floatlabel>
                   <input
                     pInputText
                     formControlName="secondSurname"
@@ -84,10 +84,10 @@
                     maxlength="80"
                   >
                   <label for="secondSurname">Segundo Apellido</label>
-                </p-floatLabel>
+                </p-floatlabel>
               </div>
               <div class="col">
-                <p-floatLabel>
+                <p-floatlabel>
                   <input
                     pInputText
                     formControlName="cif"
@@ -96,14 +96,14 @@
                     maxlength="80"
                   >
                   <label class="required" for="cif">NIF/CIF</label>
-                </p-floatLabel>
+                </p-floatlabel>
 
                 @if (formHelper.isDirtyAndInvalid('cif')) {
                   <small class="text-danger">Introduzca un CIF o NIF</small>
                 }
               </div>
               <div class="col">
-                <p-floatLabel>
+                <p-floatlabel>
                   <input
                     pInputText
                     formControlName="phone"
@@ -112,13 +112,13 @@
                     maxlength="80"
                   >
                   <label class="required" for="phone">Teléfono</label>
-                </p-floatLabel>
+                </p-floatlabel>
                 @if (formHelper.isDirtyAndInvalid('phone')) {
                   <small class="text-danger">Introduzca un teléfono</small>
                 }
               </div>
               <div class="col">
-                <p-floatLabel>
+                <p-floatlabel>
                   <input
                     pInputText
                     formControlName="email"
@@ -127,7 +127,7 @@
                     maxlength="80"
                   >
                   <label class="required" for="email">Correo electrónico</label>
-                </p-floatLabel>
+                </p-floatlabel>
                 @if (formHelper.isDirtyAndInvalid('email')) {
                   <small class="text-danger">Introduzca un correo electrónico válido.</small>
                 }
@@ -155,7 +155,7 @@
           @case (1) {
             <div class="row">
               <div class="col">
-                <p-floatLabel>
+                <p-floatlabel>
                   <p-inputNumber
                     class="w-100"
                     styleClass="w-100"
@@ -168,7 +168,7 @@
                     [min]="0"
                   ></p-inputNumber>
                   <label class="required" for="amount">Importe</label>
-                </p-floatLabel>
+                </p-floatlabel>
                 @if (formHelper.isDirtyAndInvalid('amount')) {
                   <small class="text-danger">Introduzca un importe mayor a 0,01€</small>
                 }
@@ -258,7 +258,7 @@
               }
               @if (ibanIsRequired()) {
                 <div class="col-12">
-                  <p-floatLabel>
+                  <p-floatlabel>
                     <input
                       pInputText
                       formControlName="iban"
@@ -267,7 +267,7 @@
                       maxlength="80"
                     >
                     <label class="required" for="iban">IBAN</label>
-                  </p-floatLabel>
+                  </p-floatlabel>
                   @if (formHelper.isDirtyAndInvalid('iban')) {
                     <small class="text-danger">Introduzca su número IBAN</small>
                   }

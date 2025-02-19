@@ -9,7 +9,6 @@ import {FullCalendarModule} from '@fullcalendar/angular';
   selector: 'app-booking-calendar',
   templateUrl: './booking-calendar.component.html',
   styleUrls: ['./booking-calendar.component.scss'],
-  standalone: true,
   imports: [FullCalendarModule]
 })
 export class BookingCalendarComponent implements OnChanges {

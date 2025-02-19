@@ -1,0 +1,89 @@
+:root {
+  --bentaya-main-color: #044A93;
+  --bentaya-dark-color: #292929;
+
+  --p-button-border-radius: 12px;
+  --p-button-padding-x: 1rem;
+  --p-button-padding-y: 0.5rem;
+
+  --p-button-icon-only-width: 2.5rem;
+
+  --p-button-outlined-primary-border-color: var(--p-primary-400);
+  --p-button-outlined-danger-border-color: var(--p-danger-400);
+  --p-button-outlined-info-border-color: var(--p-info-400);
+
+  --p-togglebutton-checked-background: #cbe2ff;
+  --p-togglebutton-padding: var(--p-button-padding-y) var(--p-button-padding-x);
+  --p-togglebutton-border-radius: var(--p-button-border-radius);
+
+  --p-form-field-border-radius: var(--p-button-border-radius);
+  --p-form-field-padding-x: 0.5rem;
+  --p-form-field-padding-y: 0.5rem;
+
+  --p-overlay-modal-padding: 1rem;
+
+  --p-datatable-body-cell-padding: 0.4rem 1rem;
+
+  --p-list-option-padding: 0.4rem 1rem;
+
+  --p-checkbox-width: 22px;
+  --p-checkbox-height: var(--p-checkbox-width);
+  --p-checkbox-border-radius: 6px;
+
+  --p-tooltip-padding: 0.25rem 0.5rem;
+
+  --p-mask-color: var(--bentaya-dark-color)
+}
+
+.p-progressspinner-spin {
+  position: fixed !important;
+  max-width: 120px;
+}
+
+.p-button-icon-only.p-selectbutton > div {
+  height: var(--p-button-icon-only-width) !important;
+}
+
+.p-button.p-button-icon-only:not(.p-inputnumber-button) {
+  height: var(--p-button-icon-only-width);
+}
+
+.p-button.p-dialog-close-button {
+  padding-inline: var(--p-button-padding-y);
+}
+
+.p-tooltip .p-tooltip-text {
+  font-size: 14px;
+}
+
+.p-togglebutton.icon-only {
+  height: var(--p-button-icon-only-width) !important;
+  width: var(--p-button-icon-only-width) !important;
+  .p-togglebutton-label {
+    display: none !important;
+  }
+}
+
+//fixes
+.p-inputnumber-stacked .p-inputnumber-increment-button {
+  border-start-end-radius: calc(var(--p-inputnumber-button-border-radius) - 1px);
+}
+
+.p-datepicker-weekday-cell {
+  text-align: center;
+}
+
+
+/*
+ blue inputnumber button
+.p-inputnumber-button {
+  --p-inputnumber-button-background: var(--p-button-primary-background);
+  --p-inputnumber-button-color: var(--p-button-primary-color);
+  --p-inputnumber-button-hover-background: var(--p-button-primary-hover-background);
+  --p-inputnumber-button-hover-color: var(--p-button-primary-hover-color);
+  --p-inputnumber-button-active-background: var(--p-button-primary-active-background);
+  --p-inputnumber-button-active-color: var(--p-button-primary-active-color);
+  --p-inputnumber-button-border-color: var(--p-button-primary-border-color);
+  border: 1px solid var(--p-button-primary-border-color) !important;
+}
+*/

@@ -7,14 +7,13 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
 import {AuthService} from "../../../../core/auth/services/auth.service";
 import {Credentials} from "../../../../core/auth/credentials.model";
 import {FormHelper} from "../../../../shared/util/form-helper";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {UserRoutesService} from "../../../../core/auth/services/user-routes.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     PasswordModule,

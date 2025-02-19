@@ -2,17 +2,16 @@
   <div class="d-flex justify-content-between align-items-end mb-3">
     <h1 class="mb-0 d-flex me-3">Lista de personas educandas</h1>
     <div>
-      <button
-        pButton
+      <p-button
         title="Añadir Educanda"
         icon="pi pi-user-plus"
         (click)="openAddDialog()"
-      ></button>
+      ></p-button>
     </div>
   </div>
   <p-table
     #dt
-    styleClass="p-datatable-gridlines"
+    showGridlines
     [value]="scouts"
     [paginator]="true"
     [rows]="25"
@@ -24,15 +23,13 @@
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center">
         <span>Número de personas educandas: {{ dt.totalRecords }}</span>
-        <button
-          type="button"
-          pButton
+        <p-button
           [icon]="excelLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
           [disabled]="excelLoading"
           (click)="exportExcelScout()"
-          class="p-button-success"
+          severity="success"
           title="Descargar scouts como excel"
-        ></button>
+        ></p-button>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -102,22 +99,20 @@
         <td>
           <div class="d-flex flex-row gap-2 justify-content-center">
             @if (scout.enabled) {
-              <button
-                pButton
+              <p-button
                 icon="pi pi-user-edit"
                 class="p-button-outlined p-button-raised"
                 title="Editar"
                 (click)="openEditDialog(scout)"
-              ></button>
+              ></p-button>
             }
-            <button
-              pButton
+            <p-button
               [disabled]="loading"
               icon="pi pi-trash"
               title="Eliminar"
               class="p-button-danger p-button-outlined p-button-raised"
               (click)="deleteScout(scout)"
-            ></button>
+            ></p-button>
           </div>
         </td>
       </tr>

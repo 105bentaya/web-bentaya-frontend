@@ -5,31 +5,30 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
 import {EmailService} from '../../../../shared/services/email.service';
 import {Complaint} from '../../models/complaint.model';
 import {CheckboxModule} from 'primeng/checkbox';
-import {DropdownModule} from 'primeng/dropdown';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {
   PrivacyCheckboxContainerComponent
 } from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FloatLabelModule} from "primeng/floatlabel";
 import FormUtils from "../../../../shared/util/form-utils";
+import {Select} from "primeng/select";
 
 @Component({
   selector: 'app-canal-denuncias',
   templateUrl: './canal-denuncias.component.html',
   styleUrls: ['./canal-denuncias.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     FloatLabelModule,
     InputTextModule,
-    DropdownModule,
     FormTextAreaComponent,
     PrivacyCheckboxContainerComponent,
     CheckboxModule,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    Select
   ]
 })
 export class CanalDenunciasComponent implements OnInit {

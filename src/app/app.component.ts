@@ -1,23 +1,23 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DatePipe, registerLocaleData} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
-import {HomeBarComponent} from "./core/home-bar/home-bar.component";
 import {FooterComponent} from "./core/footer/footer.component";
 import {ToastModule} from "primeng/toast";
 import {AlertService} from "./shared/services/alert-service.service";
-import {MessageService, PrimeNGConfig} from "primeng/api";
+import {MessageService} from "primeng/api";
 import {SettingsService} from "./core/settings/settings.service";
 import localeEs from '@angular/common/locales/es'
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {AuthService} from "./core/auth/services/auth.service";
 import {noop} from "rxjs";
+import {PrimeNG} from "primeng/config";
+import Lara from '@primeng/themes/lara';
+import {definePreset} from "@primeng/themes";
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     RouterOutlet,
-    HomeBarComponent,
     FooterComponent,
     ToastModule,
     ConfirmDialogModule
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 
   private readonly alertService = inject(AlertService);
   private readonly messageService = inject(MessageService);
-  private readonly config = inject(PrimeNGConfig);
+  private readonly config = inject(PrimeNG);
   private readonly settingsService = inject(SettingsService);
   protected readonly authService = inject(AuthService);
 
@@ -43,6 +43,36 @@ export class AppComponent implements OnInit {
   private configureApp() {
     registerLocaleData(localeEs, 'es');
     this.setTranslation();
+
+    const stylePreset = definePreset(Lara, {
+      semantic: {
+        primary: {
+          50: '{blue.50}',
+          100: '{blue.100}',
+          200: '{blue.200}',
+          300: '{blue.300}',
+          400: '{blue.400}',
+          500: '{blue.500}',
+          600: '{blue.600}',
+          700: '{blue.700}',
+          800: '{blue.800}',
+          900: '{blue.900}',
+          950: '{blue.950}'
+        }
+      }
+    });
+
+
+    this.config.theme.set({
+      preset: stylePreset,
+      options: {
+        darkModeSelector: false,
+        cssLayer: {
+          name: 'primeng',
+          order: 'bootstrap, primeng'
+        }
+      }
+    });
   }
 
   private activateMessagingService() {

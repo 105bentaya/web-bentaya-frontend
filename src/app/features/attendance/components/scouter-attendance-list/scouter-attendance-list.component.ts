@@ -11,9 +11,13 @@ import {TagModule} from 'primeng/tag';
 import {DatePipe} from '@angular/common';
 import {TableModule} from 'primeng/table';
 import {FormsModule} from '@angular/forms';
-import {CalendarModule} from 'primeng/calendar';
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {DateUtils} from "../../../../shared/util/date-utils";
+import {DatePicker} from "primeng/datepicker";
+import {Button} from "primeng/button";
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 
 
 @Component({
@@ -21,14 +25,15 @@ import {DateUtils} from "../../../../shared/util/date-utils";
   templateUrl: './scouter-attendance-list.component.html',
   styleUrls: ['./scouter-attendance-list.component.scss'],
   providers: [DialogService],
-  standalone: true,
   imports: [
-    CalendarModule,
     FormsModule,
     ToggleButtonModule,
     TableModule,
     TagModule,
-    DatePipe
+    DatePipe,
+    DatePicker,
+    Button,
+    TableIconButtonComponent
   ]
 })
 export class ScouterAttendanceListComponent implements OnInit {
@@ -76,7 +81,7 @@ export class ScouterAttendanceListComponent implements OnInit {
   protected openInfoDialog(eventId: number) {
     this.ref = this.dialogService.open(EventInfoComponent, {
       header: 'Actividad',
-      styleClass: 'small dialog-width',
+      styleClass: 'small-dw dialog-width',
       data: eventId
     });
     //todo when editing an event refetch data
@@ -85,7 +90,7 @@ export class ScouterAttendanceListComponent implements OnInit {
   protected openEditDialog(eventInfo: ScouterListInfo) {
     this.ref = this.dialogService.open(ScouterAttendanceFormComponent, {
       header: `Editar Asistencia - ${eventInfo.eventTitle}`,
-      styleClass: 'small dialog-width',
+      styleClass: 'small-dw dialog-width',
       data: {eventId: eventInfo.eventId, payment: eventInfo.eventHasPayment}
     });
     this.ref.onClose.subscribe(() => this.getInfo());
@@ -94,7 +99,7 @@ export class ScouterAttendanceListComponent implements OnInit {
   protected viewInfo(eventId: number, eventName: string, hasPayment: boolean) {
     this.ref = this.dialogService.open(AttendanceInfoComponent, {
       header: 'Asistencia - ' + eventName,
-      styleClass: 'small dialog-width',
+      styleClass: 'small-dw dialog-width',
       data: {eventId: eventId, payment: hasPayment}
     });
     if (this.queryParam) {

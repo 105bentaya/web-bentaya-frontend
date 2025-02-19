@@ -5,19 +5,17 @@ footer {
   padding: 4px 2px 2px;
 }
 
-a:hover {
-  background: #003d78;
-  border-color: #004b93;
-  cursor: pointer;
-}
 
 .footer-contents {
+  color: white;
   a {
     color: white;
     text-decoration: none;
-  }
+    &:hover {
+      background: #003d78;
+      border-color: #004b93;
+      cursor: pointer;
+    }
 
-  p {
-    color: white;
   }
 }

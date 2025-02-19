@@ -1,0 +1,46 @@
+@if (href) {
+  <a
+    pButton
+    [href]="href"
+    [target]="target"
+    [class]="class"
+    [text]="true"
+    [rounded]="true"
+  >
+    @if (icon) {
+      <i pButtonIcon [class]="icon"></i>
+    }
+    @if (label) {
+      <span pButtonLabel [class]="labelClass">{{ label }}</span>
+    }
+  </a>
+} @else if (routerLink) {
+  <a
+    pButton
+    [class]="class"
+    [routerLink]="routerLink"
+    [text]="true"
+    [rounded]="true"
+  >
+    @if (icon) {
+      <i pButtonIcon [class]="icon"></i>
+    }
+    @if (label) {
+      <span pButtonLabel [class]="labelClass">{{ label }}</span>
+    }
+  </a>
+} @else {
+  <a
+    pButton
+    [class]="class"
+    [text]="true"
+    [rounded]="true"
+  >
+    @if (icon) {
+      <i pButtonIcon [class]="icon"></i>
+    }
+    @if (label) {
+      <span pButtonLabel [class]="labelClass">{{ label }}</span>
+    }
+  </a>
+}

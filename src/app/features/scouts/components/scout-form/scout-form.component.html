@@ -5,86 +5,86 @@
         <div class="mt-4">
           <div class="row">
             <div class="col-12 col-sm-6">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input formControlName="name" maxlength="128" pInputText>
                 <label class="required">Nombre</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input formControlName="surname" maxlength="128" pInputText>
                 <label class="required">Apellidos</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input formControlName="dni" maxlength="64" pInputText>
                 <label>DNI</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatLabel>
-                <p-calendar
+              <p-floatlabel>
+                <p-datePicker
                   formControlName="birthday"
                   appendTo="body"
-                ></p-calendar>
+                ></p-datePicker>
                 <label class="required">Fecha de Nacimiento</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatLabel>
-                <p-dropdown
+              <p-floatlabel>
+                <p-select
                   id="groupId"
                   formControlName="groupId"
                   [options]="groups"
                   appendTo="body"
                   optionLabel="name"
                   optionValue="id"
-                ></p-dropdown>
+                ></p-select>
                 <label class="required" for="groupId">Unidad</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatLabel>
-                <p-dropdown
+              <p-floatlabel>
+                <p-select
                   id="gender"
                   formControlName="gender"
                   [options]="genders"
                   appendTo="body"
-                ></p-dropdown>
+                ></p-select>
                 <label class="required" for="groupId">Género</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6 col-md-4">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input formControlName="shirtSize" maxlength="64" pInputText>
                 <label>Talla</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6 col-md-4">
-              <p-floatLabel>
+              <p-floatlabel>
                 <p-inputNumber
                   [useGrouping]="false"
                   formControlName="census"
                 ></p-inputNumber>
                 <label>Censo</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 col-md-4">
-              <p-floatLabel>
+              <p-floatlabel>
                 <input formControlName="municipality" maxlength="256" pInputText>
                 <label>Municipio de Residencia</label>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col-12 mb-2">
-              <p-floatLabel>
+              <p-floatlabel>
                 <app-form-text-area
                   formControlName="medicalData"
                   floatLabel="Datos Médicos"
                   [maxLength]="1024"
                   [showErrorMessage]="scoutFormHelper.hasSpecificError('medicalData', 'maxlength')"
                 ></app-form-text-area>
-              </p-floatLabel>
+              </p-floatlabel>
             </div>
             <div class="col mb-0">
               <label class="required">Autorización de imagen</label>
@@ -106,16 +106,16 @@
       </p-tabPanel>
       <p-tabPanel header="Datos de Scouters">
         <div class="py-3">
-          <p-floatLabel>
+          <p-floatlabel>
             <textarea formControlName="observations" class="w-100" rows="5" maxlength="65535" pInputText></textarea>
             <label>Observaciones generales</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
         <div class="py-3">
-          <p-floatLabel>
+          <p-floatlabel>
             <textarea formControlName="progressions" class="w-100" rows="5" maxlength="65535" pInputText></textarea>
             <label>Progresiones</label>
-          </p-floatLabel>
+          </p-floatlabel>
         </div>
       </p-tabPanel>
       <p-tabPanel id="userTab" header="Usuarios asociados">

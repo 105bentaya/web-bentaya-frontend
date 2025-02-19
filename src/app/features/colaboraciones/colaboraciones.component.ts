@@ -6,7 +6,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {AlertService} from "../../shared/services/alert-service.service";
 import {EmailService} from "../../shared/services/email.service";
 import {FloatLabelModule} from "primeng/floatlabel";
-import {SaveButtonsComponent} from "../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../shared/components/form-text-area/form-text-area.component";
 import {FormHelper} from "../../shared/util/form-helper";
 import {
@@ -17,7 +17,6 @@ import {
   selector: 'app-colaboraciones',
   templateUrl: './colaboraciones.component.html',
   styleUrls: ['./colaboraciones.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     FloatLabelModule,

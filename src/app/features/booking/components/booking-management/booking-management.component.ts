@@ -10,7 +10,7 @@ import {RouterLink} from '@angular/router';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {TableModule} from 'primeng/table';
 import {DatePipe} from '@angular/common';
-import {ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 import {DialogService} from "primeng/dynamicdialog";
 import {OwnBookingFormComponent} from "../own-booking-form/own-booking-form.component";
 import {noop} from "rxjs";
@@ -19,16 +19,15 @@ import {noop} from "rxjs";
   selector: 'app-booking-management',
   templateUrl: './booking-management.component.html',
   styleUrls: ['./booking-management.component.scss'],
-  standalone: true,
   imports: [
-    ButtonDirective,
     TabViewModule,
     ScoutCenterPipe,
     TableModule,
     MultiSelectModule,
     RouterLink,
     ScoutCenterStatusPipe,
-    DatePipe
+    DatePipe,
+    Button
   ],
   providers: [DialogService]
 })
@@ -72,7 +71,7 @@ export class BookingManagementComponent implements OnInit {
   protected openOwnBookingDialog() {
     const ref = this.dialogService.open(OwnBookingFormComponent, {
       header: 'Añadir Reserva Propia',
-      styleClass: 'dialog-width medium'
+      styleClass: 'dialog-width medium-dw'
     });
     ref.onClose.subscribe(saved => saved ? this.getBookings() : noop());
   }

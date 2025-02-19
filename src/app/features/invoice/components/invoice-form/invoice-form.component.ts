@@ -1,6 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {CalendarModule} from "primeng/calendar";
-import {DropdownModule} from "primeng/dropdown";
+import {SelectModule} from "primeng/select";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -16,14 +15,13 @@ import {CheckboxModule} from "primeng/checkbox";
 import {InvoiceService} from "../../invoice.service";
 import {SplitButtonModule} from "primeng/splitbutton";
 import {MenuItem} from "primeng/api";
+import {DatePicker} from "primeng/datepicker";
 import {DateUtils} from "../../../../shared/util/date-utils";
 
 @Component({
   selector: 'app-invoice-form',
-  standalone: true,
   imports: [
-    CalendarModule,
-    DropdownModule,
+    SelectModule,
     FloatLabelModule,
     FormTextAreaComponent,
     FormsModule,
@@ -33,7 +31,8 @@ import {DateUtils} from "../../../../shared/util/date-utils";
     SelectButtonModule,
     TabViewModule,
     CheckboxModule,
-    SplitButtonModule
+    SplitButtonModule,
+    DatePicker
   ],
   templateUrl: './invoice-form.component.html',
   styleUrl: './invoice-form.component.scss'

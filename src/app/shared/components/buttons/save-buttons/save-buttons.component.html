@@ -1,19 +1,17 @@
 <div [class]="class">
   <div class="d-flex justify-content-center gap-2 align-items-center">
     @if (showCancelButton) {
-      <button
-        pButton
+      <p-button
         [disabled]="saveLoading || cancelDisabled"
         [loading]="cancelLoading"
         [label]="cancelLabel"
-        class="p-button-danger"
+        severity="danger"
         (click)="onCancel.emit()"
         [type]="cancelType"
-      ></button>
+      ></p-button>
     }
     @if (showSaveButton) {
-      <button
-        pButton
+      <p-button
         [disabled]="cancelLoading || saveDisabled"
         [loading]="saveLoading"
         [label]="saveLabel"
@@ -21,7 +19,7 @@
         [class]="saveClass"
         [icon]="saveIcon"
         [type]="saveType"
-      ></button>
+      ></p-button>
     }
   </div>
 </div>

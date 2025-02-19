@@ -13,13 +13,12 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {FormsModule} from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 
 @Component({
   selector: 'app-scouter-attendance-form',
   templateUrl: './scouter-attendance-form.component.html',
   styleUrls: ['./scouter-attendance-form.component.scss'],
-  standalone: true,
   imports: [
     CheckboxModule,
     FormsModule,

@@ -1,16 +1,16 @@
 <div [formGroup]="formHelper.form" class="form-container">
   <div class="row">
     <div class="col">
-      <p-floatLabel>
-        <p-dropdown
+      <p-floatlabel>
+        <p-select
           formControlName="scoutCenter"
           id="scoutCenter"
           [options]="scoutCenters"
           (onChange)="loadCenterData()"
           appendTo="body"
-        ></p-dropdown>
+        ></p-select>
         <label class="required" for="scoutCenter">Centro Scout</label>
-      </p-floatLabel>
+      </p-floatlabel>
       @if (formHelper.isDirtyAndInvalid('scoutCenter')) {
         <small class="text-danger">Elija un centro Scout</small>
       } @else if (selectedCenterInfo) {
@@ -19,7 +19,7 @@
     </div>
     @if (selectedCenterInfo) {
       <div class="col-12 col-md-6">
-        <p-floatLabel>
+        <p-floatlabel>
           <input
             pInputText
             formControlName="packs"
@@ -30,7 +30,7 @@
             [max]="selectedCenterInfo.maxCapacity"
           >
           <label class="required" for="packs">Número de personas participantes</label>
-        </p-floatLabel>
+        </p-floatlabel>
         @if (formHelper.isDirtyAndInvalidWithError('packs', 'required', 'min')) {
           <small class="text-danger">Introduzca un número positivo de personas participantes</small>
         }
@@ -45,8 +45,8 @@
     <div [formGroup]="datesForm.form">
       <div class="row">
         <div class="col-12 col-md-6">
-          <p-floatLabel>
-            <p-calendar
+          <p-floatlabel>
+            <p-datePicker
               id="startDate"
               formControlName="startDate"
               dataType="date"
@@ -64,16 +64,16 @@
                   <span [class]="getDateClass(date)">{{ date.day }}</span>
                 </div>
               </ng-template>
-            </p-calendar>
+            </p-datePicker>
             <label class="required" for="startDate">Fecha de entrada</label>
-          </p-floatLabel>
+          </p-floatlabel>
           @if (datesForm.isDirtyAndInvalidWithError('startDate', 'required')) {
             <small class="text-danger">Debe introducir una fecha de entrada en formato dd/mm/yyyy</small>
           }
         </div>
         <div class="col-12 col-md-6">
-          <p-floatLabel>
-            <p-calendar
+          <p-floatlabel>
+            <p-datePicker
               id="endDate"
               formControlName="endDate"
               dataType="date"
@@ -91,9 +91,9 @@
                   <span [class]="getDateClass(date)">{{ date.day }}</span>
                 </div>
               </ng-template>
-            </p-calendar>
+            </p-datePicker>
             <label class="required" for="endDate">Fecha de salida</label>
-          </p-floatLabel>
+          </p-floatlabel>
           @if (datesForm.isDirtyAndInvalidWithError('endDate', 'required')) {
             <small class="text-danger">Debe introducir una fecha de salida en formato dd/mm/yyyy</small>
           }

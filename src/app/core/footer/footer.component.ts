@@ -1,15 +1,14 @@
 import {Component} from '@angular/core';
-import {ButtonModule} from 'primeng/button';
 import {RouterLink} from '@angular/router';
 import {socialMediaButtons} from "../../shared/constant";
 import {DividerModule} from "primeng/divider";
+import {ButtonDirective, ButtonIcon, ButtonLabel} from "primeng/button";
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
-  standalone: true,
-  imports: [RouterLink, ButtonModule, DividerModule]
+  imports: [RouterLink, DividerModule, ButtonDirective, ButtonIcon, ButtonLabel]
 })
 export class FooterComponent {
   protected readonly socialMediaButtons = socialMediaButtons;

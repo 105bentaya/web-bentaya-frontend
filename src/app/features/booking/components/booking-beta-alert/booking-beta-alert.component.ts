@@ -5,7 +5,6 @@ import {maintenanceEmail} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-booking-beta-alert',
-  standalone: true,
   imports: [
     PrimeTemplate,
     MessagesModule

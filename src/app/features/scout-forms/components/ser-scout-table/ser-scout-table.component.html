@@ -20,19 +20,18 @@
       [value]="preScouts"
       responsiveLayout="scroll"
       sortField="creationDate"
-      styleClass="p-datatable-gridlines"
+      showGridlines
     >
       <ng-template pTemplate="caption">
         <div class="d-flex align-items-center">
-          <button
+          <app-table-icon-button
             (click)="exportExcelScout()"
             [disabled]="excelLoading"
             [icon]="excelLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
-            class="p-button-success"
-            pButton
+            severity="success"
             title="Descargar preinscripciones como excel"
             type="button"
-          ></button>
+          ></app-table-icon-button>
           <div class="ms-auto text-end">
                   <span>
                     {{ tab.processedData.length }}
@@ -135,33 +134,29 @@
           </td>
           <td>
             <div class="d-flex flex-row gap-2">
-              <button
+              <app-table-icon-button
                 (click)="downloadPreScoutAsPdf(preScout)"
                 [disabled]="loading"
-                class="p-button-outlined p-button-raised"
                 icon="pi pi-file-pdf"
-                pButton
                 title="Exportar como PDF"
                 type="button"
-              ></button>
-              <button
+              ></app-table-icon-button>
+              <app-table-icon-button
                 (click)="openForm(preScout)"
                 [disabled]="loading"
-                class="p-button-light p-button-outlined p-button-raised"
                 icon="pi pi-th-large"
-                pButton
+                severity="info"
                 title="Asignar"
                 type="button"
-              ></button>
-              <button
+              ></app-table-icon-button>
+              <app-table-icon-button
                 (click)="deleteScout(preScout)"
                 [disabled]="loading"
-                class="p-button-danger p-button-outlined p-button-raised"
                 icon="pi pi-trash"
-                pButton
+                severity="danger"
                 title="Eliminar"
                 type="button"
-              ></button>
+              ></app-table-icon-button>
             </div>
           </td>
         </tr>

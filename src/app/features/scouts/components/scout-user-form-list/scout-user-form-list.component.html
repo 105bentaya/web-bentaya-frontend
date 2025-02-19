@@ -21,14 +21,11 @@
       <tr>
         <th class="required">Usuario</th>
         <th class="w-min">
-          <button
-            pButton
+          <app-table-icon-button
             icon="pi pi-user-plus"
             title="Añadir contacto"
             (click)="addUser()"
-            class="p-button-raised p-button-outlined p-button-info"
-            style="width: 2rem; height: 2rem;"
-          ></button>
+          ></app-table-icon-button>
         </th>
       </tr>
     </ng-template>
@@ -44,13 +41,12 @@
           >
         </td>
         <td class="text-center">
-          <button
-            pButton
+          <app-table-icon-button
             icon="pi pi-user-minus"
             title="Eliminar"
             (click)="deleteUser(ri)"
-            class="p-button-raised p-button-outlined p-button-danger"
-          ></button>
+            severity="danger"
+          ></app-table-icon-button>
         </td>
       </tr>
     </ng-template>

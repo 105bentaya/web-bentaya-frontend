@@ -2,17 +2,16 @@
   <div class="d-flex justify-content-between align-items-end mb-3">
     <h1 class="mb-0 d-flex me-3">Lista de facturas</h1>
     <div>
-      <button
-        pButton
+      <p-button
         title="Añadir factura"
         icon="pi pi-plus"
         (click)="openInvoiceDialog()"
-      ></button>
+      ></p-button>
     </div>
   </div>
   <p-table
     #dt
-    styleClass="p-datatable-gridlines"
+    showGridlines
     [value]="invoices"
     [lazy]="true"
     [totalRecords]="totalRecords"
@@ -20,7 +19,8 @@
     [rows]="10"
     [rowsPerPageOptions]="[10,25,50,100,300]"
     (onLazyLoad)="loadUsersWithFilter($event)"
-    [loading]="loading"
+    [loading]="true"
+    [showLoader]="true"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} facturas"
     sortField="invoiceDate"
@@ -51,7 +51,7 @@
           Editar
         </th>
       </tr>
-      <tr class="input-max-width">
+      <tr>
         <th scope="col"></th>
         <th scope="col">
           <p-multiSelect
@@ -122,21 +122,19 @@
         </td>
         <td>
           <div class="d-flex flex-row gap-2 justify-content-center">
-            <button
-              pButton
+            <p-button
               icon="pi pi-pencil"
               class="p-button-outlined p-button-raised"
               title="Editar"
               (click)="openInvoiceDialog(invoice)"
-            ></button>
-            <button
-              pButton
+            ></p-button>
+            <p-button
               [disabled]="loading"
               icon="pi pi-trash"
               title="Eliminar"
               class="p-button-danger p-button-outlined p-button-raised"
               (click)="askForDeletion(invoice)"
-            ></button>
+            ></p-button>
           </div>
         </td>
       </tr>

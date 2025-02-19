@@ -8,21 +8,19 @@ import {RolePipe} from '../../../../shared/pipes/role.pipe';
 import {InputTextModule} from 'primeng/inputtext';
 import {CheckboxModule} from 'primeng/checkbox';
 import {RouterLink} from '@angular/router';
-import {ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 import {MultiSelectModule} from "primeng/multiselect";
 import {RolesPipe} from "../../../../shared/pipes/roles.pipe";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {
-  GeneralIconButtonComponent
-} from "../../../../shared/components/general-icon-button/general-icon-button.component";
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  standalone: true,
   imports: [
-    ButtonDirective,
     RouterLink,
     CheckboxModule,
     InputTextModule,
@@ -30,7 +28,8 @@ import {
     TableModule,
     RolePipe,
     RolesPipe,
-    GeneralIconButtonComponent
+    TableIconButtonComponent,
+    Button
   ]
 })
 export class UserListComponent {

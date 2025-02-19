@@ -15,7 +15,6 @@ import {NgClass} from '@angular/common';
       useExisting: forwardRef(() => FormTextAreaComponent),
     }
   ],
-  standalone: true,
   imports: [
     NgClass,
     InputTextModule,

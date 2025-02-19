@@ -1,22 +1,19 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {SidebarModule} from "primeng/sidebar";
+import {Component, inject} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {DividerModule} from "primeng/divider";
 import {Button} from "primeng/button";
 import {PanelMenuModule} from "primeng/panelmenu";
-import {MenuItem, MenuItemCommandEvent} from "primeng/api";
-import _default from "chart.js/dist/plugins/plugin.legend";
-import onClick = _default.defaults.onClick;
+import {MenuItem} from "primeng/api";
+import {Drawer} from "primeng/drawer";
 
 @Component({
   selector: 'app-sidebar',
-  standalone: true,
   imports: [
-    SidebarModule,
     RouterLink,
     DividerModule,
     Button,
-    PanelMenuModule
+    PanelMenuModule,
+    Drawer
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'

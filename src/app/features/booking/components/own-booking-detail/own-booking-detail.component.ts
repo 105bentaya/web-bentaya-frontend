@@ -3,30 +3,23 @@ import {BookingService} from "../../service/booking.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ScoutCenterStatusPipe} from "../../pipe/scout-center-status.pipe";
 import {Booking} from "../../model/booking.model";
-import {ButtonDirective} from "primeng/button";
+import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {DialogModule} from "primeng/dialog";
 import {DividerModule} from "primeng/divider";
-import {DocumentStatusPipe} from "../../pipe/dcoument-status.pipe";
-import {
-  GeneralIconButtonComponent
-} from "../../../../shared/components/general-icon-button/general-icon-button.component";
 import {ScoutCenterPipe} from "../../pipe/scout-center.pipe";
 import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
 
 @Component({
   selector: 'app-own-booking-detail',
-  standalone: true,
   imports: [
-    ButtonDirective,
     CurrencyPipe,
     DatePipe,
     DialogModule,
     DividerModule,
-    DocumentStatusPipe,
-    GeneralIconButtonComponent,
     ScoutCenterPipe,
-    ScoutCenterStatusPipe
+    ScoutCenterStatusPipe,
+    Button
   ],
   providers: [DialogService],
   templateUrl: './own-booking-detail.component.html',
@@ -44,7 +37,7 @@ export class OwnBookingDetailComponent {
   protected cancelBooking() {
     this.ref = this.dialogService.open(BookingStatusUpdateComponent, {
       header: "Actualizar reserva a cancelada",
-      styleClass: 'dialog-width small',
+      styleClass: 'dialog-width small-dw',
       data: {floatLabel: "Motivo de la cancelación", required: true}
     });
     this.ref.onClose.subscribe(result => {

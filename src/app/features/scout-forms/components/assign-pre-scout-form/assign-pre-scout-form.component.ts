@@ -6,27 +6,26 @@ import {PreScout} from "../../models/pre-scout.model";
 import {PreScoutAssignation} from "../../models/pre-scout-assignation.model";
 import {FormTextAreaComponent} from '../../../../shared/components/form-text-area/form-text-area.component';
 import {FormsModule} from '@angular/forms';
-import {DropdownModule} from 'primeng/dropdown';
 import {FloatLabelModule} from "primeng/floatlabel";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
+import {Select} from "primeng/select";
 
 @Component({
   selector: 'app-assign-pre-scout-form',
   templateUrl: './assign-pre-scout-form.component.html',
   styleUrls: ['./assign-pre-scout-form.component.scss'],
-  standalone: true,
   imports: [
     FloatLabelModule,
-    DropdownModule,
     FormsModule,
     FormTextAreaComponent,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    Select
   ]
 })
 export class AssignPreScoutFormComponent implements OnInit {
 
+  private readonly config = inject(DynamicDialogConfig);
   protected ref = inject(DynamicDialogRef);
-  private config = inject(DynamicDialogConfig);
 
   protected statuses = statuses;
   protected groups = unitGroups;
@@ -51,7 +50,7 @@ export class AssignPreScoutFormComponent implements OnInit {
     if (this.config.data.canEditGroup) {
       this.canEditGroup = true;
       this.statuses = adminStatuses.slice();
-      this.status = this.preScout.status || 0;
+      this.status = this.preScout.status ?? 0;
       if (!this.groupId) this.setGroup();
     }
   }
@@ -73,7 +72,7 @@ export class AssignPreScoutFormComponent implements OnInit {
 
   protected submit() {
     if (this.status != null && this.groupId != null) {
-      let result: PreScoutAssignation = {
+      const result: PreScoutAssignation = {
         preScoutId: this.preScout.id!,
         status: this.status,
         comment: this.comment,

@@ -2,13 +2,12 @@
   <div class="d-flex justify-content-between align-items-end">
     <h1 class="mb-0 me-3">Lista de usuarios</h1>
     <div>
-      <button
-        pButton
+      <p-button
         label="Añadir"
         title="Añadir Usuario"
         icon="pi pi-user-plus"
         routerLink="/users/new"
-      ></button>
+      ></p-button>
     </div>
   </div>
   <div class="d-flex justify-content-end mt-3 mb-2">
@@ -48,7 +47,7 @@
   </div>
   <p-table
     #dt
-    styleClass="p-datatable-gridlines"
+    showGridlines
     [value]="userList"
     responsiveLayout="stack"
     [lazy]="true"
@@ -87,20 +86,20 @@
         </td>
         <td>
           <div class="d-flex flex-row gap-2 justify-content-center">
-            <app-general-icon-button
+            <app-table-icon-button
               icon="pi pi-user-edit"
+              routerLink="/usuarios/{{user.id}}"
               title="Editar"
               [disabled]="loading"
-              routerLink="/users/{{user.id}}"
-            ></app-general-icon-button>
+            />
             @if (user.enabled) {
-              <app-general-icon-button
+              <app-table-icon-button
                 icon="pi pi-times"
                 [disabled]="loading"
                 title="Desactivar"
-                class="p-button-danger"
+                severity="danger"
                 (click)="deleteUser(user.id)"
-              ></app-general-icon-button>
+              />
             }
           </div>
         </td>

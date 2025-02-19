@@ -2,7 +2,7 @@
   <h1>LISTA DE VOLUNTARIADO</h1>
   <p-table
     #scouterTab
-    styleClass="p-datatable-gridlines"
+    showGridlines
     [value]="preScouters"
     responsiveLayout="stack"
     [loading]="!preScouters"
@@ -39,22 +39,20 @@
         </td>
         <td>
           <div class="d-flex flex-row gap-2 justify-content-end w-100">
-            <button
-              pButton
+            <p-button
               icon="pi pi-file-pdf"
               [disabled]="loading"
               (click)="downloadPreScouterAsPdf(preScouter)"
               class="p-button-raised p-button-outlined"
               title="Exportar como PDF"
-            ></button>
-            <button
-              pButton
+            ></p-button>
+            <p-button
               icon="pi pi-trash"
               [disabled]="loading"
               (click)="deleteScouter($event, preScouter)"
               class="p-button-danger p-button-raised p-button-outlined"
               title="Eliminar preinscripción"
-            ></button>
+            ></p-button>
           </div>
         </td>
       </tr>

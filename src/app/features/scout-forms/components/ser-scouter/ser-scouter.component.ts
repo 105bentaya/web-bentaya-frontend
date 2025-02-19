@@ -5,8 +5,7 @@ import {PreScouter} from "../../models/pre-scouter.model";
 import {ScouterFormsService} from '../../services/scouter-forms.service';
 import {CheckboxModule} from 'primeng/checkbox';
 import {FormTextAreaComponent} from '../../../../shared/components/form-text-area/form-text-area.component';
-import {DropdownModule} from 'primeng/dropdown';
-import {CalendarModule} from 'primeng/calendar';
+import {SelectModule} from 'primeng/select';
 import {InputTextModule} from 'primeng/inputtext';
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {FloatLabelModule} from "primeng/floatlabel";
@@ -14,32 +13,32 @@ import {FormHelper} from "../../../../shared/util/form-helper";
 import {
   PrivacyCheckboxContainerComponent
 } from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import FormUtils from "../../../../shared/util/form-utils";
 import {genders} from "../../../../shared/constant";
+import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: 'app-ser-scouter',
   templateUrl: './ser-scouter.component.html',
   styleUrls: ['./ser-scouter.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     FloatLabelModule,
     InputTextModule,
-    CalendarModule,
-    DropdownModule,
+    SelectModule,
     FormTextAreaComponent,
     PrivacyCheckboxContainerComponent,
     CheckboxModule,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    DatePicker
   ]
 })
 export class SerScouterComponent implements OnInit {
 
-  private confirmationService = inject(ConfirmationService);
-  private serScouterService = inject(ScouterFormsService);
-  private alertService = inject(AlertService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly serScouterService = inject(ScouterFormsService);
+  private readonly alertService = inject(AlertService);
 
   protected readonly genders = genders;
   protected preScouterForm: FormHelper = new FormHelper();

@@ -2,21 +2,20 @@
   <div class="d-flex justify-content-between align-items-end mb-3">
     <h1 class="mb-0 d-flex me-3">Peticiones Sección Sénior</h1>
     <div>
-      <button
+      <p-button
         type="button"
-        pButton
         icon="pi pi-file-excel"
         [loading]="excelLoading"
         (click)="exportExcel()"
         class="p-button-success"
         title="Descargar excel"
-      ></button>
+      ></p-button>
     </div>
   </div>
   @if (data) {
     <p-table
       #tab
-      styleClass="p-datatable-gridlines"
+      showGridlines
       [value]="data"
       responsiveLayout="scroll"
       sortField="id"
@@ -61,13 +60,13 @@
           </td>
           <td class="w-min">
             <div class="d-flex flex-row gap-2">
-              <app-general-icon-button
+              <app-table-icon-button
                 icon="pi pi-trash"
                 [disabled]="loading"
                 class="p-button-danger"
                 title="Eliminar"
                 (click)="deleteForm(form)"
-              ></app-general-icon-button>
+              ></app-table-icon-button>
             </div>
           </td>
         </tr>

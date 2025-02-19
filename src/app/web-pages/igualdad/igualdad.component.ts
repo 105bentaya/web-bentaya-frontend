@@ -6,7 +6,6 @@ import {RouterLink} from "@angular/router";
   selector: 'app-igualdad',
   templateUrl: './igualdad.component.html',
   styleUrls: ['./igualdad.component.scss'],
-  standalone: true,
   imports: [
     ButtonDirective,
     RouterLink

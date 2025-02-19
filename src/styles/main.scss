@@ -1,30 +1,6 @@
-@import "./variables";
 @import "./booking";
 @import "./calendar";
-@import "./old_styles_fixes";
-@import "./button-light";
-
-@layer primeng {
-  .p-button {
-    border-radius: 12px;
-    padding: 0.5rem 1rem;
-    border: 0;
-  }
-
-  .p-button-icon-only.p-selectbutton > div {
-    height: $button-icon-width-height !important;
-  }
-}
-
-.p-button.p-button-icon-only:not(.p-inputnumber-button) {
-  width: $button-icon-width-height;
-  height: $button-icon-width-height;
-}
-
-.p-tooltip .p-tooltip-text {
-  padding: 0.25rem 0.5rem !important;
-  font-size: 14px;
-}
+@import "./primeng";
 
 html {
   height: 100%;
@@ -36,104 +12,21 @@ body {
 }
 
 a {
-  &.p-button {
-    text-decoration: none;
-  }
-
   &.uncolored {
     color: unset !important;
   }
-}
-
-.p-dialog .p-dialog-content, .p-dialog .p-dialog-header {
-  color: $dark-grey;
-}
-
-.p-confirm-dialog-reject {
-  background-color: transparent;
-  color: $button-color;
-}
-
-.p-dialog .p-dialog-header {
-  padding-bottom: 0.5rem;
-}
-
-.p-dialog .p-dialog-content {
-  padding-bottom: 1rem;
 }
 
 hr {
   margin: .75rem;
 }
 
-//fix
-.p-datepicker-calendar {
-  th {
-    text-align: center;
-  }
-}
-
-//padding adjustments
-.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item,
-.p-panel .p-panel-header, .p-panel .p-panel-content,
-.p-multiselect-panel .p-multiselect-items .p-multiselect-item,
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item
-{
-  padding: 0.5rem 1rem;
-}
-
-.p-dropdown-panel .p-dropdown-items {
-  padding: 0;
-}
-
-.p-paginator .p-dropdown {
-  height: unset;
-}
-
-.p-inputtext, .p-multiselect-label, .p-tabview-nav-link, .p-tabmenuitem .p-menuitem-link {
-  padding: 0.5rem;
-}
-
-.p-tabview .p-tabview-panels {
-  padding: 0.75rem;
-}
-
-p-table {
-  .p-datatable-header, th {
-    padding: 0.75rem 1rem;
-  }
-
-  &.wider {
-    padding: 0.5rem 1rem;
-  }
-
-  td {
-    padding: 0.4rem 1rem;
-
-    .p-button {
-      width: 2rem !important;
-      height: 2rem !important;
-    }
-  }
-}
-
-.p-message .p-message-wrapper {
-  padding: 1rem;
-  font-weight: bold;
-}
-
-button.p-autocomplete-dropdown {
-  height: 42px !important;
-}
-
-//various
-
-.input-max-width .p-inputtext, p-inputnumber.p-element, .p-inputnumber, .p-multiselect, .p-dropdown, .p-calendar, .p-password {
+.input-max-width .p-inputtext {
   width: 100%;
 }
 
 .form-container {
-  .p-inputtext, p-inputnumber.p-element, .p-inputnumber, .p-dropdown, .p-calendar, .p-password {
+  .p-inputtext, p-inputnumber.p-element, .p-inputnumber, .p-select, .p-datepicker, .p-password {
     width: 100%;
   }
 
@@ -192,26 +85,6 @@ app-form-text-area.ng-invalid.ng-dirty {
   }
 }
 
-/*
-@media only screen and (min-width: 992px) {
-  .container {
-    max-width: 905px;
-  }
-}
-
-@media only screen and (min-width: 1200px) {
-  .container {
-    max-width: 1080px;
-  }
-}
-
-@media only screen and (min-width: 1400px) {
-  .container {
-    max-width: 1250px;
-  }
-}
-*/
-
 label, span, th {
   &.required:after {
     content: "*";
@@ -235,21 +108,6 @@ label, span, th {
   margin-left: 4px;
 }
 
-/*
-.no-control {
-  padding: 0 !important;
-  border: 0;
-  background-image: none;
-}
-*/
-
-/*
-.line {
-  white-space: pre-line;
-  max-width: 600px;
-}
-*/
-
 div {
   .block-overlay {
     position: fixed;
@@ -264,15 +122,6 @@ div {
     z-index: 3;
     cursor: pointer;
   }
-}
-
-.p-progress-spinner-svg {
-  position: fixed !important;
-  max-width: 150px;
-}
-
-.p-galleria .p-galleria-item-nav {
-  height: auto;
 }
 
 .red-row {
@@ -292,15 +141,11 @@ div {
     min-width: 700px;
     max-width: 1200px;
 
-    &.login {
-      min-width: 500px;
-    }
-
-    &.medium {
+    &.medium-dw {
       width: 950px;
     }
 
-    &.small {
+    &.small-dw {
       width: 700px;
     }
   }
@@ -327,10 +172,6 @@ div {
   }
 }
 
-/*.p-multiselect-panel, .p-autocomplete-panel {
-  max-width: 100vw
-}*/
-
 .attendance-multiselect {
   .p-multiselect-item-group {
     padding-top: 0 !important;
@@ -350,13 +191,6 @@ p-message {
 
   .p-inline-message-text {
     font-weight: bold;
-  }
-}
-
-.calendar-cursor-default {
-  .p-datepicker-calendar-container {
-    cursor: default !important;
-    pointer-events: none !important;
   }
 }
 
@@ -390,6 +224,11 @@ h1 {
 
 .w-min {
   width: 1rem;
+}
+
+.wh-2rem {
+  width: 2rem !important;
+  height: 2rem !important;
 }
 
 .cursor-pointer {

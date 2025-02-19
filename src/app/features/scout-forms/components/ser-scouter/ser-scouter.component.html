@@ -8,7 +8,7 @@
   <form [formGroup]="preScouterForm.form" class="form-container mt-4">
     <div class="row">
       <div class="col-12 col-md-6">
-        <p-floatLabel>
+        <p-floatlabel>
             <input
               pInputText
               formControlName="name"
@@ -16,13 +16,13 @@
               type="text"
             >
             <label class="required" for="name">Nombre</label>
-        </p-floatLabel>
+        </p-floatlabel>
         @if (preScouterForm.isDirtyAndInvalid('name')) {
           <small class="text-danger">Introduzca su nombre</small>
         }
       </div>
       <div class="col-12 col-md-6">
-        <p-floatLabel>
+        <p-floatlabel>
             <input
               pInputText
               formControlName="surname"
@@ -30,13 +30,13 @@
               type="text"
             >
             <label class="required" for="surname">Apellidos</label>
-        </p-floatLabel>
+        </p-floatlabel>
         @if (preScouterForm.isDirtyAndInvalid('surname')) {
           <small class="text-danger">Introduzca sus apellidos</small>
         }
       </div>
       <div class="col-12 col-md-3">
-        <p-floatLabel>
+        <p-floatlabel>
             <input
               pInputText
               formControlName="phone"
@@ -44,13 +44,13 @@
               type="text"
             >
             <label class="required" for="phone">Teléfono de contacto</label>
-        </p-floatLabel>
+        </p-floatlabel>
         @if (preScouterForm.isDirtyAndInvalid('phone')) {
           <small class="text-danger">Introduzca un número de teléfono</small>
         }
       </div>
       <div class="col-12 col-md-3">
-        <p-floatLabel>
+        <p-floatlabel>
             <input
               pInputText
               formControlName="email"
@@ -58,34 +58,34 @@
               type="text"
             >
             <label class="required" for="email">Correo de contacto</label>
-        </p-floatLabel>
+        </p-floatlabel>
         @if (preScouterForm.isDirtyAndInvalid('email')) {
           <small class="text-danger">Introduzca un correo electrónico válido</small>
         }
       </div>
       <div class="col-12 col-md-3">
-        <p-floatLabel>
-            <p-calendar
+        <p-floatlabel>
+            <p-datePicker
               id="birthday"
               formControlName="birthday"
               dataType="string"
-            ></p-calendar>
-            <label class="required">Fecha de Nacimiento</label>
-        </p-floatLabel>
+            ></p-datePicker>
+            <label for="birthday" class="required">Fecha de Nacimiento</label>
+        </p-floatlabel>
         @if (preScouterForm.isDirtyAndInvalid('birthday')) {
           <small class="text-danger">Introduzca una fecha en formato dd/mm/yyyy</small>
         }
       </div>
       <div class="col-12 col-md-3">
-        <p-floatLabel>
-          <p-dropdown
+        <p-floatlabel>
+          <p-select
             id="gender"
             formControlName="gender"
             [options]="genders"
             styleClass="w-100"
-          ></p-dropdown>
+          ></p-select>
           <label class="required" for="gender">Género</label>
-        </p-floatLabel>
+        </p-floatlabel>
         @if (preScouterForm.isDirtyAndInvalid('gender')) {
           <small class="text-danger">Introduzca el género</small>
         }

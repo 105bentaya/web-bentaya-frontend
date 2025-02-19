@@ -12,7 +12,7 @@ import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import {UserService} from '../users/services/user.service';
 import {PasswordModule} from 'primeng/password';
 import {AlertService} from "../../shared/services/alert-service.service";
-import {SaveButtonsComponent} from "../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../shared/components/buttons/save-buttons/save-buttons.component";
 
 @Component({
   selector: 'app-change-password',

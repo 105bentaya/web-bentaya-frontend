@@ -2,19 +2,18 @@
   <div class="d-flex justify-content-between align-items-end mb-3">
     <h1 class="mb-0 d-flex me-3">Lista de Donaciones</h1>
     <div>
-      <button
-        pButton
+      <p-button
         icon="pi pi-download"
         [loading]="excelLoading"
         (click)="exportExcel()"
         class="p-button-success"
         title="Descargar donaciones como excel"
-      ></button>
+      ></p-button>
     </div>
   </div>
   <p-table
     #tab
-    styleClass="p-datatable-gridlines"
+    showGridlines
     [value]="donations"
     responsiveLayout="scroll"
     sortField="creationDate"

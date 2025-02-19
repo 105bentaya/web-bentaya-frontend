@@ -16,34 +16,33 @@ import {ConfirmationService} from "primeng/api";
 import {EventStatusService} from "../../services/event-status.service";
 import {InputNumberModule} from 'primeng/inputnumber';
 import {CheckboxModule} from 'primeng/checkbox';
-import {CalendarModule} from 'primeng/calendar';
 import {FormTextAreaComponent} from '../../../../shared/components/form-text-area/form-text-area.component';
-import {DropdownModule} from 'primeng/dropdown';
+import {SelectModule} from 'primeng/select';
 import {InputTextModule} from 'primeng/inputtext';
 import {FloatLabelModule} from "primeng/floatlabel";
 import {DateUtils} from "../../../../shared/util/date-utils";
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
+import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: 'app-event-form',
   templateUrl: './event-form.component.html',
   styleUrls: ['./event-form.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     FloatLabelModule,
-    DropdownModule,
+    SelectModule,
     FormTextAreaComponent,
-    CalendarModule,
     CheckboxModule,
     FormsModule,
     InputNumberModule,
     SaveButtonsComponent,
     InputTextModule,
-    BasicLoadingInfoComponent
+    BasicLoadingInfoComponent,
+    DatePicker
   ]
 })
 export class EventFormComponent implements OnInit {
@@ -145,7 +144,7 @@ export class EventFormComponent implements OnInit {
     }
   }
 
-  private datesValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  private readonly datesValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     let startDate = control.get('startDate')?.value;
     let endDate = control.get('endDate')?.value;
     if (!startDate || !endDate) return null;
@@ -157,7 +156,7 @@ export class EventFormComponent implements OnInit {
     return startDate >= endDate ? {endDateBefore: true} : null;
   };
 
-  private locationValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  private readonly locationValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     if (control.get('addCoordinates')?.value) {
       const latitude = control.get('latitude')?.value;
       const longitude = control.get('longitude')?.value;

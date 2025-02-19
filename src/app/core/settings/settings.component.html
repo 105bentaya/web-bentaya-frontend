@@ -32,14 +32,14 @@
     </div>
     <div class="d-flex flex-row gap-2 align-items-center mt-1">
       <label>Fecha del mensaje de mantenimiento:</label>
-      <p-calendar
+      <p-datePicker
         [(ngModel)]="dateValue"
         [showTime]="true"
         [showClear]="true"
         (onClear)="clearDate()"
         (onSelect)="setDate($event)"
         [readonlyInput]="true"
-      ></p-calendar>
+      ></p-datePicker>
     </div>
     <app-save-buttons
       class="mt-2"

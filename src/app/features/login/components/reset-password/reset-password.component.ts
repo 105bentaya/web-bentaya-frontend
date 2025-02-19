@@ -6,13 +6,12 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
 import {FormsModule} from '@angular/forms';
 import {PasswordModule} from 'primeng/password';
 import {CardModule} from 'primeng/card';
-import {SaveButtonsComponent} from "../../../../shared/components/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
-  standalone: true,
   imports: [
     CardModule,
     PasswordModule,

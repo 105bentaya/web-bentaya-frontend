@@ -13,7 +13,6 @@ import {DatePipe} from "@angular/common";
   selector: 'app-scout-info',
   templateUrl: './scout-info.component.html',
   styleUrls: ['./scout-info.component.scss'],
-  standalone: true,
   imports: [
     TabViewModule,
     GroupPipe,

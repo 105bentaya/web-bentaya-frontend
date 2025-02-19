@@ -7,7 +7,7 @@ $xxl: 1400px;
 
 
 .booking-calendar {
-  .p-datepicker table th, .p-datepicker table td {
+  .p-datepicker-calendar table th, .p-datepicker table td {
     padding: .3rem !important;
     @media screen and (max-width: $xxl) {
       padding: .25rem !important;
@@ -99,5 +99,12 @@ p-messages .occupied {
     &.p-fieldset-expanded {
       margin-bottom: 1rem;
     }
+  }
+}
+
+.calendar-cursor-default {
+  .p-datepicker-day-view {
+    cursor: default !important;
+    pointer-events: none !important;
   }
 }
