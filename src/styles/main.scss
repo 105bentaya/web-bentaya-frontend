@@ -211,6 +211,10 @@ p-message {
   src: url('/assets/fonts/TruenoBlk.otf') format('opentype');
 }
 
+.zoom-animation:hover {
+  transform: scale(1.04);
+}
+
 h1, h2 {
   font-family: Trueno-Black, sans-serif;
   color: #014B94;
@@ -251,7 +255,7 @@ h1, h2 {
 
 .home-bar-button {
   color: var(--bentaya-dark-color);
-  transition: 0.5s;
+  transition: 0.3s;
 
   &.mi-vivac a:hover {
     background: rgba(211, 182, 29, 0.45);

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
-import {NgClass, UpperCasePipe} from '@angular/common';
+import {UpperCasePipe} from '@angular/common';
 import {GalleriaModule} from "primeng/galleria";
 
 @Component({
@@ -10,7 +10,6 @@ import {GalleriaModule} from "primeng/galleria";
   styleUrls: ['./home.component.scss'],
   imports: [
     DividerModule,
-    NgClass,
     RouterLink,
     UpperCasePipe,
     GalleriaModule
@@ -18,26 +17,13 @@ import {GalleriaModule} from "primeng/galleria";
 })
 export class HomeComponent {
 
-  protected images: {src: string; alt: string}[] = [
-    {
-      src: "/assets/centros-scout/palmital/menu.png",
-      alt: "Aula de la Naturaleza El Palmital"
-    },
-    {
-      src: "/assets/centros-scout/terreno/menu.jpg",
-      alt: "Campamento Bentaya"
-    },
-    {
-      src: "/assets/centros-scout/refugio/menu.jpg",
-      alt: "Refugio Luis Martín"
-    },
-    {
-      src: "/assets/centros-scout/tejeda/menu.jpg",
-      alt: "Refugio Bentayga"
-    }
-  ];
-
-  protected formButtons: { subtitle: string; link: string; description: string; title: string; imgSrc: string }[] = [
+  protected readonly formButtons: {
+    subtitle: string;
+    link: string;
+    description: string;
+    title: string;
+    imgSrc: string
+  }[] = [
     {
       link: '/colaboraciones',
       imgSrc: 'assets/home/forms/colaboraciones.jpg',
@@ -75,7 +61,33 @@ export class HomeComponent {
     }
   ];
 
-  protected  cards: { id: string; title: string; description: string; link: string; target?: string }[] = [
+  protected readonly groupStrips: { stripClass: string; text: string; svg: string }[] = [
+    {stripClass: "strip-lis", text: "Vida en Pequeños Grupos", svg: "assets/home/lis.svg"},
+    {stripClass: "strip-hands", text: "Educación en Valores", svg: "assets/home/hand-greeting.svg"},
+    {stripClass: "strip-salute", text: "Aprender Jugando", svg: "assets/home/salute.svg"},
+    {stripClass: "strip-tent", text: "Actividades al Aire Libre", svg: "assets/home/tent.svg"}
+  ];
+
+  protected readonly scoutCenterImages: { src: string; alt: string }[] = [
+    {
+      src: "/assets/centros-scout/palmital/menu.png",
+      alt: "Aula de la Naturaleza El Palmital"
+    },
+    {
+      src: "/assets/centros-scout/terreno/menu.jpg",
+      alt: "Campamento Bentaya"
+    },
+    {
+      src: "/assets/centros-scout/refugio/menu.jpg",
+      alt: "Refugio Luis Martín"
+    },
+    {
+      src: "/assets/centros-scout/tejeda/menu.jpg",
+      alt: "Refugio Bentayga"
+    }
+  ];
+
+  protected readonly cards: { id: string; title: string; description: string; link: string; target?: string }[] = [
     {
       id: '01',
       title: 'Transparencia',
