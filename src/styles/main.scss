@@ -9,6 +9,9 @@ html {
 body {
   position: relative;
   min-height: 100%;
+  &:has(.hide-overflow-x) {
+    overflow-x: hidden;
+  }
 }
 
 a {
@@ -203,24 +206,12 @@ p-message {
   src: url('/assets/fonts/Inspiration-Regular.ttf') format('opentype');
 }
 
-.inspiration-title {
-  font-family: Inspiration-Regular, sans-serif, Inter;
-  color: #365299FF;
-  font-size: 4em;
-}
-
 @font-face {
   font-family: 'Trueno-Black';
   src: url('/assets/fonts/TruenoBlk.otf') format('opentype');
 }
 
-.trueno-title {
-  font-family: Trueno-Black, sans-serif;
-  color: #014B94;
-  font-size: 4em;
-}
-
-h1 {
+h1, h2 {
   font-family: Trueno-Black, sans-serif;
   color: #014B94;
   margin-bottom: 1rem;

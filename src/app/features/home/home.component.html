@@ -1,7 +1,7 @@
-<div class="container">
-  <div class="image-container w-100 d-flex align-items-center">
-    <div class="text-center ms-5">
-      <h1 class="trueno-title text-white">SCOUTS 105<br>BENTAYA</h1>
+<div class="container-fluid container-xl hide-overflow-x">
+  <div class="d-flex align-items-center image-container w-100 col">
+    <div class="text-center col-12 col-md-8 col-lg-6">
+      <h1 class="text-white">SCOUTS 105<br>BENTAYA</h1>
       <h2 class="inspiration-title text-white">¡La Aventura de Ser Scout!</h2>
       <button
         class="btn btn-warning rounded-3"
@@ -11,28 +11,31 @@
       </button>
     </div>
   </div>
-  <p-divider class="mt-3">
-    <b class="trueno-title fs-3">FORMULARIOS</b>
-  </p-divider>
-  <div class="d-flex flex-row">
-    @for (card of formButtons; track $index) {
-      <div
-        class="text-center flex-fill w-100 m-2"
-        [ngClass]="{'disabled': !card.link}"
-      >
-        <a class="text-decoration-none" [routerLink]="card.link">
-          <div class="card mb-3">
-            <img src="{{card.imgSrc}}" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title trueno-title fs-5">{{card.title | uppercase}}</h5>
-              <h5 class="card-text trueno-title fs-5 text-blue">{{card.subtitle | uppercase}}</h5>
-              <p class="card-text">{{card.description}}</p>
+  <div>
+    <p-divider class="mt-3">
+      <h2 class="mb-0 text-center">FORMULARIOS</h2>
+    </p-divider>
+    <div class="row row-cols-5 flex-nowrap overflow-x-auto">
+      @for (card of formButtons; track $index) {
+        <div
+          class="form-card"
+          [ngClass]="{'disabled': !card.link}"
+        >
+          <a class="text-decoration-none" [routerLink]="card.link">
+            <div class="card h-100 mb-3">
+              <img [src]="card.imgSrc" class="card-img-top" [alt]="card.title">
+              <div class="card-body">
+                <h5 class="card-title trueno-font fs-5">{{ card.title | uppercase }}</h5>
+                <h5 class="card-text trueno-font fs-6 text-blue">{{ card.subtitle | uppercase }}</h5>
+                <p class="card-text">{{ card.description }}</p>
+              </div>
             </div>
-          </div>
-        </a>
-      </div>
-    }
+          </a>
+        </div>
+      }
+    </div>
   </div>
+<!--
   <div class="scouts-center-container mt-5 justify-content-center">
     <div class="text-center">
       <h2 class="inspiration-title mb-0 pt-3">Vive la aventura en nuestros<br></h2>
@@ -42,7 +45,7 @@
       <div class="col-7">
         <p-galleria
           [value]="this.images"
-          [containerStyle]="{'max-width':'auto'}"
+          [containerStyle]="{'width':'100%'}"
           [showItemNavigators]="true"
           [showThumbnails]="false"
           [showItemNavigatorsOnHover]="false"
@@ -66,11 +69,13 @@
           class="btn btn-warning mt-3 rounded-3"
           routerLink="/centros-scout/informacion"
         >
-          <b>SOLICITAR</b>
+          <b>SABER MÁS</b>
         </button>
       </div>
     </div>
   </div>
+-->
+<!--
   <div class="justify-content-center text-center mt-4">
     <h2 class="trueno-title fs-1">¿Qué hacemos?</h2>
     <div class="d-flex flex-row justify-content-center mt-3">
@@ -93,6 +98,8 @@
       </div>
     </div>
   </div>
+-->
+<!--
   <div class="info-container mt-4 d-flex flex-wrap justify-content-center">
     <div class="info-card">
       <h3>Información Sobre Nuestra Asociación</h3>
@@ -112,4 +119,5 @@
       </div>
     }
   </div>
+-->
 </div>

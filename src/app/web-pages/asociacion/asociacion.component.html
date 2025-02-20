@@ -1,6 +1,6 @@
 <div class="container">
   <div class="section" id="quienes-somos">
-    <h1 class="trueno-title fs-1">Scouts 105 Bentaya</h1>
+    <h1>Scouts 105 Bentaya</h1>
     <p>
       Scouts 105 Bentaya se define como una organización de carácter no lucrativo,
       cívica de utilidad pública, de libre adhesión, de participación democrática,
@@ -17,41 +17,41 @@
     </p>
     <ul>
       <li>
-        <b>Castoras</b> de 6 a 8 años
+        <b>Colonia</b> de 6 a 8 años
       </li>
       <li>
-        <b>Lobatas</b> de 8 a 11 años
+        <b>Manadas</b> de 8 a 11 años
       </li>
       <li>
-        <b>Scouts</b> de 11 a 14 años
+        <b>Tropas</b> de 11 a 14 años
       </li>
       <li>
-        <b>Escultas</b> de 14 a 17 años
+        <b>Unidad Esculta</b> de 14 a 17 años
       </li>
       <li>
-        <b>Rovers</b> de 17 a 21 años
+        <b>Clan</b> de 17 a 21 años
       </li>
       <li>
-        <b>Scouters</b> (voluntariado) +21 años
+        <b>Kraal de Scouters</b> (voluntariado) +21 años
       </li>
     </ul>
-    <div class="d-flex flex-row">
+    <!--<div class="d-flex flex-row">
       @for (group of scoutGroups; track $index) {
         <div class="text-center flex-fill w-100 m-2">
           <a class="text-decoration-none" [routerLink]="group.link">
             <div class="card" [ngStyle]="{'background-color':group.color}">
               <img class="card-img" alt="" src="{{group.src}}}">
               <div class="card-body">
-                <h2 class="card-title trueno-title text-black fs-4">{{group.name}}</h2>
+                <h2 class="card-title text-black fs-4">{{group.name}}</h2>
               </div>
             </div>
           </a>
         </div>
       }
-    </div>
+    </div>-->
   </div>
   <div class="section mt-4" id="que-hacemos">
-    <h1 class="trueno-title fs-1">¿Qué hacemos?</h1>
+    <h2>¿Qué hacemos?</h2>
     <p>
       La Asociación Scouts-Exploradores 105 Bentaya ofrece a todas las edades una actividad que no sólo es formativa, sino de carácter social.
     </p>
@@ -110,10 +110,10 @@
     </div>
   </div>
   <div class="section mt-4" id="mvv">
-    <h1 class="trueno-title fs-1">Nuestra Misión, Visión y Valores</h1>
+    <h2>Nuestra Misión, Visión y Valores</h2>
   </div>
   <div class="section mt-4" id="escultismo">
-    <h1 class="trueno-title fs-1">El Escultismo como Método Educativo</h1>
+    <h2>El Escultismo como Método Educativo</h2>
     <p>
       El Escultismo es un sistema pedagógico cuyo objetivo principal es trabajar para lograr un desarrollo pleno e integral en
       niños, niñas y jóvenes, de tal manera que lleguen al cumplimiento cabal de todos los aspectos que los conforman, mediante el
@@ -129,14 +129,11 @@
         class="flex-fill w-75 mt-4 rounded-3"
         style="background-color:#F8DE9C"
       >
-        <h2 class="text-center mt-2">El método Scout está basado en:</h2>
+        <span class="text-center m-2 fs-2">El método Scout está basado en:</span>
         <ul class="list-unstyled">
           @for (item of scoutMethodItems; track $index) {
-            <li
-              (click)="selectItem(item)"
-              class="m-2 fs-5"
-            >
-              <input type="checkbox" [checked]="item.selected" /> {{ item.label }}
+            <li (click)="selectItem(item)" class="m-2 fs-5">
+              <input type="checkbox" [checked]="item.selected"/> {{ item.label }}
             </li>
           }
         </ul>
