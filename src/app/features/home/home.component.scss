@@ -12,12 +12,6 @@
     font-size: 3rem;
   }
 
-  .inspiration-title {
-    font-family: Inspiration-Regular, sans-serif, Inter;
-    color: #365299;
-    font-size: 3rem;
-  }
-
   @media (max-width: 767px) {
     background-image: url('/assets/home/principal-image.svg');
     background-position: center;
@@ -37,21 +31,130 @@
   }
 }
 
+.zoom-animation:hover {
+  transform: scale(1.04);
+}
+
 .form-card {
   padding: 0 0.3rem;
   text-align: center;
+  min-width: 215px;
+
+  .card {
+    transition: transform .2s;
+
+    &:hover h3, &:hover h4, &:hover img {
+      transform: scale(1.02);
+    }
+  }
 
   .card-body {
     padding: 1rem 0.5rem;
   }
 
-  .trueno-font {
+  %trueno-font {
     font-family: Trueno-Black, sans-serif;
-    color: #014B94;
   }
 
-  min-width: 235px;
+  h3 {
+    @extend %trueno-font;
+    color: var(--bentaya-main-color);
+    font-size: 18px;
+    text-wrap: nowrap;
+  }
+
+  h4 {
+    @extend %trueno-font;
+    color: var(--bentaya-main-color);
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 15px
+  }
 }
+
+.inspiration-title {
+  font-family: Inspiration-Regular, sans-serif, Inter;
+  font-size: 3rem;
+  color: var(--bentaya-main-color);
+}
+
+.btn-bentaya {
+  background-color: #004b93;
+  color: #ffd94a;
+}
+
+.invert-on-md {
+  @media (max-width: 767px) {
+    h2 {
+      color: var(--bentaya-dark-color);
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .light-bg {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 100%;
+      z-index: -1;
+      background-color: #f1e3b5;
+    }
+  }
+
+  .dark-bg {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 100%;
+      z-index: -1;
+      background-color: #e7d28d;
+    }
+  }
+}
+
+.full-bg {
+  @media (min-width: 768px) {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 100%;
+      z-index: -1;
+      background-color: #c5d6f5;
+    }
+  }
+}
+
+
+//.scouts-center-container, .info-container {
+//  position: relative;
+//  &::before {
+//    content: '';
+//    position: absolute;
+//    left: 50%;
+//    transform: translateX(-50%);
+//    width: 100vw;
+//    height: 100%;
+//    background-color: #c5d6f5;
+//    z-index: -1;
+//  }
+
 
 
 //.content-padding {
