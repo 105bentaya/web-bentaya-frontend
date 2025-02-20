@@ -1,5 +1,21 @@
 a {
   text-decoration: none;
-  color: #020f20;
-  font-size: 20px;
+  color: var(--p-drawer-color);
+}
+
+.bottom-buttons {
+  padding: 4px;
+  a {
+    width: 100%;
+    text-align: center;
+    padding: var(--p-panelmenu-item-padding);
+    border-radius: var(--p-button-border-radius);
+    &:hover {
+      background: var(--p-panelmenu-item-focus-background);
+      color: var(--p-panelmenu-item-focus-color);
+    }
+    &.bg-select {
+      background-color: var(--menu-select-color);
+    }
+  }
 }

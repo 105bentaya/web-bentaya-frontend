@@ -178,7 +178,7 @@ export const routes: Routes = [
   },
   //Asociación Bentaya
   {
-    path: "asociacion",
+    path: "asociacion/grupo",
     loadComponent: () => AsociacionComponent
   },
   //Centros Scout

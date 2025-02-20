@@ -1,10 +1,12 @@
-import {Component, inject} from '@angular/core';
-import {Router, RouterLink} from "@angular/router";
+import {Component, inject, OnInit} from '@angular/core';
+import {NavigationEnd, NavigationSkipped, Router, RouterLink} from "@angular/router";
 import {DividerModule} from "primeng/divider";
 import {Button} from "primeng/button";
 import {PanelMenuModule} from "primeng/panelmenu";
 import {MenuItem} from "primeng/api";
 import {Drawer} from "primeng/drawer";
+import {filter} from "rxjs";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-sidebar',
@@ -13,56 +15,100 @@ import {Drawer} from "primeng/drawer";
     DividerModule,
     Button,
     PanelMenuModule,
-    Drawer
+    Drawer,
+    NgClass
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
-export class SidebarComponent{
+export class SidebarComponent implements OnInit {
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd || event instanceof NavigationSkipped)
+    ).subscribe((event) => {
+      this.sidebarVisible = false;
+      const url = event instanceof NavigationEnd ? event.urlAfterRedirects : event.url;
+      this.currentUrl = url.split('#')[0];
+      this.checkForExpansion(this.items);
+      this.checkForSelection(this.items);
+    });
+  }
+
+  private checkForExpansion(items: MenuItem[]) {
+    items.forEach(item => {
+      const itemUrl = item['expandWhenUrl'];
+      item.expanded = this.currentUrl.startsWith(itemUrl);
+      if (item.items) this.checkForExpansion(item.items);
+    });
+  }
+
+  private checkForSelection(items: MenuItem[]) {
+    items.forEach(item => {
+      item.styleClass = item.fragment === undefined && (item.routerLink === this.currentUrl || item['select'] === this.currentUrl) ? "bg-select" : "";
+      if (item.items) this.checkForSelection(item.items);
+    });
+  }
+
+  currentUrl = "";
   sidebarVisible: boolean = false;
-  private readonly router = inject(Router);
+  protected readonly router = inject(Router);
 
   items: MenuItem[] = [
     {
       label: "Inicio",
       icon: "pi pi-home",
-      command:() => this.router.navigate(['/home'])
+      routerLink: '/inicio'
     },
     {
       label: "Organización Scout",
       items: [
         {
           label: "Scouts de Canarias (SEC)",
-          command:()=> open("https://www.facebook.com/scoutsdecanarias/", "_blank")
+          url: "https://www.facebook.com/scoutsdecanarias/",
+          target: "_blank"
         },
         {
           label: "Scouts de España (ASDE)",
-          command:()=> open("https://scout.es/", "_blank")
+          url: "https://scout.es/",
+          target: "_blank"
         },
         {
           label: "Scouts Mundial (OMMS)",
-          command:()=> open("https://www.scout.org/", "_blank")
+          url: "https://www.scout.org",
+          target: "_blank"
         }
       ]
     },
     {
       label: "Asociación Bentaya",
+      expandWhenUrl: '/asociacion',
       items: [
         {
-          label: "Quiénes somos",
-          command:() => this.router.navigate(['/asociacion'], {fragment: 'quienes-somos'})
-        },
-        {
-          label: "Qué hacemos",
-          command:() => this.router.navigate(['/asociacion'], {fragment: 'que-hacemos'})
-        },
-        {
-          label: "Misión, Visión y Valores",
-          command:() => this.router.navigate(['/asociacion'], {fragment: 'mvv'})
-        },
-        {
-          label: "Método Educativo",
-          command:() => this.router.navigate(['/asociacion'], {fragment: 'escultismo'})
+          label: "Sobre nosotros",
+          select: '/asociacion/grupo',
+          expandWhenUrl: '/asociacion/grupo',
+          items: [
+            {
+              label: "Quiénes somos",
+              routerLink: '/asociacion/grupo',
+              fragment: ''
+            },
+            {
+              label: "Qué hacemos",
+              routerLink: '/asociacion/grupo',
+              fragment: "que-hacemos"
+            },
+            {
+              label: "Misión, Visión y Valores",
+              routerLink: '/asociacion/grupo',
+              fragment: "mvv"
+            },
+            {
+              label: "Método Educativo",
+              routerLink: '/asociacion/grupo',
+              fragment: "escultismo"
+            }
+          ]
         },
         {
           label: "Unidades",
@@ -91,6 +137,7 @@ export class SidebarComponent{
     },
     {
       label: "Centros Scout",
+      expandWhenUrl: '/centros-scout',
       items: [
         {
           label: "Información",
@@ -102,5 +149,11 @@ export class SidebarComponent{
         }
       ]
     }
-  ]
+  ];
+
+  protected expand() {
+    this.checkForExpansion(this.items);
+    this.checkForSelection(this.items);
+    this.sidebarVisible = true;
+  }
 }

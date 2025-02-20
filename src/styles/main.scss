@@ -239,6 +239,10 @@ h1 {
   cursor: pointer !important;
 }
 
+.cursor-default {
+  cursor: default !important;
+}
+
 .donation-image { //why is it here
   width: 100% !important;
 
@@ -268,5 +272,24 @@ h1 {
 
   .p-button-label {
     background: unset !important;
+  }
+}
+
+
+.sidebar-menu {
+  .p-panelmenu-panel {
+    border-style: none;
+  }
+  .p-panelmenu-item-content, .p-panelmenu-header-content {
+    border-radius: var(--p-button-border-radius);
+  }
+  .bg-select > .p-panelmenu-item-content, .bg-select > .p-panelmenu-header-content  {
+    background-color: var(--menu-select-color);
+  }
+}
+
+.p-drawer:is(.ng-animating) {
+  .p-panelmenu-content-container:is(:not(.p-panelmenu-expanded)) {
+    display: none;
   }
 }

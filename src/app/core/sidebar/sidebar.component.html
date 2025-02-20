@@ -1,33 +1,33 @@
 <p-drawer [(visible)]="sidebarVisible">
   <ng-template pTemplate="body">
-    <p-panelMenu [model]="items" ></p-panelMenu>
+    <nav class="sidebar-menu" role="navigation">
+      <p-panelMenu [multiple]="true" [model]="items"></p-panelMenu>
+    </nav>
   </ng-template>
   <ng-template pTemplate="footer">
-    <div class="d-flex flex-column justify-content-center align-items-center">
-      <p-divider></p-divider>
-      <div>
+    <p-divider></p-divider>
+    <div class="d-flex flex-column justify-content-center align-items-center bottom-buttons">
         <a
           routerLink="/contacto"
           (click)="sidebarVisible = false"
+          [ngClass]="{'bg-select': currentUrl === '/contacto'}"
         >
           Contacto
         </a>
-      </div>
-      <div>
         <a
           routerLink="/canal-de-denuncias"
           (click)="sidebarVisible = false"
+          [ngClass]="{'bg-select': currentUrl === '/canal-de-denuncias'}"
         >
           Canal de Denuncias
         </a>
-      </div>
     </div>
   </ng-template>
 </p-drawer>
 <p-button
   class="d-none d-md-inline"
   styleClass="home-bar-button menu"
-  (onClick)="sidebarVisible = true"
+  (onClick)="expand()"
   icon="pi pi-bars"
   label="Menú"
   text
@@ -35,7 +35,7 @@
 <p-button
   class="d-md-none"
   styleClass="home-bar-button menu"
-  (onClick)="sidebarVisible = true"
+  (onClick)="expand()"
   icon="pi pi-bars"
   text
 ></p-button>
