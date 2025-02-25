@@ -80,7 +80,7 @@
       </div>
     </div>
   </div>
-  <div class="justify-content-center text-center mt-4">
+  <div class="justify-content-center text-center mt-4 py-xxl-5">
     <h2 class="cursor-default">¿QUÉ HACEMOS?</h2>
     <div class="d-none d-md-flex justify-content-center gap-5">
       <div class="d-flex flex-column align-items-center flex-xxl-row gap-4">
@@ -134,8 +134,8 @@
           <p>Cosas rápidas que puedes leer y aprender.</p>
         </div>
         @for (card of cards; track card) {
-          <a class="text-decoration-none" [routerLink]="card.link">
-            <div class="mb-4 px-2 px-md-3 px-lg-4">
+          <div class="mb-4 px-2 px-md-3 px-lg-4">
+            <a class="text-decoration-none" [routerLink]="card.link" [target]="card.target ?? '_self'">
               <div class="card h-100 cursor-pointer">
                 <div class="card-body">
                   <b class="card-title">{{ card.id }}</b>
@@ -143,8 +143,8 @@
                   <p class="card-text">{{ card.description }}</p>
                 </div>
               </div>
-            </div>
-          </a>
+            </a>
+          </div>
         }
       </div>
     </div>
