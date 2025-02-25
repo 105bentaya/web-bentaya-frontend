@@ -134,15 +134,17 @@
           <p>Cosas rápidas que puedes leer y aprender.</p>
         </div>
         @for (card of cards; track card) {
-          <div class="mb-4 px-2 px-md-3 px-lg-4">
-            <div class="card h-100 cursor-pointer">
-              <div class="card-body">
-                <b class="card-title">{{ card.id }}</b>
-                <h3 class="card-subtitle mb-2">{{ card.title }}</h3>
-                <p class="card-text">{{ card.description }}</p>
+          <a class="text-decoration-none" [routerLink]="card.link">
+            <div class="mb-4 px-2 px-md-3 px-lg-4">
+              <div class="card h-100 cursor-pointer">
+                <div class="card-body">
+                  <b class="card-title">{{ card.id }}</b>
+                  <h3 class="card-subtitle mb-2">{{ card.title }}</h3>
+                  <p class="card-text">{{ card.description }}</p>
+                </div>
               </div>
             </div>
-          </div>
+          </a>
         }
       </div>
     </div>
