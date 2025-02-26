@@ -29,7 +29,7 @@ export class UserRoutesService {
     return queryParams;
   }
 
-  navigateToLastRoute(fallback = "inicio") {
+  navigateToLastRoute(fallback = "calendario") {
     if (this.route) {
       this.router
         .navigate([this.route], pickBy({queryParams: this.queryParams, fragment: this.hash}, identity))
@@ -39,7 +39,7 @@ export class UserRoutesService {
     }
   }
 
-  getUserHome(fallback = "inicio") {
+  getUserHome(fallback = "calendario") {
     if (this.authService.isLoggedIn()) {
       // return (this.authService.getUserData().userPage);
     }

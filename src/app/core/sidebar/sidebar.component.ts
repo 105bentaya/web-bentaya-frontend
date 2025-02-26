@@ -91,17 +91,12 @@ export class SidebarComponent implements OnInit {
             {
               label: "Quiénes somos",
               routerLink: '/asociacion/grupo',
-              fragment: ''
+              fragment: 'quienes-somos'
             },
             {
               label: "Qué hacemos",
               routerLink: '/asociacion/grupo',
               fragment: "que-hacemos"
-            },
-            {
-              label: "Misión, Visión y Valores",
-              routerLink: '/asociacion/grupo',
-              fragment: "mvv"
             },
             {
               label: "Método Educativo",
@@ -111,27 +106,16 @@ export class SidebarComponent implements OnInit {
           ]
         },
         {
-          label: "Unidades",
-          items: [
-            {
-              label: "Colonia"
-            },
-            {
-              label: "Manadas"
-            },
-            {
-              label: "Tropas"
-            },
-            {
-              label: "Unidad"
-            },
-            {
-              label: "Clan"
-            },
-            {
-              label: "Kraal"
-            }
-          ]
+          label: "Historia",
+          routerLink: '/asociacion/historia',
+        },
+        {
+          label: "Misión Visión y Valores",
+          routerLink: '/asociacion/mision-vision-valores',
+        },
+        {
+          label: "Reconocimientos",
+          routerLink: '/asociacion/reconocimientos',
         }
       ]
     },

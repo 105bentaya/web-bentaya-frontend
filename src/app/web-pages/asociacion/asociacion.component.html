@@ -1,6 +1,7 @@
 <div class="container">
-  <div class="section" id="quienes-somos">
-    <h1>Scouts 105 Bentaya</h1>
+  <h1 class="text-center">Scouts 105 Bentaya</h1>
+  <div id="quienes-somos">
+    <p-divider align="left"><h2>¿Quiénes somos?</h2></p-divider>
     <p>
       Scouts 105 Bentaya se define como una organización de carácter no lucrativo,
       cívica de utilidad pública, de libre adhesión, de participación democrática,
@@ -50,16 +51,21 @@
       }
     </div>-->
   </div>
-  <div class="section mt-4" id="que-hacemos">
-    <h2>¿Qué hacemos?</h2>
+  <div class="mt-4" id="que-hacemos">
+    <p-divider align="left"><h2>¿Qué hacemos?</h2></p-divider>
     <p>
       La Asociación Scouts-Exploradores 105 Bentaya ofrece a todas las edades una actividad que no sólo es formativa, sino de carácter social.
     </p>
-    <div class="d-flex flex-row">
-      <div class="d-flex flex-fill w-75 justify-content-center">
-        <img src="assets/web-pages/asociacion/que-hacemos.jpg" alt="" class="rounded-3">
+    <div class="row mb-2">
+      <div class="d-none d-xl-block col-xl-5 col-xxl-4 mb-2">
+        <img src="assets/web-pages/asociacion/que-hacemos.jpg" alt="Que hacemos" class="rounded-3 w-100">
       </div>
-      <div class="d-flex flex-column flex-fill w-100">
+      <div class="col">
+        <img
+          class="rounded-3 d-xl-none float-start me-2 me-md-3 mb-1 w-50"
+          src="assets/web-pages/asociacion/que-hacemos.jpg"
+          alt="Que hacemos"
+        >
         <p>
           Las actividades realizadas semana a semana buscan ser divertidas, dinámicas e invitan a los educandos/as a conocer a otros iguales y
           a fomentar la vida en pequeños grupos.
@@ -70,75 +76,62 @@
           Todo ello gracias a una continua educación por la acción por parte de los scouters, así como una importante educación en valores, donde facilitamos
           la integración, la participación y animamos a que realicen actividades por ellos mismos.
         </p>
+        <img
+          class="d-md-none rounded-3 d-xl-none float-end ms-2 mb-1 w-50"
+          src="assets/web-pages/asociacion/que-hacemos-tics.jpg"
+          alt="Que hacemos"
+        >
         <p>
-          Además, el grupo apuesta por las nuevas tecnologías, desde la realización de reuniones a distancia mediante videollamadas, interactuando
-          por las redes sociales y fomentando un uso responsable de las TIC.
+          Además, el grupo apuesta por las nuevas tecnologías, desde la realización de reuniones a distancia mediante
+          videollamadas, interactuando por las redes sociales y fomentando un uso responsable de las TIC.
         </p>
         <p>
-          Trabajamos por y para el desarrollo de los niños/niñas y jóvenes de la sociedad usando el método scout, unos objetivos educativos y una organización interna.
+          Trabajamos por y para el desarrollo de los niños/niñas y jóvenes de la sociedad usando el método scout, unos
+          objetivos educativos y una organización interna.
         </p>
       </div>
     </div>
-    <div class="d-flex flex-row mt-3">
-      <div class="flex-fill w-100">
-        <p-panel header="Objetivos Educativos" [toggleable]="true" [collapsed]="true">
-          <p>
-            A principio de la ronda, las personas voluntarias del grupo definen un plan educativo para ese año en concreto. Ese plan anual está definido según las
-            necesidades observadas en las educandas y de los hitos a plantear durante el año en cuestión. En base a dicho plan se desarrollan, posteriormente,
-            los planes de cada una de las secciones educativas y desde cada uno de estos salen todas las actividades de nuestra actividad anual.
-          </p>
-        </p-panel>
-      </div>
-      <div class="flex-fill w-100 ms-2">
-        <p-panel header="Organización Interna" [toggleable]="true" [collapsed]="true">
-          <p>
-            Desde el grupo creemos fervientemente en el movimiento scout. Por ello, siempre intentamos dar lo mejor de nosotras mismas en todas las actividades
-            que desarrollamos.
-          </p>
-          <p>
-            Para poder desarrollar esas actividades adecuadamente, las personas voluntarias de la asociación nos reunimos varias veces al año para
-            realizar la programación de las actividades, así como evaluarlas y llevar un seguimiento de la situación de la unidad o del grupo. De esta forma,
-            disponemos de un seguimiento de todas las secciones educativas y dotamos a las scouters de las herramientas necesarias para la realización y mejora de
-            estas actividades.
-          </p>
-          <p>
-            Además, Scouts de Canarias dispone de una escuela para la formación de scouters, de la cual obtenemos una educación progresiva que nos ayuda a realizar los programas
-            educativos para las unidades. Esta formación permite aumentar la calidad asegurando así unas actividades completas que nos permitan cumplir los objetivos propuestos.
-          </p>
-        </p-panel>
-      </div>
-    </div>
+    <p-divider align="left" type="dashed"><h3>Objetivos educativos</h3></p-divider>
+    <p>
+      A principio de la ronda, las personas voluntarias del grupo definen un plan educativo para ese año en concreto.
+      Ese plan anual está definido según las necesidades observadas en las educandas y de los hitos a plantear durante
+      el año en cuestión. En base a dicho plan se desarrollan, posteriormente, los planes de cada una de las secciones
+      educativas y desde cada uno de estos salen todas las actividades de nuestra actividad anual.
+    </p>
+    <p-divider align="left" type="dashed"><h3>Organización Interna</h3></p-divider>
+    <p>
+      Desde el grupo creemos fervientemente en el movimiento scout. Por ello, siempre intentamos dar lo mejor de
+      nosotras mismas en todas las actividades
+      que desarrollamos.
+    </p>
+    <p>
+      Para poder desarrollar esas actividades adecuadamente, las personas voluntarias de la asociación nos reunimos
+      varias veces al año para
+      realizar la programación de las actividades, así como evaluarlas y llevar un seguimiento de la situación de la
+      unidad o del grupo. De esta forma,
+      disponemos de un seguimiento de todas las secciones educativas y dotamos a las scouters de las herramientas
+      necesarias para la realización y mejora de
+      estas actividades.
+    </p>
+    <p>
+      Además, Scouts de Canarias dispone de una escuela para la formación de scouters, de la cual obtenemos una
+      educación progresiva que nos ayuda a realizar los programas
+      educativos para las unidades. Esta formación permite aumentar la calidad asegurando así unas actividades completas
+      que nos permitan cumplir los objetivos propuestos.
+    </p>
   </div>
-  <div class="section mt-4" id="mvv">
-    <h2>Nuestra Misión, Visión y Valores</h2>
-  </div>
-  <div class="section mt-4" id="escultismo">
-    <h2>El Escultismo como Método Educativo</h2>
+  <div class="mt-4" id="escultismo">
+    <p-divider align="left"><h2>El Escultismo como Método Educativo</h2></p-divider>
     <p>
       El Escultismo es un sistema pedagógico cuyo objetivo principal es trabajar para lograr un desarrollo pleno e integral en
       niños, niñas y jóvenes, de tal manera que lleguen al cumplimiento cabal de todos los aspectos que los conforman, mediante el
       desarrollo armónico de todas las etapas de su crecimiento. Una vez cumplido este desarrollo, se habrá capacitado para,
-      como bien dice el lema de la Organización Scout Mundial, "Construir un Mundo Mejor".
+      como bien dice el lema de la Organización Scout Mundial, "Construir un Mundo Mejor". Está basado en:
     </p>
-    <div class="d-flex flex-row">
-      <div class="flex-fill w-100 mt-5 me-3">
-        <h4>{{ selectedItem?.label }}</h4>
-        <p>{{ selectedItem?.info }}</p>
-      </div>
-      <div
-        class="flex-fill w-75 mt-4 rounded-3"
-        style="background-color:#F8DE9C"
-      >
-        <span class="text-center m-2 fs-2">El método Scout está basado en:</span>
-        <ul class="list-unstyled">
-          @for (item of scoutMethodItems; track $index) {
-            <li (click)="selectItem(item)" class="m-2 fs-5">
-              <input type="checkbox" [checked]="item.selected"/> {{ item.label }}
-            </li>
-          }
-        </ul>
-      </div>
-    </div>
+    @for (item of scoutMethodItems; track $index) {
+      <p-divider align="left" type="dashed"><h3>{{ item.label }}</h3></p-divider>
+      <p>{{ item.info }}</p>
+    }
     <p class="mt-4">
       Todo ello puesto en práctica a través de proyectos de actividades atrayentes y progresivas donde las participantes se vean involucradas desde la
       elección y planificación de estas. Dentro del método educativo, cada sección educativa está adaptada para que los conceptos mostrados anteriormente

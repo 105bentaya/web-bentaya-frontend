@@ -1,26 +1,26 @@
 <p-drawer [(visible)]="sidebarVisible">
   <ng-template pTemplate="body">
     <nav class="sidebar-menu" role="navigation">
-      <p-panelMenu [multiple]="true" [model]="items"></p-panelMenu>
+      <p-panelMenu [model]="items"></p-panelMenu>
     </nav>
   </ng-template>
   <ng-template pTemplate="footer">
     <p-divider></p-divider>
     <div class="d-flex flex-column justify-content-center align-items-center bottom-buttons">
-        <a
-          routerLink="/contacto"
-          (click)="sidebarVisible = false"
-          [ngClass]="{'bg-select': currentUrl === '/contacto'}"
-        >
-          Contacto
-        </a>
-        <a
-          routerLink="/canal-de-denuncias"
-          (click)="sidebarVisible = false"
-          [ngClass]="{'bg-select': currentUrl === '/canal-de-denuncias'}"
-        >
-          Canal de Denuncias
-        </a>
+      <a
+        routerLink="/contacto"
+        (click)="sidebarVisible = false"
+        [ngClass]="{'bg-select': currentUrl === '/contacto'}"
+      >
+        Contacto
+      </a>
+      <a
+        routerLink="/canal-de-denuncias"
+        (click)="sidebarVisible = false"
+        [ngClass]="{'bg-select': currentUrl === '/canal-de-denuncias'}"
+      >
+        Canal de Denuncias
+      </a>
     </div>
   </ng-template>
 </p-drawer>

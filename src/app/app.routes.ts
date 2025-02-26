@@ -7,6 +7,9 @@ import {CargosComponent} from "./web-pages/transparencia/components/cargos/cargo
 import {AsociacionComponent} from "./web-pages/asociacion/asociacion.component";
 import {authGuard} from "./core/auth/guards/auth.guard";
 import {noAuthGuard} from "./core/auth/guards/no-auth.guard";
+import {HistoriaComponent} from "./web-pages/historia/historia.component";
+import {MisionVisionValoresComponent} from "./web-pages/mision-vision-valores/mision-vision-valores.component";
+import {ReconocimientosComponent} from "./web-pages/reconocimientos/reconocimientos.component";
 
 export const routes: Routes = [
   {
@@ -180,6 +183,18 @@ export const routes: Routes = [
   {
     path: "asociacion/grupo",
     loadComponent: () => AsociacionComponent
+  },
+  {
+    path: "asociacion/historia",
+    loadComponent: () => HistoriaComponent
+  },
+  {
+    path: "asociacion/mision-vision-valores",
+    loadComponent: () => MisionVisionValoresComponent
+  },
+  {
+    path: "asociacion/reconocimientos",
+    loadComponent: () => ReconocimientosComponent
   },
   //Centros Scout
   {
