@@ -1,47 +1,72 @@
 <footer>
-  <div class="container footer-contents">
-    <div class="d-flex flex-row flex-wrap justify-content-center">
-      <div class="d-flex flex-column m-4 text-center">
-        <h5><b>NUESTRAS POLÍTICAS</b></h5>
-        <a class="p-button-rounded p-button-text" routerLink="/condiciones-de-uso">Condiciones de Uso</a>
-        <a class="p-button-rounded p-button-text" routerLink="/aviso-legal">Aviso Legal</a>
-        <a class="p-button-rounded p-button-text" routerLink="/politica-privacidad">Política de Privacidad</a>
-      </div>
-      <div class="d-flex flex-column m-4 text-center">
-        <h5><b>CONTACTO</b></h5>
-        <a
-          class="p-button-rounded p-button-text"
-          href="mailto:scouts@105bentaya.org"
-        >
-          scouts&#64;105bentaya.org
-        </a>
-        <a
-          pButton
-          routerLink="/contacto"
-          target="_blank"
-          [text]="true"
-          [rounded]="true"
-        >
-          <i pButtonIcon class="pi pi-phone"></i>
-          <span pButtonLabel>Mándanos un mensaje</span>
-        </a>
-      </div>
-      <div class="d-flex flex-column m-4 text-center">
-        <h5><b>SÍGUENOS</b></h5>
-        <p-divider></p-divider>
-        <div class="d-flex flex-wrap">
-          @for (button of socialMediaButtons; track $index) {
-            <a
-              pButton
-              [href]="button.link"
-              target="_blank"
-              [text]="true"
-              [rounded]="true"
-            >
-              <i pButtonIcon [class]="button.icon"></i>
-            </a>
-          }
+  <div class="container-lg pb-1">
+    <div class="d-flex flex-column gap-2 gap-sm-4">
+      <div class="d-flex flex-wrap px-4 pt-3 justify-content-center gap-4 gap-sm-0">
+        <div class="d-none d-md-block flex-fill">
+          <div class="d-flex flex-column">
+            <b class="mb-3 mx-2">Más sobre nosotros</b>
+            <a class="p-button-rounded p-button-text py-1 px-2" routerLink="/asociacion/grupo">Asociación Bentaya</a>
+            <a class="p-button-rounded p-button-text py-1 px-2" routerLink="/asociacion/mision-vision-valores">Misión,
+              visión y valores</a>
+            <a class="p-button-rounded p-button-text py-1 px-2" routerLink="/asociacion/historia">Historia</a>
+          </div>
         </div>
+        <div class="flex-sm-fill text-center text-sm-start">
+          <div class="d-flex flex-column">
+            <b class="mb-sm-3 mx-2">Aprende sobre...</b>
+            <a class="p-button-rounded p-button-text py-1 px-2" routerLink="/politica-privacidad">Política de
+              Privacidad</a>
+            <a class="p-button-rounded p-button-text py-1 px-2" routerLink="/condiciones-de-uso">Condiciones de Uso</a>
+            <a class="p-button-rounded p-button-text py-1 px-2" routerLink="/aviso-legal">Aviso Legal</a>
+          </div>
+        </div>
+        <div class="flex-sm-fill text-center text-sm-start">
+          <div class="d-flex flex-column">
+            <b class="mb-sm-3 mx-2">Contacto</b>
+            <a
+              class="p-button-rounded p-button-text py-1 px-2"
+              href="https://www.google.com/maps/place/Asociaci%C3%B3n+Juvenil+Scouts+Exploradores+de+Gran+Canaria+Bentaya/@28.115133,-15.4295697,17z/data=!3m1!4b1!4m6!3m5!1s0xc40959e498b1cc3:0x96a42a714b202b63!8m2!3d28.115133!4d-15.4269948!16s%2Fg%2F1tfzcfcr?entry=ttu&g_ep=EgoyMDI1MDIyNC4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+            >
+              C/ Arco 77, 35004
+            </a>
+            <a
+              class="p-button-rounded p-button-text py-1 px-2"
+              href="mailto:scouts@105bentaya.org"
+            >
+              scouts&#64;105bentaya.org
+            </a>
+            <a class="p-button-rounded p-button-text py-1 px-2" routerLink="/contacto" fragment="mensaje">
+              <div class="d-flex align-items-center gap-1">
+                <i pButtonIcon class="pi pi-phone"></i>
+                <span>Mándanos un mensaje</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="text-center text-sm-start flex-sm-fill media-buttons">
+          <div class="d-flex flex-column me-2">
+            <b class="border-bottom border-4 mb-sm-3">Síguenos</b>
+            <div class="d-flex">
+              @for (button of socialMediaButtons; track $index) {
+                <div class="flex-fill text-center">
+                  <a
+                    pButton
+                    [href]="button.link"
+                    target="_blank"
+                    [text]="true"
+                    [rounded]="true"
+                  >
+                    <i pButtonIcon [class]="button.icon" class="fs-4"></i>
+                  </a>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="px-4 text-center text-sm-start">
+        <small>Asociación Scouts-Exploradores Bentaya 2025</small>
       </div>
     </div>
   </div>
