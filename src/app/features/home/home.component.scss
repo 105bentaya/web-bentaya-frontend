@@ -59,6 +59,10 @@
 }
 
 .forms {
+  overflow-x: auto;
+  @media screen and (max-width: 1000px) {
+    overflow-x: scroll;
+  }
   @include custom-scrollbar(#f0f0f0, #cdcdcd, #a6a6a6, #606060)
 }
 
@@ -219,7 +223,7 @@
   .card-container {
     max-width: 1000px;
     @media (max-width: 767px) {
-      overflow-x: auto;
+      overflow-x: scroll;
       overflow-y: visible !important;
     }
     @include custom-scrollbar(#f1e3b5, #e4b61a, #cfa203, #a58107)
