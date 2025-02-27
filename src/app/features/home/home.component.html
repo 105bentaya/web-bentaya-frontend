@@ -10,10 +10,10 @@
     <p-divider>
       <h2 class="mb-0 text-center cursor-default">FORMULARIOS</h2>
     </p-divider>
-    <div class="row row-cols-5 flex-nowrap overflow-x-auto overflow-y-visible">
+    <div class="row row-cols-5 flex-nowrap overflow-x-auto overflow-y-visible forms">
       @for (card of formButtons; track $index) {
         <div
-          class="form-card"
+          class="form-card mb-1"
         >
           <a class="text-decoration-none" [routerLink]="card.link">
             <div class="card h-100 mb-3 overflow-hidden">
@@ -134,7 +134,7 @@
           <p>Cosas rápidas que puedes leer y aprender.</p>
         </div>
         @for (card of cards; track card) {
-          <div class="mb-4 px-2 px-md-3 px-lg-4">
+          <div class="mb-1 mb-md-4 px-2 px-md-3 px-lg-4">
             <a class="text-decoration-none" [routerLink]="card.link" [target]="card.target ?? '_self'">
               <div class="card h-100 cursor-pointer">
                 <div class="card-body">
