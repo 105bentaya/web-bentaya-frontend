@@ -1,9 +1,9 @@
 <div class="d-flex html-container">
-  @if (routeIsProtected === true) {
+  @if (routeIsProtected === true && routeIsLogin === false) {
     <app-user-menu></app-user-menu>
   }
   <div class="d-flex flex-column min-vh-100 main-container">
-    <app-home-bar [isProtectedRoute]="routeIsProtected"></app-home-bar>
+    <app-home-bar [isProtectedRoute]="routeIsProtected" [isLogin]="routeIsLogin"></app-home-bar>
     <div class="content-container">
       <router-outlet></router-outlet>
     </div>

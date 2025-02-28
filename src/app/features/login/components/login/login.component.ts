@@ -58,9 +58,13 @@ export class LoginComponent implements OnInit {
   protected forgotPassword() {
     this.loading = true;
     this.userService.forgotPassword(this.forgotUsername).subscribe({
-      next: () => this.alertService.sendBasicSuccessMessage(
-        `El usuario ${this.forgotUsername} ha recibido un correo, en caso de que este exista`
-      ),
+      next: () => {
+        this.alertService.sendBasicSuccessMessage(
+          `El usuario ${this.forgotUsername} ha recibido un correo, en caso de que este exista`
+        );
+        this.loading = false;
+        this.login = true;
+      },
       error: () => this.loading = false
     });
   }

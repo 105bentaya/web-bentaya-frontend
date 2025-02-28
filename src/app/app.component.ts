@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   protected routeIsProtected: boolean | undefined;
+  protected routeIsLogin: boolean | undefined;
 
   ngOnInit(): void {
     this.configureApp();
@@ -50,13 +51,18 @@ export class AppComponent implements OnInit {
       .subscribe(() => this.checkIfRouteIsProtected());
   }
 
-  checkIfRouteIsProtected() {
+  private checkIfRouteIsProtected() {
     let route = this.activatedRoute;
     while (route.firstChild) {
       route = route.firstChild;
     }
     const routeConfig = route.routeConfig;
-    this.routeIsProtected = (routeConfig?.canActivate && routeConfig?.path !== "login") ?? false;
+    this.routeIsProtected = !!routeConfig?.canActivate;
+    this.routeIsLogin = this.routeIsNotAuthGuard(routeConfig?.path);
+  }
+
+  private routeIsNotAuthGuard(path?: string): boolean {
+    return !!(path === "login" || path?.startsWith("restablecer-clave"));
   }
 
   private configureApp() {

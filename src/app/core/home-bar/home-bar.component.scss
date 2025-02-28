@@ -17,7 +17,16 @@
   margin-top: 5px;
 }
 
-.svg-large {
+.svg-big {
+  position: absolute;
+  z-index: $z-index-back;
+  width: auto;
+  height: 100px;
+  top: -10px;
+  left: -10px;
+}
+
+.svg-normal {
   position: absolute;
   z-index: $z-index-back;
   width: auto;

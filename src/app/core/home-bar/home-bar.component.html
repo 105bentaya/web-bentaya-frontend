@@ -1,9 +1,13 @@
 <div class="d-flex flex-row justify-content-center align-items-start">
-  @if (isProtectedRoute === false) {
+  @if (isProtectedRoute === false || isLogin === true) {
     <div class="flex-fill text-start w-100 pt-3">
       <app-sidebar class="ms-2 ms-md-3"></app-sidebar>
-      <img class="svg-large start-0 d-none d-md-block" src="assets/nav-bar/blue-blob-big.svg" alt="">
-      <img class="svg-sm start-0 d-md-none" src="assets/nav-bar/blue-blob-small.svg" alt="">
+      @if (isLogin) {
+        <img class="svg-big" src="assets/nav-bar/big-blob.svg" alt="">
+      } @else {
+        <img class="svg-normal start-0 d-none d-md-block" src="assets/nav-bar/blue-blob-big.svg" alt="">
+        <img class="svg-sm start-0 d-md-none" src="assets/nav-bar/blue-blob-small.svg" alt="">
+      }
     </div>
   }
   <div class="flex-fill w-100" [ngClass]="isProtectedRoute ? 'text-end me-3' : 'text-center'">
@@ -31,7 +35,7 @@
           [disabled]="loginDisabled"
         ></app-general-a-button>
       </div>
-      <img class="svg-large end-0 d-none d-md-block" src="assets/nav-bar/yellow-blob-big.svg" alt="">
+      <img class="svg-normal end-0 d-none d-md-block" src="assets/nav-bar/yellow-blob-big.svg" alt="">
       <img class="svg-sm end-0 d-md-none" src="assets/nav-bar/yellow-blob-small.svg" alt="">
     </div>
   }

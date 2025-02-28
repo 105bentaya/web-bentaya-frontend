@@ -1,5 +1,30 @@
-.forgot {
+a.forgot {
   cursor: pointer;
   width: fit-content;
-  color: #61a0fd;
+  color: var(--p-button-primary-hover-background);
+}
+
+small.forgot {
+  color: #284682;
+}
+
+.login-container {
+  margin-top: 3rem;
+  > div {
+    max-width: 500px;
+    background-color: #91ade4;
+    border-radius: 50px;
+    padding: 0 1.5rem 1.5rem;
+
+    .pi {
+      top: -120px;
+      font-size: 80px;
+      position: relative;
+      background-color: #476BB2;
+      color: #91ade4;
+      padding: 2rem;
+      margin-bottom: -7rem;
+      border-radius: 100%;
+    }
+  }
 }

@@ -21,10 +21,6 @@ export const routes: Routes = [
     redirectTo: "inicio",
     pathMatch: "full"
   },
-  // {
-  //   path: "mi-vivac",
-  //   loadComponent: () => import('./features/home/home.component').then(c => c.HomeComponent),
-  // },
   {
     path: "calendario",
     loadComponent: () => import('./features/calendar/components/calendar/calendar.component').then(c => c.CalendarComponent),
@@ -35,15 +31,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/login/components/login/login.component').then(c => c.LoginComponent),
     canActivate: [noAuthGuard]
   },
-  {
-    path: "olvide-la-clave",
-    loadComponent: () => import('./features/login/components/forgot-password/forgot-password.component').then(c => c.ForgotPasswordComponent),
-    canActivate: [noAuthGuard]
-  },
   //todo: merge with change-password
   {
     path: "restablecer-clave/:token",
     loadComponent: () => import('./features/login/components/reset-password/reset-password.component').then(c => c.ResetPasswordComponent),
+    canActivate: [noAuthGuard]
   },
   //ADMIN
   {

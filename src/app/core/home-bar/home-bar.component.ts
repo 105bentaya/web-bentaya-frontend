@@ -23,6 +23,7 @@ import {NgClass} from "@angular/common";
 })
 export class HomeBarComponent implements OnInit {
   @Input() isProtectedRoute: boolean | undefined;
+  @Input() isLogin: boolean | undefined;
   protected readonly authService = inject(AuthService);
   private readonly notificationService = inject(NotificationService);
 
