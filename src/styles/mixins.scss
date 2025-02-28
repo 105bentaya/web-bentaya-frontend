@@ -1,0 +1,38 @@
+@mixin custom-scrollbar($bg-color, $bar-color) {
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: $bar-color $bg-color;
+  }
+
+  &::-webkit-scrollbar {
+    height: .5rem;
+    width: .5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $bg-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $bar-color;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken($bar-color, 8%);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background: darken($bar-color, 18%);
+  }
+}
+
+@mixin custom-scrollbar-off() {
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}

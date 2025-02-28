@@ -77,7 +77,7 @@ export const routes: Routes = [
     data: {roles: ["ROLE_FORM"]}
   },
   {
-    path: "preinscripciones-scouters",
+    path: "voluntariado",
     loadComponent: () => import('./features/scout-forms/components/ser-scouter-table/ser-scouter-table.component').then(c => c.SerScouterTableComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_FORM"]}

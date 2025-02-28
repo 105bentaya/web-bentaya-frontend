@@ -1,9 +1,16 @@
-<div class="d-flex flex-column min-vh-100">
-  <app-home-bar></app-home-bar>
-  <div class="content-container">
-    <router-outlet></router-outlet>
+<div class="d-flex html-container">
+  @if (routeIsProtected === true) {
+    <app-user-menu></app-user-menu>
+  }
+  <div class="d-flex flex-column min-vh-100 main-container">
+    <app-home-bar [isProtectedRoute]="routeIsProtected"></app-home-bar>
+    <div class="content-container">
+      <router-outlet></router-outlet>
+    </div>
+    @if (routeIsProtected === false) {
+      <app-footer class="mt-auto"></app-footer>
+    }
   </div>
-  <app-footer class="mt-auto"></app-footer>
 </div>
 
 <p-toast

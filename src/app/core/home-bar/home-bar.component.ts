@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {DialogService} from 'primeng/dynamicdialog';
 import {AuthService} from '../auth/services/auth.service';
@@ -6,6 +6,7 @@ import {NotificationService} from "../notification/notification.service";
 import {BadgeModule} from "primeng/badge";
 import {SidebarComponent} from "../sidebar/sidebar.component";
 import {GeneralAButtonComponent} from "../../shared/components/buttons/general-a-button/general-a-button.component";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-home-bar',
@@ -16,10 +17,12 @@ import {GeneralAButtonComponent} from "../../shared/components/buttons/general-a
     RouterLink,
     BadgeModule,
     SidebarComponent,
-    GeneralAButtonComponent
+    GeneralAButtonComponent,
+    NgClass
   ]
 })
 export class HomeBarComponent implements OnInit {
+  @Input() isProtectedRoute: boolean | undefined;
   protected readonly authService = inject(AuthService);
   private readonly notificationService = inject(NotificationService);
 

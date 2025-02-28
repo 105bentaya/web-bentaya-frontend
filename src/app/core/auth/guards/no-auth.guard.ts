@@ -6,7 +6,7 @@ export function noAuthGuard(_route: ActivatedRouteSnapshot): boolean | UrlTree {
   const authService = inject(AuthService);
   const router = inject(Router);
   if (authService.isLoggedIn()) {
-    return router.parseUrl("/mi-vivac");
+    return router.parseUrl("/calendario");
   }
   return true;
 }

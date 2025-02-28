@@ -1,42 +1,38 @@
 <div class="d-flex flex-row justify-content-center align-items-start">
-  <div class="flex-fill text-start w-100 pt-3">
-    <app-sidebar class="ms-2 ms-md-3"></app-sidebar>
-    <svg class="svg-large start-0 d-none d-md-block" width="273" height="178" viewBox="0 0 273 178" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M227.5 3.34175e-05C254 3.34175e-05 266 -4.19526e-05 273 0.000108758C254.35 101.709 190.992 178 116.5 178C71.2714 178 29.3181 150.928 8.01826e-05 106.5C-3.8073e-05 61.5 9.42576e-06 65.1991 9.42576e-06 2.00581e-06C62.5 3.33786e-05 29.8062 2.96028e-05 119 2.96028e-05C208.194 2.96028e-05 170.5 3.34175e-05 227.5 3.34175e-05Z" fill="#BBD9E3"/>
-    </svg>
-    <svg class="svg-sm start-0 d-md-none" width="70" height="72" viewBox="0 0 70 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0.125092 71.9906C37.9019 72.5812 68.7789 56.7228 69.0911 36.7573C69.4032 16.7919 37.9021 0.590613 0.125244 0C0.110014 31.9906 0.125271 28.4906 0.125249 31C0.125249 35.4906 0.125092 57.4906 0.125092 71.9906Z" fill="#BBD9E3"/>
-    </svg>
-  </div>
-  <div class="flex-fill text-center w-100">
+  @if (isProtectedRoute === false) {
+    <div class="flex-fill text-start w-100 pt-3">
+      <app-sidebar class="ms-2 ms-md-3"></app-sidebar>
+      <img class="svg-large start-0 d-none d-md-block" src="assets/nav-bar/blue-blob-big.svg" alt="">
+      <img class="svg-sm start-0 d-md-none" src="assets/nav-bar/blue-blob-small.svg" alt="">
+    </div>
+  }
+  <div class="flex-fill w-100" [ngClass]="isProtectedRoute ? 'text-end me-3' : 'text-center'">
     <a routerLink="/inicio">
-      <img class="d-md-none pt-0 pt-sm-2 zoom-animation" src="assets/nav-bar/header-logo.png" width="120" alt="105 Bentaya">
-      <img class="d-none d-md-inline pt-0 pt-sm-2 zoom-animation" src="assets/nav-bar/header-logo.png" width="140" alt="105 Bentaya">
+      <img class="d-md-none pt-1 pt-sm-2 zoom-animation" src="assets/nav-bar/header-logo.png" width="120" alt="105 Bentaya">
+      <img class="d-none d-md-inline pt-2 zoom-animation" src="assets/nav-bar/header-logo.png" width="140" alt="105 Bentaya">
     </a>
   </div>
-  <div class="flex-fill text-end w-100 pt-3">
-    <div class="d-none d-md-block me-3">
-      <app-general-a-button
-        icon="pi pi-user"
-        class="home-bar-button mi-vivac"
-        [routerLink]="authService.isLoggedIn() ? 'user-home' : 'login'"
-        [label]="authService.isLoggedIn() ? 'Mi Vivac' : 'Iniciar Sesión'"
-        [disabled]="loginDisabled"
-      ></app-general-a-button>
+  @if (isProtectedRoute === false) {
+    <div class="flex-fill text-end w-100 pt-3">
+      <div class="d-none d-md-block me-3">
+        <app-general-a-button
+          icon="pi pi-user"
+          class="home-bar-button mi-vivac"
+          [routerLink]="authService.isLoggedIn() ? 'calendario' : 'login'"
+          [label]="authService.isLoggedIn() ? 'Mi Vivac' : 'Iniciar Sesión'"
+          [disabled]="loginDisabled"
+        ></app-general-a-button>
+      </div>
+      <div class="d-md-none me-2">
+        <app-general-a-button
+          class="home-bar-button mi-vivac"
+          icon="pi pi-user"
+          [routerLink]="authService.isLoggedIn() ? 'calendario' : 'login'"
+          [disabled]="loginDisabled"
+        ></app-general-a-button>
+      </div>
+      <img class="svg-large end-0 d-none d-md-block" src="assets/nav-bar/yellow-blob-big.svg" alt="">
+      <img class="svg-sm end-0 d-md-none" src="assets/nav-bar/yellow-blob-small.svg" alt="">
     </div>
-    <div class="d-md-none me-2">
-      <app-general-a-button
-        class="home-bar-button mi-vivac"
-        icon="pi pi-user"
-        [routerLink]="authService.isLoggedIn() ? 'user-home' : 'login'"
-        [disabled]="loginDisabled"
-      ></app-general-a-button>
-    </div>
-    <svg class="svg-large end-0 d-none d-md-block" width="283" height="158" viewBox="0 0 283 158" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M285 -10C247.585 -10 194.01 -9.99962 160.458 -9.99991C121.787 -9.99962 111.55 -9.99962 83.5366 -9.99962C61.5061 -9.99997 46.1513 -9.99977 21.7754 -9.99886C-2.60021 -9.99795 0.087763 8.73203 0.0877642 26.0588C0.0877654 43.3856 7.45731 60.5427 21.7754 76.5505C36.0935 92.5584 57.0802 107.103 83.5366 119.355C109.993 131.607 141.402 141.326 175.969 147.957C210.536 154.587 247.585 158 285 158L285 -10Z" fill="#EFD134"/>
-    </svg>
-    <svg class="svg-sm end-0 d-md-none" width="69" height="73" viewBox="0 0 69 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M69 72C31.2232 72.5906 0.346156 56.7322 0.0340108 36.7667C-0.278134 16.8013 31.223 0.600012 68.9998 0.00939941C69.0151 32 68.9998 28.5 68.9998 31.0094C68.9998 35.5 69 57.5 69 72Z" fill="#EFD134"/>
-    </svg>
-  </div>
+  }
 </div>

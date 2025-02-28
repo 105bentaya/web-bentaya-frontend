@@ -1,6 +1,28 @@
+@import "../styles/variables";
+
 .content-container {
   padding: 20px;
   @media screen and (max-width: 576px) {
     padding: 15px 5px;
+  }
+}
+
+.html-container {
+  .main-container {
+    width: 100%;
+  }
+
+  &:has(.space-holder.big) .main-container {
+    width: calc(100% - $expanded-width);
+    margin-left: $expanded-width;
+  }
+
+  &:has(.space-holder.small) .main-container {
+    width: calc(100% - $contracted-width);
+    margin-left: $contracted-width;
+  }
+
+  &:has(.space-holder.animated) .main-container {
+    transition: margin-left $animation-duration linear, width $animation-duration linear;
   }
 }

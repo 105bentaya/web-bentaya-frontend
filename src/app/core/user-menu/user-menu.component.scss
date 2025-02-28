@@ -1,0 +1,74 @@
+@import "../../../styles/z-index";
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+.p-overlay-mask {
+  z-index: $z-index-menu-block !important;
+}
+
+.sidebar {
+  z-index: $z-index-menu;
+  background-color: var(--bentaya-main-color);
+  position: fixed;
+  height: 100vh;
+  transition: width $animation-duration linear, visibility $animation-duration linear;
+
+  &.expanded {
+    width: $expanded-width;
+
+    .show-on-expanded-width {
+      opacity: 1;
+      margin-left: 0.5rem !important;
+      transition: opacity $animation-duration ease-in;
+    }
+  }
+
+  .show-on-expanded, .show-on-expanded-width {
+    text-wrap: nowrap;
+  }
+
+  &:not(.expanded) {
+    width: $contracted-width;
+
+    @media screen and (max-width: 575px) {
+      width: 0;
+      visibility: hidden;
+    }
+
+    .show-on-expanded {
+      display: none;
+    }
+
+    .show-on-expanded-width {
+      width: 0;
+      opacity: 0;
+      margin-left: 0 !important;
+    }
+  }
+
+  &:hover .menu-buttons-container {
+    @include custom-scrollbar(#093a6f, #6a88a7);
+  }
+
+  .menu-buttons-container {
+    height: calc(100% - 100px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    @include custom-scrollbar-off();
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+
+  .menu-buttons {
+    a {
+      color: white;
+      font-weight: 500;
+      height: 42px;
+      padding: 8px 12px;
+
+      &:hover {
+        color: var(--bentaya-main-color);
+      }
+    }
+  }
+}

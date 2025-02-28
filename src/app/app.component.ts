@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DatePipe, registerLocaleData} from '@angular/common';
-import {RouterOutlet} from '@angular/router';
+import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {FooterComponent} from "./core/footer/footer.component";
 import {ToastModule} from "primeng/toast";
 import {AlertService} from "./shared/services/alert-service.service";
@@ -9,11 +9,13 @@ import {SettingsService} from "./core/settings/settings.service";
 import localeEs from '@angular/common/locales/es'
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {AuthService} from "./core/auth/services/auth.service";
-import {noop} from "rxjs";
+import {filter, noop} from "rxjs";
 import {PrimeNG} from "primeng/config";
 import Lara from '@primeng/themes/lara';
 import {definePreset} from "@primeng/themes";
 import {HomeBarComponent} from "./core/home-bar/home-bar.component";
+import {UserRoutesService} from "./core/auth/services/user-routes.service";
+import {UserMenuComponent} from "./core/user-menu/user-menu.component";
 
 @Component({
   selector: 'app-root',
@@ -22,7 +24,8 @@ import {HomeBarComponent} from "./core/home-bar/home-bar.component";
     FooterComponent,
     ToastModule,
     ConfirmDialogModule,
-    HomeBarComponent
+    HomeBarComponent,
+    UserMenuComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -35,11 +38,17 @@ export class AppComponent implements OnInit {
   private readonly config = inject(PrimeNG);
   private readonly settingsService = inject(SettingsService);
   protected readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly userRoutes = inject(UserRoutesService);
+  protected routeIsProtected: boolean | undefined;
 
   ngOnInit(): void {
     this.configureApp();
     this.activateMessagingService();
     this.checkForMaintenance();
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.routeIsProtected = this.userRoutes.getCurrentRouteProtected());
   }
 
   private configureApp() {

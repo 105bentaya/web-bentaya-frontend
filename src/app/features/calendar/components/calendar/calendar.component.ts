@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {CalendarOptions} from "@fullcalendar/core";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
@@ -12,7 +12,7 @@ import {BasicEvent} from "../../models/basic-event.model";
 import {ActivatedRoute} from "@angular/router";
 import {groups, unitGroups} from "../../../../shared/model/group.model";
 import {EventStatusService} from "../../services/event-status.service";
-import {Subscription} from "rxjs";
+import {delay, skip} from "rxjs";
 import {ScoutEvent} from "../../models/scout-event.model";
 import {DatePipe, NgClass, NgTemplateOutlet} from "@angular/common";
 import {Button} from "primeng/button";
@@ -24,6 +24,8 @@ import {FormsModule} from "@angular/forms";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {CalendarSubscriptionComponent} from "../calendar-subscription/calendar-subscription.component";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
+import {UserMenuService} from "../../../../core/user-menu/user-menu.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-calendar',
@@ -43,13 +45,14 @@ import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-
     Button
   ]
 })
-export class CalendarComponent implements OnInit, OnDestroy {
+export class CalendarComponent implements OnInit {
 
   private readonly dialogService = inject(DialogService);
   private readonly eventService = inject(EventService);
   private readonly route = inject(ActivatedRoute);
   private readonly eventStatusService = inject(EventStatusService);
   private readonly loggedUserData = inject(LoggedUserDataService);
+  private readonly userMenuService = inject(UserMenuService);
 
   protected options: CalendarOptions;
   protected ref!: DynamicDialogRef;
@@ -62,9 +65,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   protected groups = [...unitGroups, groups[0]];
   protected filterResults!: number[];
   protected loading = true;
-  private readonly newEventSubscription: Subscription;
-  private readonly updatedEventSubscription: Subscription;
-  private readonly deletedEventSubscription: Subscription;
 
   @ViewChild('top')
   private readonly topOfList!: ElementRef;
@@ -115,9 +115,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.viewOptions = [{value: 'dayGridMonth', icon: 'pi pi-calendar'}, {value: 'customList', icon: 'pi pi-list'}];
     this.canEdit = this.loggedUserData.hasRequiredPermission(["ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]);
 
-    this.deletedEventSubscription = this.eventStatusService.deletedEvent.subscribe(id => this.onEventDelete(id));
-    this.updatedEventSubscription = this.eventStatusService.updatedEvent.subscribe(event => this.onEventUpdate(event));
-    this.newEventSubscription = this.eventStatusService.newEvent.subscribe(event => this.onEventAdd(event));
+    this.eventStatusService.deletedEvent
+      .pipe(takeUntilDestroyed())
+      .subscribe(id => this.onEventDelete(id));
+    this.eventStatusService.updatedEvent
+      .pipe(takeUntilDestroyed())
+      .subscribe(event => this.onEventUpdate(event));
+    this.eventStatusService.newEvent
+      .pipe(takeUntilDestroyed())
+      .subscribe(event => this.onEventAdd(event));
+    this.userMenuService.expanded
+      .pipe(takeUntilDestroyed(), skip(1), delay(180))
+      .subscribe(() => this.calendarComponent.getApi().render());
   }
 
   ngOnInit(): void {
@@ -128,12 +137,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.options.initialView = "customList";
       this.calendarView = false;
     }
-  }
-
-  ngOnDestroy() {
-    this.deletedEventSubscription.unsubscribe();
-    this.updatedEventSubscription.unsubscribe();
-    this.newEventSubscription.unsubscribe();
   }
 
   private buildFilter() {

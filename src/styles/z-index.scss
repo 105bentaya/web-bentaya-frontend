@@ -1,0 +1,12 @@
+$z-index-back: -999;
+$z-index-block: 80;
+$z-index-menu-block: 90;
+$z-index-menu: 100;
+$z-index-total: 1000;
+
+.p-overlay-mask {
+  z-index: $z-index-block;
+  &.total {
+    z-index: $z-index-total;
+  }
+}

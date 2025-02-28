@@ -1,6 +1,7 @@
 @import "./booking";
 @import "./calendar";
 @import "./primeng";
+@import "./z-index";
 
 html {
   height: 100%;
@@ -11,6 +12,9 @@ body {
   min-height: 100%;
   &:has(.hide-overflow-x) {
     overflow-x: hidden;
+  }
+  &:has(.hide-overflow-y) {
+    overflow-y: hidden;
   }
 }
 
@@ -115,22 +119,6 @@ label, span, th {
   margin-left: 4px;
 }
 
-div {
-  .block-overlay {
-    position: fixed;
-    display: block;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    cursor: pointer;
-  }
-}
-
 .red-row {
   background-color: #fdf2f2 !important;
 
@@ -225,6 +213,10 @@ h1, h2, h3 {
   width: 1rem;
 }
 
+.w-fit {
+  width: fit-content;
+}
+
 .wh-2rem {
   width: 2rem !important;
   height: 2rem !important;
@@ -286,5 +278,51 @@ h1, h2, h3 {
 .p-drawer:is(.ng-animating) {
   .p-panelmenu-content-container:is(:not(.p-panelmenu-expanded)) {
     display: none;
+  }
+}
+
+.expand-button button {
+  $diameter: 54px;
+  $radius: $diameter / 2;
+
+  width: $diameter !important;
+  height: $diameter !important;
+  background-color: var(--bentaya-secondary-color);
+  border-color: var(--bentaya-secondary-color);
+  color: var(--bentaya-main-color);
+
+  &:hover {
+    background-color: #d6b60d;
+    border-color: #d6b60d;
+  }
+
+  position: absolute;
+  top: 98 / 2 - $radius;
+  left: calc(100% - $radius);
+
+  &.solo {
+    $diameter: 45px;
+    $radius: $diameter / 2;
+
+    width: $diameter !important;
+    height: $diameter !important;
+
+    position: fixed;
+    top: 81 / 2 - $radius;
+    left: 10px;
+    z-index: $z-index-menu
+  }
+
+  span {
+    font-size: 1.5rem;
+  }
+}
+
+.divider-menu {
+  margin: .75rem 0 0 0;
+  .p-divider-content {
+    background-color: var(--bentaya-main-color);
+    color: white;
+    border-radius: 10px;
   }
 }
