@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ConfirmationService, FilterService, MenuItem, SortEvent} from 'primeng/api';
 import {PreScout} from '../../models/pre-scout.model';
-import {ScoutFormsService} from '../../services/scout-forms.service';
+import {ScoutFormsService} from '../../scout-forms.service';
 import {SettingsService} from "../../../../core/settings/settings.service";
 import {AssignPreScoutFormComponent} from "../assign-pre-scout-form/assign-pre-scout-form.component";
 import {PreScoutAssignation} from "../../models/pre-scout-assignation.model";

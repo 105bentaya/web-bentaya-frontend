@@ -1,5 +1,8 @@
-<h1 class="text-center">VOLUNTARIADO - Ser Scouter</h1>
 <div class="container">
+  <div class="text-center">
+    <h1 class="mb-0">VOLUNTARIADO</h1>
+    <h2>Ser Scouter</h2>
+  </div>
   <p>
     Si eres mayor de edad, tienes los 19 años cumplidos y tienes ganas de realizar un voluntariado, te damos la
     posibilidad de realizarlo como educador o educadora scout en nuestra asociación. Rellena el siguiente formulario y
@@ -8,7 +11,7 @@
   <form [formGroup]="preScouterForm.form" class="form-container mt-4">
     <div class="row">
       <div class="col-12 col-md-6">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
             <input
               pInputText
               formControlName="name"
@@ -22,7 +25,7 @@
         }
       </div>
       <div class="col-12 col-md-6">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
             <input
               pInputText
               formControlName="surname"
@@ -36,7 +39,7 @@
         }
       </div>
       <div class="col-12 col-md-3">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
             <input
               pInputText
               formControlName="phone"
@@ -50,7 +53,7 @@
         }
       </div>
       <div class="col-12 col-md-3">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
             <input
               pInputText
               formControlName="email"
@@ -64,7 +67,7 @@
         }
       </div>
       <div class="col-12 col-md-3">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
             <p-datePicker
               id="birthday"
               formControlName="birthday"
@@ -77,7 +80,7 @@
         }
       </div>
       <div class="col-12 col-md-3">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
           <p-select
             id="gender"
             formControlName="gender"
@@ -91,23 +94,26 @@
         }
       </div>
       <div class="col-12 mb-2">
-        <label class="required" for="comment">
-          Breve comentario sobre la motivación para su incorporación a la asociación (valoramos la motivación y el
-          compromiso).
-        </label>
-        <app-form-text-area
-          id="comment"
-          formControlName="comment"
-          [maxLength]="512"
-          [showErrorMessage]="preScouterForm.isDirtyAndInvalidWithError('comment', 'maxlength')"
-        >
-        </app-form-text-area>
+        <p-floatlabel variant="on">
+          <label class="required" for="comment">
+            Motivación y compromiso para su incorporación
+          </label>
+          <app-form-text-area
+            id="comment"
+            formControlName="comment"
+            [maxLength]="512"
+            [showErrorMessage]="preScouterForm.isDirtyAndInvalidWithError('comment', 'maxlength')"
+          ></app-form-text-area>
+        </p-floatlabel>
         @if (preScouterForm.isDirtyAndInvalidWithError('comment', 'required')) {
-          <small class="text-danger">Introduzca el nombre</small>
+          <small class="text-danger">
+            Breve comentario sobre su motivación para su incorporación a la asociación (valoramos la motivación y el
+            compromiso)
+          </small>
         }
       </div>
       <div class="col-12 mb-2">
-        <app-checkbox-container>
+        <app-checkbox-container [privacy]="true">
           <p-checkbox
             id="privacy"
             formControlName="privacy"
@@ -132,3 +138,6 @@
     }
   </form>
 </div>
+@if (loading) {
+  <div class="p-overlay-mask block-scroll"></div>
+}

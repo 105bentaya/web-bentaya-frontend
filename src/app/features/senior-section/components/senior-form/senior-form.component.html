@@ -1,5 +1,8 @@
 <div class="container">
-  <h1 class="text-center">SECCIÓN SENIOR - Siempre Scout</h1>
+  <div class="text-center">
+    <h1 class="mb-0">SECCIÓN SENIOR</h1>
+    <h2>Siempre Scout</h2>
+  </div>
   <p>
     La Sección Sénior de Scouts 105 Bentaya está abierta a cualquier persona con vínculo scout, enfocada a aquellos
     mayores de 30 años o cercanos a esa edad, incluso si no son miembros activos. También recomendamos tomar en
@@ -52,37 +55,38 @@
   <form [formGroup]="seniorForm.form" class="mt-4 form-container">
     <div class="row">
       <div class="col-12 col-md-6">
-          <span class="p-float-label">
-            <input
-              formControlName="name"
-              id="name"
-              type="text"
-              pInputText
-              maxlength="255"
-            >
-            <label class="required" for="name">Nombre</label>
-          </span>
+        <p-floatlabel variant="on">
+          <label class="required" for="name">Nombre</label>
+          <input
+            formControlName="name"
+            id="name"
+            type="text"
+            pInputText
+            maxlength="255"
+          >
+        </p-floatlabel>
         @if (seniorForm.isDirtyAndInvalid('name')) {
           <small class="text-danger">Introduzca su nombre</small>
         }
       </div>
       <div class="col-12 col-md-6">
-          <span class="p-float-label">
-            <input
-              formControlName="surname"
-              id="surname"
-              type="text"
-              pInputText
-              maxlength="255"
-            >
-            <label class="required" for="surname">Apellidos</label>
-          </span>
+        <p-floatlabel variant="on">
+          <label class="required" for="surname">Apellidos</label>
+          <input
+            formControlName="surname"
+            id="surname"
+            type="text"
+            pInputText
+            maxlength="255"
+          >
+        </p-floatlabel>
         @if (seniorForm.isDirtyAndInvalid('surname')) {
           <small class="text-danger">Introduzca sus apellidos</small>
         }
       </div>
       <div class="col-12 col-md-6">
-          <span class="p-float-label">
+          <p-floatlabel variant="on">
+            <label class="required" for="email">Correo electrónico</label>
             <input
               formControlName="email"
               id="email"
@@ -90,14 +94,14 @@
               pInputText
               maxlength="511"
             >
-            <label class="required" for="email">Correo electrónico</label>
-          </span>
+          </p-floatlabel>
         @if (seniorForm.isDirtyAndInvalid('email')) {
           <small class="text-danger">Introduzca un correo electrónico válido</small>
         }
       </div>
       <div class="col-12 col-md-6">
-          <span class="p-float-label">
+          <p-floatlabel variant="on">
+            <label class="required" for="phone">Teléfono de contacto</label>
             <input
               formControlName="phone"
               id="phone"
@@ -105,53 +109,43 @@
               pInputText
               maxlength="63"
             >
-            <label class="required" for="phone">Teléfono de contacto</label>
-          </span>
+          </p-floatlabel>
 
         @if (seniorForm.isDirtyAndInvalid('phone')) {
           <small class="text-danger">Introduzca un teléfono</small>
         }
       </div>
-      <div class="col-12">
-        <app-form-text-area
-          [maxLength]="510"
-          formControlName="observations"
-          id="observations"
-          floatLabel="Observaciones o sugerencias"
-          [showErrorMessage]="seniorForm.hasSpecificError('observations', 'maxlength')"
-        ></app-form-text-area>
+      <div class="col-12 mb-0">
+        <p-floatlabel variant="on">
+          <label for="observations">Observaciones o sugerencias</label>
+          <app-form-text-area
+            [maxLength]="510"
+            formControlName="observations"
+            id="observations"
+            [showErrorMessage]="seniorForm.hasSpecificError('observations', 'maxlength')"
+          ></app-form-text-area>
+        </p-floatlabel>
       </div>
       <div class="col-12 mb-3">
-        <div class="d-flex align-items-center">
+        <app-checkbox-container label="Doy consentimiento para mi incorporación a un grupo de mensajería. (Correo electrónico y whatsapp o similar).">
           <p-checkbox
             id="acceptMessageGroup"
             formControlName="acceptMessageGroup"
             [binary]="true"
           ></p-checkbox>
-          <div class="mx-1">
-            <label for="acceptMessageGroup">
-              Doy consentimiento para mi incorporación a un grupo de mensajería.
-              (Correo electrónico y whatsapp o similar).
-            </label>
-          </div>
-        </div>
+        </app-checkbox-container>
       </div>
       <div class="col-12 mb-3">
-        <div class="d-flex align-items-center">
+        <app-checkbox-container label="Doy consentimiento para recibir información de actividades o novedades Scouts.">
           <p-checkbox
             id="acceptNewsletter"
             formControlName="acceptNewsletter"
             [binary]="true"
           ></p-checkbox>
-          <div class="mx-1">
-            <label for="acceptNewsletter">
-              Doy consentimiento para recibir información de actividades o novedades Scouts.
-            </label>
-          </div>
-        </div>
+        </app-checkbox-container>
       </div>
       <div class="col-12 mb-2">
-        <app-checkbox-container>
+        <app-checkbox-container [privacy]="true">
           <p-checkbox
             id="privacy"
             formControlName="privacy"
@@ -164,14 +158,17 @@
       </div>
     </div>
   </form>
-  @if (seniorForm.isDirtyAndInvalid()) {
-    <div class="w-100 text-center mb-2 text-danger">
-      <small>Rellene todos los campos</small>
-    </div>
-  }
   <app-save-buttons
     (onSave)="submit()"
     [saveLoading]="loading"
     saveLabel="ENVIAR"
   ></app-save-buttons>
+  @if (seniorForm.isDirtyAndInvalid()) {
+    <div class="w-100 text-center mb-2 text-danger">
+      <small>Rellene todos los campos</small>
+    </div>
+  }
 </div>
+@if (loading) {
+  <div class="p-overlay-mask block-scroll"></div>
+}

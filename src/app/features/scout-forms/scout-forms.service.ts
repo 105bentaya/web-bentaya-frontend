@@ -1,10 +1,10 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {environment} from "../../../../environments/environment";
-import {PreScout} from '../models/pre-scout.model';
-import {PreScoutAssignation} from "../models/pre-scout-assignation.model";
-import {PreScoutForm} from "../models/pre-scout-form.model";
+import {environment} from "../../../environments/environment";
+import {PreScout} from './models/pre-scout.model';
+import {PreScoutAssignation} from "./models/pre-scout-assignation.model";
+import {PreScoutForm} from "./models/pre-scout-form.model";
 
 @Injectable({
   providedIn: 'root'

@@ -9,10 +9,6 @@ import {identity} from "lodash";
 export class AlertService {
   private readonly alertObservable: Subject<AlertMessage | undefined> = new ReplaySubject(1);
 
-  flushMessageBuffer() {
-    this.alertObservable.next(undefined);
-  }
-
   getObservable = () => {
     return this.alertObservable.asObservable().pipe(filter(identity));
   };

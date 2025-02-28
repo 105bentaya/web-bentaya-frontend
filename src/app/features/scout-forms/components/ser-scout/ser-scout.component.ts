@@ -2,7 +2,7 @@ import {Component, inject, Input, OnInit} from '@angular/core';
 import {AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {MenuItem} from 'primeng/api';
 import {AlertService} from "../../../../shared/services/alert-service.service";
-import {ScoutFormsService} from '../../services/scout-forms.service';
+import {ScoutFormsService} from '../../scout-forms.service';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {CheckboxModule} from 'primeng/checkbox';
 import {FormTextAreaComponent} from '../../../../shared/components/form-text-area/form-text-area.component';

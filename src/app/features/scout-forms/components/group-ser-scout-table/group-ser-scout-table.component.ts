@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {PreScout} from "../../models/pre-scout.model";
-import {ScoutFormsService} from "../../services/scout-forms.service";
+import {ScoutFormsService} from "../../scout-forms.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {AssignPreScoutFormComponent} from "../assign-pre-scout-form/assign-pre-scout-form.component";
 import {PreScoutAssignation} from "../../models/pre-scout-assignation.model";

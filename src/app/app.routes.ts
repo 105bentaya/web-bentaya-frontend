@@ -70,7 +70,7 @@ export const routes: Routes = [
   },
   {
     path: "voluntariado",
-    loadComponent: () => import('./features/scout-forms/components/ser-scouter-table/ser-scouter-table.component').then(c => c.SerScouterTableComponent),
+    loadComponent: () => import('./features/scouter-forms/components/ser-scouter-table/ser-scouter-table.component').then(c => c.SerScouterTableComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_FORM"]}
   },
@@ -147,7 +147,7 @@ export const routes: Routes = [
   },
   {
     path: "ser-scouter",
-    loadComponent: () => import('./features/scout-forms/components/ser-scouter/ser-scouter.component').then(c => c.SerScouterComponent),
+    loadComponent: () => import('./features/scouter-forms/components/ser-scouter/ser-scouter.component').then(c => c.SerScouterComponent),
   },
   {
     path: "donaciones",

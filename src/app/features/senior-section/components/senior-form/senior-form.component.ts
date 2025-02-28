@@ -12,6 +12,7 @@ import {
   CheckboxContainerComponent
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
+import {FloatLabel} from "primeng/floatlabel";
 
 @Component({
   selector: 'app-senior-form',
@@ -24,7 +25,8 @@ import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-b
     FormTextAreaComponent,
     CheckboxModule,
     CheckboxContainerComponent,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    FloatLabel
   ]
 })
 export class SeniorFormComponent implements OnInit {
@@ -56,15 +58,22 @@ export class SeniorFormComponent implements OnInit {
   protected submit() {
     this.seniorForm.validateAll();
     if (this.seniorForm.valid) this.confirmationService.confirm({
+      message: '¿Desea enviar estos datos? Al inscribirse en nuestra sección sénior, confirma que ha leído y ' +
+        'comprendido los derechos y deberes previamente expuestos.',
       accept: () => this.sendForm()
     });
   }
 
   private sendForm() {
     this.loading = true;
+    this.alertService.sendMessage({
+      title: "Enviando...",
+      message: "Esto puede tardar unos segundos",
+      severity: "info"
+    });
     this.seniorService.sendForm(this.seniorForm.value).subscribe({
       next: () => {
-        this.alertService.sendBasicSuccessMessage("Formulario recibido");
+        this.alertService.sendBasicSuccessMessage("Formulario enviado con éxito");
         this.createForm();
         this.loading = false;
       }, error: () => this.loading = false
