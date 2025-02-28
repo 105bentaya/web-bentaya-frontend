@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
       route = route.firstChild;
     }
     const routeConfig = route.routeConfig;
-    this.routeIsProtected = routeConfig?.canActivate?.some(guard => guard.name === "authGuard") ?? false;
+    this.routeIsProtected = (routeConfig?.canActivate && routeConfig?.path !== "login") ?? false;
   }
 
   private configureApp() {

@@ -17,6 +17,7 @@ export class UserRoutesService {
   private hash: string | undefined;
 
   saveUnsuccessfulRouting(location: Location) {
+    if (location.pathname === "/login") return;
     this.route = location.pathname;
     this.queryParams = this.extractQueryParams(location);
     this.hash = location.hash?.substring(1);

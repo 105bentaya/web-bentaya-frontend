@@ -96,6 +96,9 @@
             },
             "development": {
               "buildTarget": "web-bentaya-frontend:build:development"
+            },
+            "test": {
+              "buildTarget": "web-bentaya-frontend:build:test"
             }
           },
           "defaultConfiguration": "development"
