@@ -10,7 +10,7 @@
   z-index: $z-index-menu;
   background-color: var(--bentaya-main-color);
   position: fixed;
-  height: 100vh;
+  height: 100%;
   transition: width $animation-duration linear, visibility $animation-duration linear;
 
   &.expanded {
