@@ -7,7 +7,6 @@ import {DonationForm} from "../../model/donation-form.model";
 import {environment} from "../../../../../environments/environment";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {DonationFrequencyPipe} from '../../donation-frecuency.pipe';
-import {ButtonDirective} from 'primeng/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {RadioButtonModule} from 'primeng/radiobutton';
@@ -17,19 +16,24 @@ import {CurrencyPipe} from '@angular/common';
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {
-  PrivacyCheckboxContainerComponent
-} from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {
   LargeFormButtonsComponent
 } from "../../../../shared/components/buttons/large-form-buttons/large-form-buttons.component";
 import {maintenanceEmail} from "../../../../shared/constant";
+import {
+  GeneralAButtonComponent
+} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
+import {
+  RadioButtonContainerComponent
+} from "../../../../shared/components/radio-button-container/radio-button-container.component";
 
 @Component({
   selector: 'app-donation-form',
   templateUrl: './donation-form.component.html',
   styleUrls: ['./donation-form.component.scss'],
   imports: [
-    ButtonDirective,
     RouterLink,
     StepsModule,
     ReactiveFormsModule,
@@ -38,18 +42,20 @@ import {maintenanceEmail} from "../../../../shared/constant";
     RadioButtonModule,
     InputNumberModule,
     DonationFrequencyPipe,
-    PrivacyCheckboxContainerComponent,
+    CheckboxContainerComponent,
     CheckboxModule,
     CurrencyPipe,
-    LargeFormButtonsComponent
+    LargeFormButtonsComponent,
+    GeneralAButtonComponent,
+    RadioButtonContainerComponent
   ]
 })
 export class DonationFormComponent implements OnInit {
 
-  private donationsService = inject(DonationsService);
-  private alertService = inject(AlertService);
-  private confirmationService = inject(ConfirmationService);
-  private route = inject(ActivatedRoute);
+  private readonly donationsService = inject(DonationsService);
+  private readonly alertService = inject(AlertService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly route = inject(ActivatedRoute);
 
   protected readonly maintenanceEmail = maintenanceEmail;
   protected loading = false;
@@ -116,7 +122,7 @@ export class DonationFormComponent implements OnInit {
     this.confirmationService.confirm({
       message: '¿Quiere realizar una donación con estos datos? Revíselos bien para evitar errores, ' +
         'ya que esto puede causar algún problema durante el proceso de cobro o que no se le registre adecuadamente en ' +
-        'nuestro registro de donantes.',
+        'nuestra lista de donantes.',
       accept: () => {
         this.loading = true;
         this.alertService.sendMessage({

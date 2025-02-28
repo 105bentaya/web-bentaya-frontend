@@ -9,9 +9,7 @@ import {FloatLabelModule} from "primeng/floatlabel";
 import {SaveButtonsComponent} from "../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../shared/components/form-text-area/form-text-area.component";
 import {FormHelper} from "../../shared/util/form-helper";
-import {
-  PrivacyCheckboxContainerComponent
-} from "../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
+import {CheckboxContainerComponent} from "../../shared/components/checkbox-container/checkbox-container.component";
 
 @Component({
   selector: 'app-colaboraciones',
@@ -24,13 +22,13 @@ import {
     FormTextAreaComponent,
     CheckboxModule,
     SaveButtonsComponent,
-    PrivacyCheckboxContainerComponent
+    CheckboxContainerComponent
   ]
 })
 export class ColaboracionesComponent implements OnInit {
 
-  private alertService = inject(AlertService);
-  private emailService = inject(EmailService);
+  private readonly alertService = inject(AlertService);
+  private readonly emailService = inject(EmailService);
 
   protected formHelper = new FormHelper();
   protected loading = false;

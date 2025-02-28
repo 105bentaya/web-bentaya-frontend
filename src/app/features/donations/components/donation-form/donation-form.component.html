@@ -1,26 +1,33 @@
 <div class="container">
-  <h1 class="text-center">DONACIONES - Formulario</h1>
+  <div class="text-center">
+    <h1 class="mb-0">DONACIONES</h1>
+    <h2>Formulario</h2>
+  </div>
   @if (donationSuccess) {
     <div class="text-center">
       <p>
-        Los datos de su donación se han enviado con éxito<br>
+        Los datos de su donación se han enviado con éxito
+      </p>
+      <p>
         Se le ha enviado una copia con los datos del formulario a
         @if (donationForm) {
           <a href="mailto:{{donationForm.email}}}">{{ donationForm.email }}</a>
         } @else {
           <span>su correo electrónico</span>
         }
-        <br>
-        Ante cualquier duda contáctenos a <a href="mailto:tesoreria@105bentaya.org">tesoreria&#64;105bentaya.org</a><br>
+      </p>
+      <p>
+        Ante cualquier duda contáctenos a <a href="mailto:tesoreria@105bentaya.org">tesoreria&#64;105bentaya.org</a>
+      </p>
+      <p>
         Ante cualquier problema técnico no dude en escribir a
         <a href="mailto:{{maintenanceEmail}}">{{maintenanceEmail}}</a>
       </p>
-      <a
-        pButton
+      <app-general-a-button
         label="Regresar"
-        class="p-button-rounded p-button-outlined"
         routerLink="/donaciones"
-      ></a>
+        variant="outlined"
+      ></app-general-a-button>
     </div>
   } @else {
     <p>
@@ -37,15 +44,13 @@
       [activeIndex]="formHelper.currentPage"
     ></p-steps>
     <div>
-      <h5 class="step-form-title">
-        <b>{{ steps[formHelper.currentPage].label }}</b>
-      </h5>
+      <div class="step-form-title">{{ steps[formHelper.currentPage].label }}</div>
       <form [formGroup]="formHelper.form" (submit)="sendForm()" class="form-container">
         @switch (formHelper.currentPage) {
           @case (0) {
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
               <div class="col">
-                <p-floatlabel>
+                <p-floatlabel variant="on">
                   <input
                     pInputText
                     formControlName="name"
@@ -60,7 +65,7 @@
                 }
               </div>
               <div class="col">
-                <p-floatlabel>
+                <p-floatlabel variant="on">
                   <input
                     pInputText
                     formControlName="firstSurname"
@@ -75,7 +80,7 @@
                 }
               </div>
               <div class="col">
-                <p-floatlabel>
+                <p-floatlabel variant="on">
                   <input
                     pInputText
                     formControlName="secondSurname"
@@ -87,7 +92,7 @@
                 </p-floatlabel>
               </div>
               <div class="col">
-                <p-floatlabel>
+                <p-floatlabel variant="on">
                   <input
                     pInputText
                     formControlName="cif"
@@ -103,7 +108,7 @@
                 }
               </div>
               <div class="col">
-                <p-floatlabel>
+                <p-floatlabel variant="on">
                   <input
                     pInputText
                     formControlName="phone"
@@ -118,7 +123,7 @@
                 }
               </div>
               <div class="col">
-                <p-floatlabel>
+                <p-floatlabel variant="on">
                   <input
                     pInputText
                     formControlName="email"
@@ -133,18 +138,20 @@
                 }
               </div>
               <div class="w-100">
-                <label class="required">Quiero desgravar mi aportación en la declaración de la renta:</label>
+                <span class="required">Quiero desgravar mi aportación en la declaración de la renta:</span>
                 <div class="d-flex flex-column gap-2 mt-1">
-                  <p-radioButton
-                    [value]="true"
-                    formControlName="deduct"
-                    label="Sí"
-                  ></p-radioButton>
-                  <p-radioButton
-                    [value]="false"
-                    formControlName="deduct"
-                    label="No"
-                  ></p-radioButton>
+                  <app-radio-button-container label="Sí">
+                    <p-radioButton
+                      [value]="true"
+                      formControlName="deduct"
+                    ></p-radioButton>
+                  </app-radio-button-container>
+                  <app-radio-button-container label="No">
+                    <p-radioButton
+                      [value]="false"
+                      formControlName="deduct"
+                    ></p-radioButton>
+                  </app-radio-button-container>
                 </div>
                 @if (formHelper.isDirtyAndInvalid('deduct')) {
                   <small class="text-danger">Debe elegir una de las opciones</small>
@@ -155,7 +162,7 @@
           @case (1) {
             <div class="row">
               <div class="col">
-                <p-floatlabel>
+                <p-floatlabel variant="on">
                   <p-inputNumber
                     class="w-100"
                     styleClass="w-100"
@@ -174,33 +181,38 @@
                 }
               </div>
               <div class="col-12">
-                <label class="mb-3 required">Periodicidad de la donación:</label>
-                <div class="d-flex flex-column gap-1 mb-2">
-                  <p-radioButton
-                    value="MONTHLY"
-                    formControlName="frequency"
-                    label="Mensual"
-                  ></p-radioButton>
-                  <p-radioButton
-                    value="QUARTERLY"
-                    formControlName="frequency"
-                    label="Trimestral"
-                  ></p-radioButton>
-                  <p-radioButton
-                    value="BIANNUAL"
-                    formControlName="frequency"
-                    label="Semestral"
-                  ></p-radioButton>
-                  <p-radioButton
-                    value="YEARLY"
-                    formControlName="frequency"
-                    label="Anual"
-                  ></p-radioButton>
-                  <p-radioButton
-                    value="SINGLE"
-                    formControlName="frequency"
-                    label="Puntual"
-                  ></p-radioButton>
+                <span class="required">Periodicidad de la donación:</span>
+                <div class="d-flex flex-column gap-1 my-2">
+                  <app-radio-button-container label="Mensual">
+                    <p-radioButton
+                      value="MONTHLY"
+                      formControlName="frequency"
+                    ></p-radioButton>
+                  </app-radio-button-container>
+                  <app-radio-button-container label="Trimestral">
+                    <p-radioButton
+                      value="QUARTERLY"
+                      formControlName="frequency"
+                    ></p-radioButton>
+                  </app-radio-button-container>
+                  <app-radio-button-container label="Semestral">
+                    <p-radioButton
+                      value="BIANNUAL"
+                      formControlName="frequency"
+                    ></p-radioButton>
+                  </app-radio-button-container>
+                  <app-radio-button-container label="Anual">
+                    <p-radioButton
+                      value="YEARLY"
+                      formControlName="frequency"
+                    ></p-radioButton>
+                  </app-radio-button-container>
+                  <app-radio-button-container label="Puntual (una única vez)">
+                    <p-radioButton
+                      value="SINGLE"
+                      formControlName="frequency"
+                    ></p-radioButton>
+                  </app-radio-button-container>
                 </div>
                 @if (formHelper.isDirtyAndInvalid('frequency')) {
                   <small class="text-danger">Debe seleccionar una opción</small>
@@ -211,24 +223,27 @@
           @case (2) {
             <div class="row">
               @if (formHelper.controlValue('frequency') === 'SINGLE') {
-                <div class="col-12 mb-3">
-                  <label class="required mb-2">Elija un método para realizar la donación:</label>
-                  <div class="d-flex flex-column gap-2 justify-content-around mb-2">
-                    <p-radioButton
-                      formControlName="singleDonationPaymentType"
-                      label="Por tarjeta de crédito o débito mediante nuestro TPV"
-                      value="TPV"
-                    ></p-radioButton>
-                    <p-radioButton
-                      value="IBAN"
-                      formControlName="singleDonationPaymentType"
-                      label="Domiciliar la donación directamente a su cuenta bancaria."
-                    ></p-radioButton>
-                    <p-radioButton
-                      value="MANUAL"
-                      formControlName="singleDonationPaymentType"
-                      label="Hacer una transferencia bancaria a nuestra cuenta."
-                    ></p-radioButton>
+                <div class="col-12 mb-0">
+                  <span class="required">Elija un método para realizar la donación:</span>
+                  <div class="d-flex flex-column gap-2 justify-content-around my-2">
+                    <app-radio-button-container label="Por tarjeta de crédito o débito mediante nuestro TPV">
+                      <p-radioButton
+                        formControlName="singleDonationPaymentType"
+                        value="TPV"
+                      ></p-radioButton>
+                    </app-radio-button-container>
+                    <app-radio-button-container label="Domiciliar la donación directamente a su cuenta bancaria">
+                      <p-radioButton
+                        value="IBAN"
+                        formControlName="singleDonationPaymentType"
+                      ></p-radioButton>
+                    </app-radio-button-container>
+                    <app-radio-button-container label="Hacer una transferencia bancaria a nuestra cuenta">
+                      <p-radioButton
+                        value="MANUAL"
+                        formControlName="singleDonationPaymentType"
+                      ></p-radioButton>
+                    </app-radio-button-container>
                     @if (formHelper.isDirtyAndInvalid('singleDonationPaymentType')) {
                       <small class="text-danger">Debe elegir una opción</small>
                     }
@@ -251,14 +266,13 @@
               } @else {
                 <div class="col-12">
                   Ha seleccionado realizar una donación periódica. Para ello, tiene que facilitarnos el número IBAN de
-                  su
-                  cuenta, a la que realizaremos un cobro
+                  su cuenta, a la que realizaremos un cobro
                   <b>cada {{ formHelper.controlValue('frequency') | donationFrequency }}</b>.
                 </div>
               }
               @if (ibanIsRequired()) {
                 <div class="col-12">
-                  <p-floatlabel>
+                  <p-floatlabel variant="on">
                     <input
                       pInputText
                       formControlName="iban"
@@ -273,14 +287,14 @@
                   }
                 </div>
               }
-              <div class="col-12">
-                <app-privacy-checkbox-container>
+              <div class="col-12 my-3">
+                <app-checkbox-container [privacy]="true">
                   <p-checkbox
                     id="privacy"
                     formControlName="privacy"
                     [binary]="true"
                   ></p-checkbox>
-                </app-privacy-checkbox-container>
+                </app-checkbox-container>
                 @if (formHelper.isDirtyAndInvalid('privacy')) {
                   <small class="text-danger">Debe leer y estar de acuerdo con los términos</small>
                 }
@@ -288,9 +302,9 @@
             </div>
           }
           @case (3) {
-            <div class="row">
+            <div class="row confirmation-container">
               <div class="col-12 mb-1">
-                <h4>Datos de Donante</h4>
+                <b class="fs-5">Datos de Donante</b>
               </div>
               <div class="col-12 col-lg-6">
                 <b>Nombre:</b>
@@ -321,7 +335,7 @@
                 {{ donationForm.deduct ? 'Sí' : 'No' }}
               </div>
               <div class="col-12 mb-1">
-                <h4>Datos de Donación</h4>
+                <b class="fs-5">Datos de Donación</b>
               </div>
               <div class="col-12 col-sm-6">
                 <b>Importe:</b>
@@ -360,6 +374,9 @@
     </div>
   }
 </div>
+@if (loading) {
+  <div class="p-overlay-mask block-scroll"></div>
+}
 <form #tpvForm action="{{url}}" method="POST" class="d-none">
   <input #i1 type="hidden" name="Ds_SignatureVersion"/>
   <input #i2 type="hidden" name="Ds_MerchantParameters"/>

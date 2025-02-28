@@ -1,6 +1,8 @@
 <div class="container">
-  <h1 class="text-center">DONACIONES - SER AMIGA</h1>
-  <h3 class="text-center">Red de Amistad Bentaya</h3>
+  <div class="text-center">
+    <h1 class="mb-0">DONACIONES</h1>
+    <h2>Red de Amistad Bentaya</h2>
+  </div>
   <div class="py-2">
     <p>
       La Red de Amistad Bentaya (RAB) procura el apoyo a la Asociación Scouts-Exploradores Bentaya para el desarrollo de
@@ -26,18 +28,17 @@
       <a href="mailto:tesoreria@105bentaya.org">tesoreria&#64;105bentaya.org</a>.
     </p>
     <div class="d-flex justify-content-center">
-      <a
-        pButton
-        icon="fa-solid fa-hand-holding-dollar"
+      <app-general-a-button
         label="Quiero hacerme donante"
+        icon="fa-solid fa-hand-holding-dollar"
+        variant="filled"
         routerLink="formulario"
-      ></a>
+      ></app-general-a-button>
     </div>
     <div class="d-flex justify-content-center mt-4">
       <div class="w-100">
         <a routerLink="/assets/donaciones/Triptico Donaciones.pdf" target="_blank">
           <p-image
-            class="px-2"
             imageClass="w-100 rounded-4 donation-image"
             src="assets/donaciones/triptico.jpg"
             alt="Image"

@@ -3,6 +3,8 @@
 @import "./primeng";
 @import "./z-index";
 
+$row-padding: 0.35rem;
+
 html {
   height: 100%;
 }
@@ -51,10 +53,15 @@ hr {
     }
 
     > div {
-      margin-bottom: 2rem;
-      padding-left: .35rem;
-      padding-right: .35rem;
+      margin-bottom: 1rem;
+      padding-left: $row-padding;
+      padding-right: $row-padding;
     }
+
+  }
+
+  .confirmation-container > div {
+    margin-bottom: .5rem;
   }
 
   label:has(+ .ng-invalid.ng-dirty), label:has(+ div .ng-invalid.ng-dirty) {
@@ -85,30 +92,39 @@ app-form-text-area.ng-invalid.ng-dirty {
 
 @media screen and (max-device-width: 767px) {
   .steps-no-label { //dont like it
-    .p-steps-title {
+    > nav {
+      margin-bottom: -20px;
+    }
+
+    .p-steps-item-label {
       width: 0;
       overflow: hidden;
     }
   }
   .step-form-title {
+    font-size: 1.5rem;
     visibility: initial;
-    margin-bottom: 2rem;
-  }
+    font-weight: bold;
+    margin-bottom: .75rem;
+    color: var(--p-steps-item-label-active-color);
+    margin-left: -$row-padding;
+}
 }
 
 label, span, th {
+  user-select: none;
   &.required:after {
     content: "*";
     font-weight: bold;
     color: red;
-    margin-left: 4px;
+    margin-left: 2px;
   }
 
   &.semi-required:after {
     content: "*";
     font-weight: bold;
     color: cadetblue;
-    margin-left: 4px;
+    margin-left: 2px;
   }
 }
 
@@ -175,17 +191,6 @@ label, span, th {
 
   timesicon.p-icon-wrapper {
     display: block !important;
-  }
-}
-
-p-message {
-  exclamationtriangleicon {
-    margin-left: 5px;
-    margin-right: 10px;
-  }
-
-  .p-inline-message-text {
-    font-weight: bold;
   }
 }
 

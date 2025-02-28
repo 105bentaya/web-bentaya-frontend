@@ -4,7 +4,8 @@
     [href]="href"
     [target]="target"
     [class]="class"
-    [text]="true"
+    [text]="variant === 'text'"
+    [outlined]="variant === 'outlined'"
   >
     @if (icon) {
       <i pButtonIcon [class]="icon"></i>
@@ -18,7 +19,8 @@
     pButton
     [class]="class"
     [routerLink]="routerLink"
-    [text]="true"
+    [text]="variant === 'text'"
+    [outlined]="variant === 'outlined'"
   >
     @if (icon) {
       <i pButtonIcon [class]="icon"></i>
@@ -31,7 +33,8 @@
   <a
     pButton
     [class]="class"
-    [text]="true"
+    [text]="variant === 'text'"
+    [outlined]="variant === 'outlined'"
   >
     @if (icon) {
       <i pButtonIcon [class]="icon"></i>

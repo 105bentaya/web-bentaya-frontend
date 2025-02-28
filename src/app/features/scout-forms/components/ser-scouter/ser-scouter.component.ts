@@ -11,8 +11,8 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {
-  PrivacyCheckboxContainerComponent
-} from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import FormUtils from "../../../../shared/util/form-utils";
 import {genders} from "../../../../shared/constant";
@@ -28,7 +28,7 @@ import {DatePicker} from "primeng/datepicker";
     InputTextModule,
     SelectModule,
     FormTextAreaComponent,
-    PrivacyCheckboxContainerComponent,
+    CheckboxContainerComponent,
     CheckboxModule,
     SaveButtonsComponent,
     DatePicker

@@ -1,21 +1,15 @@
 <div>
-  <span [ngClass]="{'p-float-label': floatLabel}">
     <textarea
-      pInputText
+      pTextarea
       id="comment"
       type="text"
       [(ngModel)]="value"
-      [ngClass]="ngClass"
       (ngModelChange)="onChange(value)"
       (blur)="_onTouched()"
       [rows]="rows"
       [disabled]="disabled"
       class="w-100"
     ></textarea>
-    @if (floatLabel) {
-      <label [class]="labelClass">{{ floatLabel }}</label>
-    }
-  </span>
   <div style="margin-top: -5px;">
     <p-tag
       class="float-end"

@@ -151,13 +151,13 @@
         </div>
       </div>
       <div class="col-12 mb-2">
-        <app-privacy-checkbox-container>
+        <app-checkbox-container>
           <p-checkbox
             id="privacy"
             formControlName="privacy"
             [binary]="true"
           ></p-checkbox>
-        </app-privacy-checkbox-container>
+        </app-checkbox-container>
         @if (seniorForm.isDirtyAndInvalid('privacy')) {
           <small class="text-danger">Debe leer y estar de acuerdo con los términos</small>
         }

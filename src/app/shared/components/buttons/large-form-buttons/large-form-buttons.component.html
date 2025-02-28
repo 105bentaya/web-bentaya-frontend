@@ -22,11 +22,11 @@
   @if (form.isConfirmationPage()) {
     <app-save-buttons
       saveLabel="Enviar"
-      saveClass="p-button-success"
       saveIcon="pi pi-send"
       saveType="submit"
       (onSave)="onSubmit.emit()"
       [saveLoading]="loading"
+      saveSeverity="success"
     ></app-save-buttons>
   } @else if (form.isStartPage()) {
     <p-button

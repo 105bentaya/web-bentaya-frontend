@@ -21,12 +21,12 @@
       </p-floatlabel>
     </div>
   }
+<!--  [floatLabel]="floatLabel"-->
+<!--  [labelClass]="required ? 'required' : ''"-->
   <app-form-text-area
     id="comment"
     [maxLength]="2047"
     [(ngModel)]="comment"
-    [floatLabel]="floatLabel"
-    [labelClass]="required ? 'required' : ''"
     rows="6"
     (isValid)="validText = $event"
     class="mt-1"

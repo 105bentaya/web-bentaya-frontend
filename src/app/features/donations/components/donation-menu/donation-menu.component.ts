@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {ImageModule} from 'primeng/image';
-import {ButtonDirective} from 'primeng/button';
 import {RouterLink} from '@angular/router';
+import {
+  GeneralAButtonComponent
+} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 
 @Component({
   selector: 'app-donation-menu',
@@ -10,7 +12,7 @@ import {RouterLink} from '@angular/router';
   imports: [
     RouterLink,
     ImageModule,
-    ButtonDirective
+    GeneralAButtonComponent
   ]
 })
 export class DonationMenuComponent {

@@ -117,6 +117,7 @@ export class FormHelper {
       const control = group.get(key)!;
       this.checkForGroups(control as FormGroup);
       if (typeof control.value === 'string') control.setValue(control.value.trim());
+      control.updateValueAndValidity();
       if (control.invalid) {
         valid = false;
         control.markAsDirty();

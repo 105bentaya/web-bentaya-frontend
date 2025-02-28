@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PrivacyCheckboxContainerComponent} from './privacy-checkbox-container.component';
+import {CheckboxContainerComponent} from './checkbox-container.component';
 
 describe('PrivacyCheckboxContainerComponent', () => {
-  let component: PrivacyCheckboxContainerComponent;
-  let fixture: ComponentFixture<PrivacyCheckboxContainerComponent>;
+  let component: CheckboxContainerComponent;
+  let fixture: ComponentFixture<CheckboxContainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PrivacyCheckboxContainerComponent]
+      imports: [CheckboxContainerComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(PrivacyCheckboxContainerComponent);
+    fixture = TestBed.createComponent(CheckboxContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

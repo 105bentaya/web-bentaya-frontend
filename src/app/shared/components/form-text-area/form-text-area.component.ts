@@ -2,7 +2,7 @@ import {Component, EventEmitter, forwardRef, Input, OnInit, Output} from '@angul
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {TagModule} from 'primeng/tag';
 import {InputTextModule} from 'primeng/inputtext';
-import {NgClass} from '@angular/common';
+import {Textarea} from "primeng/textarea";
 
 @Component({
   selector: 'app-form-text-area',
@@ -16,40 +16,24 @@ import {NgClass} from '@angular/common';
     }
   ],
   imports: [
-    NgClass,
     InputTextModule,
     FormsModule,
-    TagModule
+    TagModule,
+    Textarea
   ]
 })
 export class FormTextAreaComponent implements OnInit, ControlValueAccessor {
 
-  //todo: ng-invalid not working
-  value!: string;
-  valueLength = 0;
+  protected value!: string;
+  protected valueLength = 0;
+  protected textIsUnderLimit = true;
 
-  @Input()
-  maxLength: number = 256;
-  @Input()
-  formControlName!: string;
-  @Input()
-  ngClass: any;
-  @Input()
-  showErrorMessage = false;
-  @Input()
-  rows: string = '4';
-  @Input()
-  floatLabel?: string;
-  @Input()
-  labelClass: string = "";
-  @Input()
-  disabled: boolean = false;
-
-
-  @Output()
-  isValid = new EventEmitter<boolean>();
-
-  textIsUnderLimit = true;
+  @Input() maxLength: number = 256;
+  @Input() formControlName!: string;
+  @Input() showErrorMessage = false;
+  @Input() rows: string = '4';
+  @Input() disabled: boolean = false;
+  @Output() isValid = new EventEmitter<boolean>();
 
   _onChange: any = () => {
   };

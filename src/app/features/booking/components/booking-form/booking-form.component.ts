@@ -20,8 +20,8 @@ import {
 } from "../../../../shared/components/buttons/large-form-buttons/large-form-buttons.component";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {
-  PrivacyCheckboxContainerComponent
-} from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {BookingBetaAlertComponent} from "../booking-beta-alert/booking-beta-alert.component";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {
@@ -50,7 +50,7 @@ import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-
     LargeFormButtonsComponent,
     DatePipe,
     ScoutCenterPipe,
-    PrivacyCheckboxContainerComponent
+    CheckboxContainerComponent
   ]
 })
 export class BookingFormComponent implements OnInit {

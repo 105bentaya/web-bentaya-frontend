@@ -9,8 +9,8 @@ import {InputTextModule} from 'primeng/inputtext';
 import {RouterLink} from '@angular/router';
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {
-  PrivacyCheckboxContainerComponent
-} from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 
 @Component({
@@ -23,7 +23,7 @@ import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-b
     InputTextModule,
     FormTextAreaComponent,
     CheckboxModule,
-    PrivacyCheckboxContainerComponent,
+    CheckboxContainerComponent,
     SaveButtonsComponent
   ]
 })

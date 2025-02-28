@@ -7,8 +7,8 @@ import {InputTextModule} from 'primeng/inputtext';
 import {EmailService} from "../../../../shared/services/email.service";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {
-  PrivacyCheckboxContainerComponent
-} from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {FloatLabelModule} from "primeng/floatlabel";
@@ -23,7 +23,7 @@ import {maintenanceEmail} from "../../../../shared/constant";
     FloatLabelModule,
     InputTextModule,
     FormTextAreaComponent,
-    PrivacyCheckboxContainerComponent,
+    CheckboxContainerComponent,
     CheckboxModule,
     SaveButtonsComponent
   ]

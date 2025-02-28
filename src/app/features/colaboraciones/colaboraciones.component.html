@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="text-center">COLABORACIONES - Ser Solidaria</h1>
+  <h1 class="text-center">COLABORACIONES</h1>
   <p>
     Si usted está leyendo y esto desea colaborar con nosotros o pertenece a una entidad que desee hacerlo. Rellene este
     formulario y nos pondremos en contacto con usted o su entidad para hablar sobre la posible colaboración.
@@ -11,7 +11,7 @@
   <form [formGroup]="formHelper.form" class="form-container mt-4">
     <div class="row">
       <div class="col-12 col-md-4">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
           <input
             formControlName="name"
             id="name"
@@ -25,7 +25,7 @@
         }
       </div>
       <div class="col-12 col-md-4">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
           <input
             formControlName="email"
             id="email"
@@ -39,7 +39,7 @@
         }
       </div>
       <div class="col-12 col-md-4">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
           <input
             formControlName="phone"
             id="phone"
@@ -52,7 +52,7 @@
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
           <input
             formControlName="subject"
             id="subject"
@@ -66,7 +66,7 @@
         }
       </div>
       <div class="col-12 col-md-6">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
           <input
             formControlName="entityName"
             id="entityName"
@@ -79,34 +79,29 @@
     </div>
     <div class="row">
       <div class="col-12 mb-2">
-        <label class="required" for="message">
-          Breve comentario sobre la colaboración que desea realizar.
-        </label>
-        <app-form-text-area
-          id="message"
-          formControlName="message"
-          [maxLength]="600"
-        ></app-form-text-area>
-        @if (formHelper.isDirtyAndInvalid('message')) {
-          <small class="text-danger">
-            @if (formHelper.hasSpecificError('message', 'maxlength')) {
-              Introduzca un comentario más corto.
-            } @else {
-              Introduzca un breve comentario.
-            }
-          </small>
+        <p-floatlabel variant="on">
+          <app-form-text-area
+            id="message"
+            formControlName="message"
+            [maxLength]="600"
+            [showErrorMessage]="formHelper.isDirtyAndInvalidWithError('message', 'maxlength')"
+          ></app-form-text-area>
+          <label for="entityName" class="required">Descripción de la colaboración</label>
+        </p-floatlabel>
+        @if (formHelper.isDirtyAndInvalidWithError('message', 'required')) {
+          <small class="text-danger">Introduzca un breve comentario</small>
         }
       </div>
     </div>
     <div class="row">
       <div class="col-12 mb-2">
-        <app-privacy-checkbox-container>
+        <app-checkbox-container [privacy]="true">
           <p-checkbox
             id="privacy"
             formControlName="privacy"
             [binary]="true"
           ></p-checkbox>
-        </app-privacy-checkbox-container>
+        </app-checkbox-container>
         @if (formHelper.isDirtyAndInvalid('privacy')) {
           <small class="text-danger">Debe leer y estar de acuerdo con los términos.</small>
         }
@@ -125,3 +120,6 @@
     }
   </form>
 </div>
+@if (loading) {
+  <div class="p-overlay-mask block-scroll"></div>
+}

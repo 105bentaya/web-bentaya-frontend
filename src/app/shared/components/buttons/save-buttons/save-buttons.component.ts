@@ -14,6 +14,7 @@ export class SaveButtonsComponent {
   @Input() class = '';
   @Input() saveClass = '';
   @Input() saveIcon = '';
+  @Input() saveSeverity!: "success" | "info" | "warn" | "danger" | "help" | "primary" | "secondary" | "contrast";
 
   @Input() showCancelButton = false;
   @Input() showSaveButton = true;

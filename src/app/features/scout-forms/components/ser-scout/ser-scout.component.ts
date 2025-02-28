@@ -12,16 +12,16 @@ import {StepsModule} from 'primeng/steps';
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {
-  PrivacyCheckboxContainerComponent
-} from "../../../../shared/components/privacy-checkbox-container/privacy-checkbox-container.component";
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {genders, maintenanceEmail} from "../../../../shared/constant";
 import {
   LargeFormButtonsComponent
 } from "../../../../shared/components/buttons/large-form-buttons/large-form-buttons.component";
-import {MessagesModule} from "primeng/messages";
 import {preScoutPriorities, PreScoutPriority} from "../../priority.constant";
 import {PreScoutForm} from "../../models/pre-scout-form.model";
 import {DatePicker} from "primeng/datepicker";
+import {Message} from "primeng/message";
 
 @Component({
   selector: 'app-ser-scout',
@@ -36,9 +36,9 @@ import {DatePicker} from "primeng/datepicker";
     FormTextAreaComponent,
     CheckboxModule,
     KeyFilterModule,
-    PrivacyCheckboxContainerComponent,
+    CheckboxContainerComponent,
     LargeFormButtonsComponent,
-    MessagesModule,
+    Message,
     DatePicker
   ]
 })
@@ -50,7 +50,7 @@ export class SerScoutComponent implements OnInit {
   protected readonly steps: MenuItem[] = [
     {label: 'Datos Generales'},
     {label: 'Datos de Contacto'},
-    {label: 'Grupos de Prioridad'},
+    {label: 'Grupo de Prioridad'},
     {label: 'Otros Datos'},
     {label: 'Confirmación'}
   ];

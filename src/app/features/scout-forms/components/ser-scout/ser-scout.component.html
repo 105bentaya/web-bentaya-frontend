@@ -15,9 +15,12 @@
     </p>
     <p-steps class="steps-no-label" id="form-steps" [model]="steps" [activeIndex]="preScoutForm.currentPage"></p-steps>
     <form [formGroup]="preScoutForm.form" (submit)="sendForm()" class="form-container">
+      @if (preScoutForm.currentPage >= 0) {
+        <div class="step-form-title">{{ steps[preScoutForm.currentPage].label }}</div>
+      }
       @switch (preScoutForm.currentPage) {
         @case (-1) {
-          <div class="pt-4">
+          <div class="pt-1 pt-md-3">
             <p>
               Es <b>muy importante</b> que pongan la máxima atención en cumplimentar correctamente los datos pedidos.
               <b>Consignar datos erróneos u omitir datos</b>
@@ -57,27 +60,19 @@
               </li>
             </ol>
             <div class="d-flex justify-content-center px-0 px-md-3 px-lg-5 mb-3">
-              <p-messages severity="error">
-                <ng-template pTemplate>
-                  <i class="pi pi-exclamation-triangle me-3 fs-3 d-none d-md-block"></i>
-                  <div style="overflow: hidden; text-overflow: ellipsis; font-size: 17px;">
-                    Debido al limitado número de plazas disponibles respecto a la cantidad de solicitudes, rogamos que
-                    sólo haga la preinscripción si tiene la total seguridad de querer pertenecer a nuestra asociación y
-                    formar parte de nuestras actividades (principalmente campamentos), al objeto de no dejar a otras
-                    personas temporalmente sin plaza.
-                  </div>
-                </ng-template>
-              </p-messages>
+              <p-message severity="error" icon="pi pi-exclamation-triangle">
+                Debido al limitado número de plazas disponibles respecto a la cantidad de solicitudes, rogamos que
+                sólo haga la preinscripción si tiene la total seguridad de querer pertenecer a nuestra asociación y
+                formar parte de nuestras actividades (principalmente campamentos), al objeto de no dejar a otras
+                personas temporalmente sin plaza.
+              </p-message>
             </div>
           </div>
         }
         @case (0) {
-          <h4 class="step-form-title">
-            <b>Datos Generales</b>
-          </h4>
           <div class="row">
             <div class="col-12 col-md-4">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="name"
@@ -92,7 +87,7 @@
               }
             </div>
             <div class="col-12 col-md-4">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="firstSurname"
@@ -107,7 +102,7 @@
               }
             </div>
             <div class="col-12 col-md-4">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="secondSurname"
@@ -119,7 +114,7 @@
               </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <p-select
                   formControlName="gender"
                   id="gender"
@@ -132,7 +127,7 @@
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="dni"
@@ -144,10 +139,12 @@
               </p-floatlabel>
               @if (preScoutForm.isDirtyAndInvalid('dni')) {
                 <small class="text-danger">Introduzca un DNI/NIE o 'No tiene' si así corresponde.</small>
+              } @else {
+                <small class="opacity-75">'No tiene' si así corresponde.</small>
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <p-datePicker
                   id="birthday"
                   formControlName="birthday"
@@ -165,7 +162,7 @@
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <p-select
                   formControlName="size"
                   id="size"
@@ -177,7 +174,7 @@
                 <small class="text-danger">Introduzca la talla de camiseta</small>
               }
             </div>
-            <div class="col-12 mb-2">
+            <div class="col-12 mb-1">
               <label class="required" for="medicalData">
                 Aspectos personales (médicos, sociales, afectivos...) que debamos valorar conjuntamente al objeto de
                 determinar si podemos asumir, en su caso, en base a nuestros recursos y formación, ofreciendo la calidad
@@ -196,18 +193,18 @@
                 </small>
               }
             </div>
-<!--            todo-->
             <div class="col-12">
-              <p-checkbox
-                id="hasBeenInGroup"
-                formControlName="hasBeenInGroup"
-                [binary]="true"
-                label="¿Ha estado antes en el grupo?"
-              ></p-checkbox>
+              <app-checkbox-container label="¿Ha estado antes en el grupo?">
+                <p-checkbox
+                  id="hasBeenInGroup"
+                  formControlName="hasBeenInGroup"
+                  [binary]="true"
+                ></p-checkbox>
+              </app-checkbox-container>
             </div>
             @if (preScoutForm.controlValue('hasBeenInGroup')) {
               <div class="col-12">
-                <p-floatlabel>
+                <p-floatlabel variant="on">
                   <input
                     pInputText
                     formControlName="yearAndSection"
@@ -226,10 +223,9 @@
           </div>
         }
         @case (1) {
-          <h4 class="step-form-title"><b>Datos de la madre, padre o persona a contactar</b></h4>
           <div class="row">
             <div class="col-12 col-lg-4">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="parentsName"
@@ -244,7 +240,7 @@
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="parentsFirstSurname"
@@ -259,7 +255,7 @@
               }
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="parentsSecondSurname"
@@ -271,7 +267,7 @@
               </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="relationship"
@@ -286,7 +282,7 @@
               }
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="phone"
@@ -301,7 +297,7 @@
               }
             </div>
             <div class="col-12">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <input
                   pInputText
                   formControlName="email"
@@ -319,7 +315,6 @@
           </div>
         }
         @case (2) {
-          <h4 class="step-form-title mb-3"><b>Grupo de prioridad</b></h4>
           <div>
             <p>
               Es <b>importante</b> escoger el grupo de prioridad adecuado, ya que puede ser determinante a la hora del
@@ -335,7 +330,7 @@
           </div>
           <div class="row py-3">
             <div class="col mb-2 mb-md-0">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <p-select
                   id="priority"
                   formControlName="priority"
@@ -351,7 +346,7 @@
             </div>
             @if (priority?.requiresExtraInfo) {
               <div class="col-12 col-md-9 mt-4 mt-md-0 mb-0">
-                <p-floatlabel>
+                <p-floatlabel variant="on">
                   <input
                     pInputText
                     formControlName="priorityInfo"
@@ -370,26 +365,18 @@
                 }
               </div>
             }
-            <p-messages severity="info" class="mt-4">
-              <ng-template pTemplate>
-                <div style="overflow: hidden; text-overflow: ellipsis; font-size: 17px;">
-                  En cualquier caso, se antepone a los grupos de prioridad el equilibrio entre géneros en cada una de
-                  las unidades educativas.
-                </div>
-              </ng-template>
-            </p-messages>
+            <p-message severity="info" class="mt-4">
+              En cualquier caso, se antepone a los grupos de prioridad el equilibrio entre géneros en cada una de
+              las unidades educativas.
+            </p-message>
           </div>
         }
         @case (3) {
-          <h4 class="step-form-title mb-3">
-            <b>Otros datos</b>
-          </h4>
           <div class="row">
             <div class="col-12 mb-2">
               <label class="required" for="comment">
                 Breve comentario sobre la motivación para su incorporación a Scouts 105 Bentaya (valoramos la motivación
-                y
-                el compromiso). También pueden añadir cualquier duda, sugerencia o dato que quieran transmitirnos.
+                y el compromiso). También pueden añadir cualquier duda, sugerencia o dato que quieran transmitirnos.
               </label>
               <app-form-text-area
                 [maxLength]="256"
@@ -402,13 +389,13 @@
               }
             </div>
             <div class="col-12">
-              <app-privacy-checkbox-container>
+              <app-checkbox-container [privacy]="true" controlName="privacy">
                 <p-checkbox
                   id="privacy"
                   formControlName="privacy"
                   [binary]="true"
                 ></p-checkbox>
-              </app-privacy-checkbox-container>
+              </app-checkbox-container>
               @if (preScoutForm.isDirtyAndInvalid('privacy')) {
                 <small class="text-danger">Debe leer y estar de acuerdo con los términos.</small>
               }
@@ -416,12 +403,9 @@
           </div>
         }
         @case (4) {
-          <h4 class="step-form-title mb-2">
-            <b>Confirmación</b>
-          </h4>
           <div class="row confirmation-container">
-            <div class="col-12">
-              <h5>Persona educanda</h5>
+            <div class="col-12 mb-0">
+              <b class="fs-5">Persona educanda</b>
             </div>
             <div class="col-12 col-md-6">
               <b>Nombre:</b>
@@ -474,8 +458,8 @@
                 {{ preScout.yearAndSection || '-' }}
               </div>
             }
-            <div class="col-12">
-              <h4>Contacto</h4>
+            <div class="col-12 mt-2 mb-0">
+              <b class="fs-5">Contacto</b>
             </div>
             <div class="col-12 col-md-6">
               <b>Nombre:</b>

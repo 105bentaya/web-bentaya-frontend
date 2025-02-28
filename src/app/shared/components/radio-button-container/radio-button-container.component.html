@@ -1,0 +1,9 @@
+<div class="d-flex align-items-center">
+  <ng-content/>
+  <div class="ms-2">
+    <label [ngClass]="{'required' : required}" [for]="controlName">
+      {{ label }}
+    </label>
+  </div>
+</div>
+

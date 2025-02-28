@@ -1,0 +1,14 @@
+<div class="d-flex align-items-center">
+  <ng-content/>
+  <div class="mx-1">
+    <label [ngClass]="{'required' : required || privacy}" [for]="controlName">
+      @if (privacy) {
+        He leído y acepto las
+        <a href="/politica-privacidad" target="_blank">Políticas de Privacidad.</a>
+      } @else {
+        {{ label }}
+      }
+    </label>
+  </div>
+</div>
+

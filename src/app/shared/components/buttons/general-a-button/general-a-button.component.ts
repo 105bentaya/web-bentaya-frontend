@@ -23,5 +23,5 @@ export class GeneralAButtonComponent {
   @Input() labelClass!: string;
   @Input() target!: string;
   @Input() disabled!: boolean;
-
+  @Input() variant: "text" | "outlined" | "filled" = "text";
 }
