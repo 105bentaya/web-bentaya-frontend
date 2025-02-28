@@ -15,24 +15,6 @@ export class UserRoutesService {
   private route: string | undefined;
   private queryParams: Params | undefined;
   private hash: string | undefined;
-  private currentRouteIsProtected = false;
-  private routeHasBeenUpdated = true;
-
-  setCurrentRouteProtected() {
-    this.routeHasBeenUpdated = true;
-    this.currentRouteIsProtected = true;
-  }
-
-  setCurrentRouteNotProtected() {
-    this.routeHasBeenUpdated = true;
-    this.currentRouteIsProtected = false;
-  }
-
-  getCurrentRouteProtected() {
-    if (!this.routeHasBeenUpdated) return false;
-    this.routeHasBeenUpdated = false;
-    return this.currentRouteIsProtected;
-  }
 
   saveUnsuccessfulRouting(location: Location) {
     this.route = location.pathname;

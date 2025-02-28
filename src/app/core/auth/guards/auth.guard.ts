@@ -11,7 +11,6 @@ export function authGuard(route: ActivatedRouteSnapshot): boolean | UrlTree {
   const router = inject(Router);
   const userRoutes = inject(UserRoutesService);
   if (!authService.isLoggedIn()) {
-    userRoutes.setCurrentRouteNotProtected();
     userRoutes.saveUnsuccessfulRouting(location);
     return router.parseUrl("/login");
   }
@@ -19,6 +18,5 @@ export function authGuard(route: ActivatedRouteSnapshot): boolean | UrlTree {
     inject(AlertService).sendBasicErrorMessage("No tiene permisos para acceder a esta zona");
     return router.parseUrl(userRoutes.getUserHome());
   }
-  userRoutes.setCurrentRouteProtected();
   return true;
 }

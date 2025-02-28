@@ -13,8 +13,8 @@ body {
   &:has(.hide-overflow-x) {
     overflow-x: hidden;
   }
-  &:has(.hide-overflow-y) {
-    overflow-y: hidden;
+  &:has(.block-scroll) {
+    overflow: hidden;
   }
 }
 

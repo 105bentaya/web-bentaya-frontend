@@ -18,42 +18,47 @@
       [icon]="expanded ? 'pi pi-chevron-left' : 'pi pi-chevron-right'"
       (onClick)="resizeMenu()"
     ></p-button>
-    <ng-container *ngTemplateOutlet="menu"></ng-container>
-  </div>
-  @if (showMask) {
-    <div class="p-overlay-mask hide-overflow-y"></div>
-  }
-</div>
-<ng-template #menu>
-  <div class="d-flex flex-column min-vh-100 h-100">
-    <div class="d-flex justify-content-center align-items-center" style="height: 100px">
-      <h3 class="text-white text-center mb-0 show-on-expanded cursor-default user-select-none">MI VIVAC</h3>
-    </div>
-    <div class="menu-buttons-container">
-      <div class="d-flex flex-column menu-buttons align-items-start px-2 pb-2 gap-1">
-        @for (item of items; track $index) {
-          @if (item.divider) {
-            <p-divider align="left" class="divider-menu show-on-expanded">
-              <b class="cursor-default user-select-none">{{ item.divider }}</b>
-            </p-divider>
-          } @else {
-            <a class="p-button p-button-text" [routerLink]="item.route" (click)="closeMenu()">
-              <div class="d-flex align-items-center label-container">
-                <i pButtonIcon [class]="item.icon"></i>
-                <span class="show-on-expanded-width">{{ item.label }}</span>
-              </div>
-            </a>
+    <div class="d-flex flex-column h-100">
+      <div class="d-flex justify-content-center align-items-center" style="height: 100px">
+        <h3 class="text-white text-center mb-0 show-on-expanded cursor-default user-select-none">MI VIVAC</h3>
+      </div>
+      <div class="menu-buttons-container">
+        <div class="d-flex flex-column menu-buttons align-items-start px-2 pb-2 gap-1">
+          @for (item of items; track $index) {
+            @if (item.divider) {
+              <p-divider align="left" class="divider-menu show-on-expanded">
+                <b class="cursor-default user-select-none">{{ item.divider }}</b>
+              </p-divider>
+            } @else {
+              <a
+                class="p-button p-button-text"
+                [routerLink]="item.route"
+                (click)="closeMenu()"
+                [pTooltip]="expanded ? '' : item.label"
+                showDelay="150"
+                tooltipPosition="right"
+                [ngClass]="{'selected': item.selected}"
+              >
+                <div class="d-flex align-items-center label-container">
+                  <i pButtonIcon [class]="item.icon"></i>
+                  <span class="show-on-expanded-width">{{ item.label }}</span>
+                </div>
+              </a>
+            }
           }
-        }
+        </div>
+      </div>
+      <div class="mt-auto menu-buttons p-2 border-top border-5" style="border-color: #093a6f !important">
+        <a class="p-button p-button-text" (click)="logOut()" routerLink="inicio">
+          <div class="d-flex align-items-center">
+            <i pButtonIcon class="pi pi-sign-out"></i>
+            <span class="show-on-expanded-width">Cerrar sesión</span>
+          </div>
+        </a>
       </div>
     </div>
-    <div class="mt-auto menu-buttons p-2 border-top border-5" style="border-color: #093a6f !important">
-      <a class="p-button p-button-text" (click)="logOut()" routerLink="inicio">
-        <div class="d-flex align-items-center">
-          <i pButtonIcon class="pi pi-sign-out"></i>
-          <span class="show-on-expanded-width">Cerrar sesión</span>
-        </div>
-      </a>
-    </div>
   </div>
-</ng-template>
+  @if (showMask) {
+    <div class="p-overlay-mask block-scroll"></div>
+  }
+</div>

@@ -1,9 +1,9 @@
 import {LoggedUserDataService} from "../auth/services/logged-user-data.service";
 import {MenuItem} from "primeng/api";
 
-const calendar = {label: "Calendario", icon: "pi pi-calendar", route: "calendario"};
+const calendar = {label: "Calendario", icon: "pi pi-calendar", route: "/calendario"};
 const userScoutData = {label: "Datos", icon: "pi pi-id-card", route: ""};
-const userAttendanceList = {label: 'Asistencia', icon: "pi pi-check-circle", route: "asistencias"};
+const userAttendanceList = {label: 'Asistencia', icon: "pi pi-check-circle", route: "/asistencias"};
 const imageAuthorization = {label: "Sin Autorización", icon: "pi pi-images", route: "", category: "Unidad"};
 const groupScoutList = {label: "Educandas", icon: "pi pi-users", route: "/unidad/educandas", category: "Unidad"};
 const groupAttendanceList = {label: "Listas de Asistencia", icon: "pi pi-list", route: "/unidad/asistencias", category: "Unidad"};

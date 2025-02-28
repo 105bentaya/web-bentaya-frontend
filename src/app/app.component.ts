@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DatePipe, registerLocaleData} from '@angular/common';
-import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {FooterComponent} from "./core/footer/footer.component";
 import {ToastModule} from "primeng/toast";
 import {AlertService} from "./shared/services/alert-service.service";
@@ -14,7 +14,6 @@ import {PrimeNG} from "primeng/config";
 import Lara from '@primeng/themes/lara';
 import {definePreset} from "@primeng/themes";
 import {HomeBarComponent} from "./core/home-bar/home-bar.component";
-import {UserRoutesService} from "./core/auth/services/user-routes.service";
 import {UserMenuComponent} from "./core/user-menu/user-menu.component";
 
 @Component({
@@ -39,7 +38,7 @@ export class AppComponent implements OnInit {
   private readonly settingsService = inject(SettingsService);
   protected readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly userRoutes = inject(UserRoutesService);
+  private readonly activatedRoute = inject(ActivatedRoute);
   protected routeIsProtected: boolean | undefined;
 
   ngOnInit(): void {
@@ -48,7 +47,16 @@ export class AppComponent implements OnInit {
     this.checkForMaintenance();
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe(() => this.routeIsProtected = this.userRoutes.getCurrentRouteProtected());
+      .subscribe(() => this.checkIfRouteIsProtected());
+  }
+
+  checkIfRouteIsProtected() {
+    let route = this.activatedRoute;
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+    const routeConfig = route.routeConfig;
+    this.routeIsProtected = routeConfig?.canActivate?.some(guard => guard.name === "authGuard") ?? false;
   }
 
   private configureApp() {
