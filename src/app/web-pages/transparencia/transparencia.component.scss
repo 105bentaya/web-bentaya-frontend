@@ -8,7 +8,7 @@ $back-color-hover: rgb(155, 253, 158);
 }
 
 .green-icon-button {
-  border-radius: 10px;
+  border-radius: 2rem;
   background-color: $back-color;
   color: black !important;
   cursor: pointer;
@@ -16,11 +16,10 @@ $back-color-hover: rgb(155, 253, 158);
   justify-content: center;
   white-space: pre-line;
   text-decoration: none;
-  max-width: 165px;
+  width: 135px;
   height: 135px;
   font-size: 16px;
   font-weight: 500;
-  line-height: 18px;
   padding: 14px;
 
   &:hover {
