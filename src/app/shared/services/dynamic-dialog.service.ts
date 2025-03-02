@@ -24,13 +24,10 @@ export class DynamicDialogService {
       breakpoints: {
         '700px': '99vw'
       },
+      maskStyleClass: "block-scroll",
       width: this.widths[width],
       focusOnShow: false,
       modal: true
     });
   }
 }
-
-// @media screen and (min-width: 700px) {
-//     min-width: 700px;
-//     max-width: 1200px;

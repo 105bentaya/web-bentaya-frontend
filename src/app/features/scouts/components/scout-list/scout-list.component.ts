@@ -31,12 +31,12 @@ import {Button} from 'primeng/button';
 })
 
 export class ScoutListComponent implements OnInit {
-  private scoutService = inject(ScoutService);
-  private dialogService = inject(DialogService);
-  private confirmationService = inject(ConfirmationService);
-  private filterService = inject(FilterService);
-  private alertService = inject(AlertService);
-  private excelService = inject(ExcelService);
+  private readonly scoutService = inject(ScoutService);
+  private readonly dialogService = inject(DialogService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly filterService = inject(FilterService);
+  private readonly alertService = inject(AlertService);
+  private readonly excelService = inject(ExcelService);
 
   protected scouts!: Scout[];
   protected loading = false;

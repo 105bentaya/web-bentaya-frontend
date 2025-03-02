@@ -1,5 +1,5 @@
 <div class="mt-3" [formGroup]="formGroup">
-  <label class="required">Contactos</label>
+  <span class="required">Contactos</span>
   <p-table
     formArrayName="contactList"
     [value]="contactList.controls"
@@ -27,29 +27,37 @@
         </tr>
       }
     </ng-template>
-    <ng-template pTemplate="body" let-contact let-ri="rowIndex">
+    <ng-template pTemplate="body" let-ri="rowIndex">
       <tr [formGroupName]="ri">
-        <td class="px-2">
-          <span class="p-column-title required">Nombre</span>
-          <input type="text" formControlName="name" pInputText>
+        <td class="px-2 mt-2 mt-md-0">
+          <p-floatlabel variant="on" class="w-100">
+            <label for="name" class="d-md-none required">Nombre</label>
+            <input id="name" type="text" formControlName="name" pInputText>
+          </p-floatlabel>
         </td>
         <td class="px-2">
-          <span class="p-column-title">Parentesco</span>
-          <input type="text" formControlName="relationship" pInputText>
+          <p-floatlabel variant="on" class="w-100">
+            <label for="relationship" class="d-md-none">Parentesco</label>
+            <input id="relationship" type="text" formControlName="relationship" pInputText>
+          </p-floatlabel>
         </td>
         <td class="px-2">
-          <span class="p-column-title semi-required">Correo</span>
-          <input type="text" formControlName="email" pInputText>
+          <p-floatlabel variant="on" class="w-100">
+            <label for="email" class="d-md-none semi-required">Correo</label>
+            <input id="email" type="text" formControlName="email" pInputText>
+          </p-floatlabel>
         </td>
         <td class="px-2">
-          <span class="p-column-title semi-required">Teléfono</span>
-          <input type="text" formControlName="phone" pInputText>
+          <p-floatlabel variant="on" class="w-100">
+            <label for="phone" class="d-md-none semi-required">Teléfono</label>
+            <input id="phone" type="text" formControlName="phone" pInputText>
+          </p-floatlabel>
         </td>
         <td>
           <app-table-icon-button
             icon="pi pi-user-minus"
             title="Eliminar contacto"
-            class="p-button-danger"
+            severity="danger"
             (click)="onDelete.emit(ri)"
           ></app-table-icon-button>
         </td>

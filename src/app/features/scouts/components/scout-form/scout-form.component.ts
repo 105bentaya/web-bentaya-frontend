@@ -34,6 +34,7 @@ import {FormTextAreaComponent} from "../../../../shared/components/form-text-are
 import FormUtils from "../../../../shared/util/form-utils";
 import {Contact} from "../../models/contact.model";
 import {DatePicker} from "primeng/datepicker";
+import {Textarea} from "primeng/textarea";
 
 @Component({
   selector: 'app-scout-form',
@@ -51,7 +52,8 @@ import {DatePicker} from "primeng/datepicker";
     ContactFormListComponent,
     ScoutUserFormListComponent,
     SaveButtonsComponent,
-    DatePicker
+    DatePicker,
+    Textarea
   ]
 })
 export class ScoutFormComponent implements OnInit {
@@ -72,9 +74,10 @@ export class ScoutFormComponent implements OnInit {
   protected loading = false;
   protected disableLoading = false;
   protected isNew = false;
-  @ViewChild("userList") private userTable!: ScoutUserFormListComponent; //todo
   protected usernamesValid = true;
   private preScoutId!: number;
+
+  @ViewChild("userList") private readonly userTable!: ScoutUserFormListComponent;
 
   ngOnInit(): void {
     if (this.config.data?.scout) {
@@ -189,7 +192,8 @@ export class ScoutFormComponent implements OnInit {
           this.scoutService.getScoutUsernamesUpdateInfo(users, this.scout?.id).subscribe(
             result => this.confirmationService.confirm({
               message: this.generateUsernameChangeMessage(result, users.length == 0),
-              accept: () => setTimeout(() => this.checkGroupAndUpdateScout(scout, users), 700)
+              accept: () => setTimeout(() => this.checkGroupAndUpdateScout(scout, users), 700),
+              reject: () => this.loading = false
             })
           );
         } else this.checkGroupAndUpdateScout(scout);
@@ -278,7 +282,8 @@ export class ScoutFormComponent implements OnInit {
             error: () => this.disableLoading = false
           });
         }
-      }
+      },
+      reject: () => this.disableLoading = false
     });
   }
 

@@ -4,14 +4,13 @@ import {MenuItem} from "primeng/api";
 const calendar = {label: "Calendario", icon: "pi pi-calendar", route: "/calendario"};
 const userScoutData = {label: "Datos", icon: "pi pi-id-card", route: "/datos"};
 const userAttendanceList = {label: 'Asistencia', icon: "pi pi-check-circle", route: "/asistencias"};
-const imageAuthorization = {label: "Sin Autorización", icon: "pi pi-images", route: "", category: "Unidad"};
 const groupScoutList = {label: "Educandas", icon: "pi pi-users", route: "/unidad/educandas", category: "Unidad"};
 const groupAttendanceList = {label: "Listas de Asistencia", icon: "pi pi-list", route: "/unidad/asistencias", category: "Unidad"};
 const groupInscriptions = {label: "Preinscripciones", icon: "pi pi-folder", route: "/unidad/preinscripciones", category: "Unidad"};
 const invoiceList = {label: "Facturas", icon: "pi pi-receipt", route: "/facturas", category: "Gestión"};
 const scoutCenterRequester = {label: "Mis Reservas", icon: "pi pi-compass", route: "/centros-scout/seguimiento"};
 const scoutCenterManager = {label: "Gestión de Reservas", icon: "pi pi-wrench", route: "/centros-scout/gestion", category: "Gestión"};
-const transactions = {label: "Transacciones", icon: "pi pi-wallet", route: ''};
+// const transactions = {label: "Transacciones", icon: "pi pi-wallet", route: ''};
 const donations = {label: "Donaciones", icon: "fa-solid fa-piggy-bank", route: '/donaciones/lista', category: "Gestión"};
 const inscriptions = {label: "Preinscripciones", icon: "pi pi-folder", route: "/preinscripciones", category: "Gestión"};
 const volunteers = {label: "Voluntariado", icon: "pi pi-heart", route: "/voluntariado", category: "Gestión"};
@@ -30,7 +29,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(userScoutData, userAttendanceList);
   }
   if (user.hasRequiredPermission(["ROLE_SCOUTER"])) {
-    menuItems.push(imageAuthorization, groupScoutList, groupAttendanceList, groupInscriptions, invoiceList);
+    menuItems.push(groupScoutList, groupAttendanceList, groupInscriptions, invoiceList);
   }
   if (user.hasRequiredPermission(["ROLE_SCOUT_CENTER_REQUESTER"])) {
     menuItems.push(scoutCenterRequester);
@@ -39,10 +38,10 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(scoutCenterManager);
   }
   if (user.hasRequiredPermission(["ROLE_GROUP_SCOUTER"])) {
-    menuItems.push(imageAuthorization, groupScoutList, invoiceList);
+    menuItems.push(groupScoutList, invoiceList);
   }
   if (user.hasRequiredPermission(["ROLE_TRANSACTION"])) {
-    menuItems.push(transactions, donations);
+    menuItems.push(/*transactions, */donations);
   }
   if (user.hasRequiredPermission(["ROLE_FORM"])) {
     menuItems.push(inscriptions, volunteers, senior);

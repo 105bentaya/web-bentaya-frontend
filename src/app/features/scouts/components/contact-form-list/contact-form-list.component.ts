@@ -5,6 +5,7 @@ import {TableModule} from 'primeng/table';
 import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {FloatLabel} from "primeng/floatlabel";
 
 @Component({
   selector: 'app-contact-form-list',
@@ -14,7 +15,8 @@ import {
     ReactiveFormsModule,
     TableModule,
     InputTextModule,
-    TableIconButtonComponent
+    TableIconButtonComponent,
+    FloatLabel
   ]
 })
 export class ContactFormListComponent {

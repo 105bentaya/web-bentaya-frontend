@@ -9,279 +9,147 @@
   <app-booking-beta-alert></app-booking-beta-alert>
   @if (bookings) {
     <div>
-      <p-tabView (onChange)="onTabChange($event)" [scrollable]="true">
-        @for (booking of bookings; track booking.id) {
-          <p-tabPanel header="{{booking.scoutCenter | scoutCenter}} - {{booking.startDate | date: 'dd/MM'}}">
-            <p-fieldset #fieldset class="booking-follow-up" [collapsed]="true" [toggleable]="true">
-              <ng-template pTemplate="header">
-                <span>{{ fieldset.collapsed ? 'Mostrar' : 'Ocultar' }} datos de la reserva</span>
-              </ng-template>
-              <div class="row">
-                <p-divider type="dashed" class="mb-2"><h5><b>Datos de la organización</b></h5></p-divider>
-                <div class="col-12 col-sm-6 col-xl-3">
-                  <b>Nombre de la asociación</b>
-                  <div>{{ booking.organizationName }}</div>
-                </div>
-                <div class="col-12 col-sm-6 col-xl-3">
-                  <b>CIF de la asociación</b>
-                  <div>{{ booking.cif }}</div>
-                </div>
-                <div class="col-12">
-                  <b>Uso de instalaciones</b>
-                  <div>{{ booking.facilityUse }}</div>
-                </div>
-                <p-divider type="dashed" class="mb-2"><h5><b>Datos de contacto</b></h5></p-divider>
-                <div class="col-12 col-sm-6 col-xl-3">
-                  <b>Nombre contacto</b>
-                  <div>{{ booking.contactName }}</div>
-                </div>
-                <div class="col-12 col-sm-6 col-xl-3">
-                  <b>Relación</b>
-                  <div>{{ booking.contactRelationship }}</div>
-                </div>
-                <div class="col-12 col-sm-6 col-xl-3">
-                  <b>Correo</b>
-                  <div>
-                    <a href="mailto:{{booking.contactMail}}">{{ booking.contactMail }}</a>
+      <p-tabs [value]="0" [scrollable]="true">
+        <p-tablist>
+          @for (booking of bookings; track booking.id) {
+            <p-tab [value]="$index" (click)="onTabChange(booking)">
+              {{booking.scoutCenter | scoutCenter}} - {{booking.startDate | date: 'dd/MM'}}
+            </p-tab>
+          }
+        </p-tablist>
+        <p-tabpanels class="px-0">
+          @for (booking of bookings; track booking.id) {
+            <p-tabpanel [value]="$index">
+              <p-fieldset #fieldset class="booking-follow-up" [collapsed]="true" [toggleable]="true">
+                <ng-template pTemplate="header">
+                  <span>{{ fieldset.collapsed ? 'Mostrar' : 'Ocultar' }} datos de la reserva</span>
+                </ng-template>
+                <div class="row">
+                  <p-divider type="dashed" class="mb-2"><h5><b>Datos de la organización</b></h5></p-divider>
+                  <div class="col-12 col-sm-6 col-xl-3">
+                    <b>Nombre de la asociación</b>
+                    <div>{{ booking.organizationName }}</div>
                   </div>
-                </div>
-                <div class="col-12 col-sm-6 col-xl-3">
-                  <b>Teléfono</b>
-                  <div>
-                    <a href="tel:{{booking.contactPhone}}">{{ booking.contactPhone }}</a>
+                  <div class="col-12 col-sm-6 col-xl-3">
+                    <b>CIF de la asociación</b>
+                    <div>{{ booking.cif }}</div>
                   </div>
-                </div>
-                <p-divider type="dashed" class="mb-2"><h5><b>Datos de la reserva</b></h5></p-divider>
-                <div class="col-12 col-sm-6 col-lg-3">
-                  <b>Centro solicitado</b>
-                  <div>{{ booking.scoutCenter | scoutCenter }}</div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                  <b>Número de participantes</b>
-                  <div>{{ booking.packs }}</div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                  <b>Fecha de entrada</b>
-                  <div>{{ booking.startDate | date:"dd/MM/yyyy" }}</div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                  <b>Fecha de salida</b>
-                  <div>{{ booking.endDate | date:"dd/MM/yyyy" }}</div>
-                </div>
-                <div class="col-12 col-sm-6">
-                  <b>Número de Reserva</b>
-                  <div>{{ booking.id }}</div>
-                </div>
-                <div class="col-12 col-sm-6">
-                  <b>Fecha de solicitud</b>
-                  <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
-                </div>
-                <div class="col-12">
-                  <b>Observaciones</b>
-                  <div>{{ booking.observations || "Ninguna" }}</div>
-                </div>
-                @if (booking.exclusiveReservation) {
                   <div class="col-12">
-                    <b>Centro solicitado con exclusividad</b>
-                    <div>Sí</div>
+                    <b>Uso de instalaciones</b>
+                    <div>{{ booking.facilityUse }}</div>
                   </div>
-                }
-                @if (booking.price) {
+                  <p-divider type="dashed" class="mb-2"><h5><b>Datos de contacto</b></h5></p-divider>
+                  <div class="col-12 col-sm-6 col-xl-3">
+                    <b>Nombre contacto</b>
+                    <div>{{ booking.contactName }}</div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-xl-3">
+                    <b>Relación</b>
+                    <div>{{ booking.contactRelationship }}</div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-xl-3">
+                    <b>Correo</b>
+                    <div>
+                      <a href="mailto:{{booking.contactMail}}">{{ booking.contactMail }}</a>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-xl-3">
+                    <b>Teléfono</b>
+                    <div>
+                      <a href="tel:{{booking.contactPhone}}">{{ booking.contactPhone }}</a>
+                    </div>
+                  </div>
+                  <p-divider type="dashed" class="mb-2"><h5><b>Datos de la reserva</b></h5></p-divider>
+                  <div class="col-12 col-sm-6 col-lg-3">
+                    <b>Centro solicitado</b>
+                    <div>{{ booking.scoutCenter | scoutCenter }}</div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-lg-3">
+                    <b>Número de participantes</b>
+                    <div>{{ booking.packs }}</div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-lg-3">
+                    <b>Fecha de entrada</b>
+                    <div>{{ booking.startDate | date:"dd/MM/yyyy" }}</div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-lg-3">
+                    <b>Fecha de salida</b>
+                    <div>{{ booking.endDate | date:"dd/MM/yyyy" }}</div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <b>Número de Reserva</b>
+                    <div>{{ booking.id }}</div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <b>Fecha de solicitud</b>
+                    <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
+                  </div>
                   <div class="col-12">
-                    <b>Precio de la reserva</b>
-                    <div>{{ booking.price | currency:'EUR':undefined:undefined:'es' }}</div>
+                    <b>Observaciones</b>
+                    <div>{{ booking.observations || "Ninguna" }}</div>
                   </div>
-                }
-              </div>
-            </p-fieldset>
-            <div class="col-12">
-              <div class="d-flex flex-column gap-1 align-items-start">
-                <b>Estado actual de la reserva</b>
-                <b class="rounded-1 p-1"
-                   [class]="booking.status | scoutCenterStatus:true">{{ booking.status | scoutCenterStatus }}</b>
-              </div>
-              @switch (booking.status) {
-                @case ("NEW") {
-                  Estamos revisando tu reserva, próximamente le avisaremos de nuestra decisión.
-                  <ng-container *ngTemplateOutlet="cancelButtonSolo"></ng-container>
-                }
-                @case ("RESERVED") {
-                  <p>
-                    Precio de la reserva:
-                    <b>{{ booking.price | currency:'EUR':undefined:undefined:'es' }}</b>
-                  </p>
-                  @if (booking.statusObservations) {
-                    <p>
-                      Observaciones con respecto a su reserva:
-                      {{ booking.statusObservations }}
-                    </p>
+                  @if (booking.exclusiveReservation) {
+                    <div class="col-12">
+                      <b>Centro solicitado con exclusividad</b>
+                      <div>Sí</div>
+                    </div>
                   }
-                  <p>
-                    Antes que nada, instamos a que se lea las normas del lugar que se le enviaron por correo. También
-                    puede
-                    consultarlas haciendo click
-                    <a href="{{info[booking.scoutCenter].rules}}">aquí</a>.
-                  </p>
-                  <p class="mb-2">
-                    Precisamos de los siguientes documentos para poder completar la reserva. Tiene como máximo para
-                    presentarlos hasta <b>5 días antes</b> del inicio de su reserva. Si para dicha fecha no han sido
-                    correctamente presentados, corre el riesgo de perder su reserva:
-                  </p>
-                  <ul>
-                    @for (document of documents; track $index) {
-                      <li>
-                        {{ document.name }}.
-                        @if (document.path) {
-                          <a href="{{document.path}}" download>(Puede descargarlo aquí)</a>
-                        }
-                      </li>
-                    }
-                  </ul>
-                  <p-fileUpload
-                    #uploader
-                    chooseLabel="Subir"
-                    [multiple]="true"
-                    accept=".pdf"
-                    [maxFileSize]="1048576"
-                    (uploadHandler)="uploadFiles($event, booking)"
-                    [customUpload]="true"
-                    invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
-                    invalidFileSizeMessageDetail="el tamaño máximo es {0}."
-                    invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
-                    invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
-                    invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
-                    invalidFileLimitMessageDetail="el límite es de {0} archivos."
-                    [showUploadButton]="false"
-                    [showCancelButton]="false"
-                    [auto]="true"
-                  >
-                    <ng-template pTemplate="toolbar">
-                      <div class="py-3">
-                        @if (booking.userConfirmedDocuments) {
-                          Sus documentos están siendo revisados. Cuando finalice la revisión le informaremos de si su reserva ha sido aceptada o si ha habido algún error en los documentos para que pueda corregirlos.
-                        } @else {
-                          Suba aquí todos los archivos en formato <b>pdf</b>. El tamaño máximo de cada archivo es de
-                          <b>1MB</b>.<br>
-                          Una vez los haya subido
-                          <b>todos</b>, haga click en el botón de confirmar para que podamos seguir con el proceso.
-                        }
-                      </div>
-                    </ng-template>
-                    <ng-template pTemplate="file"></ng-template>
-                    <ng-template pTemplate="content" let-uploaderFiles>
-                      @if (uploaderFiles.length > 0) {
-                        Subiendo <i class="pi pi-spinner pi-spin ms-1"></i>
-                        <hr>
-                      }
-                      <div>{{ files.length > 0 ? 'Archivos subidos:' : 'Aún no ha subido archivos' }}</div>
-                      @for (file of files; track $index) {
-                        <div
-                          class="d-flex flex-wrap align-items-center justify-content-between gap-2 py-2 border-bottom">
-                          <div>
-                            {{ file.fileName }} -
-                            <b
-                              class="rounded-1 p-1"
-                              [class]="file.status | documentStatus:true"
-                              [innerText]="file.status | documentStatus"
-                            ></b>
-                          </div>
-                          <div class="d-flex gap-2 align-self-end">
-                            <app-table-icon-button
-                              icon="pi pi-download"
-                              (click)="downloadFile(file)"
-                              [disabled]="loading"
-                              title="Descargar"
-                            ></app-table-icon-button>
-                            <app-table-icon-button
-                              icon="pi pi-eye"
-                              (click)="showFile(file)"
-                              [disabled]="loading"
-                              severity="info"
-                              title="Abrir"
-                            ></app-table-icon-button>
-                            @if (!booking.userConfirmedDocuments) {
-                              <app-table-icon-button
-                                icon="pi pi-trash"
-                                class="p-button-danger"
-                                [disabled]="loading"
-                                (click)="deleteFile(file)"
-                                title="Borrar"
-                              ></app-table-icon-button>
-                            }
-                          </div>
-                        </div>
-                      }
-                    </ng-template>
-                  </p-fileUpload>
-                  <div class="d-flex justify-content-center mt-3 gap-2 flex-wrap">
-                    <p-button
-                      class="p-button-success"
-                      label="CONFIRMAR DOCUMENTOS"
-                      [loading]="loading"
-                      (click)="confirmDocuments(booking)"
-                    ></p-button>
-                    <ng-container *ngTemplateOutlet="cancelButton"></ng-container>
-                  </div>
-                }
-                @case ("CANCELED") {
-                  <p>Usted ha cancelado la reserva por el siguiente motivo: {{ booking.statusObservations }}</p>
-                  <p>
-                    Si lo desea, puede volver a realizar una reserva desde nuestro
-                    <a routerLink="/centros-scout/reserva">formulario</a>.
-                  </p>
-                }
-                @case ("REJECTED") {
-                  <p>La reserva ha sido denegada por el siguiente motivo: {{ booking.statusObservations }}</p>
-                  <p>
-                    Si lo desea, puede volver a realizar una reserva en otra fecha o para otro centro scout desde
-                    nuestro
-                    <a routerLink="/centros-scout/reserva">formulario</a>.
-                  </p>
-                }
-                @case ("LEFT") {
-                  <p>
-                    Una vez hayamos completado la revisión del lugar, marcaremos la reserva como finalizada.
-                  </p>
-                  <p>
-                    Si lo desea, puede volver a realizar una reserva desde nuestro
-                    <a routerLink="/centros-scout/reserva">formulario</a>.
-                  </p>
-                }
-                @case ("FINISHED") {
-                  <p>La reserva ha finalizado. Gracias por haberse quedado con nosotros.</p>
-                  <p>Resultado de la revisión: {{ booking.statusObservations }}</p>
-                  <p>
-                    Si lo desea, puede volver a realizar una reserva en otra fecha o para otro centro scout desde
-                    nuestro
-                    <a routerLink="/centros-scout/reserva">formulario</a>.
-                  </p>
-                }
-                @default {
-                  @if (booking.status == "OCCUPIED" || booking.status == "FULLY_OCCUPIED") {
-                    <p>Su reserva ha sido aceptada y confirmada.</p>
+                  @if (booking.price) {
+                    <div class="col-12">
+                      <b>Precio de la reserva</b>
+                      <div>{{ booking.price | currency:'EUR':undefined:undefined:'es' }}</div>
+                    </div>
+                  }
+                </div>
+              </p-fieldset>
+              <div class="col-12">
+                <div class="d-flex flex-column gap-1 align-items-start">
+                  <b>Estado actual de la reserva</b>
+                  <b class="rounded-1 p-1"
+                     [class]="booking.status | scoutCenterStatus:true">{{ booking.status | scoutCenterStatus }}</b>
+                </div>
+                @switch (booking.status) {
+                  @case ("NEW") {
+                    Estamos revisando tu reserva, próximamente le avisaremos de nuestra decisión.
+                    <ng-container *ngTemplateOutlet="cancelButtonSolo"></ng-container>
+                  }
+                  @case ("RESERVED") {
                     <p>
-                      Para retirar las llaves del lugar, pónganse en contacto con la persona responsable la semana
-                      anterior
-                      a
-                      su reserva y con al menos dos días de antelación respecto al inicio de la misma. La información de
-                      contacto la puede consultar en el PDF con las normas haciendo click
+                      Precio de la reserva:
+                      <b>{{ booking.price | currency:'EUR':undefined:undefined:'es' }}</b>
+                    </p>
+                    @if (booking.statusObservations) {
+                      <p>
+                        Observaciones con respecto a su reserva:
+                        {{ booking.statusObservations }}
+                      </p>
+                    }
+                    <p>
+                      Antes que nada, instamos a que se lea las normas del lugar que se le enviaron por correo. También
+                      puede
+                      consultarlas haciendo click
                       <a href="{{info[booking.scoutCenter].rules}}">aquí</a>.
                     </p>
-                    <p>
-                      Una vez finalice su estancia, rellene y suba el siguiente documento (opcional) y marque la reserva
-                      como
-                      finalizada.
+                    <p class="mb-2">
+                      Precisamos de los siguientes documentos para poder completar la reserva. Tiene como máximo para
+                      presentarlos hasta <b>5 días antes</b> del inicio de su reserva. Si para dicha fecha no han sido
+                      correctamente presentados, corre el riesgo de perder su reserva:
                     </p>
                     <ul>
-                      <li>
-                        Registro de incidencias y estados.
-                        <a href="{{info[booking.scoutCenter].incidentsRegister}}" download>(Puede descargarlo aquí)</a>
-                      </li>
+                      @for (document of documents; track $index) {
+                        <li>
+                          {{ document.name }}.
+                          @if (document.path) {
+                            <a href="{{document.path}}" download>(Puede descargarlo aquí)</a>
+                          }
+                        </li>
+                      }
                     </ul>
-                    <p-fileUpload
-                      #incidentsUploader
+                    <p-fileupload
+                      #uploader
                       chooseLabel="Subir"
-                      accept=".pdf,.docx"
+                      [multiple]="true"
+                      accept=".pdf"
                       [maxFileSize]="1048576"
                       (uploadHandler)="uploadFiles($event, booking)"
                       [customUpload]="true"
@@ -293,52 +161,193 @@
                       invalidFileLimitMessageDetail="el límite es de {0} archivos."
                       [showUploadButton]="false"
                       [showCancelButton]="false"
-                      [fileLimit]="1"
+                      [auto]="true"
                     >
                       <ng-template pTemplate="toolbar">
                         <div class="py-3">
-                          Suba aquí el registro de estados en formato <b>pdf</b> o <b>docx</b>. El tamaño máximo del
-                          archivo
-                          debe ser de <b>1MB</b>.
-                          <br>
-                          Para marcar la reserva como finalizada, haga click en el botón de 'Finalizar Reserva'.
+                          @if (booking.userConfirmedDocuments) {
+                            Sus documentos están siendo revisados. Cuando finalice la revisión le informaremos de si su reserva ha sido aceptada o si ha habido algún error en los documentos para que pueda corregirlos.
+                          } @else {
+                            Suba aquí todos los archivos en formato <b>pdf</b>. El tamaño máximo de cada archivo es de
+                            <b>1MB</b>.<br>
+                            Una vez los haya subido
+                            <b>todos</b>, haga click en el botón de confirmar para que podamos seguir con el proceso.
+                          }
                         </div>
                       </ng-template>
-                      <ng-template pTemplate="content" let-files>
-                        <div class="px-3 float-end"> {{ files.length > 0 ? 'Documento cargado' : '' }}</div>
+                      <ng-template pTemplate="file"></ng-template>
+                      <ng-template pTemplate="content" let-uploaderFiles>
+                        @if (uploaderFiles.length > 0) {
+                          Subiendo <i class="pi pi-spinner pi-spin ms-1"></i>
+                          <hr>
+                        }
+                        <div>{{ files.length > 0 ? 'Archivos subidos:' : 'Aún no ha subido archivos' }}</div>
+                        @for (file of files; track $index) {
+                          <div
+                            class="d-flex flex-wrap align-items-center justify-content-between gap-2 py-2 border-bottom">
+                            <div>
+                              {{ file.fileName }} -
+                              <b
+                                class="rounded-1 p-1"
+                                [class]="file.status | documentStatus:true"
+                                [innerText]="file.status | documentStatus"
+                              ></b>
+                            </div>
+                            <div class="d-flex gap-2 align-self-end">
+                              <app-table-icon-button
+                                icon="pi pi-download"
+                                (click)="downloadFile(file)"
+                                [disabled]="loading"
+                                title="Descargar"
+                              ></app-table-icon-button>
+                              <app-table-icon-button
+                                icon="pi pi-eye"
+                                (click)="showFile(file)"
+                                [disabled]="loading"
+                                severity="info"
+                                title="Abrir"
+                              ></app-table-icon-button>
+                              @if (!booking.userConfirmedDocuments) {
+                                <app-table-icon-button
+                                  icon="pi pi-trash"
+                                  class="p-button-danger"
+                                  [disabled]="loading"
+                                  (click)="deleteFile(file)"
+                                  title="Borrar"
+                                ></app-table-icon-button>
+                              }
+                            </div>
+                          </div>
+                        }
                       </ng-template>
-                    </p-fileUpload>
-                    <div class="d-flex justify-content-center gap-2 mt-3 flex-wrap">
+                    </p-fileupload>
+                    <div class="d-flex justify-content-center mt-3 gap-2 flex-wrap">
                       <p-button
-                        class="p-button-success"
-                        label="FINALIZAR RESERVA"
+                        severity="success"
+                        label="CONFIRMAR DOCUMENTOS"
                         [loading]="loading"
-                        loadingIcon="pi pi-spin pi-spinner"
-                        (click)="finishReservation(booking)"
+                        (click)="confirmDocuments(booking)"
                       ></p-button>
                       <ng-container *ngTemplateOutlet="cancelButton"></ng-container>
                     </div>
                   }
+                  @case ("CANCELED") {
+                    <p>Usted ha cancelado la reserva por el siguiente motivo: {{ booking.statusObservations }}</p>
+                    <p>
+                      Si lo desea, puede volver a realizar una reserva desde nuestro
+                      <a routerLink="/centros-scout/reserva">formulario</a>.
+                    </p>
+                  }
+                  @case ("REJECTED") {
+                    <p>La reserva ha sido denegada por el siguiente motivo: {{ booking.statusObservations }}</p>
+                    <p>
+                      Si lo desea, puede volver a realizar una reserva en otra fecha o para otro centro scout desde
+                      nuestro
+                      <a routerLink="/centros-scout/reserva">formulario</a>.
+                    </p>
+                  }
+                  @case ("LEFT") {
+                    <p>
+                      Una vez hayamos completado la revisión del lugar, marcaremos la reserva como finalizada.
+                    </p>
+                    <p>
+                      Si lo desea, puede volver a realizar una reserva desde nuestro
+                      <a routerLink="/centros-scout/reserva">formulario</a>.
+                    </p>
+                  }
+                  @case ("FINISHED") {
+                    <p>La reserva ha finalizado. Gracias por haberse quedado con nosotros.</p>
+                    <p>Resultado de la revisión: {{ booking.statusObservations }}</p>
+                    <p>
+                      Si lo desea, puede volver a realizar una reserva en otra fecha o para otro centro scout desde
+                      nuestro
+                      <a routerLink="/centros-scout/reserva">formulario</a>.
+                    </p>
+                  }
+                  @default {
+                    @if (booking.status == "OCCUPIED" || booking.status == "FULLY_OCCUPIED") {
+                      <p>Su reserva ha sido aceptada y confirmada.</p>
+                      <p>
+                        Para retirar las llaves del lugar, pónganse en contacto con la persona responsable la semana
+                        anterior
+                        a
+                        su reserva y con al menos dos días de antelación respecto al inicio de la misma. La información de
+                        contacto la puede consultar en el PDF con las normas haciendo click
+                        <a href="{{info[booking.scoutCenter].rules}}">aquí</a>.
+                      </p>
+                      <p>
+                        Una vez finalice su estancia, rellene y suba el siguiente documento (opcional) y marque la reserva
+                        como
+                        finalizada.
+                      </p>
+                      <ul>
+                        <li>
+                          Registro de incidencias y estados.
+                          <a href="{{info[booking.scoutCenter].incidentsRegister}}" download>(Puede descargarlo aquí)</a>
+                        </li>
+                      </ul>
+                      <p-fileupload
+                        #incidentsUploader
+                        chooseLabel="Subir"
+                        accept=".pdf,.docx"
+                        [maxFileSize]="1048576"
+                        (uploadHandler)="uploadFiles($event, booking)"
+                        [customUpload]="true"
+                        invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
+                        invalidFileSizeMessageDetail="el tamaño máximo es {0}."
+                        invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
+                        invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
+                        invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
+                        invalidFileLimitMessageDetail="el límite es de {0} archivos."
+                        [showUploadButton]="false"
+                        [showCancelButton]="false"
+                        [fileLimit]="1"
+                      >
+                        <ng-template pTemplate="toolbar">
+                          <div class="py-3">
+                            Suba aquí el registro de estados en formato <b>pdf</b> o <b>docx</b>. El tamaño máximo del
+                            archivo
+                            debe ser de <b>1MB</b>.
+                            <br>
+                            Para marcar la reserva como finalizada, haga click en el botón de 'Finalizar Reserva'.
+                          </div>
+                        </ng-template>
+                        <ng-template pTemplate="content" let-files>
+                          <div class="px-3 float-end"> {{ files.length > 0 ? 'Documento cargado' : '' }}</div>
+                        </ng-template>
+                      </p-fileupload>
+                      <div class="d-flex justify-content-center gap-2 mt-3 flex-wrap">
+                        <p-button
+                          severity="success"
+                          label="FINALIZAR RESERVA"
+                          [loading]="loading"
+                          loadingIcon="pi pi-spin pi-spinner"
+                          (click)="finishReservation(booking)"
+                        ></p-button>
+                        <ng-container *ngTemplateOutlet="cancelButton"></ng-container>
+                      </div>
+                    }
+                  }
                 }
-              }
-              <ng-template #cancelButtonSolo>
-                <div class="d-flex justify-content-center mt-3">
-                  <ng-container *ngTemplateOutlet="cancelButton"></ng-container>
-                </div>
-              </ng-template>
-              <ng-template #cancelButton>
-                <p-button
-                  class="p-button-danger"
-                  label="CANCELAR RESERVA"
-                  [loading]="loading"
-                  loadingIcon="pi pi-spin pi-spinner"
-                  (click)="cancelReservation(booking)"
-                ></p-button>
-              </ng-template>
-            </div>
-          </p-tabPanel>
-        }
-      </p-tabView>
+                <ng-template #cancelButtonSolo>
+                  <div class="d-flex justify-content-center mt-3">
+                    <ng-container *ngTemplateOutlet="cancelButton"></ng-container>
+                  </div>
+                </ng-template>
+                <ng-template #cancelButton>
+                  <p-button
+                    severity="danger"
+                    label="CANCELAR RESERVA"
+                    [loading]="loading"
+                    loadingIcon="pi pi-spin pi-spinner"
+                    (click)="cancelReservation(booking)"
+                  ></p-button>
+                </ng-template>
+              </div>
+            </p-tabpanel>
+          }
+        </p-tabpanels>
+      </p-tabs>
     </div>
   } @else {
     <app-basic-loading-info></app-basic-loading-info>

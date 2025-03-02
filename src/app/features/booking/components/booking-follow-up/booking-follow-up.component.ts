@@ -26,6 +26,8 @@ import {
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {Button} from "primeng/button";
 import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../constant/confirm-messages.constants";
+import {TabsModule} from "primeng/tabs";
+import {bo} from "@fullcalendar/core/internal-common";
 
 @Component({
   selector: 'app-booking-follow-up',
@@ -34,7 +36,6 @@ import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../const
   providers: [DialogService],
   imports: [
     BookingBetaAlertComponent,
-    TabViewModule,
     ScoutCenterPipe,
     DatePipe,
     FieldsetModule,
@@ -47,21 +48,21 @@ import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../const
     TableIconButtonComponent,
     BasicLoadingInfoComponent,
     RouterLink,
-    Button
+    Button,
+    TabsModule
   ]
 })
 export class BookingFollowUpComponent implements OnInit {
 
-  private bookingService = inject(BookingService);
-  private alertService = inject(AlertService);
-  private dialogService = inject(DialogService);
-  private confirmationService = inject(ConfirmationService);
+  private readonly bookingService = inject(BookingService);
+  private readonly alertService = inject(AlertService);
+  private readonly dialogService = inject(DialogService);
+  private readonly confirmationService = inject(ConfirmationService);
 
-  @ViewChild('uploader')
-  private uploader!: FileUpload;
-  @ViewChild('incidentsUploader')
-  private incidentUploader!: FileUpload;
+  @ViewChild('uploader') private readonly uploader!: FileUpload;
+  @ViewChild('incidentsUploader') private readonly incidentUploader!: FileUpload;
   protected bookings!: Booking[];
+  protected selectedBooking!: Booking;
   protected readonly documents = documents;
   protected readonly info = ScoutCentersInfo;
   protected files: BookingDocument[] = [];
@@ -72,12 +73,15 @@ export class BookingFollowUpComponent implements OnInit {
     this.bookingService.getAllByCurrentUser().subscribe(data => {
       this.bookings = data;
       this.bookings.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+      this.selectedBooking = this.bookings[0];
       if (this.bookings.length > 0) this.getFiles(this.bookings[0].id);
     });
   }
 
-  protected onTabChange(event: TabViewChangeEvent) {
-    this.getFiles(this.bookings[event.index].id);
+  protected onTabChange(booking: Booking) {
+    if (this.selectedBooking.id === booking.id) return;
+    this.selectedBooking = booking;
+    this.getFiles(booking.id);
   }
 
   protected uploadFiles(event: FileUploadHandlerEvent, booking: Booking) {

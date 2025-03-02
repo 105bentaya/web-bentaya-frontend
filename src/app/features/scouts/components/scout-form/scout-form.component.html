@@ -2,37 +2,38 @@
   <form class="d-flex flex-column" [formGroup]="scoutFormHelper.form">
     <p-tabView (onChange)="onTabChange($event)">
       <p-tabPanel header="Datos">
-        <div class="mt-4">
+        <div>
           <div class="row">
             <div class="col-12 col-sm-6">
-              <p-floatlabel>
-                <input formControlName="name" maxlength="128" pInputText>
-                <label class="required">Nombre</label>
+              <p-floatlabel variant="on">
+                <input id="name" formControlName="name" maxlength="128" pInputText>
+                <label class="required" for="name">Nombre</label>
               </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatlabel>
-                <input formControlName="surname" maxlength="128" pInputText>
-                <label class="required">Apellidos</label>
+              <p-floatlabel variant="on">
+                <input id="surname" formControlName="surname" maxlength="128" pInputText>
+                <label class="required" for="surname">Apellidos</label>
               </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatlabel>
-                <input formControlName="dni" maxlength="64" pInputText>
-                <label>DNI</label>
+              <p-floatlabel variant="on">
+                <input id="dni" formControlName="dni" maxlength="64" pInputText>
+                <label for="dni">DNI</label>
               </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <p-datePicker
+                  id="birthday"
                   formControlName="birthday"
                   appendTo="body"
                 ></p-datePicker>
-                <label class="required">Fecha de Nacimiento</label>
+                <label class="required" for="birthday">Fecha de Nacimiento</label>
               </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <p-select
                   id="groupId"
                   formControlName="groupId"
@@ -45,7 +46,7 @@
               </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <p-select
                   id="gender"
                   formControlName="gender"
@@ -56,39 +57,42 @@
               </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6 col-md-4">
-              <p-floatlabel>
-                <input formControlName="shirtSize" maxlength="64" pInputText>
-                <label>Talla</label>
+              <p-floatlabel variant="on">
+                <input id="shirtSize" formControlName="shirtSize" maxlength="64" pInputText>
+                <label for="shirtSize">Talla</label>
               </p-floatlabel>
             </div>
             <div class="col-12 col-sm-6 col-md-4">
-              <p-floatlabel>
+              <p-floatlabel variant="on">
                 <p-inputNumber
+                  id="census"
                   [useGrouping]="false"
                   formControlName="census"
                 ></p-inputNumber>
-                <label>Censo</label>
+                <label for="census">Censo</label>
               </p-floatlabel>
             </div>
             <div class="col-12 col-md-4">
-              <p-floatlabel>
-                <input formControlName="municipality" maxlength="256" pInputText>
-                <label>Municipio de Residencia</label>
+              <p-floatlabel variant="on">
+                <input id="municipality" formControlName="municipality" maxlength="256" pInputText>
+                <label for="municipality">Municipio de Residencia</label>
               </p-floatlabel>
             </div>
-            <div class="col-12 mb-2">
-              <p-floatlabel>
+            <div class="col-12 mb-0">
+              <p-floatlabel variant="on">
+                <label for="medicalData">Datos Médicos</label>
                 <app-form-text-area
+                  id="medicalData"
                   formControlName="medicalData"
-                  floatLabel="Datos Médicos"
                   [maxLength]="1024"
                   [showErrorMessage]="scoutFormHelper.hasSpecificError('medicalData', 'maxlength')"
                 ></app-form-text-area>
               </p-floatlabel>
             </div>
-            <div class="col mb-0">
-              <label class="required">Autorización de imagen</label>
+            <div class="col mb-0 d-flex flex-column">
+              <label for="imageAuthorization" class="required">Autorización de imagen</label>
               <p-selectButton
+                id="imageAuthorization"
                 [options]="options"
                 formControlName="imageAuthorization"
               ></p-selectButton>
@@ -106,15 +110,15 @@
       </p-tabPanel>
       <p-tabPanel header="Datos de Scouters">
         <div class="py-3">
-          <p-floatlabel>
-            <textarea formControlName="observations" class="w-100" rows="5" maxlength="65535" pInputText></textarea>
-            <label>Observaciones generales</label>
+          <p-floatlabel variant="on">
+            <label for="observations">Observaciones generales</label>
+            <textarea id="observations" formControlName="observations" class="w-100" rows="5" maxlength="65535" pTextarea></textarea>
           </p-floatlabel>
         </div>
         <div class="py-3">
-          <p-floatlabel>
-            <textarea formControlName="progressions" class="w-100" rows="5" maxlength="65535" pInputText></textarea>
-            <label>Progresiones</label>
+          <p-floatlabel variant="on">
+            <label for="progressions">Progresiones</label>
+            <textarea id="progressions" formControlName="progressions" class="w-100" rows="5" maxlength="65535" pTextarea></textarea>
           </p-floatlabel>
         </div>
       </p-tabPanel>

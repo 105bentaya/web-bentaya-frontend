@@ -1,13 +1,22 @@
 <div class="container-fluid">
-  <div class="d-flex justify-content-between flex-wrap gap-2 align-items-center mb-3">
+  <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
     <h1 class="mb-0">Lista de educandas</h1>
-    @if (userGroup) {
-      <p-selectButton
-        [options]="options"
-        [(ngModel)]="showAll"
-        (onChange)="selectButtonChange()"
-      ></p-selectButton>
-    }
+    <div class="d-flex gap-2 ms-auto">
+      @if (userGroup) {
+        <p-selectButton
+          [options]="options"
+          [(ngModel)]="showAll"
+          (onChange)="selectButtonChange()"
+        ></p-selectButton>
+      }
+      <p-button
+        icon="pi pi-images"
+        styleClass="p-togglebutton"
+        variant="outlined"
+        title="Sin Autorización de Imagen"
+        (onClick)="openImageAuthDialog()"
+      ></p-button>
+    </div>
   </div>
   <p-table
     #dt
@@ -24,7 +33,7 @@
           [icon]="excelLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
           [disabled]="excelLoading"
           (click)="exportExcelScout()"
-          class="p-button-success"
+          severity="success"
           title="Descargar scouts como excel"
         ></p-button>
       </div>
@@ -127,3 +136,20 @@
     No se han encontrado educandas
   }
 </div>
+<p-dialog
+  header="Educandas sin autorización de imágenes"
+  [(visible)]="showDialog"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="small dialog-width"
+  [modal]="true"
+>
+  <p>
+    Educandas sin autorización de imágenes:
+  </p>
+  <ul>
+    @for (scout of noImageScouts; track $index) {
+      <li>{{ scout.name }} {{ scout.surname }} ({{ scout.groupId | group }})</li>
+    }
+  </ul>
+</p-dialog>

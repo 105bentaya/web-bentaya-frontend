@@ -93,6 +93,12 @@ p-toggle-button.no-label {
   }
 }
 
+.p-button.p-togglebutton:hover {
+  color: var(--p-togglebutton-hover-color);
+  background: var(--p-togglebutton-hover-background);
+  border-color: var(--p-togglebutton-border-color);
+}
+
 
 :root {
   .p-drawer-footer {
@@ -104,7 +110,7 @@ p-toggle-button.no-label {
   top: 3px;
 }
 
-  //fixes
+//fixes
 
 p-dynamicdialog > .p-dialog-mask {
   pointer-events: auto !important;

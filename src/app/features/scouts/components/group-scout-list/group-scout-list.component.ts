@@ -5,10 +5,8 @@ import {ScoutService} from "../../services/scout.service";
 import {FilterService, SelectItem} from "primeng/api";
 import {ScoutFormComponent} from "../scout-form/scout-form.component";
 import {noop} from "rxjs";
-import {LoggedUserInformationService} from "../../../../core/auth/services/logged-user-information.service";
 import {groups} from "../../../../shared/model/group.model";
 import {ScoutInfoComponent} from "../scout-info/scout-info.component";
-import {AlertService} from "../../../../shared/services/alert-service.service";
 import {SettingsService} from "../../../../core/settings/settings.service";
 import {ExcelService} from "../../../../shared/services/excel.service";
 import ScoutHelper from "../../scout.util";
@@ -26,12 +24,14 @@ import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-
 import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {Dialog} from "primeng/dialog";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-group-scout-list',
   templateUrl: './group-scout-list.component.html',
   styleUrls: ['./group-scout-list.component.scss'],
-  providers: [DialogService],
+  providers: [DynamicDialogService, DialogService],
   imports: [
     SelectButtonModule,
     FormsModule,
@@ -42,13 +42,14 @@ import {
     DatePipe,
     ScoutYearPipe,
     Button,
-    TableIconButtonComponent
+    TableIconButtonComponent,
+    Dialog
   ]
 })
 export class GroupScoutListComponent implements OnInit {
 
   private readonly scoutService = inject(ScoutService);
-  private readonly dialogService = inject(DialogService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly filterService = inject(FilterService);
   private readonly settingService = inject(SettingsService);
   private readonly excelService = inject(ExcelService);
@@ -64,6 +65,9 @@ export class GroupScoutListComponent implements OnInit {
   protected showAll = false;
   protected options: SelectItem[] = [];
 
+  protected showDialog: boolean = false;
+  protected noImageScouts!: Scout[];
+
   constructor() {
     if (this.userGroup) {
       this.name = new SentenceCasePipe().transform(groups[this.userGroup].name);
@@ -74,7 +78,7 @@ export class GroupScoutListComponent implements OnInit {
   }
 
   ngOnInit() {
-    !!this.userGroup ? this.getGroupScouts() : this.getScouts();
+    this.userGroup ? this.getGroupScouts() : this.getScouts();
   }
 
   private getGroupScouts() {
@@ -107,19 +111,11 @@ export class GroupScoutListComponent implements OnInit {
   }
 
   protected viewScout(scout: Scout) {
-    this.ref = this.dialogService.open(ScoutInfoComponent, {
-      header: `Datos de ${scout.name}`,
-      styleClass: 'small-dw dialog-width',
-      data: scout
-    });
+    this.ref = this.dialogService.openDialog(ScoutInfoComponent, `Datos de ${scout.name}`, "small", scout);
   }
 
   protected openEditDialog(scout: Scout) {
-    this.ref = this.dialogService.open(ScoutFormComponent, {
-      header: 'Editar Educanda',
-      styleClass: 'medium-dw dialog-width',
-      data: {scout: scout}
-    });
+    this.ref = this.dialogService.openDialog(ScoutFormComponent, "Editar Educanda", "medium", {scout});
     this.ref.onClose.subscribe(saved => saved ? this.getGroupScouts() : noop());
   }
 
@@ -139,6 +135,17 @@ export class GroupScoutListComponent implements OnInit {
       );
     }
     this.excelLoading = false;
+  }
+
+  protected openImageAuthDialog() {
+    this.scoutService.getAllWithoutImageAuthorization().subscribe({
+      next: scouts => {
+        this.noImageScouts = scouts.sort((a, b) =>
+          (a.groupId - b.groupId) || (a.surname.localeCompare(b.surname))
+        );
+        this.showDialog = true;
+      }
+    });
   }
 }
 
