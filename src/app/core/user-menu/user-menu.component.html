@@ -40,7 +40,13 @@
                 [ngClass]="{'selected': item.selected}"
               >
                 <div class="d-flex align-items-center label-container">
-                  <i pButtonIcon [class]="item.icon"></i>
+                  @if (item.checked) {
+                    <p-overlay-badge styleClass="lower" severity="danger">
+                      <i pButtonIcon [class]="item.icon"></i>
+                    </p-overlay-badge>
+                  } @else {
+                    <i pButtonIcon [class]="item.icon"></i>
+                  }
                   <span class="show-on-expanded-width">{{ item.label }}</span>
                 </div>
               </a>

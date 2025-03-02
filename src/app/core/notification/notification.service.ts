@@ -9,10 +9,10 @@ import {LoggedUserDataService} from "../auth/services/logged-user-data.service";
 })
 export class NotificationService {
 
-  private http = inject(HttpClient);
-  private loggedUserData = inject(LoggedUserDataService);
+  private readonly http = inject(HttpClient);
+  private readonly loggedUserData = inject(LoggedUserDataService);
 
-  private hasNotificationsSubject: BehaviorSubject<boolean>;
+  private readonly hasNotificationsSubject: BehaviorSubject<boolean>;
   public userHasNotifications$: Observable<boolean>;
 
   constructor() {

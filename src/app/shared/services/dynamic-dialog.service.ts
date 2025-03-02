@@ -22,7 +22,7 @@ export class DynamicDialogService {
       closable: true,
       data,
       breakpoints: {
-        '700px': '100vw'
+        '700px': '99vw'
       },
       width: this.widths[width],
       focusOnShow: false,

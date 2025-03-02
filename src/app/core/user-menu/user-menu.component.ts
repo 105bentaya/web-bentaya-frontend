@@ -11,6 +11,8 @@ import {LoggedUserDataService} from "../auth/services/logged-user-data.service";
 import {WindowUtils} from "../../shared/util/window-utils";
 import {Tooltip} from "primeng/tooltip";
 import {filter} from "rxjs";
+import {NotificationService} from "../notification/notification.service";
+import {OverlayBadge} from "primeng/overlaybadge";
 
 @Component({
   selector: 'app-user-menu',
@@ -20,7 +22,8 @@ import {filter} from "rxjs";
     ButtonIcon,
     RouterLink,
     Divider,
-    Tooltip
+    Tooltip,
+    OverlayBadge
   ],
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.scss'
@@ -28,6 +31,7 @@ import {filter} from "rxjs";
 export class UserMenuComponent implements OnInit {
 
   private readonly userMenuService = inject(UserMenuService);
+  private readonly notificationService = inject(NotificationService);
   private readonly authService = inject(AuthService);
   private readonly loggedUserData = inject(LoggedUserDataService);
   private readonly router = inject(Router);
@@ -50,11 +54,20 @@ export class UserMenuComponent implements OnInit {
       takeUntilDestroyed(),
       filter(event => event instanceof NavigationEnd)
     ).subscribe(e => this.checkForSelection(e.url));
+
+    this.notificationService.userHasNotifications$
+      .pipe(takeUntilDestroyed())
+      .subscribe(hasNotifications => {
+        const menu = this.items.find(i => i.label === "Asistencia");
+        if (menu) menu.checked = hasNotifications;
+      });
   }
 
   ngOnInit() {
     this.items = buildSplitMenu(this.loggedUserData);
     this.checkForSelection(this.router.url);
+    this.notificationService.checkIfHasNotifications()
+
   }
 
   private checkForSelection(url: string) {

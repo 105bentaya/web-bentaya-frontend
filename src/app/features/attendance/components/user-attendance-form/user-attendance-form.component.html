@@ -1,0 +1,41 @@
+@if (confirmation) {
+  <div class="d-flex flex-column gap-3">
+    <div class="d-flex flex-column gap-1">
+      <label class="required" for="attends">Asiste:</label>
+      <p-selectButton
+        id="attends"
+        [allowEmpty]="false"
+        [options]="options"
+        [(ngModel)]="confirmation.attending"
+        optionLabel="label"
+        optionValue="value"
+      ></p-selectButton>
+    </div>
+    <div class="d-flex flex-column gap-1 w-100">
+      <p-floatlabel variant="on">
+        <label for="confirmationText">
+          @if (confirmation.attending === true) {
+            Observaciones para los scouters
+          } @else if (confirmation.attending === false) {
+            Motivo de la ausencia
+          } @else {
+            Observaciones
+          }
+        </label>
+        <app-form-text-area
+          id="confirmationText"
+          [maxLength]="1024"
+          [(ngModel)]="confirmation.text"
+          (isValid)="validText = $event"
+        ></app-form-text-area>
+      </p-floatlabel>
+    </div>
+    <app-save-buttons
+      [saveLoading]="loading"
+      [saveDisabled]="!validText || confirmation.attending == undefined"
+      (onSave)="onSubmit()"
+    ></app-save-buttons>
+  </div>
+} @else {
+  <app-basic-loading-info></app-basic-loading-info>
+}

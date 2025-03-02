@@ -12,7 +12,7 @@ import {FormsModule} from '@angular/forms';
 import {DatePipe, NgClass} from '@angular/common';
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {Confirmation} from "../../models/confirmation.model";
-import {AttendanceFormComponent} from "../attendance-form/attendance-form.component";
+import {UserAttendanceFormComponent} from "../user-attendance-form/user-attendance-form.component";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {DatePicker} from "primeng/datepicker";
@@ -73,7 +73,7 @@ export class UserAttendanceListComponent implements OnInit {
   }
 
   protected openEditDialog(eventId: number, scoutId: number) {
-    this.ref = this.dialogService.openDialog(AttendanceFormComponent, 'Asistencia', "small", {eventId: eventId, scoutId: scoutId});
+    this.ref = this.dialogService.openDialog(UserAttendanceFormComponent, 'Asistencia', "small", {eventId: eventId, scoutId: scoutId});
     this.ref.onClose.subscribe((data: Confirmation) => {
       if (data) {
         const editedScout = this.info.find(scout => scout.scoutId == data.scoutId)!;

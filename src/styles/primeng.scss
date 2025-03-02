@@ -46,6 +46,9 @@
   --p-datepicker-date-height: 2.15rem;
   --p-datepicker-header-padding: 0 0 .25rem 0;
   --p-datepicker-time-picker-padding: 0.5rem 0 0 0;
+
+  --p-overlaybadge-outline-width: 0;
+  --p-button-badge-size: 0.75rem;
 }
 
 .p-progressspinner-spin {
@@ -97,7 +100,11 @@ p-toggle-button.no-label {
   }
 }
 
-//fixes
+.p-badge.lower {
+  top: 3px;
+}
+
+  //fixes
 
 p-dynamicdialog > .p-dialog-mask {
   pointer-events: auto !important;
