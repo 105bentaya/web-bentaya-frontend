@@ -1,7 +1,7 @@
 <div [formGroup]="formHelper.form" class="form-container">
   <div class="row">
     <div class="col">
-      <p-floatlabel>
+      <p-floatlabel variant="on">
         <p-select
           formControlName="scoutCenter"
           id="scoutCenter"
@@ -19,7 +19,7 @@
     </div>
     @if (selectedCenterInfo) {
       <div class="col-12 col-md-6">
-        <p-floatlabel>
+        <p-floatlabel variant="on">
           <input
             pInputText
             formControlName="packs"
@@ -36,7 +36,7 @@
         }
         @if (formHelper.isDirtyAndInvalidWithError('packs', 'max')) {
           <small class="text-danger">El número de personas participantes no debe superar el aforo
-            máximo</small>
+            máximo ({{selectedCenterInfo.maxCapacity}})</small>
         }
       </div>
     }
@@ -45,7 +45,7 @@
     <div [formGroup]="datesForm.form">
       <div class="row">
         <div class="col-12 col-md-6">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-datePicker
               id="startDate"
               formControlName="startDate"
@@ -55,7 +55,7 @@
               [defaultDate]="defaultDate"
               [showTime]="true"
               [stepMinute]="15"
-              [showButtonBar]="true"
+              [showClear]="true"
               [class]="datesForm.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
               appendTo="body"
             >
@@ -72,7 +72,7 @@
           }
         </div>
         <div class="col-12 col-md-6">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-datePicker
               id="endDate"
               formControlName="endDate"
@@ -82,7 +82,7 @@
               [defaultDate]="defaultDate"
               [showTime]="true"
               [stepMinute]="15"
-              [showButtonBar]="true"
+              [showClear]="true"
               [class]="datesForm.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
               appendTo="body"
             >
@@ -109,73 +109,61 @@
             informará de la situación exacta del aforo.
           </small>
           @if (!datesForm.hasFormError('endDateBefore') && !datesForm.isDirtyAndInvalid("startDate") && !datesForm.isDirtyAndInvalid("endDate")) {
-            <div>
+            <div class="d-flex flex-column gap-3 mt-3">
               @if (reservedInfo.length > 0) {
-                <p-messages severity="warn">
-                  <ng-template pTemplate>
-                    <i class="pi pi-exclamation-circle fs-3 me-3"></i>
-                    <div>
-                      Durante las siguientes fechas hay una pre-reserva hecha, por lo que su reserva puede no
-                      ser aceptada si la pre-reserva termina por confirmarse:
-                      <ul>
-                        @for (info of reservedInfo; track $index) {
-                          <li>
-                            {{ info.startDate | date:"dd/MM HH:mm" }} -
-                            {{ info.endDate | date:"dd/MM HH:mm" }}
-                          </li>
-                        }
-                      </ul>
-                    </div>
-                  </ng-template>
-                </p-messages>
+                <p-message severity="warn" icon="pi pi-exclamation-circle">
+                  <div>
+                    Durante las siguientes fechas hay una pre-reserva hecha, por lo que su reserva puede no
+                    ser aceptada si la pre-reserva termina por confirmarse:
+                    <ul>
+                      @for (info of reservedInfo; track $index) {
+                        <li>
+                          {{ info.startDate | date:"dd/MM HH:mm" }} -
+                          {{ info.endDate | date:"dd/MM HH:mm" }}
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                </p-message>
               }
               @if (occupiedInfo.length > 0) {
-                <p-messages severity="warn" styleClass="occupied">
-                  <ng-template pTemplate>
-                    <i class="pi pi-exclamation-circle fs-3 me-3"></i>
-                    <div>
-                      Durante las siguientes fechas el centro está parcialmente ocupado, por lo que su reserva
-                      puede no ser aceptada si sobrepasa el aforo restante:
-                      <ul>
-                        @for (info of occupiedInfo; track $index) {
-                          <li>
-                            {{ info.startDate | date:"dd/MM HH:mm" }} -
-                            {{ info.endDate | date:"dd/MM HH:mm" }}
-                          </li>
-                        }
-                      </ul>
-                    </div>
-                  </ng-template>
-                </p-messages>
+                <p-message severity="warn" styleClass="occupied" icon="pi pi-exclamation-circle">
+                  <div>
+                    Durante las siguientes fechas el centro está parcialmente ocupado, por lo que su reserva
+                    puede no ser aceptada si sobrepasa el aforo restante:
+                    <ul>
+                      @for (info of occupiedInfo; track $index) {
+                        <li>
+                          {{ info.startDate | date:"dd/MM HH:mm" }} -
+                          {{ info.endDate | date:"dd/MM HH:mm" }}
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                </p-message>
               }
               @if (fullyOccupiedInfo.length > 0) {
-                <p-messages severity="error">
-                  <ng-template pTemplate>
-                    <i class="pi pi-times-circle fs-3 me-3"></i>
-                    <div>
-                      Durante las siguientes fechas el centro está totalmente ocupado, por lo que no se puede
-                      realizar la reserva:
-                      <ul>
-                        @for (info of fullyOccupiedInfo; track $index) {
-                          <li>
-                            {{ info.startDate | date:"dd/MM HH:mm" }} -
-                            {{ info.endDate | date:"dd/MM HH:mm" }}
-                          </li>
-                        }
-                      </ul>
-                    </div>
-                  </ng-template>
-                </p-messages>
+                <p-message severity="error" icon="pi pi-times-circle">
+                  <div>
+                    Durante las siguientes fechas el centro está totalmente ocupado, por lo que no se puede
+                    realizar la reserva:
+                    <ul>
+                      @for (info of fullyOccupiedInfo; track $index) {
+                        <li>
+                          {{ info.startDate | date:"dd/MM HH:mm" }} -
+                          {{ info.endDate | date:"dd/MM HH:mm" }}
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                </p-message>
               }
               @if (noOverlapping) {
-                <p-messages severity="success">
-                  <ng-template pTemplate>
-                    <i class="pi pi-check fs-3 me-3"></i>
-                    <div>
-                      No hay ningún conflicto con otras reservas, puede seguir adelante.
-                    </div>
-                  </ng-template>
-                </p-messages>
+                <p-message severity="success" icon="pi pi-check">
+                  <div>
+                    No hay ningún conflicto con otras reservas, puede seguir adelante.
+                  </div>
+                </p-message>
               }
             </div>
           }

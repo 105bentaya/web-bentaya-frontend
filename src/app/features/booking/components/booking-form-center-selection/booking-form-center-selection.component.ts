@@ -10,8 +10,6 @@ import {SelectModule} from "primeng/select";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
 import {KeyFilterModule} from "primeng/keyfilter";
-import {MessagesModule} from "primeng/messages";
-import {PrimeTemplate} from "primeng/api";
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -29,6 +27,7 @@ import {BookingInterval} from "../../model/booking-interval.model";
 import {CenterInformation} from "../../model/center-information.model";
 import {BookingService} from "../../service/booking.service";
 import {DatePicker} from "primeng/datepicker";
+import {Message} from "primeng/message";
 
 @Component({
   selector: 'app-booking-form-center-selection',
@@ -38,18 +37,17 @@ import {DatePicker} from "primeng/datepicker";
     FloatLabelModule,
     InputTextModule,
     KeyFilterModule,
-    MessagesModule,
-    PrimeTemplate,
     ReactiveFormsModule,
-    DatePicker
+    DatePicker,
+    Message
   ],
   templateUrl: './booking-form-center-selection.component.html',
   styleUrl: './booking-form-center-selection.component.scss'
 })
 export class BookingFormCenterSelectionComponent implements OnInit {
 
-  private bookingDateService = inject(BookingDateService);
-  private bookingService = inject(BookingService);
+  private readonly bookingDateService = inject(BookingDateService);
+  private readonly bookingService = inject(BookingService);
 
   protected formHelper = new FormHelper();
   protected datesForm = new FormHelper();
@@ -97,7 +95,7 @@ export class BookingFormCenterSelectionComponent implements OnInit {
     });
   }
 
-  private dateValidation: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  private readonly dateValidation: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     let startDate = control.get("startDate")?.value;
     let endDate = control.get("endDate")?.value;
     if (startDate && endDate) {
@@ -111,7 +109,7 @@ export class BookingFormCenterSelectionComponent implements OnInit {
     return null;
   };
 
-  private occupationValidation: AsyncValidatorFn = (control: AbstractControl): Observable<ValidationErrors | null> => {
+  private readonly occupationValidation: AsyncValidatorFn = (control: AbstractControl): Observable<ValidationErrors | null> => {
     let startDate = control.get("startDate")!.value;
     let endDate = control.get("endDate")!.value;
     startDate = DateUtils.dateTruncatedToMinutes(startDate);

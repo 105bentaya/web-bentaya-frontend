@@ -1,13 +1,10 @@
-<p-messages severity="warn">
-  <ng-template pTemplate>
-    <i class="pi pi-exclamation-triangle me-3 fs-3 d-none d-md-block"></i>
-    <div style="overflow: hidden; text-overflow: ellipsis;">
-      El sistema de reservas está actualmente en fase de prueba, por lo que es posible que experimente algunos errores o
-      un funcionamiento irregular. Le pedimos que, si encuentra algún inconveniente o tiene alguna sugerencia, nos lo
-      comunique enviando un correo a
-      <a class="uncolored" href="mailto:{{maintenanceEmail}}?subject=Mejoras en las reservas de Centros Scouts">
-        {{maintenanceEmail}}
-      </a>
-    </div>
-  </ng-template>
-</p-messages>
+<div class="mb-3">
+  <p-message severity="warn" icon="pi pi-exclamation-triangle">
+    El sistema de reservas está actualmente en fase de prueba, por lo que es posible que experimente algunos errores o
+    un funcionamiento irregular. Le pedimos que, si encuentra algún inconveniente o tiene alguna sugerencia, nos lo
+    comunique enviando un correo a
+    <a class="uncolored" href="mailto:{{maintenanceEmail}}?subject=Mejoras en las reservas de Centros Scouts">
+      {{ maintenanceEmail }}
+    </a>
+  </p-message>
+</div>

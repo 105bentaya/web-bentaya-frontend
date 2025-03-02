@@ -1,5 +1,6 @@
 import {AbstractControlOptions, FormBuilder, FormGroup} from "@angular/forms";
 import {inject} from "@angular/core";
+import {lastValueFrom, skip, take} from "rxjs";
 
 export class FormHelper {
   private readonly formBuilder = inject(FormBuilder);
@@ -35,15 +36,20 @@ export class FormHelper {
     return this.currentPage == this.pages.length;
   }
 
+  goToFirstPage() {
+    this.currentPage = 0;
+    document.getElementById("form-steps")?.scrollIntoView();
+  }
+
   goToNextPage() {
-    if (
-      this.currentPage < this.pages.length &&
-      this.validateControls(this.pages[this.currentPage]) &&
-      this.currentPage++ == this.pages.length - 1
-    ) {
-      this.onLastPage();
-    }
-    document.getElementById("form-steps")!.scrollIntoView();
+    if (this.currentPage >= this.pages.length) return;
+    this.validateControls(this.pages[this.currentPage]).then(valid => {
+      if (valid) {
+        document.getElementById("form-steps")?.scrollIntoView();
+        this.currentPage++;
+        if (this.currentPage == this.pages.length) this.onLastPage();
+      }
+    });
   }
 
   isDirtyAndInvalid(controlKey?: string) {
@@ -78,12 +84,12 @@ export class FormHelper {
     this.form = this.formBuilder.group(controls, options);
   }
 
-  validateAll() {
+  async validateAll(): Promise<void> {
     this.hasBeenValidated = true;
-    this.validateControls(Object.keys(this.form.controls));
+    await this.validateControls(Object.keys(this.form.controls));
   }
 
-  validateControls(controls: string[]): boolean {
+  private async validateControls(controls: string[]): Promise<boolean> {
     return FormHelper._validateControls(controls, this.form);
   }
 
@@ -107,28 +113,35 @@ export class FormHelper {
     return this.form.value;
   }
 
-  static validateControls(group: FormGroup): boolean {
-    return this._validateControls(Object.keys(group.controls), group);
+  static validateControls(group: FormGroup): void {
+    this._validateControls(Object.keys(group.controls), group);
   }
 
-  private static _validateControls(controls: string[], group: FormGroup): boolean {
+  private static async _validateControls(controls: string[], group: FormGroup): Promise<boolean> {
     let valid = true;
-    controls.forEach(key => {
+    for (const key of controls) {
       const control = group.get(key)!;
-      this.checkForGroups(control as FormGroup);
+      if (!(await this.checkForGroups(control as FormGroup))) {
+        valid = false;
+      }
       if (typeof control.value === 'string') control.setValue(control.value.trim());
-      control.updateValueAndValidity();
-      if (control.invalid) {
+      if (control.asyncValidator) {
+        const firstStatusChange = lastValueFrom(control.statusChanges.pipe(take(1)));
+        const nextStatusChange = lastValueFrom(control.statusChanges.pipe(skip(1), take(1)));
+        control.updateValueAndValidity();
+        if (await firstStatusChange === "PENDING") await nextStatusChange;
+      } else {
+        control.updateValueAndValidity();
+      }
+      if (control.invalid || !control.valid) {
         valid = false;
         control.markAsDirty();
       }
-    });
+    }
     return valid;
   }
 
-  private static checkForGroups(control: FormGroup) {
-    if (control.controls) {
-     this._validateControls(Object.keys(control.controls), control);
-    }
+  private static async checkForGroups(control: FormGroup): Promise<boolean> {
+    return control.controls ? await this._validateControls(Object.keys(control.controls), control) : true;
   }
 }

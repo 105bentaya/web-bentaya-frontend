@@ -138,7 +138,7 @@
                 }
               </div>
               <div class="w-100">
-                <span class="required">Quiero desgravar mi aportación en la declaración de la renta:</span>
+                <span class="required user-select-none">Quiero desgravar mi aportación en la declaración de la renta:</span>
                 <div class="d-flex flex-column gap-2 mt-1">
                   <app-radio-button-container label="Sí">
                     <p-radioButton
@@ -181,7 +181,7 @@
                 }
               </div>
               <div class="col-12">
-                <span class="required">Periodicidad de la donación:</span>
+                <span class="required user-select-none">Periodicidad de la donación:</span>
                 <div class="d-flex flex-column gap-1 my-2">
                   <app-radio-button-container label="Mensual">
                     <p-radioButton
@@ -224,7 +224,7 @@
             <div class="row">
               @if (formHelper.controlValue('frequency') === 'SINGLE') {
                 <div class="col-12 mb-0">
-                  <span class="required">Elija un método para realizar la donación:</span>
+                  <span class="required user-select-none">Elija un método para realizar la donación:</span>
                   <div class="d-flex flex-column gap-2 justify-content-around my-2">
                     <app-radio-button-container label="Por tarjeta de crédito o débito mediante nuestro TPV">
                       <p-radioButton

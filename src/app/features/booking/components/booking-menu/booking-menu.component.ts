@@ -24,7 +24,7 @@ export class BookingMenuComponent {
   protected scoutCenters = [
     {
       mainText: "Aula de la Naturaleza El Palmital",
-      subText: "El Palmital, Santa María de Guía",
+      subText: "El Palmital, Guía",
       backgroundImageUrl: "assets/centros-scout/palmital/menu.png",
       iconClass: "fa-solid fa-bed",
       scoutCenter: palmital

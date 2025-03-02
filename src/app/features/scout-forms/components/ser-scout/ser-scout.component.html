@@ -152,6 +152,7 @@
                   [minDate]="minDate"
                   [maxDate]="maxDate"
                   [defaultDate]="maxDate"
+                  appendTo="body"
                 ></p-datePicker>
                 <label class="required" for="birthday">Fecha de Nacimiento</label>
               </p-floatlabel>
@@ -492,3 +493,6 @@
     </form>
   }
 </div>
+@if (loading) {
+  <div class="p-overlay-mask block-scroll"></div>
+}

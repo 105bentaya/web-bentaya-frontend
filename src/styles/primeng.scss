@@ -91,11 +91,12 @@ p-dynamicdialog > .p-dialog-mask {
 }
 
 .p-datepicker-input:has(~ timesicon) {
-  padding-right: 28px;
+  padding-right: 40px;
   ~ timesicon {
-    margin-left: -28px + 2px;
-    margin-right: 28px - 18px;
+    margin-left: -29px;
+    margin-right: 13px;
     cursor: pointer;
+    color: var(--p-form-field-icon-color);
   }
 }
 

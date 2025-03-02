@@ -1,16 +1,24 @@
 <div class="container">
-  <h1 class="text-center">CENTROS SCOUT - Pre Reserva</h1>
+  <div class="text-center">
+    <h1 class="mb-0">CENTROS SCOUT</h1>
+    <h2>Reserva</h2>
+  </div>
   @if (successOnSubmit) {
     <div class="text-center">
       <p>Su solicitud ha sido enviada con éxito</p>
       <p>Un correo con la copia de la reserva y el usuario para realizar el seguimiento ha sido enviado a
-        <b>{{ mail }}</b></p>
-      <p>Si no ha recibido el correo compruebe la carpeta de spam</p>
+        <b>{{ mail }}</b>
+      </p>
       <p>En caso de tener algún problema con respecto al correo, contacte a
         <a href="mailto:{{maintenanceEmail}}?subject=PROBLEMAS RESPECTO A SOLICITUD CENTRO SCOUT">
           {{maintenanceEmail}}
         </a>
       </p>
+      <app-general-a-button
+        label="Volver a Centros Scout"
+        routerLink="/centros-scout"
+        variant="outlined"
+      ></app-general-a-button>
     </div>
   } @else {
     <p class="my-3">
@@ -22,6 +30,9 @@
     @if (bookingForm.form) {
       <p-steps class="steps-no-label" id="form-steps" [model]="steps" [activeIndex]="bookingForm.currentPage"></p-steps>
       <form [formGroup]="bookingForm.form" class="form-container">
+        @if (bookingForm.currentPage >= 0) {
+          <div class="step-form-title">{{ steps[bookingForm.currentPage].label }}</div>
+        }
         @switch (bookingForm.currentPage) {
           @case (-1) {
             <div class="pt-4">
@@ -56,12 +67,9 @@
           }
           @case (0) {
             <div>
-              <h5 class="step-form-title">
-                <b>Datos de la Entidad</b>
-              </h5>
               <div class="row">
                 <div class="col-12 col-md-6">
-                  <p-floatlabel>
+                  <p-floatlabel variant="on">
                     <input
                       pInputText
                       formControlName="groupName"
@@ -76,7 +84,7 @@
                   }
                 </div>
                 <div class="col-12 col-md-6">
-                  <p-floatlabel>
+                  <p-floatlabel variant="on">
                     <input
                       pInputText
                       formControlName="cif"
@@ -92,8 +100,8 @@
                 </div>
                 <div class="col-12">
                   <label class="required" for="workDescription">
-                    Pequeña descripción sobre la labor de la asociación o centro, indicando con claridad el deseo
-                    del uso de nuestras instalaciones acorde a sus actividades.
+                    Breve descripción sobre la labor de la asociación o centro, indicando con claridad el deseo
+                    del uso de nuestras instalaciones y las actividades a realizar.
                   </label>
                   <app-form-text-area
                     [maxLength]="510"
@@ -110,12 +118,9 @@
           }
           @case (1) {
             <div>
-              <h5 class="step-form-title">
-                <b>Datos de Contacto</b>
-              </h5>
               <div class="row">
                 <div class="col-12 col-lg-6">
-                  <p-floatlabel>
+                  <p-floatlabel variant="on">
                     <input
                       pInputText
                       formControlName="contactName"
@@ -130,7 +135,7 @@
                   }
                 </div>
                 <div class="col-12 col-lg-6">
-                  <p-floatlabel>
+                  <p-floatlabel variant="on">
                     <input
                       pInputText
                       formControlName="relationship"
@@ -149,7 +154,7 @@
               </div>
               <div class="row">
                 <div class="col-12 col-lg-6">
-                  <p-floatlabel>
+                  <p-floatlabel variant="on">
                     <input
                       pInputText
                       formControlName="phone"
@@ -164,7 +169,7 @@
                   }
                 </div>
                 <div class="col-12 col-lg-6">
-                  <p-floatlabel>
+                  <p-floatlabel variant="on">
                     <input
                       pInputText
                       formControlName="email"
@@ -190,50 +195,43 @@
               </div>
             </div>
           }
-          @case (2) {
-            <div>
-              <h5 class="step-form-title">
-                <b>Datos de la Reserva</b>
-              </h5>
-            </div>
-          }
           @case (3) {
             <div>
-              <h5 class="step-form-title mb-2">
-                <b>Otros Datos</b>
-              </h5>
-              @if (centerSelectionComponent.eligibleForExclusiveness) {
+              @if (true) {
                 <div class="row">
                   <div class="col-12">
-                    <p>Ha alcanzado el aforo necesario para poder realizar una reserva en exclusividad, ¿desea
-                      hacerlo?</p>
+                    <span class="user-select-none">Ha alcanzado el aforo necesario para poder realizar una reserva en exclusividad, ¿desea
+                      hacerlo?</span>
                     <div class="d-flex align-items-center">
-                      <p-checkbox
-                        id="exclusiveReservation"
-                        formControlName="exclusiveReservation"
-                        [binary]="true"
-                        label="Solicitar centro en exclusividad"
-                      ></p-checkbox>
+                      <app-checkbox-container label="Solicitar centro en exclusividad">
+                        <p-checkbox
+                          id="exclusiveReservation"
+                          formControlName="exclusiveReservation"
+                          [binary]="true"
+                        ></p-checkbox>
+                      </app-checkbox-container>
                     </div>
                   </div>
                 </div>
               }
               <div class="row">
-                <div class="col-12 mb-2">
-                  <label for="observations">
-                    Alguna observación que desee añadir para tener en cuenta a la hora de estudiar su reserva.
-                  </label>
-                  <app-form-text-area
-                    [maxLength]="1023"
-                    formControlName="observations"
-                    id="observations"
-                    [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('observations', 'maxlength')"
-                  ></app-form-text-area>
+                <div class="col-12 mb-0">
+                  <p-floatlabel variant="on">
+                    <label for="observations">
+                      Observaciones a tener en cuenta a la hora de estudiar su reserva
+                    </label>
+                    <app-form-text-area
+                      [maxLength]="1023"
+                      formControlName="observations"
+                      id="observations"
+                      [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('observations', 'maxlength')"
+                    ></app-form-text-area>
+                  </p-floatlabel>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
-                  <app-checkbox-container>
+                  <app-checkbox-container [privacy]="true">
                     <p-checkbox
                       id="privacy"
                       formControlName="privacy"
@@ -249,15 +247,14 @@
           }
           @case (4) {
             <div>
-              <h5 class="step-form-title">
-                <b>Confirmación de Datos</b>
-              </h5>
               <p>
                 Se mandarán los siguientes datos con los que tramitaremos su solicitud, rogamos que compruebe que
                 estén todos bien.
               </p>
-              <h4>Datos de la asociación o centro educativo</h4>
-              <div class="row px-1">
+              <div class="row confirmation-container">
+                <div class="col-12 mb-0">
+                  <b class="fs-5">Datos de la asociación o centro educativo</b>
+                </div>
                 <div class="col-12 col-lg-6">
                   <b>Nombre:</b> {{ booking.groupName }}
                 </div>
@@ -282,9 +279,9 @@
                 <div class="col-12 col-lg-6">
                   <b>Teléfono:</b> {{ booking.phone }}
                 </div>
-              </div>
-              <h4>Datos de la solicitud</h4>
-              <div class="row px-1">
+                <div class="col-12 mb-0">
+                  <b class="fs-5">Datos de la solicitud</b>
+                </div>
                 <div class="col-12 col-lg-6">
                   <b>Centro Scout:</b> {{ booking.scoutCenter | scoutCenter }}
                 </div>
@@ -326,3 +323,6 @@
     }
   }
 </div>
+@if (loading) {
+  <div class="p-overlay-mask block-scroll"></div>
+}

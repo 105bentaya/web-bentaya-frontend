@@ -2,6 +2,7 @@
 @import "./calendar";
 @import "./primeng";
 @import "./z-index";
+@import "./invalid-dirty";
 
 $row-padding: 0.35rem;
 
@@ -45,11 +46,11 @@ hr {
 
   .row {
     &.mt-revert {
-      margin-top: -1.5rem;
+      margin-top: -1rem;
     }
 
     &.mb-revert {
-      margin-bottom: -1.5rem;
+      margin-bottom: -1rem;
     }
 
     > div {
@@ -65,7 +66,7 @@ hr {
   }
 
   label:has(+ .ng-invalid.ng-dirty), label:has(+ div .ng-invalid.ng-dirty) {
-    color: #f44336;
+    color: var(--p-floatlabel-invalid-color);
   }
 }
 
@@ -75,15 +76,6 @@ hr {
 
 .pre-line {
   white-space: pre-line;
-}
-
-app-form-text-area.ng-invalid.ng-dirty {
-  textarea {
-    border-color: #f44336;
-  }
-  label {
-    color: #f44336;
-  }
 }
 
 .step-form-title { //dont like it
@@ -112,7 +104,6 @@ app-form-text-area.ng-invalid.ng-dirty {
 }
 
 label, span, th {
-  user-select: none;
   &.required:after {
     content: "*";
     font-weight: bold;

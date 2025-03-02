@@ -157,7 +157,9 @@ export class AppComponent implements OnInit {
       dateFormat: "dd/mm/yy",
       emptySearchMessage: "No hay resultados",
       emptyMessage: "No hay resultados",
-      cancel: "Cancelar"
+      cancel: "Cancelar",
+      today: "Hoy",
+      clear: "Borrar"
     });
   }
 }

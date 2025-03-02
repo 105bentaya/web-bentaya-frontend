@@ -1,13 +1,11 @@
 import {Component} from '@angular/core';
-import {PrimeTemplate} from "primeng/api";
-import {MessagesModule} from "primeng/messages";
 import {maintenanceEmail} from "../../../../shared/constant";
+import {Message} from "primeng/message";
 
 @Component({
   selector: 'app-booking-beta-alert',
   imports: [
-    PrimeTemplate,
-    MessagesModule
+    Message
   ],
   templateUrl: './booking-beta-alert.component.html',
   styleUrl: './booking-beta-alert.component.scss'

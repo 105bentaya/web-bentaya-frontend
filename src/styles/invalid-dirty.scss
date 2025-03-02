@@ -1,0 +1,77 @@
+%focus {
+  border-color: var(--p-inputtext-invalid-border-color);
+  box-shadow: var(--p-button-danger-focus-ring-shadow);
+}
+
+%hover {
+  border-color: var(--p-red-500);
+}
+
+p-datepicker.ng-invalid.ng-dirty .p-datepicker.p-inputwrapper .p-inputtext {
+  &:enabled:focus {
+    @extend %focus;
+  }
+
+  &:hover {
+    @extend %hover;
+  }
+}
+
+.p-inputtext.ng-invalid.ng-dirty {
+  &:enabled:focus {
+    @extend %focus;
+  }
+
+  &:hover {
+    @extend %hover;
+  }
+}
+
+
+p-inputnumber.ng-invalid.ng-dirty > .p-inputtext {
+  &:enabled:focus {
+    @extend %focus;
+  }
+
+  &:hover {
+    @extend %hover;
+  }
+}
+
+.p-select:not(.p-disabled).ng-invalid.ng-dirty {
+  &.p-focus {
+    @extend %focus;
+  }
+
+  &:hover {
+    @extend %hover;
+  }
+}
+
+p-checkbox.ng-invalid.ng-dirty .p-checkbox:not(.p-disabled):has(.p-checkbox-input:hover) .p-checkbox-box {
+  @extend %hover;
+}
+
+p-radiobutton.ng-invalid.ng-dirty .p-radiobutton:not(.p-disabled):has(.p-radiobutton-input:hover) .p-radiobutton-box {
+  @extend %hover;
+}
+
+app-form-text-area.ng-invalid.ng-dirty {
+  textarea {
+    border-color: var(--p-inputtext-invalid-border-color);
+  }
+
+  label {
+    color: var(--p-floatlabel-invalid-color);
+  }
+
+  textarea {
+    &:enabled:focus {
+      @extend %focus;
+    }
+
+    &:hover {
+      @extend %hover;
+    }
+  }
+}

@@ -1,11 +1,11 @@
 <div>
   <div>
-    <h5
+    <h3
       [pAutoFocus]="true"
-      class="title"
+      class="fs-5"
       [style.color]="color"
     >{{ information.title }}
-    </h5>
+    </h3>
     <hr [style.border-color]="color" style="border-width:3px">
     <p>{{ information.description }}</p>
     <p>Este sitio tan idílico cuenta con las siguientes características:</p>
@@ -16,10 +16,10 @@
     </ul>
   </div>
   <div class="d-flex flex-column gap-3 justify-content-center align-items-center mt-4">
-    <div class="d-none d-lg-block">
+    <div class="d-none d-md-block">
       <p-datePicker
         [disabled]="!datesLoaded"
-        class="max-w-full booking-calendar"
+        class="max-w-full booking-information-calendar"
         [inline]="true"
         [minDate]="minDate"
         [maxDate]="maxDate"
@@ -29,7 +29,7 @@
         [maxDateCount]="0"
         [numberOfMonths]="3"
         [showOtherMonths]="false"
-        panelStyleClass="calendar-cursor-default"
+        panelStyleClass="calendar-cursor-daefault"
       >
         <ng-template pTemplate="date" let-date>
           <div class="booking-date">
@@ -38,10 +38,10 @@
         </ng-template>
       </p-datePicker>
     </div>
-    <div class="d-none d-md-block d-lg-none">
+    <div class="d-none d-sm-block d-md-none">
       <p-datePicker
         [disabled]="!datesLoaded"
-        class="max-w-full booking-calendar"
+        class="max-w-full booking-information-calendar"
         [inline]="true"
         [minDate]="minDate"
         [maxDate]="maxDate"
@@ -60,10 +60,10 @@
         </ng-template>
       </p-datePicker>
     </div>
-    <div class="d-md-none">
+    <div class="d-sm-none">
       <p-datePicker
         [disabled]="!datesLoaded"
-        class="max-w-full booking-calendar"
+        class="max-w-full booking-information-calendar"
         [inline]="true"
         [minDate]="minDate"
         [maxDate]="maxDate"
@@ -95,37 +95,36 @@
       *Tenga en cuenta que este calendario representa una ocupación aproximada. Puede aparecer un día como ocupado, pero
       que sólo lo esté durante ciertas horas. Para obtener una información más completa, haga una reserva.
     </p>
-    <!--cambiar y que al hacer hover por los días te muestre la ocupación. e.g ocupado de 00:00 a 12:00, parcialmente ocupado de 12:00 a 16:00-->
   </div>
-  <div class="d-flex flex-column gap-3 justify-content-center align-items-center">
-    <a
-      pButton
-      class="text-decoration-none"
-      routerLink="/centros-scout/reserva"
+  <div class="d-flex flex-wrap gap-3 justify-content-center align-items-center">
+    <app-general-a-button
       icon="fa-solid fa-bed"
       label="Hacer Reserva"
       title="Hacer Reserva"
-    ></a>
-    <p-button
-      icon="pi pi-external-link"
-      label="Ver Fotos del Lugar"
-      (click)="displayBasic = true"
-    ></p-button>
+      variant="outlined"
+      routerLink="/centros-scout/reserva"
+    ></app-general-a-button>
+    @if (information.images && information.images.length > 0) {
+      <p-button
+        icon="pi pi-images"
+        label="Ver Fotos del Lugar"
+        variant="outlined"
+        (click)="displayBasic = true"
+      ></p-button>
+    }
   </div>
   <p-galleria
+    [containerStyle]="{'max-width': '800px'}"
     [value]="information.images"
     [(visible)]="displayBasic"
-    [containerStyle]="{'max-width': '50%'}" [numVisible]="6"
+    [numVisible]="6"
     [circular]="true"
     [fullScreen]="true"
     [showItemNavigators]="true"
     [showThumbnails]="false"
   >
     <ng-template pTemplate="item" let-image>
-      <img
-        [src]="image"
-        style="width:90vw !important; height:90vh !important;"
-        class="object-fit-contain"/>
+      <img [src]="image" alt="{{information.title}}" class="galleria-img"/>
     </ng-template>
   </p-galleria>
 </div>

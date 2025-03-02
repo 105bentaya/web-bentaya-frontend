@@ -29,6 +29,9 @@ import {
 } from "../booking-form-center-selection/booking-form-center-selection.component";
 import {maintenanceEmail} from "../../../../shared/constant";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
+import {
+  GeneralAButtonComponent
+} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 
 @Component({
   selector: 'app-booking-form',
@@ -50,7 +53,8 @@ import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-
     LargeFormButtonsComponent,
     DatePipe,
     ScoutCenterPipe,
-    CheckboxContainerComponent
+    CheckboxContainerComponent,
+    GeneralAButtonComponent
   ]
 })
 export class BookingFormComponent implements OnInit {
@@ -62,10 +66,10 @@ export class BookingFormComponent implements OnInit {
 
   protected steps: MenuItem[] = [
     {label: 'Datos de la Entidad'},
-    {label: 'Datos de Contacto'},
+    {label: 'Contacto'},
     {label: 'Datos de la Reserva'},
     {label: 'Otros Datos'},
-    {label: 'Confirmación de Datos'}
+    {label: 'Confirmación'}
   ];
   protected successOnSubmit = false;
   protected noWhiteSpaceFilter = /\S/;
@@ -96,12 +100,11 @@ export class BookingFormComponent implements OnInit {
     this.bookingForm.createForm({
       groupName: [booking?.organizationName, Validators.required],
       cif: [booking?.cif, Validators.required],
-      workDescription: [booking?.observations, [Validators.required, Validators.maxLength(510)]],
+      workDescription: [null, [Validators.required, Validators.maxLength(510)]],
       contactName: [booking?.contactName, Validators.required],
       relationship: [booking?.contactRelationship, Validators.required],
       email: [this.currentUser, [Validators.required, Validators.email]],
       phone: [booking?.contactPhone, Validators.required],
-      // centerSelection: this.centerSelectionComponent?.form,
       observations: [null, Validators.maxLength(1023)],
       exclusiveReservation: [false],
       privacy: [false, Validators.requiredTrue],

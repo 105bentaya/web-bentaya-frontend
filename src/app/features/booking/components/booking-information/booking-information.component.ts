@@ -7,6 +7,9 @@ import {DateUtils} from "../../../../shared/util/date-utils";
 import {AutoFocus} from "primeng/autofocus";
 import {DatePicker} from "primeng/datepicker";
 import {Button} from "primeng/button";
+import {
+  GeneralAButtonComponent
+} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 
 @Component({
   selector: 'app-booking-information',
@@ -17,7 +20,8 @@ import {Button} from "primeng/button";
     GalleriaModule,
     AutoFocus,
     DatePicker,
-    Button
+    Button,
+    GeneralAButtonComponent
   ]
 })
 export class BookingInformationComponent implements OnChanges {
