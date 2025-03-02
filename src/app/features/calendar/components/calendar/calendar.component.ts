@@ -14,7 +14,7 @@ import {EventStatusService} from "../../services/event-status.service";
 import {delay, skip} from "rxjs";
 import {ScoutEvent} from "../../models/scout-event.model";
 import {DatePipe} from "@angular/common";
-import {Button} from "primeng/button";
+import {Button, ButtonDirective, ButtonIcon} from "primeng/button";
 import {ButtonGroupModule} from "primeng/buttongroup";
 import {SentenceCasePipe} from "../../../../shared/pipes/sentence-case.pipe";
 import {SelectButtonModule} from "primeng/selectbutton";
@@ -42,7 +42,9 @@ import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.s
     MultiSelectModule,
     FormsModule,
     Button,
-    ToggleButton
+    ToggleButton,
+    ButtonDirective,
+    ButtonIcon
   ]
 })
 export class CalendarComponent implements OnInit {

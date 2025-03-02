@@ -106,6 +106,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: {roles: ["ROLE_USER"]}
   },
+  {
+    path: "datos",
+    loadComponent: () => import('./features/scouts/components/user-scout-info/user-scout-info.component').then(c => c.UserScoutInfoComponent),
+    canActivate: [authGuard],
+    data: {roles: ["ROLE_USER"]}
+  },
   //Donaciones
   {
     path: "donaciones/lista",

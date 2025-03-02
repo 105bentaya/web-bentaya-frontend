@@ -38,26 +38,33 @@
     <div class="d-flex gap-1">
       @if (calendarView) {
         <p-button-group>
-          <p-button
+          <a
+            pButton
             size="small"
-            icon="pi pi-chevron-left"
-            variant="outlined"
-            styleClass="squared"
+            outlined
+            class="squared"
+            style="border-start-end-radius: 0; border-end-end-radius: 0"
             (click)="prev()"
-          ></p-button>
+          >
+            <i pButtonIcon class="pi pi-chevron-left"></i>
+          </a>
           <p-button
             size="small"
             label="Hoy"
             (click)="today()"
             [style]="{'height': '32px'}"
+            styleClass="rounded-0"
           ></p-button>
-          <p-button
+          <a
+            pButton
             size="small"
-            icon="pi pi-chevron-right"
-            variant="outlined"
-            styleClass="squared"
+            outlined
+            class="squared"
+            style="border-start-start-radius: 0; border-end-start-radius: 0"
             (click)="next()"
-          ></p-button>
+          >
+            <i pButtonIcon class="pi pi-chevron-right"></i>
+          </a>
         </p-button-group>
       }
       <p-button

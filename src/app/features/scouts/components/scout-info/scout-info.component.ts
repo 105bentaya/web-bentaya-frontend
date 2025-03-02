@@ -22,9 +22,7 @@ import {DatePipe} from "@angular/common";
   ]
 })
 export class ScoutInfoComponent implements OnInit {
-
-  private config = inject(DynamicDialogConfig);
-  private scoutService = inject(ScoutService);
+  private readonly config = inject(DynamicDialogConfig);
   protected scouts!: Scout[];
   protected isUser = false;
   protected items!: MenuItem[];
@@ -34,15 +32,7 @@ export class ScoutInfoComponent implements OnInit {
     if (this.config.data) {
       this.scouts = [this.config.data];
     } else {
-      this.isUser = true;
-      this.scoutService.getAllByCurrentUser().subscribe({
-        next: scouts => {
-          if (scouts.length > 1) {
-            this.generateMenuItems(scouts);
-          }
-          this.scouts = scouts.sort((a, b) => a.name.localeCompare(b.name));
-        }
-      });
+      //mensajito
     }
   }
 

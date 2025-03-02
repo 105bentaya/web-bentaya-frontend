@@ -1,0 +1,101 @@
+<div class="container">
+  @if (scouts) {
+    <h1>Datos de {{scouts[currentIndex].name}}</h1>
+    <p-tabs [value]="currentIndex" [scrollable]="true">
+      @if (scouts.length > 1) {
+        <p-tablist>
+          @for (scout of scouts; track $index) {
+            <p-tab [value]="$index" (click)="currentIndex = $index">{{ scout.name }}</p-tab>
+          }
+        </p-tablist>
+      }
+      <p-tabpanels class="px-0">
+        @for (scout of scouts; track $index) {
+          <p-tabpanel [value]="$index">
+            <div class="row row-cols-1 row-cols-md-2">
+              <div class="mb-1">
+                <div>
+                  <b>Apellidos, Nombre: </b>
+                  <span>{{ scout.surname }}, {{ scout.name }}</span>
+                </div>
+                <div>
+                  <b>DNI o NIE: </b>
+                  <span>{{ scout.dni || "No especificado" }}</span>
+                </div>
+                <div>
+                  <b>Género: </b>
+                  <span>{{ scout.gender }}</span>
+                </div>
+                <div>
+                  <b>Fecha de Nacimiento: </b>
+                  <span>{{ scout.birthday | date:"dd/MM/yyyy" }}</span>
+                </div>
+                <div>
+                  <b>Talla: </b>
+                  <span>{{ scout.shirtSize || "No especificada" }}</span>
+                </div>
+                <div>
+                  <b>Municipio de residencia: </b>
+                  <span>{{ scout.municipality || "No especificado" }}</span>
+                </div>
+                <div>
+                  <b>Autorización de imagen: </b>
+                  <span>{{ scout.imageAuthorization ? "Sí" : "No" }}</span>
+                </div>
+                <div>
+                  <b>Datos Médicos: </b>
+                  <span>{{ scout.medicalData || "Ninguno" }}</span>
+                </div>
+                <div>
+                  <b>Unidad: </b>
+                  <span>{{ scout.groupId | group }}</span>
+                </div>
+                <div>
+                  <b>Censo: </b>
+                  <span>{{ scout.census || "-" }}</span>
+                </div>
+              </div>
+              <div class="w-fit">
+                <div><b>Lista de Contactos:</b></div>
+                @for (contact of scout.contactList; track contact.id) {
+                  @if ($index > 0) {
+                    <hr>
+                  }
+                  <ul>
+                    <li>
+                      <b>Nombre: </b>
+                      <span>{{ contact.name }}</span>
+                    </li>
+                    <li>
+                      <b>Parentesco: </b>
+                      <span>{{ contact.relationship || "No especificado" }}</span>
+                    </li>
+                    @if (contact.phone) {
+                      <li>
+                        <b>Teléfono: </b>
+                        <a class="uncolored text-decoration-none" href="tel:{{contact.phone}}">{{ contact.phone }}</a>
+                      </li>
+                    }
+                    @if (contact.email) {
+                      <li>
+                        <b>Correo: </b>
+                        <a class="uncolored text-decoration-none"
+                           href="mailto:{{contact.email}}">{{ contact.email }}</a>
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+            </div>
+            <small>Si detecta cualquier error por favor comuníquelo a los scouters de unidad</small>
+          </p-tabpanel>
+        }
+      </p-tabpanels>
+    </p-tabs>
+    @if (scouts.length < 1) {
+      No se han encontrado personas educandas asociadas a este usuario
+    }
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>
