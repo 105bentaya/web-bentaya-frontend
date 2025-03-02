@@ -24,4 +24,5 @@ export class GeneralAButtonComponent {
   @Input() target!: string;
   @Input() disabled!: boolean;
   @Input() variant: "text" | "outlined" | "filled" = "text";
+  @Input() severity: "success" | "info" | "warn" | "danger" | "help" | "primary" | "secondary" | "contrast" = "primary";
 }

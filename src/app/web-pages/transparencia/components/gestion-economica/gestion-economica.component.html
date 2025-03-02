@@ -1,5 +1,8 @@
 <div class="container">
-  <h1 class="text-center">Gestión Económica</h1>
+  <div class="text-center">
+    <h1 class="mb-0 cursor-pointer" routerLink="/transparencia">TRANSPARENCIA</h1>
+    <h2>Gestión Económica</h2>
+  </div>
   <p>
     La gestión económica de la Asociación Scouts Exploradores Bentaya está basada en un estrecho control financiero de
     los recursos, tanto internos como externos, intentando, en todo momento, que la información contable y económica
@@ -9,35 +12,42 @@
     Las cuentas de la entidad se someten además a diferentes auditorias.
   </p>
   @if (data) {
-    <p-tabView>
-      @for (yearData of data; track $index) {
-        <p-tabPanel header="{{yearData.year}}" class="text-center">
-          <p>Las cuentas anuales de Scouts 105 Bentaya correspondientes al ejercicio {{ yearData.year }}.</p>
-          <p>Aquí puedes consultar nuestras
-            <a
-              target="_blank"
-              href="assets/archivos/cuentas-anuales/{{yearData.file}}"
-              class="hyperlink"
-            >Cuentas Anuales {{ yearData.year }}</a>.</p>
-          <div class="d-flex flex-wrap flex-md-nowrap justify-content-center w-100">
-            <p-chart
-              width="300px"
-              height="300px"
-              type="pie"
-              [data]="yearData.inData.data"
-              [options]="yearData.inData.options"
-            ></p-chart>
-            <p-chart
-              width="300px"
-              height="300px"
-              type="pie"
-              [data]="yearData.outData.data"
-              [options]="yearData.outData.options"
-            ></p-chart>
-          </div>
-        </p-tabPanel>
-      }
-    </p-tabView>
+    <p-tabs value="0">
+      <p-tablist>
+        @for (yearData of data; track $index) {
+          <p-tab value="{{$index}}">{{ yearData.year }}</p-tab>
+        }
+      </p-tablist>
+      <p-tabpanels>
+        @for (yearData of data; track $index) {
+          <p-tabpanel value="{{$index}}" class="text-center">
+            <p>Las cuentas anuales de Scouts 105 Bentaya correspondientes al ejercicio {{ yearData.year }}.</p>
+            <p>Aquí puedes consultar nuestras
+              <a
+                target="_blank"
+                href="assets/archivos/cuentas-anuales/{{yearData.file}}"
+                class="hyperlink"
+              >Cuentas Anuales {{ yearData.year }}</a>.</p>
+            <div class="d-flex flex-wrap flex-md-nowrap justify-content-center w-100">
+              <p-chart
+                width="300px"
+                height="300px"
+                type="pie"
+                [data]="yearData.inData.data"
+                [options]="yearData.inData.options"
+              ></p-chart>
+              <p-chart
+                width="300px"
+                height="300px"
+                type="pie"
+                [data]="yearData.outData.data"
+                [options]="yearData.outData.options"
+              ></p-chart>
+            </div>
+          </p-tabpanel>
+        }
+      </p-tabpanels>
+    </p-tabs>
   } @else {
     <app-basic-loading-info></app-basic-loading-info>
   }

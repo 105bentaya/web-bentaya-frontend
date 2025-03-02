@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="text-center">Portal de Transparencia de Scouts 105 Bentaya</h1>
+  <h1 class="text-center">PORTAL DE TRANSPARENCIA</h1>
   <p>
     Consulte aquí los distintos ámbitos de gestión de la asociación, donde puede encontrar la siguiente información de
     nuestra organización:
@@ -23,54 +23,17 @@
   </ul>
 </div>
 <div class="row row-cols-2 row-cols-sm-3 row-cols-md-auto button-container justify-content-center mt-4">
-  <div class="d-flex flex-column">
-    <a class="green-icon-button user-select-none" routerLink="gestion-economica">
-      <img
-        class="image"
-        src="../../../assets/transparencia/insignia-economia.png"
-        alt="ECONÓMICO"
-      >
-      <label>Económico Financiero</label>
-    </a>
-  </div>
-  <div class="d-flex flex-column">
-    <a class="green-icon-button no-link user-select-none">
-      <img
-        class="image"
-        src="assets/transparencia/insignia-voluntariado.png"
-        alt="VOLUNTARIADO"
-      >
-      <label>Voluntariado</label>
-    </a>
-  </div>
-  <div class="d-flex flex-column">
-    <a class="green-icon-button no-link user-select-none">
-      <img
-        class="image"
-        src="assets/transparencia/insignia-actividades.png"
-        alt="PLAN DE ACTIVIDADES"
-      >
-      <label>Plan de Actividades</label>
-    </a>
-  </div>
-  <div class="d-flex flex-column">
-    <a class="green-icon-button no-link user-select-none">
-      <img
-        class="image"
-        src="assets/transparencia/insignia-subvenciones.png"
-        alt="SUBVENCIONES"
-      >
-      <label>Subvenciones</label>
-    </a>
-  </div>
-  <div class="d-flex flex-column">
-    <a class="green-icon-button user-select-none" routerLink="cargos">
-      <img
-        class="image"
-        src="assets/transparencia/insignia-representacion.png"
-        alt="CARGOS"
-      >
-      <label>Órgano de Representación</label>
-    </a>
-  </div>
+  @for (item of items; track $index) {
+    <div class="d-flex flex-column">
+      <a class="green-icon-button user-select-none" [ngClass]="{'no-link': !item.routerLink}"
+         [routerLink]="item?.routerLink">
+        <img
+          class="image"
+          src="../../../assets/transparencia/{{item.image}}"
+          [alt]="item.label"
+        >
+        <label>{{ item.label }}</label>
+      </a>
+    </div>
+  }
 </div>

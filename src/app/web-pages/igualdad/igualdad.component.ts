@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
-import {ButtonDirective} from "primeng/button";
 import {RouterLink} from "@angular/router";
+import {GeneralAButtonComponent} from "../../shared/components/buttons/general-a-button/general-a-button.component";
 
 @Component({
   selector: 'app-igualdad',
   templateUrl: './igualdad.component.html',
   styleUrls: ['./igualdad.component.scss'],
   imports: [
-    ButtonDirective,
-    RouterLink
+    RouterLink,
+    GeneralAButtonComponent
   ]
 })
 export class IgualdadComponent {

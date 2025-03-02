@@ -6,6 +6,7 @@
     [class]="class"
     [text]="variant === 'text'"
     [outlined]="variant === 'outlined'"
+    [severity]="severity"
   >
     @if (icon) {
       <i pButtonIcon [class]="icon"></i>
@@ -19,8 +20,10 @@
     pButton
     [class]="class"
     [routerLink]="routerLink"
+    [target]="target"
     [text]="variant === 'text'"
     [outlined]="variant === 'outlined'"
+    [severity]="severity"
   >
     @if (icon) {
       <i pButtonIcon [class]="icon"></i>
@@ -35,6 +38,7 @@
     [class]="class"
     [text]="variant === 'text'"
     [outlined]="variant === 'outlined'"
+    [severity]="severity"
   >
     @if (icon) {
       <i pButtonIcon [class]="icon"></i>
