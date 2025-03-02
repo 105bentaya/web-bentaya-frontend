@@ -19,7 +19,7 @@ import {Button} from "primeng/button";
 import {ButtonGroupModule} from "primeng/buttongroup";
 import {SentenceCasePipe} from "../../../../shared/pipes/sentence-case.pipe";
 import {SelectButtonModule} from "primeng/selectbutton";
-import {MultiSelectModule} from "primeng/multiselect";
+import {MultiSelectBlurEvent, MultiSelectFocusEvent, MultiSelectModule} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {CalendarSubscriptionComponent} from "../calendar-subscription/calendar-subscription.component";
@@ -291,5 +291,9 @@ export class CalendarComponent implements OnInit {
       header: 'Suscribirse al Calendario',
       styleClass: 'small-dw dialog-width'
     });
+  }
+
+  testPreventKeyboard(asd: MultiSelectFocusEvent) {
+    asd.originalEvent.preventDefault();
   }
 }

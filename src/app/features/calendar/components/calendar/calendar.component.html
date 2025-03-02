@@ -96,6 +96,7 @@
       dropdownIcon="pi pi-filter"
       [(ngModel)]="filterResults"
       (onChange)="pushEventsToCalendar()"
+      (onFocus)="testPreventKeyboard($event)"
     ></p-multiSelect>
   </div>
 </ng-template>
