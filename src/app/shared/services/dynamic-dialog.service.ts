@@ -25,7 +25,8 @@ export class DynamicDialogService {
         '700px': '100vw'
       },
       width: this.widths[width],
-      focusOnShow: false
+      focusOnShow: false,
+      modal: true
     });
   }
 }

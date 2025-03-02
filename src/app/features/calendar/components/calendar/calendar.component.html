@@ -1,102 +1,82 @@
-<div [ngClass]="calendarView ? 'container-fluid' : 'container-md'">
-  <div class="d-flex justify-content-between align-items-end mb-3" #top>
-    <h1 class="mb-0 d-flex me-3">{{ calendarView ? 'Calendario' : 'Lista' }} de actividades</h1>
-      <div class="d-flex align-items-end justify-content-end" [class]="calendarView ? 'gap-2 gap-sm-3' : 'gap-3'">
-        <p-button
-            icon="pi pi-bell p-button-rounded"
-            title="Suscribirse"
-            (click)="openSubscribeDialog()"
-        ></p-button>
-        @if (canEdit) {
-          <p-button
-            icon="pi pi-calendar-plus p-button-rounded"
-            title="Añadir Actividad"
-            (click)="openAddDialog()"
-          ></p-button>
+<div class="container-fluid container-xl">
+  <div class="d-flex align-items-center mb-1 w-100 flex-wrap gap-2">
+    <h1 class="mb-0">Calendario</h1>
+    <div class="d-flex gap-2 ms-auto">
+      <p-selectButton
+        [options]="viewOptions"
+        [(ngModel)]="currentView"
+        (onChange)="changeView()"
+        [allowEmpty]="false"
+      >
+        <ng-template #item let-item>
+          <i [class]="item.icon"></i>
+        </ng-template>
+      </p-selectButton>
+        @if (isScouter) {
+          <p-toggle-button
+            onIcon="pi pi-globe"
+            offIcon="pi pi-globe"
+            class="no-label"
+            styleClass="squared"
+            (onChange)="test($event)"
+            title="Mostrar todos los eventos"
+          ></p-toggle-button>
         }
       </div>
   </div>
-  <div class="d-flex justify-content-center justify-content-between align-items-center">
-    <div class="d-sm-flex gap-2" [ngClass]="calendarView ? 'd-none' : 'd-flex'">
+  <div class="d-flex align-items-end justify-content-between gap-1 mb-2">
+    <div class="current-date">
       @if (calendarView) {
-        <p-buttonGroup>
+        <div class="d-none d-sm-block">
+          {{ calendarDate | date:"MMMM y":undefined:'es' | sentence }}
+        </div>
+        <div class="d-sm-none">
+          {{ calendarDate | date:"MMM '\''yy":undefined:'es' }}
+        </div>
+      }
+    </div>
+    <div class="d-flex gap-1">
+      @if (calendarView) {
+        <p-button-group>
           <p-button
-            icon="pi pi-angle-left"
+            size="small"
+            icon="pi pi-chevron-left"
+            variant="outlined"
+            styleClass="squared"
             (click)="prev()"
           ></p-button>
           <p-button
-            icon="pi pi-angle-right"
+            size="small"
+            label="Hoy"
+            (click)="today()"
+            [style]="{'height': '32px'}"
+          ></p-button>
+          <p-button
+            size="small"
+            icon="pi pi-chevron-right"
+            variant="outlined"
+            styleClass="squared"
             (click)="next()"
           ></p-button>
-        </p-buttonGroup>
+        </p-button-group>
       }
-      <ng-container *ngTemplateOutlet="filter"></ng-container>
-    </div>
-    @if (calendarView) {
       <p-button
-        class="d-sm-none p-button-outlined"
-        icon="pi pi-angle-left"
-        [style]="{'border-radius': '10px 0 0 10px'}"
-        (click)="prev()"
+        size="small"
+        variant="outlined"
+        icon="pi pi-bell"
+        title="Suscribirse"
+        styleClass="squared"
+        (click)="openSubscribeDialog()"
       ></p-button>
-    }
-    <div class="d-flex justify-content-between align-items-center title-center">
-      <div class="mx-2 gap-2 text-center">
-        @if (loading) {
-          <i class="pi pi-spin pi-spinner fs-2"></i>
-        } @else if (calendarView) {
-          <h3 class="my-0" (click)="today()">
-            {{ calendarDate | date:"MMMM 'de' y":undefined:'es' | sentence }}
-          </h3>
-        }
-      </div>
-    </div>
-    @if (calendarView) {
       <p-button
-        class="d-sm-none p-button-outlined"
-        icon="pi pi-angle-right"
-        [style]="{'border-radius': '0 10px 10px 0'}"
-        (click)="next()"
+        size="small"
+        variant="outlined"
+        icon="pi pi-calendar-plus"
+        title="Añadir Actividad"
+        styleClass="squared"
+        (click)="openAddDialog()"
       ></p-button>
-    }
-    <div class="d-sm-flex" [ngClass]="calendarView ? 'd-none' : 'd-flex'">
-      <ng-container *ngTemplateOutlet="viewSwitch"></ng-container>
     </div>
   </div>
-  <full-calendar #calendarComponent class="mx-2" [options]="options"></full-calendar>
-  @if (calendarView) {
-    <div class="d-flex d-sm-none justify-content-between align-items-center mt-2">
-      <ng-container *ngTemplateOutlet="filter"></ng-container>
-      <ng-container *ngTemplateOutlet="viewSwitch"></ng-container>
-    </div>
-  }
+  <full-calendar #calendarComponent [options]="options"></full-calendar>
 </div>
-
-<ng-template #viewSwitch>
-  <p-selectButton
-    [options]="viewOptions"
-    [(ngModel)]="currentView"
-    (onChange)="changeView()"
-    [allowEmpty]="false"
-  >
-    <ng-template #item let-item>
-      <i [class]="item.icon"></i>
-    </ng-template>
-  </p-selectButton>
-</ng-template>
-<ng-template #filter>
-  <div>
-    <p-multiSelect
-      class="calendar-multiselect"
-      [options]="groups"
-      optionLabel="name"
-      optionValue="id"
-      [filter]="false"
-      [autofocusFilter]="false"
-      dropdownIcon="pi pi-filter"
-      [(ngModel)]="filterResults"
-      (onChange)="pushEventsToCalendar()"
-      (onFocus)="testPreventKeyboard($event)"
-    ></p-multiSelect>
-  </div>
-</ng-template>

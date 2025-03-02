@@ -45,6 +45,7 @@
   --p-datepicker-date-width: 2.15rem;
   --p-datepicker-date-height: 2.15rem;
   --p-datepicker-header-padding: 0 0 .25rem 0;
+  --p-datepicker-time-picker-padding: 0.5rem 0 0 0;
 }
 
 .p-progressspinner-spin {
@@ -56,8 +57,12 @@
   height: var(--p-button-icon-only-width) !important;
 }
 
-.p-button.p-button-icon-only:not(.p-inputnumber-button) {
+.p-button.p-button-icon-only:not(.p-button-sm) {
   height: var(--p-button-icon-only-width);
+}
+
+.p-button.p-button-icon-only.p-button-sm.squared {
+  width: 2rem;
 }
 
 .p-button.p-dialog-close-button {
@@ -73,6 +78,15 @@
   width: var(--p-button-icon-only-width) !important;
   .p-togglebutton-label {
     display: none !important;
+  }
+}
+
+p-toggle-button.no-label {
+  > button.squared {
+    padding: 0.5rem 0.5rem;
+  }
+  .p-togglebutton-label {
+    display: none;
   }
 }
 

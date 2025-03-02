@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {EventService} from "../../services/event.service";
 import {ScoutEvent} from "../../models/scout-event.model";
 import {EventBasicAttendanceInfo} from "../../../attendance/models/event-basic-attendance-info.model";
@@ -16,8 +16,9 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 import {UserScout} from "../../../../core/auth/user-profile.model";
-import {Router} from "@angular/router";
+import {RouterLink} from "@angular/router";
 import {TooltipModule} from "primeng/tooltip";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-event-info',
@@ -29,7 +30,8 @@ import {TooltipModule} from "primeng/tooltip";
     SkeletonModule,
     BasicLoadingInfoComponent,
     TooltipModule,
-    Button
+    Button,
+    RouterLink
   ]
 })
 export class EventInfoComponent implements OnInit, OnDestroy {
@@ -37,10 +39,9 @@ export class EventInfoComponent implements OnInit, OnDestroy {
   private readonly config = inject(DynamicDialogConfig);
   private readonly eventService = inject(EventService);
   private readonly confirmationService = inject(ConfirmationService);
-  private readonly dialogService = inject(DialogService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly eventStatusService = inject(EventStatusService);
   private readonly loggedUserData = inject(LoggedUserDataService);
-  private readonly router = inject(Router);
   protected ref = inject(DynamicDialogRef);
 
   protected event!: ScoutEvent;
@@ -106,17 +107,8 @@ export class EventInfoComponent implements OnInit, OnDestroy {
   }
 
   protected openEditDialog() {
-    const editRef = this.dialogService.open(EventFormComponent, {
-      header: 'Editar Actividad',
-      styleClass: 'dialog-width',
-      data: {id: this.event.id}
-    });
+    const editRef = this.dialogService.openDialog(EventFormComponent, 'Editar Actividad', 'small', {id: this.event.id});
     editRef.onClose.subscribe(close => close ? this.ref.close() : noop());
-  }
-
-  protected async navigateToAttendance(event: ScoutEvent) {
-    // await this.router.navigate(this.route.snapshot.url.map(url => url.path), {queryParams: {actividad: event.id}, replaceUrl: true});
-    this.router.navigate(['/unidad/asistencias'], {queryParams: {actividad: event.id}}).then(() => this.ref.close());
   }
 
   protected copyEventLink() {

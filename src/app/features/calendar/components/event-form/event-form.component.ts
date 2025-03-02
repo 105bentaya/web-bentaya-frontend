@@ -26,6 +26,9 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 import {DatePicker} from "primeng/datepicker";
+import {
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 
 @Component({
   selector: 'app-event-form',
@@ -42,7 +45,8 @@ import {DatePicker} from "primeng/datepicker";
     SaveButtonsComponent,
     InputTextModule,
     BasicLoadingInfoComponent,
-    DatePicker
+    DatePicker,
+    CheckboxContainerComponent
   ]
 })
 export class EventFormComponent implements OnInit {
@@ -95,8 +99,8 @@ export class EventFormComponent implements OnInit {
     const addCoordinates = !!event?.longitude && !!event?.latitude;
     this.formHelper.createForm({
       title: [event?.title, Validators.required],
-      description: [event?.description, Validators.required],
-      location: [event?.location, Validators.required],
+      description: [event?.description, Validators.maxLength(4095)],
+      location: [event?.location],
       latitude: [event?.latitude],
       longitude: [event?.longitude],
       groupId: [event?.groupId, Validators.required],

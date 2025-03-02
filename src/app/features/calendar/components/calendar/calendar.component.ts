@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {CalendarOptions} from "@fullcalendar/core";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
@@ -10,30 +10,30 @@ import {EventInfoComponent} from "../event-info/event-info.component";
 import {FullCalendarComponent, FullCalendarModule} from "@fullcalendar/angular";
 import {BasicEvent} from "../../models/basic-event.model";
 import {ActivatedRoute} from "@angular/router";
-import {groups, unitGroups} from "../../../../shared/model/group.model";
 import {EventStatusService} from "../../services/event-status.service";
 import {delay, skip} from "rxjs";
 import {ScoutEvent} from "../../models/scout-event.model";
-import {DatePipe, NgClass, NgTemplateOutlet} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {Button} from "primeng/button";
 import {ButtonGroupModule} from "primeng/buttongroup";
 import {SentenceCasePipe} from "../../../../shared/pipes/sentence-case.pipe";
 import {SelectButtonModule} from "primeng/selectbutton";
-import {MultiSelectBlurEvent, MultiSelectFocusEvent, MultiSelectModule} from "primeng/multiselect";
+import {MultiSelectModule} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {CalendarSubscriptionComponent} from "../calendar-subscription/calendar-subscription.component";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 import {UserMenuService} from "../../../../core/user-menu/user-menu.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {ToggleButton, ToggleButtonChangeEvent} from "primeng/togglebutton";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
-  providers: [DialogService],
+  providers: [DialogService, DynamicDialogService],
   imports: [
-    NgClass,
     ButtonGroupModule,
     DatePipe,
     SentenceCasePipe,
@@ -41,13 +41,13 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     SelectButtonModule,
     MultiSelectModule,
     FormsModule,
-    NgTemplateOutlet,
-    Button
+    Button,
+    ToggleButton
   ]
 })
 export class CalendarComponent implements OnInit {
 
-  private readonly dialogService = inject(DialogService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly eventService = inject(EventService);
   private readonly route = inject(ActivatedRoute);
   private readonly eventStatusService = inject(EventStatusService);
@@ -61,15 +61,11 @@ export class CalendarComponent implements OnInit {
   protected calendarView: boolean = true;
   protected viewOptions: any[];
   protected currentView: string = "dayGridMonth";
-  protected canEdit: boolean = false;
-  protected groups = [...unitGroups, groups[0]];
-  protected filterResults!: number[];
+  protected isScouter: boolean = false;
   protected loading = true;
+  private readonly userGroups: number[];
 
-  @ViewChild('top')
-  private readonly topOfList!: ElementRef;
-  @ViewChild('calendarComponent')
-  private readonly calendarComponent!: FullCalendarComponent;
+  @ViewChild('calendarComponent') private readonly calendarComponent!: FullCalendarComponent;
 
   constructor(
   ) {
@@ -113,7 +109,7 @@ export class CalendarComponent implements OnInit {
 
     this.calendarDate = new Date();
     this.viewOptions = [{value: 'dayGridMonth', icon: 'pi pi-calendar'}, {value: 'customList', icon: 'pi pi-list'}];
-    this.canEdit = this.loggedUserData.hasRequiredPermission(["ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]);
+    this.isScouter = this.loggedUserData.hasRequiredPermission(["ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]);
 
     this.eventStatusService.deletedEvent
       .pipe(takeUntilDestroyed())
@@ -127,32 +123,27 @@ export class CalendarComponent implements OnInit {
     this.userMenuService.expanded
       .pipe(takeUntilDestroyed(), skip(1), delay(180))
       .subscribe(() => this.calendarComponent.getApi().render());
+
+    this.userGroups = this.buildFilter();
   }
 
   ngOnInit(): void {
-    this.buildFilter();
     this.getAllEvents();
-    if (window.innerWidth < 450) {
-      this.currentView = "customList";
-      this.options.initialView = "customList";
-      this.calendarView = false;
-    }
   }
 
   private buildFilter() {
     const filter = new Set<number>;
     filter.add(0);
 
-    if (this.canEdit) {
+    if (this.isScouter) {
       filter.add(8);
-      this.groups.push(groups[8]);
     }
 
     const loggedUserGroupId = this.loggedUserData.getGroupId();
     if (loggedUserGroupId) filter.add(loggedUserGroupId);
     this.loggedUserData.getScoutGroupIds().forEach(groupId => filter.add(groupId));
 
-    this.filterResults = [...filter];
+    return [...filter];
   }
 
   private getAllEvents() {
@@ -167,10 +158,10 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  protected pushEventsToCalendar() {
+  protected pushEventsToCalendar(showAll = false) {
     this.loading = true;
     this.options.events = this.events
-      .filter(e => this.filterResults.includes(e.groupId))
+      .filter(e => showAll || this.userGroups.includes(e.groupId))
       .map(basicEvent => (this.generateEventObject(basicEvent)));
     this.loading = false;
   }
@@ -223,21 +214,11 @@ export class CalendarComponent implements OnInit {
   }
 
   private openInfoDialog(eventId: number) {
-    this.ref = this.dialogService.open(EventInfoComponent, {
-      header: 'Actividad',
-      styleClass: 'small-dw dialog-width',
-      data: eventId,
-      modal: true,
-      closable: true
-    });
+    this.ref = this.dialogService.openDialog(EventInfoComponent, "Actividad", "small", eventId);
   }
 
   protected openAddDialog() {
-    this.ref = this.dialogService.open(EventFormComponent, {
-      header: 'Añadir Actividad',
-      styleClass: 'dialog-width',
-      data: {calendarDate: this.calendarDate}
-    });
+    this.ref = this.dialogService.openDialog(EventFormComponent, "Añadir Actividad", "small", {calendarDate: this.calendarDate});
   }
 
   protected next() {
@@ -259,7 +240,6 @@ export class CalendarComponent implements OnInit {
     this.calendarComponent.getApi().changeView(this.currentView);
     this.calendarView = this.currentView === "dayGridMonth";
     setTimeout(() => this.calendarComponent.getApi().updateSize(), 10);
-    if (!this.calendarView && window.innerWidth < 576) this.topOfList.nativeElement.scrollIntoView();
   }
 
   private checkQueryParams() {
@@ -287,13 +267,10 @@ export class CalendarComponent implements OnInit {
   }
 
   protected openSubscribeDialog() {
-    this.ref = this.dialogService.open(CalendarSubscriptionComponent, {
-      header: 'Suscribirse al Calendario',
-      styleClass: 'small-dw dialog-width'
-    });
+    this.ref = this.dialogService.openDialog(CalendarSubscriptionComponent, "Suscribirse al Calendario", "small");
   }
 
-  testPreventKeyboard(asd: MultiSelectFocusEvent) {
-    asd.originalEvent.preventDefault();
+  test(event: ToggleButtonChangeEvent) {
+    this.pushEventsToCalendar(event.checked);
   }
 }

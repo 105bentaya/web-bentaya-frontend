@@ -1,15 +1,15 @@
 @if (formHelper.form) {
-  <div class="mt-4">
+  <div class="mt-1">
     <form class="form-container" [formGroup]="formHelper.form">
       <div class="row">
         <div class="col-12 col-sm-6">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input id="title" formControlName="title" pInputText>
             <label class="required" for="title">Título</label>
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-6">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-select
               id="groupId"
               formControlName="groupId"
@@ -23,20 +23,21 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
-          <app-form-text-area
-            id="description"
-            formControlName="description"
-            rows="4"
-            [maxLength]="4095"
-            floatLabel="Descripción"
-            labelClass="required"
-          ></app-form-text-area>
+        <div class="col-12 mb-2">
+          <p-floatlabel variant="on">
+            <label for="description">Descripción</label>
+            <app-form-text-area
+              id="description"
+              formControlName="description"
+              rows="4"
+              [maxLength]="4095"
+            ></app-form-text-area>
+          </p-floatlabel>
         </div>
       </div>
-      <div class="row mt-revert">
+      <div class="row">
         <div class="col-12 col-sm-6">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-datePicker
               id="startDate"
               formControlName="startDate"
@@ -54,7 +55,7 @@
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-6">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-datePicker
               id="endDate"
               formControlName="endDate"
@@ -74,34 +75,32 @@
       </div>
       <div class="row mt-revert">
         <div class="col-12">
-          <p-checkbox
-            formControlName="unknownTime"
-            [binary]="true"
-            label="Hora sin especificar"
-          ></p-checkbox>
+          <app-checkbox-container label="Hora sin especificar">
+            <p-checkbox formControlName="unknownTime" [binary]="true"></p-checkbox>
+          </app-checkbox-container>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input id="location" formControlName="location" pInputText>
-            <label class="required" for="location">Lugar</label>
+            <label for="location">Lugar</label>
           </p-floatlabel>
         </div>
       </div>
-      <div class="row mt-revert">
-        <div class="col-12">
-          <p-checkbox
-            [binary]="true"
-            formControlName="addCoordinates"
-            label="Añadir coordenadas"
-          ></p-checkbox>
+      @if (formHelper.controlValue('location')) {
+        <div class="row mt-revert">
+          <div class="col-12">
+            <app-checkbox-container label="Añadir coordenadas">
+              <p-checkbox [binary]="true" formControlName="addCoordinates"></p-checkbox>
+            </app-checkbox-container>
+          </div>
         </div>
-      </div>
+      }
       @if (formHelper.controlValue("addCoordinates")) {
         <div class="row">
           <div class="col-12 col-sm-6">
-            <p-floatlabel>
+            <p-floatlabel variant="on">
               <p-inputNumber
                 id="latitude"
                 formControlName="latitude"
@@ -114,7 +113,7 @@
             </p-floatlabel>
           </div>
           <div class="col-12 col-sm-6">
-            <p-floatlabel>
+            <p-floatlabel variant="on">
               <p-inputNumber
                 id="longitude"
                 formControlName="longitude"
@@ -131,23 +130,17 @@
       @if (showAttendanceCheckbox()) {
         <div class="row">
           <div class="d-flex flex-column gap-1 mb-4">
-            <p-checkbox
-              [binary]="true"
-              label="Activar asistencia"
-              formControlName="activateAttendanceList"
-            ></p-checkbox>
+            <app-checkbox-container label="Activar asistencia">
+              <p-checkbox [binary]="true" formControlName="activateAttendanceList"></p-checkbox>
+            </app-checkbox-container>
             @if (formHelper.controlValue('activateAttendanceList')) {
-              <p-checkbox
-                [binary]="true"
-                label="Activar pago"
-                formControlName="activateAttendancePayment"
-              ></p-checkbox>
+              <app-checkbox-container label="Activar pago">
+                <p-checkbox [binary]="true" formControlName="activateAttendancePayment"></p-checkbox>
+              </app-checkbox-container>
               @if (existingEvent?.activateAttendanceList) {
-                <p-checkbox
-                  [binary]="true"
-                  label="Cerrar asistencia"
-                  formControlName="closeAttendanceList"
-                ></p-checkbox>
+                <app-checkbox-container label="Cerrar asistencia">
+                  <p-checkbox [binary]="true" formControlName="closeAttendanceList"></p-checkbox>
+                </app-checkbox-container>
               }
             }
           </div>

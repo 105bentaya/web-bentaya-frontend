@@ -7,6 +7,10 @@
 }
 
 .fc {
+  .fc-toolbar.fc-header-toolbar {
+    display: none;
+  }
+
   a {
     text-decoration: none;
   }
@@ -93,26 +97,5 @@
       padding-right: 4px;
       padding-left: 4px
     }
-  }
-}
-
-.calendar-multiselect.p-multiselect {
-  background-color: var(--p-button-primary-background);
-  height: var(--p-button-icon-only-width);
-  border: 0;
-  border-radius: var(--p-button-border-radius);
-
-  .p-multiselect-dropdown:hover {
-    background-color: var(--p-button-primary-hover-background);
-    border: 1px solid var(--p-button-primary-hover-border-color);
-    border-radius: var(--p-button-border-radius);
-  }
-
-  .p-multiselect-label {
-    display: none;
-  }
-
-  .p-multiselect-dropdown-icon {
-    color: white;
   }
 }
