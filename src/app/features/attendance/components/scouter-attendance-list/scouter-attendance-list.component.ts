@@ -18,13 +18,13 @@ import {Button} from "primeng/button";
 import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
-
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-scouter-attendance-list',
   templateUrl: './scouter-attendance-list.component.html',
   styleUrls: ['./scouter-attendance-list.component.scss'],
-  providers: [DialogService],
+  providers: [DialogService, DynamicDialogService],
   imports: [
     FormsModule,
     ToggleButtonModule,
@@ -38,19 +38,19 @@ import {
 })
 export class ScouterAttendanceListComponent implements OnInit {
 
-  private confirmationService = inject(ConfirmationService);
-  private confirmationMessageService = inject(ConfirmationMessageService);
-  private dialogService = inject(DialogService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private filterService = inject(FilterService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly confirmationMessageService = inject(ConfirmationMessageService);
+  private readonly dialogService = inject(DynamicDialogService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly filterService = inject(FilterService);
 
   protected info!: ScouterListInfo[];
   protected loading: boolean = false;
   private queryParam = false;
   protected filterDates!: Date[];
   private ref!: DynamicDialogRef;
-  private yesterday = DateUtils.plusDays(new Date(), -1);
+  private readonly yesterday = DateUtils.plusDays(new Date(), -1);
   protected showClosedButton = false;
 
   ngOnInit(): void {
@@ -79,28 +79,24 @@ export class ScouterAttendanceListComponent implements OnInit {
   }
 
   protected openInfoDialog(eventId: number) {
-    this.ref = this.dialogService.open(EventInfoComponent, {
-      header: 'Actividad',
-      styleClass: 'small-dw dialog-width',
-      data: eventId
-    });
+    this.ref = this.dialogService.openDialog(EventInfoComponent, "Actividad", "small", eventId);
     //todo when editing an event refetch data
   }
 
   protected openEditDialog(eventInfo: ScouterListInfo) {
-    this.ref = this.dialogService.open(ScouterAttendanceFormComponent, {
-      header: `Editar Asistencia - ${eventInfo.eventTitle}`,
-      styleClass: 'small-dw dialog-width',
-      data: {eventId: eventInfo.eventId, payment: eventInfo.eventHasPayment}
-    });
+    this.ref = this.dialogService.openDialog(
+      ScouterAttendanceFormComponent,
+      `Editar Asistencia - ${eventInfo.eventTitle}`,
+      "small",
+      {eventId: eventInfo.eventId, payment: eventInfo.eventHasPayment}
+    );
     this.ref.onClose.subscribe(() => this.getInfo());
   }
 
   protected viewInfo(eventId: number, eventName: string, hasPayment: boolean) {
-    this.ref = this.dialogService.open(AttendanceInfoComponent, {
-      header: 'Asistencia - ' + eventName,
-      styleClass: 'small-dw dialog-width',
-      data: {eventId: eventId, payment: hasPayment}
+    this.ref = this.dialogService.openDialog(AttendanceInfoComponent, 'Asistencia - ' + eventName, "small", {
+      eventId: eventId,
+      payment: hasPayment
     });
     if (this.queryParam) {
       this.ref.onClose.subscribe(() => this.router.navigate([], {replaceUrl: true}));

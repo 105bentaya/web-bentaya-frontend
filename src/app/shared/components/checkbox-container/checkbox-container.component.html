@@ -1,6 +1,6 @@
-<div class="d-flex align-items-center">
+<div class="d-flex align-items-center gap-1" [ngClass]="{'justify-content-end flex-row-reverse' : labelPlacement == 'left'}">
   <ng-content/>
-  <div class="mx-1">
+  <div>
     <label [ngClass]="{'required' : required || privacy}" [for]="controlName">
       @if (privacy) {
         He leído y acepto las

@@ -1,7 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {ConfirmationService} from "../../services/confirmation.service";
-import {AlertService} from "../../../../shared/services/alert-service.service";
 import {EventAttendanceInfo} from "../../models/event-attendance-info.model";
 import {Confirmation} from "../../models/confirmation.model";
 import FilterUtils from "../../../../shared/util/filter-utils";
@@ -14,6 +13,10 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {FormsModule} from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
+import {
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
+import {FloatLabel} from "primeng/floatlabel";
 
 @Component({
   selector: 'app-scouter-attendance-form',
@@ -27,14 +30,15 @@ import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-b
     ScoutsPipe,
     SelectButtonModule,
     FormTextAreaComponent,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    CheckboxContainerComponent,
+    FloatLabel
   ]
 })
 export class ScouterAttendanceFormComponent implements OnInit {
 
-  private config = inject(DynamicDialogConfig);
-  private confirmationService = inject(ConfirmationService);
-  private alertService = inject(AlertService);
+  private readonly config = inject(DynamicDialogConfig);
+  private readonly confirmationService = inject(ConfirmationService);
 
   private info!: EventAttendanceInfo[];
   protected filteredInfo!: EventAttendanceInfo[];
@@ -129,9 +133,9 @@ export class ScouterAttendanceFormComponent implements OnInit {
   }
 
   protected onMultipleSelect() {
-    this.infoAttending = this.selectedInfo.filter(info => info.attending == true).length;
-    this.infoNotAttending = this.selectedInfo.filter(info => info.attending == false).length;
-    this.infoNotConfirmed = this.selectedInfo.filter(info => info.attending == null).length;
+    this.infoAttending = this.selectedInfo.filter(info => info.attending === true).length;
+    this.infoNotAttending = this.selectedInfo.filter(info => info.attending === false).length;
+    this.infoNotConfirmed = this.selectedInfo.filter(info => info.attending === null).length;
 
     if (this.infoAttending > 0 && this.infoNotAttending < 1 && this.infoNotConfirmed < 1) {
       this.multipleAttending = true;

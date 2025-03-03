@@ -17,9 +17,9 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
 })
 export class AttendanceInfoComponent implements OnInit {
 
-  private config = inject(DynamicDialogConfig);
-  private confirmationService = inject(ConfirmationService);
-  private alertService = inject(AlertService);
+  private readonly config = inject(DynamicDialogConfig);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly alertService = inject(AlertService);
 
   protected info!: EventAttendanceInfo[];
   protected assistants!: EventAttendanceInfo[];
@@ -75,7 +75,7 @@ export class AttendanceInfoComponent implements OnInit {
   }
 
   private sortListByPayment(list: EventAttendanceInfo[], payedFirst = false) {
-    if (payedFirst) return list.sort((a, b) => this.eventAttendanceInfoComparator(b, a));
+    if (payedFirst) return list.sort((a, b) => -this.eventAttendanceInfoComparator(a, b));
     return list.sort((a, b) => this.eventAttendanceInfoComparator(a, b));
   }
 
@@ -110,13 +110,12 @@ export class AttendanceInfoComponent implements OnInit {
   }
 
   private createPaymentText() {
-    this.paymentText =
-      `${this.totalPayed == 1 ? "Ha" : "Han"}
-      pagado ${this.totalPayed}
-      ${this.totalPayed == 1 ? "persona" : "personas"}`;
+    this.paymentText = `${this.totalPayed == 1 ? "Ha" : "Han"} pagado ${this.totalPayed} ${this.totalPayed == 1 ? "persona" : "personas"}`;
+
     if (this.totalPayed > (this.assistants.length - this.notPayedAssistants)) {
-      const noAssistantsPayed = this.info.filter(info => info.attending == false && info.payed).length;
+      const noAssistantsPayed = this.info.filter(info => info.attending === false && info.payed).length;
       const noConfirmedPayed = this.info.filter(info => info.attending == null && info.payed).length;
+
       if (noAssistantsPayed && noConfirmedPayed) {
         this.paymentText += ` (de las cuales ${noAssistantsPayed} no asiste${noAssistantsPayed > 1 ? 'n' : ''}
         y ${noConfirmedPayed} no ha${noConfirmedPayed > 1 ? 'n' : ''} confirmado).`;

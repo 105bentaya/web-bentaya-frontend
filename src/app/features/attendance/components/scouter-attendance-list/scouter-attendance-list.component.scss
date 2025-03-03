@@ -1,6 +1,8 @@
-.input-w-100 {
-  @media screen and (max-width: 550px) {
-    width: 100% !important;
+.range-datepicker {
+  max-width: 275px;
+  width: 100%;
+  @media screen and (max-width: 575px) {
+    max-width: unset;
   }
 }
 

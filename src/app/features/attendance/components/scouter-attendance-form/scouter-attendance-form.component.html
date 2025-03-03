@@ -1,13 +1,12 @@
-<div class="mt-2">
-  <p-checkbox
-    label="Selección Múltiple"
-    class="flex-row-reverse mb-2 float-end"
-    labelStyleClass="me-2 ms-0"
-    [binary]="true"
-    [(ngModel)]="multiple"
-    [disabled]="loading"
-    (onChange)="onSelectionCheckboxChange()"
-  ></p-checkbox>
+<div>
+  <app-checkbox-container label="Selección Múltiple" labelPlacement="left" class="float-end mb-2">
+    <p-checkbox
+      [binary]="true"
+      [(ngModel)]="multiple"
+      [disabled]="loading"
+      (onChange)="onSelectionCheckboxChange()"
+    ></p-checkbox>
+  </app-checkbox-container>
   @if (multiple) {
     <p-multiSelect
       [autofocusFilter]="false"
@@ -23,7 +22,7 @@
       placeholder="Elegir personas educandas"
       filterBy="name,surname"
     >
-      <ng-template let-group pTemplate="group">
+      <ng-template let-group #group>
       <div class="d-flex align-items-center">
         <a class="text-black cursor-pointer" (click)="onMultipleGroupSelect(group.items)">
           {{ group.attendLabel }}
@@ -31,18 +30,13 @@
         <hr>
       </div>
     </ng-template>
-      <ng-template let-scout pTemplate="item">
+      <ng-template let-scout #item>
         <div style="overflow: hidden; text-overflow: ellipsis;">
           {{ scout.name }}, {{ scout.surname }}
         </div>
       </ng-template>
       <ng-template pTemplate="selectedItems">
-        @if (selectedInfo) {
-          <div style="overflow: hidden; text-overflow: ellipsis;">{{ selectedInfo | scouts }}</div>
-        }
-        @if (!selectedInfo || selectedInfo.length < 1) {
-          <div>Elegir personas educandas</div>
-        }
+        <div style="overflow: hidden; text-overflow: ellipsis;">{{ selectedInfo | scouts }}</div>
       </ng-template>
     </p-multiSelect>
   } @else {
@@ -74,7 +68,7 @@
     <div class="d-flex flex-column gap-3 mt-2">
       <div class="d-flex flex-wrap justify-content-between gap-3">
         <div class="d-flex flex-column gap-1">
-          <label>Asiste:</label>
+          <span>Asiste:</span>
           <p-selectButton
             [allowEmpty]="false"
             [options]="attendanceOptions"
@@ -85,7 +79,7 @@
         </div>
         @if (hasPayment) {
           <div class="d-flex flex-column gap-1">
-            <label>Ha pagado:</label>
+            <span>Ha pagado:</span>
             <p-selectButton
               [allowEmpty]="false"
               [options]="paymentOptions"
@@ -96,14 +90,14 @@
           </div>
         }
       </div>
-      <div class="d-flex flex-column gap-1">
+      <p-floatlabel variant="on">
         <label>Observaciones:</label>
         <app-form-text-area
           [maxLength]="1024"
           [(ngModel)]="selectedConfirmation.text"
           (isValid)="validText = $event"
         ></app-form-text-area>
-      </div>
+      </p-floatlabel>
       <app-save-buttons
         [saveLoading]="loading"
         [saveDisabled]="!validText"
@@ -112,7 +106,7 @@
     </div>
   } @else if (multiple && selectedInfo && selectedInfo.length > 0) {
     <div class="d-flex flex-column gap-3 mt-2">
-      <label>Ha seleccionado {{ selectedInfo.length }} personas educandas, de las cuales:</label>
+      <span>Ha seleccionado {{ selectedInfo.length }} personas educandas, de las cuales:</span>
       <ul>
         @if (infoAttending > 0) {
           <li>{{ infoAttending }} asiste{{ infoAttending > 1 ? 'n' : '' }}</li>
@@ -121,7 +115,7 @@
           <li>{{ infoNotAttending }} no asiste{{ infoNotAttending > 1 ? 'n' : '' }}</li>
         }
         @if (infoNotConfirmed > 0) {
-          <li>{{ infoNotConfirmed }} no ha{{ infoNotConfirmed > 1 ? 'n' : '' }}confirmado</li>
+          <li>{{ infoNotConfirmed }} no ha{{ infoNotConfirmed > 1 ? 'n' : '' }} confirmado</li>
         }
         @if (hasPayment) {
           <hr>
@@ -135,7 +129,7 @@
       </ul>
       <div class="d-flex flex-wrap justify-content-between gap-3">
         <div class="d-flex flex-column gap-1">
-          <label>Asisten:</label>
+          <span>Asisten:</span>
           <p-selectButton
             [allowEmpty]="false"
             [options]="attendanceOptions"
@@ -146,7 +140,7 @@
         </div>
         @if (hasPayment) {
           <div class="d-flex flex-column gap-1">
-            <label>Han pagado:</label>
+            <span>Han pagado:</span>
             <p-selectButton
               [allowEmpty]="false"
               [options]="multiplePaymentOptions"
@@ -166,7 +160,7 @@
   } @else {
     <div class="d-flex flex-column gap-3 mt-2 opacity-50">
       @if (multiple) {
-        <label>Ha seleccionado 0 personas educandas, de las cuales:</label>
+        <span>Ha seleccionado 0 personas educandas, de las cuales:</span>
         <ul>
           <li>0 asisten</li>
           <li>0 no asisten</li>
@@ -179,13 +173,13 @@
       <div class="d-flex flex-column gap-1">
         <div class="d-flex flex-wrap justify-content-between gap-3">
           <div class="d-flex flex-column gap-1">
-            <label>
+            <span>
               @if (multiple) {
                 Asisten:
               } @else {
                 Asiste:
               }
-            </label>
+            </span>
             <p-selectButton
               [options]="attendanceOptions"
               optionLabel="label"
@@ -194,13 +188,13 @@
           </div>
           @if (hasPayment) {
             <div class="d-flex flex-column gap-1">
-              <label>
+              <span>
                 @if (multiple) {
                   Han pagado:
                 } @else {
                   Ha pagado:
                 }
-              </label>
+              </span>
               <p-selectButton
                 [options]="multiple ? multiplePaymentOptions : paymentOptions"
                 optionLabel="label"
@@ -211,14 +205,13 @@
         </div>
       </div>
       @if (!multiple) {
-        <div class="d-flex flex-column gap-1">
-          <label>Observaciones:</label>
+        <p-floatlabel>
+          <label>Observaciones</label>
           <app-form-text-area
             [maxLength]="1024"
-            (isValid)="validText = $event"
             [disabled]="true"
           ></app-form-text-area>
-        </div>
+        </p-floatlabel>
       }
       <app-save-buttons [saveDisabled]="true"></app-save-buttons>
     </div>

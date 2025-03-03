@@ -311,13 +311,13 @@
           [ngClass]="{'d-none' : bookingForm.currentPage != 2}"
           (onInit)="addCenterControl($event)"
         ></app-booking-form-center-selection>
-        <app-large-form-buttons
-          [form]="bookingForm"
-          [loading]="loading"
-          [showPrevAtFirstPage]="true"
-          (onSubmit)="sendForm()"
-        ></app-large-form-buttons>
       </form>
+      <app-large-form-buttons
+        [form]="bookingForm"
+        [loading]="loading"
+        [showPrevAtFirstPage]="true"
+        (onSubmit)="sendForm()"
+      ></app-large-form-buttons>
     } @else {
       <app-basic-loading-info></app-basic-loading-info>
     }

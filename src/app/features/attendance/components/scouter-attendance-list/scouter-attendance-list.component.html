@@ -3,7 +3,7 @@
     <h1 class="d-flex mb-0">Listas de asistencia</h1>
     <div>
       <p-button
-        class="p-button-success"
+        severity="success"
         title="Descargar excel de asistencia"
         icon="pi pi-download"
         (click)="downloadAttendanceExcel()"
@@ -14,12 +14,13 @@
   <div class="d-flex gap-2 justify-content-between align-items-end mb-3">
     <div class="d-flex w-100">
       <p-datePicker
-        class="input-w-100"
+        class="range-datepicker"
         styleClass="w-100"
         placeholder="Filtrar por rango de fechas"
         selectionMode="range"
         [showClear]="true"
         [readonlyInput]="true"
+        showIcon
         [(ngModel)]="filterDates"
         (onClear)="dt.filter(true, 'eventId', 'date-range')"
         (onSelect)="dt.filter(false, 'eventId', 'date-range')"
@@ -31,6 +32,7 @@
         title="Mostrar asistencias pasadas"
         offIcon="pi pi-history"
         onIcon="pi pi-history"
+        styleClass="icon-only"
         (onChange)="dt.filter($event.checked, 'eventEndDate', 'past-attendance')"
       ></p-toggleButton>
       </div>
@@ -69,10 +71,10 @@
     <ng-template pTemplate="body" let-eventInfo>
       <tr>
         <td class="align-items-baseline">
-          <span class="p-column-title">Actividad</span>
+          <span class="p-column-title d-sm-none">Actividad</span>
           <div class="d-flex flex-wrap align-items-center justify-content-end justify-content-sm-start gap-2">
-            <a class="uncolored stack-table-title" (click)="openInfoDialog(eventInfo.eventId)">
-              {{ eventInfo.eventTitle }} - {{ eventInfo.eventStartDate | date:"dd/MM/yy" }}
+            <a class="uncolored stack-table-title cursor-pointer" (click)="openInfoDialog(eventInfo.eventId)">
+              {{ eventInfo.eventTitle }} {{ eventInfo.eventStartDate | date:"dd/MM/yy" }}
             </a>
             @if (eventInfo.eventIsClosed) {
               <p-tag class="d-sm-block" severity="danger" styleClass="rounded-2">Cerrada</p-tag>
@@ -80,30 +82,29 @@
           </div>
         </td>
         <td class="text-center">
-          <span class="p-column-title">Asisten</span>
+          <span class="p-column-title d-sm-none">Asisten</span>
           {{ eventInfo.affirmativeConfirmations }}
         </td>
         <td class="text-center">
-          <span class="p-column-title">No Asisten</span>
+          <span class="p-column-title d-sm-none">No Asisten</span>
           {{ eventInfo.negativeConfirmations }}
         </td>
         <td class="text-center">
-          <span class="p-column-title">Sin Confirmar</span>
+          <span class="p-column-title d-sm-none">Sin Confirmar</span>
           {{ eventInfo.notRespondedConfirmations }}
         </td>
         <td class="text-center">
-          <span class="p-column-title">Asistentes que han pagado</span>
+          <span class="p-column-title d-sm-none">Asistentes que han pagado</span>
           {{ eventInfo.affirmativeAndPayedConfirmations != null ? eventInfo.affirmativeAndPayedConfirmations : '-' }}
         </td>
         <td>
           <div class="d-flex flex-row gap-2 justify-content-end w-100">
-            <p-button
+            <app-table-icon-button
               type="button"
               icon="pi pi-eye"
-              class="p-button-outlined p-button-raised"
               title="Ver Información"
               (click)="viewInfo(eventInfo.eventId, eventInfo.eventTitle, eventInfo.eventHasPayment)"
-            ></p-button>
+            ></app-table-icon-button>
             <app-table-icon-button
               type="button"
               icon="pi pi-pencil"

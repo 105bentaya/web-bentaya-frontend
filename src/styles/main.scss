@@ -40,6 +40,9 @@ hr {
 }
 
 .form-container {
+  margin-left: calc(.75rem - $row-padding);
+  margin-right: calc(.75rem - $row-padding);
+
   .p-inputtext, p-inputnumber.p-element, .p-inputnumber, .p-select, .p-datepicker, .p-password {
     width: 100%;
   }
@@ -175,13 +178,9 @@ label, span, th {
 }
 
 .attendance-multiselect {
-  .p-multiselect-item-group {
+  .p-multiselect-option-group {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
-  }
-
-  timesicon.p-icon-wrapper {
-    display: block !important;
   }
 }
 
