@@ -5,7 +5,7 @@ import {FooterComponent} from "./core/footer/footer.component";
 import {ToastModule} from "primeng/toast";
 import {AlertService} from "./shared/services/alert-service.service";
 import {MessageService} from "primeng/api";
-import {SettingsService} from "./core/settings/settings.service";
+import {SettingsService} from "./features/settings/settings.service";
 import localeEs from '@angular/common/locales/es'
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {AuthService} from "./core/auth/services/auth.service";

@@ -7,7 +7,7 @@
         icon="pi pi-file-excel"
         [loading]="excelLoading"
         (click)="exportExcel()"
-        class="p-button-success"
+        severity="success"
         title="Descargar excel"
       ></p-button>
     </div>
@@ -63,7 +63,7 @@
               <app-table-icon-button
                 icon="pi pi-trash"
                 [disabled]="loading"
-                class="p-button-danger"
+                severity="danger"
                 title="Eliminar"
                 (click)="deleteForm(form)"
               ></app-table-icon-button>

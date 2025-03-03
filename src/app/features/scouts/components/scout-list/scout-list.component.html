@@ -67,6 +67,7 @@
             scrollHeight="300px"
             optionLabel="name"
             optionValue="id"
+            styleClass="w-100 fw-normal"
           ></p-multiSelect>
         </th>
         <th class="text-center">
@@ -99,20 +100,19 @@
         <td>
           <div class="d-flex flex-row gap-2 justify-content-center">
             @if (scout.enabled) {
-              <p-button
+              <app-table-icon-button
                 icon="pi pi-user-edit"
-                class="p-button-outlined p-button-raised"
                 title="Editar"
                 (click)="openEditDialog(scout)"
-              ></p-button>
+              ></app-table-icon-button>
             }
-            <p-button
+            <app-table-icon-button
               [disabled]="loading"
               icon="pi pi-trash"
               title="Eliminar"
-              class="p-button-danger p-button-outlined p-button-raised"
+              severity="danger"
               (click)="deleteScout(scout)"
-            ></p-button>
+            ></app-table-icon-button>
           </div>
         </td>
       </tr>

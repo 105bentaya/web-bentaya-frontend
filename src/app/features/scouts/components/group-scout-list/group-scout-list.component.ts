@@ -7,7 +7,7 @@ import {ScoutFormComponent} from "../scout-form/scout-form.component";
 import {noop} from "rxjs";
 import {groups} from "../../../../shared/model/group.model";
 import {ScoutInfoComponent} from "../scout-info/scout-info.component";
-import {SettingsService} from "../../../../core/settings/settings.service";
+import {SettingsService} from "../../../settings/settings.service";
 import {ExcelService} from "../../../../shared/services/excel.service";
 import ScoutHelper from "../../scout.util";
 import {SentenceCasePipe} from "../../../../shared/pipes/sentence-case.pipe";

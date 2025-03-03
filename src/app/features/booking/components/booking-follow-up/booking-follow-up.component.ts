@@ -4,7 +4,6 @@ import {Booking} from "../../model/booking.model";
 import {FileUpload, FileUploadHandlerEvent, FileUploadModule} from "primeng/fileupload";
 import {forkJoin} from "rxjs";
 import {BookingDocument} from "../../model/booking-document.model";
-import {TabViewChangeEvent, TabViewModule} from "primeng/tabview";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {saveAs} from "file-saver";
 import {documents, ScoutCentersInfo} from "../../constant/scout-center.constant";
@@ -27,13 +26,13 @@ import {
 import {Button} from "primeng/button";
 import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../constant/confirm-messages.constants";
 import {TabsModule} from "primeng/tabs";
-import {bo} from "@fullcalendar/core/internal-common";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-booking-follow-up',
   templateUrl: './booking-follow-up.component.html',
   styleUrls: ['./booking-follow-up.component.scss'],
-  providers: [DialogService],
+  providers: [DialogService, DynamicDialogService],
   imports: [
     BookingBetaAlertComponent,
     ScoutCenterPipe,
@@ -56,7 +55,7 @@ export class BookingFollowUpComponent implements OnInit {
 
   private readonly bookingService = inject(BookingService);
   private readonly alertService = inject(AlertService);
-  private readonly dialogService = inject(DialogService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly confirmationService = inject(ConfirmationService);
 
   @ViewChild('uploader') private readonly uploader!: FileUpload;
@@ -141,17 +140,13 @@ export class BookingFollowUpComponent implements OnInit {
   }
 
   protected cancelReservation(booking: Booking) {
-    this.ref = this.dialogService.open(BookingStatusUpdateComponent, {
-      header: `Cancelar reserva`,
-      styleClass: 'dialog-width small-dw',
-      data: {
-        floatLabel: "Motivo de la cancelación",
-        required: true,
-        message: booking.status == "OCCUPIED" || booking.status == "FULLY_OCCUPIED" ?
-          "Comente el motivo de la cancelación, indicando claramente si es por una causa de fuerza mayor o está" +
-          "cancelando de forma voluntaria. Según esto valorarémos si le devolvemos el importe íntegro o solo una parte." :
-          ""
-      }
+    this.ref = this.dialogService.openDialog(BookingStatusUpdateComponent, "Cancelar reserva", "small", {
+      floatLabel: "Motivo de la cancelación",
+      required: true,
+      message: booking.status == "OCCUPIED" || booking.status == "FULLY_OCCUPIED" ?
+        "Comente el motivo de la cancelación, indicando claramente si es por una causa de fuerza mayor o está" +
+        "cancelando de forma voluntaria. Según esto valorarémos si le devolvemos el importe íntegro o solo una parte." :
+        ""
     });
     this.ref.onClose.subscribe(result => {
       if (result) this.updateBookingStatus("CANCELED", result.comment, booking);

@@ -1,0 +1,72 @@
+<div class="container">
+  <h1>Ajustes</h1>
+  @if (settingsLoaded) {
+    <div class="d-flex flex-column gap-3">
+      <h2>Ajustes generales</h2>
+      <p-floatlabel variant="on">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <span>{{ currentYear - 1 + 2000 }}/</span>
+          </p-inputgroup-addon>
+          <p-inputNumber
+            id="current-year"
+            class="w-100"
+            [(ngModel)]="currentYear"
+            mode="decimal"
+            [useGrouping]="false"
+            [allowEmpty]="false"
+            [min]="23"
+            [max]="99"
+          ></p-inputNumber>
+          <label for="current-year">Ronda actual</label>
+        </p-inputgroup>
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <p-datePicker
+          id="maintenance"
+          styleClass="w-100"
+          [(ngModel)]="dateValue"
+          [showTime]="true"
+          [showClear]="true"
+          (onClear)="clearDate()"
+          (onSelect)="setDate($event)"
+          [readonlyInput]="true"
+        ></p-datePicker>
+        <label for="maintenance">Fecha de mantenimiento</label>
+      </p-floatlabel>
+      <h2>Ajustes formulario inscripción</h2>
+      <app-checkbox-container label="Abrir formulario de preinscripción">
+        <p-checkbox
+          [(ngModel)]="formIsOpen"
+          [binary]="true"
+        ></p-checkbox>
+      </app-checkbox-container>
+      <p-floatlabel variant="on">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <span>{{ currentFormYear - 1 + 2000 }}/</span>
+          </p-inputgroup-addon>
+          <p-inputNumber
+            class="w-100"
+            [allowEmpty]="false"
+            id="inscription-year"
+            [(ngModel)]="currentFormYear"
+            mode="decimal"
+            [useGrouping]="false"
+            [min]="22"
+            [max]="99"
+          ></p-inputNumber>
+          <label for="inscription-year">Ronda de la inscripciones</label>
+        </p-inputgroup>
+      </p-floatlabel>
+      <app-save-buttons
+        class="mt-2"
+        [saveDisabled]="saveButtonDisabled()"
+        [saveLoading]="loading > 0"
+        (onSave)="saveChanges()"
+      ></app-save-buttons>
+    </div>
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>

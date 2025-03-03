@@ -27,11 +27,11 @@ import {
 })
 export class SeniorFormListComponent implements OnInit {
 
-  private seniorService = inject(SeniorSectionService);
-  private filterService = inject(FilterService);
-  private excelService = inject(ExcelService);
-  private confirmationService = inject(ConfirmationService);
-  private alertService = inject(AlertService);
+  private readonly seniorService = inject(SeniorSectionService);
+  private readonly filterService = inject(FilterService);
+  private readonly excelService = inject(ExcelService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly alertService = inject(AlertService);
 
   protected data!: SeniorForm[];
   protected excelLoading = false;

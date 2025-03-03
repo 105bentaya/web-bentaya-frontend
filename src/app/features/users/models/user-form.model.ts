@@ -1,5 +1,5 @@
 export interface UserForm {
-  id?: string;
+  id?: number;
   username: string;
   password: string;
   enabled: boolean;

@@ -1,8 +1,8 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {ConfirmationService, FilterService, MenuItem, SortEvent} from 'primeng/api';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {ConfirmationService, FilterService, SortEvent} from 'primeng/api';
 import {PreScout} from '../../models/pre-scout.model';
 import {ScoutFormsService} from '../../scout-forms.service';
-import {SettingsService} from "../../../../core/settings/settings.service";
+import {SettingsService} from "../../../settings/settings.service";
 import {AssignPreScoutFormComponent} from "../assign-pre-scout-form/assign-pre-scout-form.component";
 import {PreScoutAssignation} from "../../models/pre-scout-assignation.model";
 import {adminStatuses, statusIsSaveAsScout, statusIsValidForSaving} from "../../models/satus.model";
@@ -17,31 +17,34 @@ import {InputTextModule} from 'primeng/inputtext';
 import {Table, TableModule} from 'primeng/table';
 import {FormsModule} from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
-import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
-import {TabMenuModule} from "primeng/tabmenu";
 import {sections} from "../../../../shared/constant";
 import {DatePipe} from "@angular/common";
 import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {TabsModule} from "primeng/tabs";
+import {
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-ser-scout-table',
   templateUrl: './ser-scout-table.component.html',
   styleUrls: ['./ser-scout-table.component.scss'],
-  providers: [DialogService],
+  providers: [DialogService, DynamicDialogService],
   imports: [
     CheckboxModule,
     FormsModule,
-    TabMenuModule,
+    TabsModule,
     TableModule,
     InputTextModule,
     MultiSelectModule,
     ScoutYearPipe,
     StatusPipe,
-    BasicLoadingInfoComponent,
     DatePipe,
-    TableIconButtonComponent
+    TableIconButtonComponent,
+    CheckboxContainerComponent
   ]
 })
 export class SerScoutTableComponent implements OnInit {
@@ -51,12 +54,12 @@ export class SerScoutTableComponent implements OnInit {
   private readonly confirmationService = inject(ConfirmationService);
   private readonly settingService = inject(SettingsService);
   private readonly alertService = inject(AlertService);
-  private readonly dialogService = inject(DialogService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly excelService = inject(ExcelService);
 
   protected preScouts!: PreScout[];
-  protected yearList!: MenuItem[];
-  protected selectedYear!: string;
+  protected yearList!: { label: string, year: number }[];
+  protected selectedYear!: number;
   protected loading = false;
   protected sections = ["CASTOR", "LOBATO", "SCOUT", "ESCULTA", "ROVER"];
   protected showCurrentYear = false;
@@ -64,6 +67,7 @@ export class SerScoutTableComponent implements OnInit {
   protected multiSelectStatuses!: { id: number | null, name: string }[];
   protected currentYear!: number;
   private ref!: DynamicDialogRef;
+  @ViewChild('tab') table!: Table;
 
   ngOnInit(): void {
     this.settingService.getByName("currentYear").subscribe(data => this.currentYear = +data.value);
@@ -93,7 +97,8 @@ export class SerScoutTableComponent implements OnInit {
     const years = new Set<number>();
     preScouts.forEach(preScout => years.add(preScout.inscriptionYear!));
     const yearList = [...years].sort((n1, n2) => n2 - n1);
-    this.yearList = yearList.map(year => ({label: `RS ${year - 1}/${year - 2000}`, id: year.toString()}));
+    this.yearList = yearList.map(year => ({label: `RS ${year - 1}/${year - 2000}`, year: year}));
+    this.filterByYear(this.yearList[0].year);
   }
 
   protected exportExcelScout() {
@@ -151,10 +156,9 @@ export class SerScoutTableComponent implements OnInit {
   }
 
   protected openForm(preScout: PreScout) {
-    this.ref = this.dialogService.open(AssignPreScoutFormComponent, {
-      header: 'Editar Asignación - ' + preScout.name,
-      styleClass: 'dialog-width',
-      data: {preScout: preScout, canEditGroup: true}
+    this.ref = this.dialogService.openDialog(AssignPreScoutFormComponent, `Editar Asignación - ${preScout.name}`, "small", {
+      preScout: preScout,
+      canEditGroup: true
     });
     this.ref.onClose.subscribe(result => {
       if (result) this.saveAssignation(result, preScout);
@@ -187,10 +191,10 @@ export class SerScoutTableComponent implements OnInit {
     }
   }
 
-  protected filterByYear(event: any, table: Table) {
-    if (this.selectedYear != event) {
-      this.selectedYear = event;
-      table.filter(this.selectedYear, 'inscriptionYear', 'equals');
+  protected filterByYear(year: number) {
+    if (this.selectedYear != year) {
+      this.selectedYear = year;
+      this.table.filter(this.selectedYear, 'inscriptionYear', 'equals');
     }
   }
 

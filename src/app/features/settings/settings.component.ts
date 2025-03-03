@@ -8,6 +8,10 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {BasicLoadingInfoComponent} from "../../shared/components/basic-loading-info/basic-loading-info.component";
 import {SaveButtonsComponent} from "../../shared/components/buttons/save-buttons/save-buttons.component";
 import {DatePicker} from "primeng/datepicker";
+import {CheckboxContainerComponent} from "../../shared/components/checkbox-container/checkbox-container.component";
+import {FloatLabel} from "primeng/floatlabel";
+import {InputGroup} from "primeng/inputgroup";
+import {InputGroupAddon} from "primeng/inputgroupaddon";
 
 @Component({
   selector: 'app-settings',
@@ -19,13 +23,17 @@ import {DatePicker} from "primeng/datepicker";
     CheckboxModule,
     SaveButtonsComponent,
     BasicLoadingInfoComponent,
-    DatePicker
+    DatePicker,
+    CheckboxContainerComponent,
+    FloatLabel,
+    InputGroup,
+    InputGroupAddon
   ]
 })
 export class SettingsComponent implements OnInit {
 
-  private settingsService = inject(SettingsService);
-  private alertService = inject(AlertService);
+  private readonly settingsService = inject(SettingsService);
+  private readonly alertService = inject(AlertService);
 
   private originalCurrentFormYear!: number;
   protected currentFormYear!: number;

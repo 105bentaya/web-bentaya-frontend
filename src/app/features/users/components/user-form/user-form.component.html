@@ -1,97 +1,98 @@
 <div class="container text-center">
   <h1>{{ user ? "Editar Usuario" : "Crear Nuevo Usuario" }}</h1>
   @if (userForm.form) {
-    <div class="d-flex flex-column justify-content-center">
-      <form (submit)="onSubmit()" [formGroup]="userForm.form" class="form-container">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <form (submit)="onSubmit()" [formGroup]="userForm.form" class="form-container w-100" style="max-width: 800px">
         <div class="row">
-          <div class="col-6">
-            <label class="required" for="username">
-              Nombre de Usuario
-            </label>
-            <input
-              id="username"
-              pInputText
-              type="text"
-              formControlName="username"
-            >
+          <div class="col-12 col-md-6">
+            <p-floatlabel variant="on">
+              <label class="required" for="username">
+                Nombre de Usuario
+              </label>
+              <input
+                id="username"
+                pInputText
+                type="text"
+                formControlName="username"
+              >
+            </p-floatlabel>
           </div>
-          <div class="col-6">
-            <label class="required" for="password">
-              Contraseña
-            </label>
-            <p-password
-              id="password"
-              formControlName="password"
-              [toggleMask]="true"
-              [feedback]="false"
-            ></p-password>
+          <div class="col-12 col-md-6">
+            <p-floatlabel variant="on">
+              <p-password
+                id="password"
+                formControlName="password"
+                [toggleMask]="true"
+                [feedback]="false"
+              ></p-password>
+              <label class="required" for="password">Contraseña</label>
+            </p-floatlabel>
           </div>
           <div class="col-12">
-            <label class="required" for="roles">
-              Roles
-            </label>
-            <p-multiSelect
-              id="roles"
-              placeholder="Seleccionar roles"
-              [options]="roles"
-              [filter]="false"
-              [autofocusFilter]="false"
-              formControlName="roles"
-              optionValue="name"
-              (onChange)="onRolesChange()"
-            >
-              <ng-template let-selectedIds pTemplate="selectedItems">
-                @if (!selectedIds || selectedIds.length === 0) {
-                  <div>Seleccionar roles</div>
-                } @else {
-                  {{ selectedIds | roles }}
-                }
-              </ng-template>
-              <ng-template let-role pTemplate="items">
-                <div>{{ role.name | role }}</div>
-              </ng-template>
-            </p-multiSelect>
+            <p-floatlabel variant="on">
+              <p-multiSelect
+                id="roles"
+                class="w-100"
+                [options]="roles"
+                [filter]="false"
+                [autofocusFilter]="false"
+                formControlName="roles"
+                optionValue="name"
+                (onChange)="onRolesChange()"
+              >
+                <ng-template let-selectedIds pTemplate="selectedItems">
+                  @if (selectedIds) {
+                    {{ selectedIds | roles }}
+                  }
+                </ng-template>
+                <ng-template let-role pTemplate="items">
+                  <div>{{ role.name | role }}</div>
+                </ng-template>
+              </p-multiSelect>
+              <label class="required" for="roles">Roles</label>
+            </p-floatlabel>
           </div>
           @if (isScouter()) {
             <div class="col">
-              <label class="required" for="groupId">
-                Unidad del Scouter
-              </label>
-              <p-select
-                id="groupId"
-                [options]="groups"
-                formControlName="groupId"
-                optionLabel="name"
-                optionValue="id"
-                placeholder="Unidad del Scouter"
-              ></p-select>
+              <p-floatlabel variant="on">
+                <p-select
+                  id="groupId"
+                  [options]="groups"
+                  formControlName="groupId"
+                  optionLabel="name"
+                  optionValue="id"
+                ></p-select>
+                <label class="required" for="groupId">
+                  Unidad del Scouter
+                </label>
+              </p-floatlabel>
             </div>
           }
           @if (isUser()) {
             <div class="col">
-              <label class="required" for="scoutIds">
-                Educanda(s) asociados
-              </label>
-              <p-multiSelect
-                id="scoutIds"
-                [options]="scouts"
-                formControlName="scoutIds"
-                optionLabel="name"
-                optionValue="id"
-                placeholder="Seleccionar educandas"
-                [loading]="!scouts"
-              >
-                <ng-template let-scout pTemplate="item">
-                  {{ scout.surname }}, {{ scout.name }} - <small>{{ scout.birthday | date: "d/MM/y" }}</small>
-                </ng-template>
-                <ng-template let-value pTemplate="selectedItems">
-                  @if (!value || value.length === 0) {
-                    <div>Seleccionar educandas</div>
-                  } @else {
-                    {{ value | join:'name' }}
-                  }
-                </ng-template>
-              </p-multiSelect>
+              <p-floatlabel variant="on">
+                <p-multiSelect
+                  class="w-100"
+                  id="scoutIds"
+                  [options]="scouts"
+                  formControlName="scoutIds"
+                  optionLabel="name"
+                  optionValue="id"
+                  [loading]="!scouts"
+                >
+                  <ng-template let-scout pTemplate="item">
+                    {{ scout.surname }}, {{ scout.name }} - <small>{{ scout.birthday | date: "d/MM/y" }}</small>
+                  </ng-template>
+                  <ng-template let-value pTemplate="selectedItems">
+                    @if (value) {
+                      {{ value | join:'name' }}
+                    }
+                  </ng-template>
+                </p-multiSelect>
+                <label class="required" for="scoutIds">
+                  Educanda(s) asociados
+                </label>
+              </p-floatlabel>
             </div>
           }
           <app-save-buttons

@@ -15,6 +15,9 @@ import FilterUtils from "../../../../shared/util/filter-utils";
 import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 
 @Component({
   selector: 'app-user-list',
@@ -29,7 +32,8 @@ import {
     RolePipe,
     RolesPipe,
     TableIconButtonComponent,
-    Button
+    Button,
+    CheckboxContainerComponent
   ]
 })
 export class UserListComponent {

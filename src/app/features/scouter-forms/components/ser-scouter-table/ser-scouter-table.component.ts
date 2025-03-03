@@ -4,6 +4,9 @@ import {ScouterFormsService} from "../../scouter-forms.service";
 import {ConfirmationService} from "primeng/api";
 import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 
 @Component({
   selector: 'app-ser-scouter-table',
@@ -11,7 +14,8 @@ import {TableModule} from 'primeng/table';
   styleUrls: ['./ser-scouter-table.component.scss'],
   imports: [
     TableModule,
-    Button
+    Button,
+    TableIconButtonComponent
   ]
 })
 export class SerScouterTableComponent implements OnInit {

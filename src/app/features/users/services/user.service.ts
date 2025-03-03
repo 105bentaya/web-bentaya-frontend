@@ -13,8 +13,8 @@ import {UserForm} from "../models/user-form.model";
 })
 export class UserService {
 
-  private http = inject(HttpClient);
-  private userUrl = `${environment.apiUrl}/user`;
+  private readonly http = inject(HttpClient);
+  private readonly userUrl = `${environment.apiUrl}/user`;
 
   getAll(filter: Filter): Observable<Page<User>> {
     return this.http.get<Page<User>>(this.userUrl, {
@@ -26,12 +26,12 @@ export class UserService {
     return this.http.get<UserForm>(`${this.userUrl}/form/${id}`);
   }
 
-  save(user: UserForm): Observable<User> {
-    return this.http.post<User>(this.userUrl, user);
+  save(user: UserForm): Observable<UserForm> {
+    return this.http.post<UserForm>(this.userUrl, user);
   }
 
-  update(user: UserForm, id: string): Observable<User> {
-    return this.http.put<User>(`${this.userUrl}/${id}`, user);
+  update(user: UserForm, id: number): Observable<UserForm> {
+    return this.http.put<UserForm>(`${this.userUrl}/${id}`, user);
   }
 
   delete(id: number): Observable<User> {

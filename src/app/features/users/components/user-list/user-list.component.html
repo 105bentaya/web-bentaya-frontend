@@ -6,16 +6,14 @@
         label="Añadir"
         title="Añadir Usuario"
         icon="pi pi-user-plus"
-        routerLink="/users/new"
+        routerLink="/usuarios/new"
       ></p-button>
     </div>
   </div>
   <div class="d-flex justify-content-end mt-3 mb-2">
-    <p-checkbox
-      [binary]="true"
-      (onChange)="dt.filter($event.checked,'showHidden', 'custom')"
-      label="Mostrar usuarios inactivos"
-    ></p-checkbox>
+    <app-checkbox-container label="Mostrar usuarios inactivos">
+      <p-checkbox [binary]="true" (onChange)="dt.filter($event.checked,'showHidden', 'custom')"></p-checkbox>
+    </app-checkbox-container>
   </div>
   <div class="d-flex flex-column gap-2 mb-2">
     <input
@@ -32,11 +30,11 @@
       optionValue="id"
       styleClass="w-100"
       (onChange)="dt.filter($event.value,'roleIds', 'custom')"
+      (onClear)="dt.filter(null,'roleIds', 'custom')"
+      showClear
     >
       <ng-template let-selectedIds pTemplate="selectedItems">
-        @if (!selectedIds || selectedIds.length === 0) {
-          <div>Filtrar roles</div>
-        } @else {
+        @if (selectedIds) {
           {{ selectedIds | roles:true }}
         }
       </ng-template>
@@ -56,7 +54,7 @@
     [rows]="10"
     [rowsPerPageOptions]="[5,10,25,50]"
     (onLazyLoad)="loadUsersWithFilter($event)"
-    breakpoint="430px"
+    breakpoint="767px"
     [loading]="loading"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} usuarios"
@@ -73,16 +71,16 @@
     <ng-template pTemplate="body" let-user>
       <tr>
         <td>
-          <span class="p-column-title">Nombre de usuario</span>
+          <span class="p-column-title d-md-none">Nombre de usuario</span>
           {{ user.username }}
         </td>
         <td>
-          <span class="p-column-title">Activo</span>
+          <span class="p-column-title d-md-none">Activo</span>
           {{ user.enabled ? "Sí" : "No" }}
         </td>
         <td>
-          <span class="p-column-title">Roles</span>
-          <span class="stack-table-title">{{ user.roles | roles:false:user.groupId }}</span>
+          <span class="p-column-title d-md-none">Roles</span>
+          <span class="text-end">{{ user.roles | roles:false:user.groupId }}</span>
         </td>
         <td>
           <div class="d-flex flex-row gap-2 justify-content-center">

@@ -9,9 +9,8 @@ import {HttpClient} from "@angular/common/http";
 })
 export class SettingsService {
 
-  private http = inject(HttpClient);
-
-  private settingsUrl = `${environment.apiUrl}/settings`;
+  private readonly http = inject(HttpClient);
+  private readonly settingsUrl = `${environment.apiUrl}/settings`;
 
   getAll(): Observable<Setting[]> {
     return this.http.get<Setting[]>(this.settingsUrl);

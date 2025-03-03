@@ -15,24 +15,29 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {InputTextModule} from 'primeng/inputtext';
 import {TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-scout-list',
   templateUrl: 'scout-list.component.html',
   styleUrls: ['scout-list.component.scss'],
-  providers: [DialogService],
+  providers: [DialogService, DynamicDialogService],
   imports: [
     TableModule,
     InputTextModule,
     MultiSelectModule,
     GroupPipe,
-    Button
+    Button,
+    TableIconButtonComponent
   ]
 })
 
 export class ScoutListComponent implements OnInit {
   private readonly scoutService = inject(ScoutService);
-  private readonly dialogService = inject(DialogService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly filterService = inject(FilterService);
   private readonly alertService = inject(AlertService);
@@ -58,19 +63,12 @@ export class ScoutListComponent implements OnInit {
   }
 
   protected openAddDialog() {
-    this.ref = this.dialogService.open(ScoutFormComponent, {
-      header: 'Añadir Persona Educanda',
-      styleClass: 'medium-dw dialog-width'
-    });
+    this.ref = this.dialogService.openDialog(ScoutFormComponent, "Añadir Persona Educanda", "medium");
     this.ref.onClose.subscribe(saved => saved ? this.getScouts() : noop());
   }
 
   protected openEditDialog(scout: Scout) {
-    this.ref = this.dialogService.open(ScoutFormComponent, {
-      header: 'Editar Persona Educanda',
-      styleClass: 'medium-dw dialog-width',
-      data: {scout: scout}
-    });
+    this.ref = this.dialogService.openDialog(ScoutFormComponent, 'Editar Persona Educanda', 'medium', {scout});
     this.ref.onClose.subscribe(saved => saved ? this.getScouts() : noop());
   }
 

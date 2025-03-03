@@ -1,11 +1,12 @@
 <div class="container">
-  <h1>LISTA DE VOLUNTARIADO</h1>
+  <h1>Lista de voluntariado</h1>
   <p-table
     #scouterTab
     showGridlines
     [value]="preScouters"
     responsiveLayout="stack"
     [loading]="!preScouters"
+    breakpoint="767px"
   >
     <ng-template pTemplate="caption">
       <div class="ms-auto" style="text-align: right;">
@@ -26,33 +27,32 @@
     <ng-template pTemplate="body" let-preScouter>
       <tr class="stack-table-title">
         <td>
-          <span class="p-column-title">Nombre de el/la voluntario/a</span>
+          <span class="p-column-title d-md-none">Nombre de el/la voluntario/a</span>
           <span>{{ preScouter.surname }}, {{ preScouter.name }}</span>
         </td>
         <td>
-          <span class="p-column-title">Fecha de nacimiento</span>
+          <span class="p-column-title d-md-none">Fecha de nacimiento</span>
           <span>{{ preScouter.birthday }}</span>
         </td>
         <td>
-          <span class="p-column-title">Género</span>
+          <span class="p-column-title d-md-none">Género</span>
           <span>{{ preScouter.gender }}</span>
         </td>
         <td>
           <div class="d-flex flex-row gap-2 justify-content-end w-100">
-            <p-button
+            <app-table-icon-button
               icon="pi pi-file-pdf"
               [disabled]="loading"
               (click)="downloadPreScouterAsPdf(preScouter)"
-              class="p-button-raised p-button-outlined"
               title="Exportar como PDF"
-            ></p-button>
-            <p-button
+            ></app-table-icon-button>
+            <app-table-icon-button
               icon="pi pi-trash"
               [disabled]="loading"
               (click)="deleteScouter($event, preScouter)"
-              class="p-button-danger p-button-raised p-button-outlined"
+              severity="danger"
               title="Eliminar preinscripción"
-            ></p-button>
+            ></app-table-icon-button>
           </div>
         </td>
       </tr>

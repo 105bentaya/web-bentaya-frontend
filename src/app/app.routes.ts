@@ -40,7 +40,7 @@ export const routes: Routes = [
   //ADMIN
   {
     path: "ajustes",
-    loadComponent: () => import('./core/settings/settings.component').then(c => c.SettingsComponent),
+    loadComponent: () => import('./features/settings/settings.component').then(c => c.SettingsComponent),
     canActivate: [authGuard],
     data: {roles: ["ROLE_ADMIN"]}
   },

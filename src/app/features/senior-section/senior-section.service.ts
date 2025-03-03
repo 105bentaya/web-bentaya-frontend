@@ -9,8 +9,8 @@ import {SeniorForm} from "./senior-form.model";
 })
 export class SeniorSectionService {
 
-  private http = inject(HttpClient);
-  private url = `${environment.apiUrl}/senior`;
+  private readonly http = inject(HttpClient);
+  private readonly url = `${environment.apiUrl}/senior`;
 
   public findAll(): Observable<SeniorForm[]> {
     return this.http.get<SeniorForm[]>(this.url);

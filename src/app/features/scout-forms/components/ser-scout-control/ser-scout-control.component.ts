@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {SettingsService} from "../../../../core/settings/settings.service";
+import {SettingsService} from "../../../settings/settings.service";
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ClosedSerScoutComponent} from '../closed-ser-scout/closed-ser-scout.component';
 import {SerScoutComponent} from '../ser-scout/ser-scout.component';
