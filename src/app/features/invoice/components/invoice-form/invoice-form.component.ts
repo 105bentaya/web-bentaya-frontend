@@ -17,6 +17,9 @@ import {SplitButtonModule} from "primeng/splitbutton";
 import {MenuItem} from "primeng/api";
 import {DatePicker} from "primeng/datepicker";
 import {DateUtils} from "../../../../shared/util/date-utils";
+import {
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 
 @Component({
   selector: 'app-invoice-form',
@@ -32,7 +35,8 @@ import {DateUtils} from "../../../../shared/util/date-utils";
     TabViewModule,
     CheckboxModule,
     SplitButtonModule,
-    DatePicker
+    DatePicker,
+    CheckboxContainerComponent
   ],
   templateUrl: './invoice-form.component.html',
   styleUrl: './invoice-form.component.scss'

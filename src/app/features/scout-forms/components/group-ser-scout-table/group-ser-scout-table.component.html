@@ -1,11 +1,12 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-end mb-3">
-    <h1 class="mb-0 d-flex me-3">Lista de Preinscripciones</h1>
+    <h1 class="mb-0 d-flex me-3">Lista de preinscripciones</h1>
     @if (hasRejected) {
       <div>
         <p-toggleButton
           offIcon="fa-solid fa-file-circle-xmark"
           onIcon="fa-solid fa-file-circle-xmark"
+          styleClass="icon-only"
           (onChange)="filterRejected($event.checked!)"
           [(ngModel)]="showRejected"
           title="Mostrar rechazadas"
@@ -56,6 +57,7 @@
           <p-multiSelect
             [options]="statuses"
             (onChange)="tab.filter($event.value, 'status', 'in')"
+            (onClear)="tab.filter(null, 'status', 'in')"
             [showHeader]="false"
             [autofocusFilter]="false"
             [showClear]="true"
@@ -64,6 +66,7 @@
             optionValue="id"
             optionLabel="name"
             placeholder="Filtrar"
+            styleClass="w-100 fw-normal"
           ></p-multiSelect>
         </th>
         <th>

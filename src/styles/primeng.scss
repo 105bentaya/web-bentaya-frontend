@@ -60,7 +60,7 @@
   height: var(--p-button-icon-only-width) !important;
 }
 
-.p-button.p-button-icon-only:not(.p-button-sm) {
+.p-button.p-button-icon-only:not(.p-button-sm, .p-splitbutton-dropdown) {
   height: var(--p-button-icon-only-width);
 }
 

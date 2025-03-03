@@ -19,7 +19,6 @@ import {ScoutUserFormListComponent} from "../scout-user-form-list/scout-user-for
 import {ScoutUsernamesUpdate} from "../../models/scout-usernames-update.model";
 import {PreScout} from "../../../scout-forms/models/pre-scout.model";
 import {Observable} from "rxjs";
-import {TabViewChangeEvent, TabViewModule} from "primeng/tabview";
 import {TitleCasePipe} from "@angular/common";
 import {ContactFormListComponent} from '../contact-form-list/contact-form-list.component';
 import {SelectButtonModule} from 'primeng/selectbutton';
@@ -35,6 +34,7 @@ import FormUtils from "../../../../shared/util/form-utils";
 import {Contact} from "../../models/contact.model";
 import {DatePicker} from "primeng/datepicker";
 import {Textarea} from "primeng/textarea";
+import {TabsModule} from "primeng/tabs";
 
 @Component({
   selector: 'app-scout-form',
@@ -42,7 +42,6 @@ import {Textarea} from "primeng/textarea";
   styleUrls: ['./scout-form.component.scss'],
   imports: [
     ReactiveFormsModule,
-    TabViewModule,
     FloatLabelModule,
     InputTextModule,
     SelectModule,
@@ -53,7 +52,8 @@ import {Textarea} from "primeng/textarea";
     ScoutUserFormListComponent,
     SaveButtonsComponent,
     DatePicker,
-    Textarea
+    Textarea,
+    TabsModule
   ]
 })
 export class ScoutFormComponent implements OnInit {
@@ -151,8 +151,8 @@ export class ScoutFormComponent implements OnInit {
     this.scoutContactList.removeAt(index);
   }
 
-  protected onTabChange(event: TabViewChangeEvent) {
-    if (event.index == 2 && !this.userTable.users) {
+  protected onUserTabSelect() {
+    if (!this.userTable.users) {
       this.userTable.loadUsers();
     }
   }

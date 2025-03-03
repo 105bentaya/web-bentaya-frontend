@@ -12,6 +12,10 @@ import {DialogService} from "primeng/dynamicdialog";
 import {InvoiceFormComponent} from "../invoice-form/invoice-form.component";
 import {cloneDeep} from "lodash";
 import {AlertService} from "../../../../shared/services/alert-service.service";
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 
 @Component({
@@ -23,16 +27,17 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
     TableModule,
     CurrencyPipe,
     Button,
-    DatePipe
+    DatePipe,
+    TableIconButtonComponent
   ],
   templateUrl: './invoice-list.component.html',
   styleUrl: './invoice-list.component.scss',
-  providers: [DialogService]
+  providers: [DialogService, DynamicDialogService]
 })
 export class InvoiceListComponent implements OnInit {
 
   private readonly invoiceService = inject(InvoiceService);
-  private readonly dialogService = inject(DialogService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly alertService = inject(AlertService);
   private readonly confirmationService = inject(ConfirmationService);
 
@@ -61,11 +66,12 @@ export class InvoiceListComponent implements OnInit {
   }
 
   protected openInvoiceDialog(invoice?: Invoice) {
-    const ref = this.dialogService.open(InvoiceFormComponent, {
-      header: invoice ? 'Editar Factura' : 'Añadir Factura',
-      styleClass: 'dialog-width medium-dw',
-      data: {invoiceData: cloneDeep(this.invoiceData), invoice}
-    });
+    const ref = this.dialogService.openDialog(
+      InvoiceFormComponent,
+      invoice ? 'Editar Factura' : 'Añadir Factura',
+      "medium",
+      {invoiceData: cloneDeep(this.invoiceData), invoice}
+    );
     ref.onClose.subscribe(() => this.dt._filter());
   }
 

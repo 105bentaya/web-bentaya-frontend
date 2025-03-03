@@ -303,7 +303,7 @@ h1, h2, h3 {
     height: $diameter !important;
 
     position: fixed;
-    top: 81 / 2 - $radius;
+    top: (81 / 2) - $radius;
     left: 10px;
     z-index: $z-index-menu
   }

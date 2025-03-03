@@ -1,134 +1,142 @@
 <div class="form-container">
   <form class="d-flex flex-column" [formGroup]="scoutFormHelper.form">
-    <p-tabView (onChange)="onTabChange($event)">
-      <p-tabPanel header="Datos">
-        <div>
-          <div class="row">
-            <div class="col-12 col-sm-6">
-              <p-floatlabel variant="on">
-                <input id="name" formControlName="name" maxlength="128" pInputText>
-                <label class="required" for="name">Nombre</label>
-              </p-floatlabel>
+    <p-tabs [value]="0">
+      <p-tablist>
+        <p-tab [value]="0">Datos</p-tab>
+        <p-tab [value]="1">Datos de Scouters</p-tab>
+        <p-tab [value]="2" (click)="onUserTabSelect()">Usuarios asociados</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel [value]="0">
+          <div>
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <p-floatlabel variant="on">
+                  <input id="name" formControlName="name" maxlength="128" pInputText>
+                  <label class="required" for="name">Nombre</label>
+                </p-floatlabel>
+              </div>
+              <div class="col-12 col-sm-6">
+                <p-floatlabel variant="on">
+                  <input id="surname" formControlName="surname" maxlength="128" pInputText>
+                  <label class="required" for="surname">Apellidos</label>
+                </p-floatlabel>
+              </div>
+              <div class="col-12 col-sm-6">
+                <p-floatlabel variant="on">
+                  <input id="dni" formControlName="dni" maxlength="64" pInputText>
+                  <label for="dni">DNI</label>
+                </p-floatlabel>
+              </div>
+              <div class="col-12 col-sm-6">
+                <p-floatlabel variant="on">
+                  <p-datePicker
+                    id="birthday"
+                    formControlName="birthday"
+                    appendTo="body"
+                  ></p-datePicker>
+                  <label class="required" for="birthday">Fecha de Nacimiento</label>
+                </p-floatlabel>
+              </div>
+              <div class="col-12 col-sm-6">
+                <p-floatlabel variant="on">
+                  <p-select
+                    id="groupId"
+                    formControlName="groupId"
+                    [options]="groups"
+                    appendTo="body"
+                    optionLabel="name"
+                    optionValue="id"
+                  ></p-select>
+                  <label class="required" for="groupId">Unidad</label>
+                </p-floatlabel>
+              </div>
+              <div class="col-12 col-sm-6">
+                <p-floatlabel variant="on">
+                  <p-select
+                    id="gender"
+                    formControlName="gender"
+                    [options]="genders"
+                    appendTo="body"
+                  ></p-select>
+                  <label class="required" for="groupId">Género</label>
+                </p-floatlabel>
+              </div>
+              <div class="col-12 col-sm-6 col-md-4">
+                <p-floatlabel variant="on">
+                  <input id="shirtSize" formControlName="shirtSize" maxlength="64" pInputText>
+                  <label for="shirtSize">Talla</label>
+                </p-floatlabel>
+              </div>
+              <div class="col-12 col-sm-6 col-md-4">
+                <p-floatlabel variant="on">
+                  <p-inputNumber
+                    id="census"
+                    [useGrouping]="false"
+                    formControlName="census"
+                  ></p-inputNumber>
+                  <label for="census">Censo</label>
+                </p-floatlabel>
+              </div>
+              <div class="col-12 col-md-4">
+                <p-floatlabel variant="on">
+                  <input id="municipality" formControlName="municipality" maxlength="256" pInputText>
+                  <label for="municipality">Municipio de Residencia</label>
+                </p-floatlabel>
+              </div>
+              <div class="col-12 mb-0">
+                <p-floatlabel variant="on">
+                  <label for="medicalData">Datos Médicos</label>
+                  <app-form-text-area
+                    id="medicalData"
+                    formControlName="medicalData"
+                    [maxLength]="1024"
+                    [showErrorMessage]="scoutFormHelper.hasSpecificError('medicalData', 'maxlength')"
+                  ></app-form-text-area>
+                </p-floatlabel>
+              </div>
+              <div class="col mb-0 d-flex flex-column">
+                <label for="imageAuthorization" class="required">Autorización de imagen</label>
+                <p-selectButton
+                  class="w-fit"
+                  id="imageAuthorization"
+                  [options]="options"
+                  formControlName="imageAuthorization"
+                ></p-selectButton>
+              </div>
             </div>
-            <div class="col-12 col-sm-6">
-              <p-floatlabel variant="on">
-                <input id="surname" formControlName="surname" maxlength="128" pInputText>
-                <label class="required" for="surname">Apellidos</label>
-              </p-floatlabel>
-            </div>
-            <div class="col-12 col-sm-6">
-              <p-floatlabel variant="on">
-                <input id="dni" formControlName="dni" maxlength="64" pInputText>
-                <label for="dni">DNI</label>
-              </p-floatlabel>
-            </div>
-            <div class="col-12 col-sm-6">
-              <p-floatlabel variant="on">
-                <p-datePicker
-                  id="birthday"
-                  formControlName="birthday"
-                  appendTo="body"
-                ></p-datePicker>
-                <label class="required" for="birthday">Fecha de Nacimiento</label>
-              </p-floatlabel>
-            </div>
-            <div class="col-12 col-sm-6">
-              <p-floatlabel variant="on">
-                <p-select
-                  id="groupId"
-                  formControlName="groupId"
-                  [options]="groups"
-                  appendTo="body"
-                  optionLabel="name"
-                  optionValue="id"
-                ></p-select>
-                <label class="required" for="groupId">Unidad</label>
-              </p-floatlabel>
-            </div>
-            <div class="col-12 col-sm-6">
-              <p-floatlabel variant="on">
-                <p-select
-                  id="gender"
-                  formControlName="gender"
-                  [options]="genders"
-                  appendTo="body"
-                ></p-select>
-                <label class="required" for="groupId">Género</label>
-              </p-floatlabel>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-              <p-floatlabel variant="on">
-                <input id="shirtSize" formControlName="shirtSize" maxlength="64" pInputText>
-                <label for="shirtSize">Talla</label>
-              </p-floatlabel>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-              <p-floatlabel variant="on">
-                <p-inputNumber
-                  id="census"
-                  [useGrouping]="false"
-                  formControlName="census"
-                ></p-inputNumber>
-                <label for="census">Censo</label>
-              </p-floatlabel>
-            </div>
-            <div class="col-12 col-md-4">
-              <p-floatlabel variant="on">
-                <input id="municipality" formControlName="municipality" maxlength="256" pInputText>
-                <label for="municipality">Municipio de Residencia</label>
-              </p-floatlabel>
-            </div>
-            <div class="col-12 mb-0">
-              <p-floatlabel variant="on">
-                <label for="medicalData">Datos Médicos</label>
-                <app-form-text-area
-                  id="medicalData"
-                  formControlName="medicalData"
-                  [maxLength]="1024"
-                  [showErrorMessage]="scoutFormHelper.hasSpecificError('medicalData', 'maxlength')"
-                ></app-form-text-area>
-              </p-floatlabel>
-            </div>
-            <div class="col mb-0 d-flex flex-column">
-              <label for="imageAuthorization" class="required">Autorización de imagen</label>
-              <p-selectButton
-                id="imageAuthorization"
-                [options]="options"
-                formControlName="imageAuthorization"
-              ></p-selectButton>
+            <div class="col-12">
+              <app-contact-form-list
+                [contactList]="scoutContactList"
+                [formGroup]="scoutFormHelper.form"
+                (onAdd)="addContact()"
+                (onDelete)="deleteContact($event)"
+              ></app-contact-form-list>
             </div>
           </div>
-          <div class="col-12">
-            <app-contact-form-list
-              [contactList]="scoutContactList"
-              [formGroup]="scoutFormHelper.form"
-              (onAdd)="addContact()"
-              (onDelete)="deleteContact($event)"
-            ></app-contact-form-list>
+        </p-tabpanel>
+        <p-tabpanel [value]="1">
+          <div class="py-3">
+            <p-floatlabel variant="on">
+              <label for="observations">Observaciones generales</label>
+              <textarea id="observations" formControlName="observations" class="w-100" rows="5" maxlength="65535" pTextarea></textarea>
+            </p-floatlabel>
           </div>
-        </div>
-      </p-tabPanel>
-      <p-tabPanel header="Datos de Scouters">
-        <div class="py-3">
-          <p-floatlabel variant="on">
-            <label for="observations">Observaciones generales</label>
-            <textarea id="observations" formControlName="observations" class="w-100" rows="5" maxlength="65535" pTextarea></textarea>
-          </p-floatlabel>
-        </div>
-        <div class="py-3">
-          <p-floatlabel variant="on">
-            <label for="progressions">Progresiones</label>
-            <textarea id="progressions" formControlName="progressions" class="w-100" rows="5" maxlength="65535" pTextarea></textarea>
-          </p-floatlabel>
-        </div>
-      </p-tabPanel>
-      <p-tabPanel id="userTab" header="Usuarios asociados">
-        <app-scout-user-form-list
-          #userList
-          [scoutId]="scout?.id"
-        ></app-scout-user-form-list>
-      </p-tabPanel>
-    </p-tabView>
+          <div class="py-3">
+            <p-floatlabel variant="on">
+              <label for="progressions">Progresiones</label>
+              <textarea id="progressions" formControlName="progressions" class="w-100" rows="5" maxlength="65535" pTextarea></textarea>
+            </p-floatlabel>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel [value]="2">
+          <app-scout-user-form-list
+            #userList
+            [scoutId]="scout?.id"
+          ></app-scout-user-form-list>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
     <div class="text-center text-danger mb-2">
       @if (scoutFormHelper.isDirtyAndInvalid()) {
         <small>Rellene todos los campos obligatorios (<b>*</b>)</small><br>

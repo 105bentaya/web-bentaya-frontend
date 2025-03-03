@@ -30,12 +30,20 @@
   </div>
   <div class="row">
     <div class="col-12 mb-1">
-      <app-form-text-area
-        id="comment"
-        [maxLength]="1024"
-        [(ngModel)]="comment"
-      ></app-form-text-area>
-<!--      [floatLabel]="status == 3 ? 'Motivo del rechazo' : 'Comentarios'"-->
+      <p-floatlabel variant="on">
+        <label for="comment">
+          @if (status == 3) {
+            Motivo del rechazo
+          } @else {
+            Comentarios
+          }
+        </label>
+        <app-form-text-area
+          id="comment"
+          [maxLength]="1024"
+          [(ngModel)]="comment"
+        ></app-form-text-area>
+      </p-floatlabel>
     </div>
   </div>
   <app-save-buttons

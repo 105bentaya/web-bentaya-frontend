@@ -3,25 +3,25 @@
     <div class="mt-4">
       <div class="row">
         <div class="col-12 col-sm-8">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input id="issuer" formControlName="issuer" maxlength="255" pInputText>
             <label class="required" for="issuer">Emite</label>
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input id="nif" formControlName="nif" maxlength="255" pInputText>
             <label class="required" for="nif">NIF/CIF</label>
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-8">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input id="invoiceNumber" formControlName="invoiceNumber" maxlength="255" pInputText>
             <label class="required" for="invoiceNumber">Número de factura</label>
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-inputNumber
               id="amount"
               mode="currency"
@@ -33,7 +33,7 @@
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-8">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-select
               id="expenseType"
               formControlName="expenseType"
@@ -45,7 +45,7 @@
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-select
               id="payer"
               formControlName="payer"
@@ -57,13 +57,13 @@
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input id="method" formControlName="method" maxlength="255" pInputText>
             <label class="required" for="method">Forma de pago</label>
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-datePicker
               id="invoiceDate"
               formControlName="invoiceDate"
@@ -75,7 +75,7 @@
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-4">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-datePicker
               id="paymentDate"
               formControlName="paymentDate"
@@ -87,7 +87,7 @@
           </p-floatlabel>
         </div>
         <div class="col-12">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-select
               id="grant"
               formControlName="grant"
@@ -100,34 +100,26 @@
           </p-floatlabel>
         </div>
         <div class="col-12 mb-2">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
+            <label for="observations">Observaciones</label>
             <app-form-text-area
+              id="observations"
               formControlName="observations"
-              floatLabel="Observaciones"
               [maxLength]="4095"
               [showErrorMessage]="invoiceFormHelper.hasSpecificError('observations', 'maxlength')"
             ></app-form-text-area>
           </p-floatlabel>
         </div>
         <div class="col-12 mb-2 d-flex gap-3 flex-wrap">
-          <p-checkbox
-            formControlName="receipt"
-            [binary]="true"
-            label="Recibí"
-            labelStyleClass="ms-1"
-          ></p-checkbox>
-          <p-checkbox
-            formControlName="complies"
-            [binary]="true"
-            label="Cumple"
-            labelStyleClass="ms-1"
-          ></p-checkbox>
-          <p-checkbox
-            formControlName="liquidated"
-            [binary]="true"
-            label="Liquidada"
-            labelStyleClass="ms-1"
-          ></p-checkbox>
+          <app-checkbox-container label="Recibí">
+            <p-checkbox formControlName="receipt" [binary]="true"></p-checkbox>
+          </app-checkbox-container>
+          <app-checkbox-container label="Cumple">
+            <p-checkbox formControlName="complies" [binary]="true"></p-checkbox>
+          </app-checkbox-container>
+          <app-checkbox-container label="Liquidada">
+            <p-checkbox formControlName="liquidated" [binary]="true"></p-checkbox>
+          </app-checkbox-container>
         </div>
       </div>
     </div>
@@ -136,12 +128,12 @@
         <small>Rellene todos los campos obligatorios (<b>*</b>)</small><br>
       }
     </div>
-    <p-splitButton
+    <p-split-button
       class="text-center"
       [label]="saveAndContinue ? 'Guardar y seguir' : 'Guardar'"
       (onClick)="onSubmit(saveAndContinue)"
       [model]="buttons"
       appendTo="body"
-    ></p-splitButton>
+    ></p-split-button>
   </form>
 </div>

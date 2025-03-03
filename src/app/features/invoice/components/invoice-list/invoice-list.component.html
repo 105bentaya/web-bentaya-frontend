@@ -19,7 +19,7 @@
     [rows]="10"
     [rowsPerPageOptions]="[10,25,50,100,300]"
     (onLazyLoad)="loadUsersWithFilter($event)"
-    [loading]="true"
+    [loading]="loading"
     [showLoader]="true"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} facturas"
@@ -62,6 +62,7 @@
             appendTo="body"
             optionLabel="payer"
             optionValue="id"
+            styleClass="w-100 fw-normal"
           ></p-multiSelect>
         </th>
         <th scope="col">
@@ -80,6 +81,7 @@
             appendTo="body"
             optionLabel="grantName"
             optionValue="id"
+            styleClass="w-100 fw-normal"
           ></p-multiSelect>
         </th>
         <th scope="col">
@@ -91,6 +93,7 @@
             appendTo="body"
             optionLabel="expenseType"
             optionValue="id"
+            styleClass="w-100 fw-normal"
           ></p-multiSelect>
         </th>
         <th scope="col"></th>
@@ -122,19 +125,18 @@
         </td>
         <td>
           <div class="d-flex flex-row gap-2 justify-content-center">
-            <p-button
+            <app-table-icon-button
               icon="pi pi-pencil"
-              class="p-button-outlined p-button-raised"
               title="Editar"
               (click)="openInvoiceDialog(invoice)"
-            ></p-button>
-            <p-button
+            ></app-table-icon-button>
+            <app-table-icon-button
               [disabled]="loading"
               icon="pi pi-trash"
               title="Eliminar"
-              class="p-button-danger p-button-outlined p-button-raised"
+              severity="danger"
               (click)="askForDeletion(invoice)"
-            ></p-button>
+            ></app-table-icon-button>
           </div>
         </td>
       </tr>

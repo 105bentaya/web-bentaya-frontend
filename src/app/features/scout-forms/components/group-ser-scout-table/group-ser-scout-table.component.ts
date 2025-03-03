@@ -19,12 +19,13 @@ import {ToggleButtonModule} from "primeng/togglebutton";
 import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-group-ser-scout-table',
   templateUrl: './group-ser-scout-table.component.html',
   styleUrls: ['./group-ser-scout-table.component.scss'],
-  providers: [DialogService],
+  providers: [DialogService, DynamicDialogService],
   imports: [
     ToggleButtonModule,
     TableModule,
@@ -38,7 +39,7 @@ import {
 export class GroupSerScoutTableComponent implements OnInit {
 
   private readonly preScoutService = inject(ScoutFormsService);
-  private readonly dialogService = inject(DialogService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly alertService = inject(AlertService);
   private readonly filterService = inject(FilterService);
 
@@ -83,11 +84,7 @@ export class GroupSerScoutTableComponent implements OnInit {
   }
 
   protected openForm(preScout: PreScout) {
-    this.ref = this.dialogService.open(AssignPreScoutFormComponent, {
-      header: 'Editar Asignación - ' + preScout.name,
-      styleClass: 'dialog-width',
-      data: {preScout: preScout}
-    });
+    this.ref = this.dialogService.openDialog(AssignPreScoutFormComponent, `Editar Asignación - ${preScout.name}`, "small", {preScout});
     this.ref.onClose.subscribe(result => {
       if (result) this.saveAssignation(result, preScout);
     });
@@ -95,11 +92,7 @@ export class GroupSerScoutTableComponent implements OnInit {
 
   private saveAssignation(preScoutAssignation: PreScoutAssignation, preScout: PreScout) {
     if (statusIsSaveAsScout(preScoutAssignation.status)) {
-      this.ref = this.dialogService.open(ScoutFormComponent, {
-        header: 'Añadir Persona Educanda',
-        styleClass: 'medium dialog-width',
-        data: {scoutFromPreScout: preScout}
-      });
+      this.ref = this.dialogService.openDialog(ScoutFormComponent, 'Añadir Persona Educanda', "medium", {scoutFromPreScout: preScout});
       this.ref.onClose.subscribe(saved => saved ? this.getAssignedInscriptions() : noop());
     } else if (statusIsValidForSaving(preScoutAssignation.status)) {
       this.loading = true;
