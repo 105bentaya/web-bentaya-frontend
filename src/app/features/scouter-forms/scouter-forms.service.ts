@@ -9,8 +9,8 @@ import {PreScouter} from '../scout-forms/models/pre-scouter.model';
 })
 export class ScouterFormsService {
 
-  private http = inject(HttpClient);
-  private preScouterUrl = `${environment.apiUrl}/pre-scouter`;
+  private readonly http = inject(HttpClient);
+  private readonly preScouterUrl = `${environment.apiUrl}/pre-scouter`;
 
   getAll(): Observable<PreScouter[]> {
     return this.http.get<PreScouter[]>(this.preScouterUrl);

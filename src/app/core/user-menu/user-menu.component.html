@@ -54,13 +54,22 @@
           }
         </div>
       </div>
-      <div class="mt-auto menu-buttons p-2 border-top border-5" style="border-color: #093a6f !important">
-        <a class="p-button p-button-text" (click)="logOut()" routerLink="inicio">
-          <div class="d-flex align-items-center">
-            <i pButtonIcon class="pi pi-sign-out"></i>
-            <span class="show-on-expanded-width">Cerrar sesión</span>
-          </div>
-        </a>
+      <div class="mt-auto menu-buttons p-2 border-top border-5 d-flex flex-column" style="border-color: #093a6f !important">
+        @for (item of bottomItems; track $index) {
+          <a
+            class="p-button p-button-text w-fit"
+            (click)="item.command()"
+            [routerLink]="item?.routerLink"
+            [pTooltip]="expanded ? '' : item.label"
+            showDelay="150"
+            tooltipPosition="right"
+          >
+            <div class="d-flex align-items-center">
+              <i pButtonIcon [class]="item.icon"></i>
+              <span class="show-on-expanded-width">{{item.label}}</span>
+            </div>
+          </a>
+        }
       </div>
     </div>
   </div>

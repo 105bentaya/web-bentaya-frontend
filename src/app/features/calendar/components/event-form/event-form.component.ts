@@ -116,13 +116,13 @@ export class EventFormComponent implements OnInit {
     });
   }
 
-  getEventStartDate(event: FormEvent) {
+  private getEventStartDate(event: FormEvent) {
     return event.unknownTime ?
       DateUtils.shiftDateToUTC(event.startDate) :
       new Date(event.startDate);
   }
 
-  getEventEndDate(event: FormEvent) {
+  private getEventEndDate(event: FormEvent) {
     return event.unknownTime ?
       DateUtils.shiftDateToUTC(event.endDate) :
       new Date(event.endDate);
@@ -237,18 +237,18 @@ export class EventFormComponent implements OnInit {
     return groupId && !isNoAttendanceGroup(groupId);
   }
 
-  //todo: improve to update dates when changing date while still selecting it
-  protected checkOtherDate() {
-    // const startDate = this.formHelper.controlValue("startDate");
-    // const endDate = this.formHelper.controlValue("endDate");
-    // if (startDate && !endDate) {
-    //   const newEndDate = new Date(startDate);
-    //   newEndDate.setHours(newEndDate.getHours() + 2);
-    //   this.formHelper.get("endDate").setValue(newEndDate);
-    // } else if (endDate && !startDate) {
-    //   const newStartDate = new Date(endDate);
-    //   newStartDate.setHours(newStartDate.getHours() - 2);
-    //   this.formHelper.get("startDate").setValue(newStartDate);
-    // }
+  protected checkDate(date: "startDate" | "endDate") {
+    const startDate = this.formHelper.controlValue("startDate");
+    const endDate = this.formHelper.controlValue("endDate");
+
+    if (startDate && !endDate && date == "endDate") {
+      const newEndDate = new Date(startDate);
+      newEndDate.setHours(newEndDate.getHours() + 2);
+      this.formHelper.get("endDate").setValue(newEndDate);
+    } else if (!startDate && endDate && date == "endDate") {
+      const newStartDate = new Date(endDate);
+      newStartDate.setHours(newStartDate.getHours() - 2);
+      this.formHelper.get("startDate").setValue(newStartDate);
+    }
   }
 }

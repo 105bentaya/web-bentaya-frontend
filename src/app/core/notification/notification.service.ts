@@ -22,9 +22,7 @@ export class NotificationService {
 
   public checkIfHasNotifications() {
     if (this.loggedUserData.hasRequiredPermission(["ROLE_USER"])) {
-      this.getNotificationInfo().subscribe(result => {
-        this.hasNotificationsSubject.next(result);
-      });
+      this.getNotificationInfo().subscribe(result => this.hasNotificationsSubject.next(result));
     }
   }
 

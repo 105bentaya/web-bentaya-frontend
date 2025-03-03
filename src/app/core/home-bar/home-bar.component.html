@@ -5,8 +5,8 @@
       @if (isLogin) {
         <img class="svg-big" src="assets/nav-bar/big-blob.svg" alt="">
       } @else {
-        <img class="svg-normal start-0 d-none d-md-block" src="assets/nav-bar/blue-blob-big.svg" alt="">
-        <img class="svg-sm start-0 d-md-none" src="assets/nav-bar/blue-blob-small.svg" alt="">
+        <img class="svg-normal start-0 d-none d-md-block flip-image" src="assets/nav-bar/blue-blob-big.svg" alt="">
+        <img class="svg-sm start-0 d-md-none flip-image" src="assets/nav-bar/blue-blob-small.svg" alt="">
       }
     </div>
   }
@@ -24,7 +24,6 @@
           class="home-bar-button mi-vivac"
           [routerLink]="authService.isLoggedIn() ? 'calendario' : 'login'"
           [label]="authService.isLoggedIn() ? 'Mi Vivac' : 'Iniciar Sesión'"
-          [disabled]="loginDisabled"
         ></app-general-a-button>
       </div>
       <div class="d-md-none me-2">
@@ -32,7 +31,6 @@
           class="home-bar-button mi-vivac"
           icon="pi pi-user"
           [routerLink]="authService.isLoggedIn() ? 'calendario' : 'login'"
-          [disabled]="loginDisabled"
         ></app-general-a-button>
       </div>
       <img class="svg-normal end-0 d-none d-md-block" src="assets/nav-bar/yellow-blob-big.svg" alt="">

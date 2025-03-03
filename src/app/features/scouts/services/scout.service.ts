@@ -10,8 +10,8 @@ import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
 })
 export class ScoutService {
 
-  private http = inject(HttpClient);
-  private scoutUrl = `${environment.apiUrl}/scout`;
+  private readonly http = inject(HttpClient);
+  private readonly scoutUrl = `${environment.apiUrl}/scout`;
 
   getAll(): Observable<Scout[]> {
     return this.http.get<Scout[]>(this.scoutUrl);

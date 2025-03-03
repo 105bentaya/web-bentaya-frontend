@@ -10,7 +10,7 @@ import {NgClass} from '@angular/common';
 export class FlexCardComponent {
   @Input() options: { mainText: string; subText: string; backgroundImageUrl: string; iconClass: string }[] = [];
   @Output() selectedIndexEvent = new EventEmitter<number>();
-  selectedIndex: number = 0;
+  protected selectedIndex: number = 0;
 
   protected selectOption(index: number) {
     this.selectedIndex = index;

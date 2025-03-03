@@ -7,7 +7,7 @@ import {WindowUtils} from "../../shared/util/window-utils";
 })
 export class UserMenuService {
 
-  protected _expanded = JSON.parse(localStorage.getItem("uhe") ?? 'true') && !WindowUtils.windowSmallerLG();
+  protected _expanded = JSON.parse(localStorage.getItem("uhe") ?? 'true');
   private readonly expanded$ = new BehaviorSubject<boolean>(this._expanded);
 
   constructor() {
@@ -20,6 +20,11 @@ export class UserMenuService {
   get currentExpanded(): boolean {
     return this._expanded;
   };
+
+  set expanded(expanded: boolean) {
+    this._expanded = expanded;
+    this.expanded$.next(expanded);
+  }
 
   invertExpanded() {
     this._expanded = !this._expanded;

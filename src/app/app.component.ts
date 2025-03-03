@@ -87,7 +87,6 @@ export class AppComponent implements OnInit {
       }
     });
 
-
     this.config.theme.set({
       preset: stylePreset,
       options: {

@@ -35,7 +35,7 @@
           </p-floatlabel>
         </div>
       </div>
-      <div class="row">
+      <div class="row mb-2">
         <div class="col-12 col-sm-6">
           <p-floatlabel variant="on">
             <p-datePicker
@@ -47,7 +47,7 @@
               [stepMinute]="5"
               [defaultDate]="defaultStartDate"
               [hideOnDateTimeSelect]="false"
-              (onSelect)="checkOtherDate()"
+              (onClose)="checkDate('endDate')"
               [class]="formHelper.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
               [showClear]="true"
             ></p-datePicker>
@@ -65,7 +65,7 @@
               [stepMinute]="5"
               [defaultDate]="defaultEndDate"
               [hideOnDateTimeSelect]="false"
-              (onSelect)="checkOtherDate()"
+              (onClose)="checkDate('startDate')"
               [class]="formHelper.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
               [showClear]="true"
             ></p-datePicker>

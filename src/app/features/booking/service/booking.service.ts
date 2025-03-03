@@ -17,8 +17,8 @@ import {OwnBookingForm} from "../model/own-booking-form.model";
 })
 export class BookingService {
 
-  private http = inject(HttpClient);
-  private bookingUrl = `${environment.apiUrl}/booking`;
+  private readonly http = inject(HttpClient);
+  private readonly bookingUrl = `${environment.apiUrl}/booking`;
 
   getAll(): Observable<Booking[]> {
     return this.http.get<Booking[]>(this.bookingUrl);

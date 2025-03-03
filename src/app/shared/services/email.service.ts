@@ -11,7 +11,7 @@ import {Partnership} from "../../features/colaboraciones/model/partnership.model
 })
 export class EmailService {
 
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   sendComplaintMail(complaint: Complaint): Observable<Complaint> {
     return this.http.post<Complaint>(environment.apiUrl + "/complaint/form", complaint);

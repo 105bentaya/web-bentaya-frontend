@@ -13,6 +13,7 @@ import {UserService} from '../users/services/user.service';
 import {PasswordModule} from 'primeng/password';
 import {AlertService} from "../../shared/services/alert-service.service";
 import {SaveButtonsComponent} from "../../shared/components/buttons/save-buttons/save-buttons.component";
+import {FloatLabel} from "primeng/floatlabel";
 
 @Component({
   selector: 'app-change-password',
@@ -22,20 +23,21 @@ import {SaveButtonsComponent} from "../../shared/components/buttons/save-buttons
   imports: [
     ReactiveFormsModule,
     PasswordModule,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    FloatLabel
   ]
 })
 //todo merge with reset-password
 export class ChangePasswordComponent implements OnInit {
 
-  private formBuilder = inject(FormBuilder);
-  private ref = inject(DynamicDialogRef);
-  private alertService = inject(AlertService);
-  private userService = inject(UserService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ref = inject(DynamicDialogRef);
+  private readonly alertService = inject(AlertService);
+  private readonly userService = inject(UserService);
 
+  private readonly passwordRegex: RegExp = /^(?=.*[A-ZÑ])(?=.*[a-zñ])(?=.*\d)(?!.*\s).{8,}$/;
   protected changePasswordForm!: FormGroup;
   protected loading = false;
-  private passwordRegex: RegExp = /^(?=.*[A-ZÑ])(?=.*[a-zñ])(?=.*\d)(?!.*\s).{8,}$/;
   protected may: RegExp = /.*[A-ZÑ].*/;
   protected min: RegExp = /.*[a-zñ].*/;
   protected dig: RegExp = /.*\d.*/;
@@ -75,7 +77,14 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
 
-  private validateNewPasswordRepeat: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    return control.get('newPasswordRepeat')!.value !== control.get('newPassword')!.value ? {passwordRepeat: true} : null;
+  private readonly validateNewPasswordRepeat: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const repeatControl = control.get('newPasswordRepeat');
+    if (repeatControl!.value !== control.get('newPassword')!.value) {
+      repeatControl?.setErrors({passwordRepeat: true});
+      return {passwordRepeat: true};
+    } else {
+      repeatControl?.setErrors(null);
+      return null;
+    }
   };
 }

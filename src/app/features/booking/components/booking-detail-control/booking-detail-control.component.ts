@@ -27,9 +27,9 @@ import {
 })
 export class BookingDetailControlComponent implements OnInit {
 
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private bookingService = inject(BookingService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly bookingService = inject(BookingService);
 
   protected id!: number;
   protected booking: Booking | undefined;

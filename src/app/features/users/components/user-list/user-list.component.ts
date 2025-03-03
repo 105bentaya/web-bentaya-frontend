@@ -41,8 +41,7 @@ export class UserListComponent {
   private readonly userService = inject(UserService);
   private readonly confirmationService = inject(ConfirmationService);
 
-  @ViewChild('dt')
-  private readonly dt!: Table;
+  @ViewChild('dt') private readonly dt!: Table;
   protected totalRecords: number = 0;
   protected loading = true;
   protected readonly roles = roles;

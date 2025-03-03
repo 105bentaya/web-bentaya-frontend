@@ -16,7 +16,7 @@ import {SerScoutComponent} from '../ser-scout/ser-scout.component';
 })
 export class SerScoutControlComponent implements OnInit {
 
-  private settingsService = inject(SettingsService);
+  private readonly settingsService = inject(SettingsService);
 
   protected formLoading = true;
   protected yearLoading = true;

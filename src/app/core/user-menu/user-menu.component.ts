@@ -13,6 +13,9 @@ import {Tooltip} from "primeng/tooltip";
 import {filter} from "rxjs";
 import {NotificationService} from "../notification/notification.service";
 import {OverlayBadge} from "primeng/overlaybadge";
+import {DynamicDialogService} from "../../shared/services/dynamic-dialog.service";
+import {DialogService} from "primeng/dynamicdialog";
+import {ChangePasswordComponent} from "../../features/change-password/change-password.component";
 
 @Component({
   selector: 'app-user-menu',
@@ -26,7 +29,8 @@ import {OverlayBadge} from "primeng/overlaybadge";
     OverlayBadge
   ],
   templateUrl: './user-menu.component.html',
-  styleUrl: './user-menu.component.scss'
+  styleUrl: './user-menu.component.scss',
+  providers: [DialogService, DynamicDialogService]
 })
 export class UserMenuComponent implements OnInit {
 
@@ -35,13 +39,28 @@ export class UserMenuComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly loggedUserData = inject(LoggedUserDataService);
   private readonly router = inject(Router);
+  private readonly dialogService = inject(DynamicDialogService);
 
   protected animate = false;
-  protected expanded: boolean = this.userMenuService.currentExpanded;
+  protected expanded: boolean;
   protected showMask!: boolean;
   protected items: any[] = [];
+  protected bottomItems = [
+    {
+      label: "Cambiar Contraseña",
+      icon: "pi pi-unlock",
+      command: () => this.changePassword()
+    }, {
+      label: "Cerrar Sesión",
+      routerLink: "/inicio",
+      icon: "pi pi-sign-out",
+      command: () => this.logOut()
+    }
+  ];
 
   constructor() {
+    this.userMenuService.expanded = this.userMenuService.currentExpanded && !WindowUtils.windowSmallerLG();
+    this.expanded = this.userMenuService.currentExpanded;
     this.checkMaskNeed();
     this.userMenuService.expanded
       .pipe(takeUntilDestroyed())
@@ -66,8 +85,7 @@ export class UserMenuComponent implements OnInit {
   ngOnInit() {
     this.items = buildSplitMenu(this.loggedUserData);
     this.checkForSelection(this.router.url);
-    this.notificationService.checkIfHasNotifications()
-
+    this.notificationService.checkIfHasNotifications();
   }
 
   private checkForSelection(url: string) {
@@ -79,10 +97,6 @@ export class UserMenuComponent implements OnInit {
   protected resizeMenu() {
     this.animate = true;
     this.userMenuService.invertExpanded();
-  }
-
-  protected logOut() {
-    this.authService.logout();
   }
 
   protected closeMenu() {
@@ -106,5 +120,13 @@ export class UserMenuComponent implements OnInit {
 
   protected get smallMenu(): boolean {
     return !WindowUtils.windowSmallerSM() && WindowUtils.windowSmallerLG();
+  }
+
+  private logOut() {
+    this.authService.logout();
+  }
+
+  private changePassword() {
+    this.dialogService.openDialog(ChangePasswordComponent, "Cambiar contraseña", "small");
   }
 }

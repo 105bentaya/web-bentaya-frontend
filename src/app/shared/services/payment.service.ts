@@ -9,8 +9,8 @@ import {Payment} from "../model/payment.model";
 })
 export class PaymentService {
 
-  private http = inject(HttpClient);
-  private url = `${environment.apiUrl}/tpv`;
+  private readonly http = inject(HttpClient);
+  private readonly url = `${environment.apiUrl}/tpv`;
 
   getAll(): Observable<Payment[]> {
     return this.http.get<Payment[]>(this.url);

@@ -31,9 +31,9 @@ import {FloatLabel} from "primeng/floatlabel";
 })
 export class SeniorFormComponent implements OnInit {
 
-  private confirmationService = inject(ConfirmationService);
-  private seniorService = inject(SeniorSectionService);
-  private alertService = inject(AlertService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly seniorService = inject(SeniorSectionService);
+  private readonly alertService = inject(AlertService);
 
   protected seniorForm = new FormHelper();
   protected loading = false;

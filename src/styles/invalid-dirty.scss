@@ -38,6 +38,17 @@ p-inputnumber.ng-invalid.ng-dirty > .p-inputtext {
   }
 }
 
+
+p-password.ng-invalid.ng-dirty .p-inputtext {
+  &:enabled:focus {
+    @extend %focus;
+  }
+
+  &:hover {
+    @extend %hover;
+  }
+}
+
 .p-select:not(.p-disabled).ng-invalid.ng-dirty {
   &.p-focus {
     @extend %focus;

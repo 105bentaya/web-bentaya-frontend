@@ -1,5 +1,9 @@
 @import "../../../styles/z-index";
 
+.flip-image {
+  transform: scale(-1, 1);
+}
+
 .logo {
  img {
    cursor: pointer;
