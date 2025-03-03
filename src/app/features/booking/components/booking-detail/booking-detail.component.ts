@@ -19,12 +19,13 @@ import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DialogModule} from "primeng/dialog";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-booking-detail',
   templateUrl: './booking-detail.component.html',
   styleUrls: ['./booking-detail.component.scss'],
-  providers: [DialogService, ScoutCenterStatusPipe],
+  providers: [DialogService, ScoutCenterStatusPipe, DynamicDialogService],
   imports: [
     DatePipe,
     ScoutCenterPipe,
@@ -39,11 +40,11 @@ import {DialogModule} from "primeng/dialog";
 })
 export class BookingDetailComponent implements OnInit {
 
-  private bookingService = inject(BookingService);
-  private alertService = inject(AlertService);
-  private dialogService = inject(DialogService);
-  private pipe = inject(ScoutCenterStatusPipe);
-  private confirmationService = inject(ConfirmationService);
+  private readonly bookingService = inject(BookingService);
+  private readonly alertService = inject(AlertService);
+  private readonly dialogService = inject(DynamicDialogService);
+  private readonly pipe = inject(ScoutCenterStatusPipe);
+  private readonly confirmationService = inject(ConfirmationService);
 
   @Input() public booking!: Booking;
   protected loading = false;
@@ -66,10 +67,11 @@ export class BookingDetailComponent implements OnInit {
     const header = this.booking.status === "RESERVED" && newStatus === "RESERVED" ?
       'Rechazar documentos para subsanar' :
       `Actualizar a '${this.pipe.transform(newStatus)}'`;
-    this.ref = this.dialogService.open(BookingStatusUpdateComponent, {
-      header: header,
-      styleClass: 'dialog-width small-dw',
-      data: {floatLabel, required: data?.required, message: data?.message, showPrice: data?.showPrice}
+    this.ref = this.dialogService.openDialog(BookingStatusUpdateComponent, header, "small", {
+      floatLabel,
+      required: data?.required,
+      message: data?.message,
+      showPrice: data?.showPrice
     });
     this.ref.onClose.subscribe(result => {
       if (result) this.updateBookingStatus(newStatus, result.comment, result.price);

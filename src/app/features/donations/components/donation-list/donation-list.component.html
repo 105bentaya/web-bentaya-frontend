@@ -6,13 +6,12 @@
         icon="pi pi-download"
         [loading]="excelLoading"
         (click)="exportExcel()"
-        class="p-button-success"
+        severity="success"
         title="Descargar donaciones como excel"
       ></p-button>
     </div>
   </div>
   <p-table
-    #tab
     showGridlines
     [value]="donations"
     responsiveLayout="scroll"

@@ -1,13 +1,13 @@
 <div class="container">
-  <div class="d-flex justify-content-start flex-wrap-reverse gap-2 align-items-baseline">
-    <a
-      pButton
-      icon="fa-regular fa-circle-left"
-      class="text-decoration-none p-button-text p-button-rounded fs-3 d-none d-sm-inline-flex"
+  <div class="d-flex justify-content-start flex-wrap gap-2 align-items-center">
+    <app-general-a-button
+      icon="pi pi-arrow-left"
+      class="fs-3 p-button-rounded"
+      variant="outlined"
       routerLink="/centros-scout/gestion"
       title="Atrás"
-    ></a>
-    <h2>Gestor de Reservas - Nº {{ id }}</h2>
+    ></app-general-a-button>
+    <h1 class="mb-0">Gestor de Reservas Nº {{ id }}</h1>
   </div>
   <hr>
   @if (booking) {

@@ -9,6 +9,9 @@ import {ScoutCenter} from "../../constant/scout-center.constant";
 import {BookingDate} from "../../model/booking-date.model";
 import {BookingDetailComponent} from "../booking-detail/booking-detail.component";
 import {OwnBookingDetailComponent} from "../own-booking-detail/own-booking-detail.component";
+import {
+  GeneralAButtonComponent
+} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 
 @Component({
   selector: 'app-booking-detail-control',
@@ -18,7 +21,8 @@ import {OwnBookingDetailComponent} from "../own-booking-detail/own-booking-detai
     RouterLink,
     BookingCalendarComponent,
     BookingDetailComponent,
-    OwnBookingDetailComponent
+    OwnBookingDetailComponent,
+    GeneralAButtonComponent
   ],
   templateUrl: './booking-detail-control.component.html',
   styleUrl: './booking-detail-control.component.scss'

@@ -1,61 +1,63 @@
-@if (scouts) {
-  <p-tabView>
-    <p-tabPanel header="Datos">
+<p-tabs [value]="0">
+  <p-tablist>
+    <p-tab [value]="0">Datos</p-tab>
+    <p-tab [value]="1">Contactos</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel [value]="0">
       <div class="mb-1">
         <div>
           <b>Apellidos, Nombre: </b>
-          <span>{{ scouts[currentIndex].surname }}, {{ scouts[currentIndex].name }}</span>
+          <span>{{ scout.surname }}, {{ scout.name }}</span>
         </div>
         <div>
           <b>DNI o NIE: </b>
-          <span>{{ scouts[currentIndex].dni || "No especificado" }}</span>
+          <span>{{ scout.dni || "No especificado" }}</span>
         </div>
         <div>
           <b>Género: </b>
-          <span>{{ scouts[currentIndex].gender }}</span>
+          <span>{{ scout.gender }}</span>
         </div>
         <div>
           <b>Fecha de Nacimiento: </b>
-          <span>{{ scouts[currentIndex].birthday | date:"dd/MM/yyyy" }}</span>
+          <span>{{ scout.birthday | date:"dd/MM/yyyy" }}</span>
         </div>
         <div>
           <b>Talla: </b>
-          <span>{{ scouts[currentIndex].shirtSize || "No especificada" }}</span>
+          <span>{{ scout.shirtSize || "No especificada" }}</span>
         </div>
         <div>
           <b>Municipio de residencia: </b>
-          <span>{{ scouts[currentIndex].municipality || "No especificado" }}</span>
+          <span>{{ scout.municipality || "No especificado" }}</span>
         </div>
         <div>
           <b>Autorización de imagen: </b>
-          <span>{{ scouts[currentIndex].imageAuthorization ? "Sí" : "No" }}</span>
+          <span>{{ scout.imageAuthorization ? "Sí" : "No" }}</span>
         </div>
         <div>
           <b>Datos Médicos: </b>
-          <span>{{ scouts[currentIndex].medicalData || "Ninguno" }}</span>
+          <span>{{ scout.medicalData || "Ninguno" }}</span>
         </div>
         <div>
           <b>Unidad: </b>
-          <span>{{ scouts[currentIndex].groupId | group }}</span>
+          <span>{{ scout.groupId | group }}</span>
         </div>
-        @if (!isUser) {
           <div>
             <b>Observaciones: </b>
-            <span>{{ scouts[currentIndex].observations || "-" }}</span>
+            <span>{{ scout.observations || "-" }}</span>
           </div>
           <div>
             <b>Progresiones: </b>
-            <span>{{ scouts[currentIndex].progressions || "-" }}</span>
+            <span>{{ scout.progressions || "-" }}</span>
           </div>
           <div>
             <b>Censo: </b>
-            <span>{{ scouts[currentIndex].census || "-" }}</span>
+            <span>{{ scout.census || "-" }}</span>
           </div>
-        }
       </div>
-    </p-tabPanel>
-    <p-tabPanel header="Contactos">
-      @for (contact of scouts[currentIndex].contactList; track contact.id) {
+    </p-tabpanel>
+    <p-tabpanel [value]="1">
+      @for (contact of scout.contactList; track contact.id) {
         <div>
           <b>Nombre: </b>
           <span>{{ contact.name }}</span>
@@ -78,18 +80,6 @@
         }
         <hr>
       }
-    </p-tabPanel>
-    @if (isUser) {
-      <small>Si detecta cualquier error por favor comuníquelo a los scouters de unidad</small>
-    }
-  </p-tabView>
-  @if (scouts.length > 1) {
-    <div class="mb-2">
-      <p-tabMenu class="invert-tab-menu" [model]="items" [activeItem]="items[0]" [scrollable]="true"></p-tabMenu>
-    </div>
-  } @else if (scouts.length < 1 && isUser) {
-    No se han encontrado personas educandas asociadas a este usuario
-  }
-} @else {
-  <app-basic-loading-info></app-basic-loading-info>
-}
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>

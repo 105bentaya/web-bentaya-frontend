@@ -24,8 +24,8 @@ import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-b
 export class BookingStatusUpdateComponent implements OnInit {
 
   protected ref = inject(DynamicDialogRef);
-  private config = inject(DynamicDialogConfig);
-  private confirmationService = inject(ConfirmationService);
+  private readonly config = inject(DynamicDialogConfig);
+  private readonly confirmationService = inject(ConfirmationService);
 
   protected floatLabel: string = "Observaciones";
   protected required: boolean = false;

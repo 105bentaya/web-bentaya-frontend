@@ -11,6 +11,10 @@ import {OwnBookingForm} from "../../model/own-booking-form.model";
 import {DynamicDialogRef} from "primeng/dynamicdialog";
 import {BookingService} from "../../service/booking.service";
 import {AlertService} from "../../../../shared/services/alert-service.service";
+import {FloatLabel} from "primeng/floatlabel";
+import {
+  CheckboxContainerComponent
+} from "../../../../shared/components/checkbox-container/checkbox-container.component";
 
 @Component({
   selector: 'app-own-booking-form',
@@ -19,7 +23,9 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
     FormTextAreaComponent,
     CheckboxModule,
     ReactiveFormsModule,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    FloatLabel,
+    CheckboxContainerComponent
   ],
   templateUrl: './own-booking-form.component.html',
   styleUrl: './own-booking-form.component.scss'

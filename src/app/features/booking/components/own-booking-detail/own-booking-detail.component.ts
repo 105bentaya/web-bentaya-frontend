@@ -9,6 +9,7 @@ import {DialogModule} from "primeng/dialog";
 import {DividerModule} from "primeng/divider";
 import {ScoutCenterPipe} from "../../pipe/scout-center.pipe";
 import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-own-booking-detail',
@@ -21,24 +22,23 @@ import {BookingStatusUpdateComponent} from "../booking-status-update/booking-sta
     ScoutCenterStatusPipe,
     Button
   ],
-  providers: [DialogService],
+  providers: [DialogService, DynamicDialogService],
   templateUrl: './own-booking-detail.component.html',
   styleUrl: './own-booking-detail.component.scss'
 })
 export class OwnBookingDetailComponent {
 
-  private bookingService = inject(BookingService);
-  private dialogService = inject(DialogService);
+  private readonly bookingService = inject(BookingService);
+  private readonly dialogService = inject(DynamicDialogService);
 
   @Input() booking!: Booking;
   protected loading = false;
   private ref!: DynamicDialogRef;
 
   protected cancelBooking() {
-    this.ref = this.dialogService.open(BookingStatusUpdateComponent, {
-      header: "Actualizar reserva a cancelada",
-      styleClass: 'dialog-width small-dw',
-      data: {floatLabel: "Motivo de la cancelación", required: true}
+    this.ref = this.dialogService.openDialog(BookingStatusUpdateComponent, "Actualizar reserva a cancelada", "small", {
+      floatLabel: "Motivo de la cancelación",
+      required: true
     });
     this.ref.onClose.subscribe(result => {
       if (result) this.realCancelBooking(result.comment);

@@ -1,13 +1,12 @@
-<div class="mb-5" [ngClass]="{'mt-4': !message}">
+<div class="mb-4 mt-1">
   @if (message) {
     <p style="margin-bottom: 2rem;">{{ message }}</p>
   }
   @if (showPrice) {
-    <div class="mb-4">
-      <p-floatlabel>
+    <div class="mb-3">
+      <p-floatlabel variant="on">
         <p-inputNumber
-          [inputStyle]="{'border-radius': '.375rem 0 0 .375rem'}"
-          class="w-100 input-number-button"
+          class="w-100"
           styleClass="w-100"
           id="amount"
           currency="EUR"
@@ -21,16 +20,16 @@
       </p-floatlabel>
     </div>
   }
-<!--  [floatLabel]="floatLabel"-->
-<!--  [labelClass]="required ? 'required' : ''"-->
-  <app-form-text-area
-    id="comment"
-    [maxLength]="2047"
-    [(ngModel)]="comment"
-    rows="6"
-    (isValid)="validText = $event"
-    class="mt-1"
-  ></app-form-text-area>
+  <p-floatlabel variant="on">
+    <label [ngClass]="{'required': required}" for="comment">{{ floatLabel }}</label>
+    <app-form-text-area
+      id="comment"
+      [maxLength]="2047"
+      [(ngModel)]="comment"
+      rows="6"
+      (isValid)="validText = $event"
+    ></app-form-text-area>
+  </p-floatlabel>
 </div>
 <app-save-buttons
   [showCancelButton]="true"

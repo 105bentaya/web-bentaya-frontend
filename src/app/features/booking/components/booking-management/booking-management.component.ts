@@ -1,7 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ScoutCenters} from "../../constant/scout-center.constant";
 import {BookingService} from "../../service/booking.service";
-import {TabViewChangeEvent, TabViewModule} from "primeng/tabview";
 import {Booking} from "../../model/booking.model";
 import {ScoutCenterStatusesValues} from "../../constant/status.constant";
 import {ScoutCenterStatusPipe} from '../../pipe/scout-center-status.pipe';
@@ -14,13 +13,15 @@ import {Button} from 'primeng/button';
 import {DialogService} from "primeng/dynamicdialog";
 import {OwnBookingFormComponent} from "../own-booking-form/own-booking-form.component";
 import {noop} from "rxjs";
+import {TabsModule} from "primeng/tabs";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-booking-management',
   templateUrl: './booking-management.component.html',
   styleUrls: ['./booking-management.component.scss'],
   imports: [
-    TabViewModule,
+    TabsModule,
     ScoutCenterPipe,
     TableModule,
     MultiSelectModule,
@@ -29,19 +30,19 @@ import {noop} from "rxjs";
     DatePipe,
     Button
   ],
-  providers: [DialogService]
+  providers: [DialogService, DynamicDialogService]
 })
 export class BookingManagementComponent implements OnInit {
 
-  private bookingService = inject(BookingService);
-  private dialogService = inject(DialogService);
+  private readonly bookingService = inject(BookingService);
+  private readonly dialogService = inject(DynamicDialogService);
 
   protected centers = ScoutCenters;
   protected statusesOptions: { label: string, value: string }[] = ScoutCenterStatusesValues;
   private bookings!: Booking[];
   protected selectedBookings!: Booking[];
   protected loading = true;
-  private selectedIndex = 0;
+  protected selectedIndex = 0;
 
   ngOnInit(): void {
     this.getBookings();
@@ -55,8 +56,14 @@ export class BookingManagementComponent implements OnInit {
     });
   }
 
-  protected changeInfo(event?: TabViewChangeEvent) {
-    if (event) this.selectedIndex = event.index;
+  protected onTabChange(index: number) {
+    if (index !== this.selectedIndex) {
+      this.selectedIndex = index;
+      this.changeInfo();
+    }
+  }
+
+  private changeInfo() {
     this.loading = true;
     this.selectedBookings = this.bookings
       .filter(booking => booking.scoutCenter == this.centers[this.selectedIndex])
@@ -69,10 +76,7 @@ export class BookingManagementComponent implements OnInit {
   }
 
   protected openOwnBookingDialog() {
-    const ref = this.dialogService.open(OwnBookingFormComponent, {
-      header: 'Añadir Reserva Propia',
-      styleClass: 'dialog-width medium-dw'
-    });
+    const ref = this.dialogService.openDialog(OwnBookingFormComponent, 'Añadir Reserva Propia', "medium");
     ref.onClose.subscribe(saved => saved ? this.getBookings() : noop());
   }
 }

@@ -22,9 +22,9 @@ import {TableModule} from 'primeng/table';
 })
 export class DonationListComponent implements OnInit {
 
-  private donationService = inject(DonationsService);
-  private excelService = inject(ExcelService);
-  private donationTypePipe = inject(DonationTypePipe);
+  private readonly donationService = inject(DonationsService);
+  private readonly excelService = inject(ExcelService);
+  private readonly donationTypePipe = inject(DonationTypePipe);
 
   protected donations!: Donation[];
   protected excelLoading = false;
