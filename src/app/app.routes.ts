@@ -24,12 +24,19 @@ export const routes: Routes = [
   {
     path: "calendario",
     loadComponent: () => import('./features/calendar/components/calendar/calendar.component').then(c => c.CalendarComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: {roles: ['ROLE_SCOUTER', 'ROLE_GROUP_SCOUTER', 'ROLE_USER']}
   },
   {
     path: "login",
     loadComponent: () => import('./features/login/components/login/login.component').then(c => c.LoginComponent),
     canActivate: [noAuthGuard]
+  },
+  {
+    path: "unauthorized",
+    loadComponent: () => import('./core/auth/unauthorized/unauthorized.component').then(c => c.UnauthorizedComponent),
+    canActivate: [authGuard],
+    data: {roles: ["ROLE_EDITOR"]}
   },
   //todo: merge with change-password
   {

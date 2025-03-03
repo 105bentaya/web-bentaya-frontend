@@ -54,7 +54,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
 }
 
 function filter(menuItems: any[]) {
-  if (menuItems.length < 6) return menuItems;
+  if (menuItems.length < 5) return menuItems;
 
   let newItems: any[] = [];
   [...new Set(menuItems.map(item => item.category))].forEach(category => {

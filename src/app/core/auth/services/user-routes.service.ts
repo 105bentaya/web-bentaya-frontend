@@ -3,6 +3,7 @@ import {Params, Router} from "@angular/router";
 import {identity, pickBy} from "lodash";
 import {noop} from "rxjs";
 import {AuthService} from "./auth.service";
+import {LoggedUserDataService} from "./logged-user-data.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class UserRoutesService {
 
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly userDataService = inject(LoggedUserDataService);
 
   private route: string | undefined;
   private queryParams: Params | undefined;
@@ -30,21 +32,27 @@ export class UserRoutesService {
     return queryParams;
   }
 
-  navigateToLastRoute(fallback = "calendario") {
+  navigateToLastRoute() {
     if (this.route) {
       this.router
         .navigate([this.route], pickBy({queryParams: this.queryParams, fragment: this.hash}, identity))
         .then(() => this.resetData());
     } else {
-      this.router.navigate([this.getUserHome(fallback)]).then(noop);
+      this.router.navigateByUrl(this.getUserHome()).then(noop);
     }
   }
 
-  getUserHome(fallback = "calendario") {
+  getUserHome() {
     if (this.authService.isLoggedIn()) {
-      // return (this.authService.getUserData().userPage);
+      if (this.userDataService.hasRequiredPermission(['ROLE_SCOUTER', 'ROLE_GROUP_SCOUTER', 'ROLE_USER'])) return "/calendario";
+      if (this.userDataService.hasRequiredPermission(['ROLE_SCOUT_CENTER_REQUESTER'])) return "/centros-scout/seguimiento";
+      if (this.userDataService.hasRequiredPermission(['ROLE_EDITOR'])) return "/unauthorized";
+      if (this.userDataService.hasRequiredPermission(['ROLE_SCOUT_CENTER_MANAGER'])) return "/centros-scout/gestion";
+      if (this.userDataService.hasRequiredPermission(['ROLE_FORM'])) return "/preinscripciones";
+      if (this.userDataService.hasRequiredPermission(['ROLE_TRANSACTION'])) return "/donaciones/lista";
+      if (this.userDataService.hasRequiredPermission(['ROLE_ADMIN'])) return "/usuarios";
     }
-    return fallback;
+    return "inicio";
   }
 
   resetData() {

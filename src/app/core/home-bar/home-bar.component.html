@@ -22,7 +22,7 @@
         <app-general-a-button
           icon="pi pi-user"
           class="home-bar-button mi-vivac"
-          [routerLink]="authService.isLoggedIn() ? 'calendario' : 'login'"
+          [routerLink]="authService.isLoggedIn() ? userRoutes.getUserHome() : 'login'"
           [label]="authService.isLoggedIn() ? 'Mi Vivac' : 'Iniciar Sesión'"
         ></app-general-a-button>
       </div>
@@ -30,7 +30,7 @@
         <app-general-a-button
           class="home-bar-button mi-vivac"
           icon="pi pi-user"
-          [routerLink]="authService.isLoggedIn() ? 'calendario' : 'login'"
+          [routerLink]="authService.isLoggedIn() ? userRoutes.getUserHome() : 'login'"
         ></app-general-a-button>
       </div>
       <img class="svg-normal end-0 d-none d-md-block" src="assets/nav-bar/yellow-blob-big.svg" alt="">

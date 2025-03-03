@@ -1,9 +1,9 @@
 <div class="container">
   @if (scouts) {
-    <h1>Datos de {{scouts[currentIndex].name}}</h1>
+    <h1 class="mb-0">Datos de {{scouts[currentIndex].name}}</h1>
     <p-tabs [value]="currentIndex" [scrollable]="true">
       @if (scouts.length > 1) {
-        <p-tablist>
+        <p-tablist class="mt-2">
           @for (scout of scouts; track $index) {
             <p-tab [value]="$index" (click)="currentIndex = $index">{{ scout.name }}</p-tab>
           }
