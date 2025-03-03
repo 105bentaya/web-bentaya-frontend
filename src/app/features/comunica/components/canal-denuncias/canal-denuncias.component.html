@@ -1,6 +1,8 @@
 <div class="container">
-  <h1 class="text-center"><b>Canal anónimo de denuncias</b></h1>
-  <h3 class="pb-2 text-center">Gestionando la seguridad en Scouts 105 Bentaya</h3>
+  <div class="text-center">
+    <h1 class="mb-0">Canal anónimo de denuncias</h1>
+    <h2>Gestionando la seguridad en Scouts 105 Bentaya</h2>
+  </div>
   <p>Este canal posibilita una comunicación anónima y segura de las denuncias que se presenten.</p>
   <p>
     El objetivo de este canal es que cualquier persona o entidad pueda denunciar y/o comunicar cualquier posible
@@ -24,7 +26,7 @@
     <div>
       <div class="row">
         <div class="col-12 col-md-6">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input
               pInputText
               formControlName="phone"
@@ -35,7 +37,7 @@
           </p-floatlabel>
         </div>
         <div class="col-12 col-md-6">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input
               formControlName="email"
               id="email"
@@ -51,7 +53,7 @@
       </div>
       <div class="row">
         <div class="col-12 col-lg-3">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-select
               id="category"
               formControlName="category"
@@ -64,7 +66,7 @@
           }
         </div>
         <div class="col-12 col-lg-3">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <p-select
               id="type"
               formControlName="type"
@@ -77,7 +79,7 @@
           }
         </div>
         <div class="col-12 col-lg-3">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input
               formControlName="name"
               id="name"
@@ -88,7 +90,7 @@
           </p-floatlabel>
         </div>
         <div class="col-12 col-lg-3">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <input
               formControlName="surname"
               id="surname"
@@ -101,14 +103,15 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 mb-2">
-        <app-form-text-area
-          formControlName="text"
-          id="text"
-          [maxLength]="65535"
-          floatLabel="Descripción de los hechos"
-          labelClass="required"
-        ></app-form-text-area>
+      <div class="col-12 mb-0">
+        <p-floatlabel variant="on">
+          <app-form-text-area
+            formControlName="text"
+            id="text"
+            [maxLength]="65535"
+          ></app-form-text-area>
+          <label class="required" for="text">Descripción de los hechos</label>
+        </p-floatlabel>
         @if (complaintForm.isDirtyAndInvalid('text')) {
           <small class="text-danger">
             @if (complaintForm.hasSpecificError('text', 'maxlength')) {
@@ -122,12 +125,8 @@
     </div>
     <div class="row">
       <div class="col-12 mb-2">
-        <app-checkbox-container>
-          <p-checkbox
-            id="privacy"
-            formControlName="privacy"
-            [binary]="true"
-          ></p-checkbox>
+        <app-checkbox-container [privacy]="true">
+          <p-checkbox id="privacy" formControlName="privacy" [binary]="true"></p-checkbox>
         </app-checkbox-container>
         @if (complaintForm.isDirtyAndInvalid('privacy')) {
           <small class="text-danger">Debe leer y estar de acuerdo con los términos.</small>

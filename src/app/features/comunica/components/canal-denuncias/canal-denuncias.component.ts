@@ -33,9 +33,9 @@ import {Select} from "primeng/select";
 })
 export class CanalDenunciasComponent implements OnInit {
 
-  private confirmationService = inject(ConfirmationService);
-  private alertService = inject(AlertService);
-  private serScoutService = inject(EmailService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly alertService = inject(AlertService);
+  private readonly serScoutService = inject(EmailService);
   protected loading = false;
   protected complaintForm = new FormHelper();
   protected categories =

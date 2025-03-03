@@ -2,7 +2,6 @@ import {Component, inject, OnInit} from '@angular/core';
 import {PreScouter} from "../../../scout-forms/models/pre-scouter.model";
 import {ScouterFormsService} from "../../scouter-forms.service";
 import {ConfirmationService} from "primeng/api";
-import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {
   TableIconButtonComponent
@@ -14,7 +13,6 @@ import {
   styleUrls: ['./ser-scouter-table.component.scss'],
   imports: [
     TableModule,
-    Button,
     TableIconButtonComponent
   ]
 })

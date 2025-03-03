@@ -1,6 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
-import {ButtonDirective} from "primeng/button";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.component";
 import {BookingService} from "../../service/booking.service";
@@ -17,7 +16,6 @@ import {
   selector: 'app-booking-detail-control',
   imports: [
     BasicLoadingInfoComponent,
-    ButtonDirective,
     RouterLink,
     BookingCalendarComponent,
     BookingDetailComponent,

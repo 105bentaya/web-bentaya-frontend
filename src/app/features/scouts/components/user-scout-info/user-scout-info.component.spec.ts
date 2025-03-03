@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UserScoutInfoComponent } from './user-scout-info.component';
+import {UserScoutInfoComponent} from './user-scout-info.component';
 
 describe('UserScoutInfoComponent', () => {
   let component: UserScoutInfoComponent;

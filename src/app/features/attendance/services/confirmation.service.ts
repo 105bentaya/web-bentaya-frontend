@@ -8,7 +8,6 @@ import {Confirmation} from "../models/confirmation.model";
 import {EventAttendanceInfo} from "../models/event-attendance-info.model";
 import {EventBasicAttendanceInfo} from "../models/event-basic-attendance-info.model";
 import {saveAs} from "file-saver";
-import {LoggedUserInformationService} from "../../../core/auth/services/logged-user-information.service";
 import {GroupPipe} from "../../../shared/pipes/group.pipe";
 import {LoggedUserDataService} from "../../../core/auth/services/logged-user-data.service";
 

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CalendarSubscriptionComponent } from './calendar-subscription.component';
+import {CalendarSubscriptionComponent} from './calendar-subscription.component';
 
 describe('CalendarSubscriptionComponent', () => {
   let component: CalendarSubscriptionComponent;
@@ -11,7 +11,7 @@ describe('CalendarSubscriptionComponent', () => {
       imports: [CalendarSubscriptionComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(CalendarSubscriptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

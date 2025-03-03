@@ -1,14 +1,10 @@
 import {Component} from '@angular/core';
-import {RouterLink} from "@angular/router";
-import {NgStyle} from "@angular/common";
 import {PanelModule} from "primeng/panel";
 import {Divider} from "primeng/divider";
 
 @Component({
   selector: 'app-asociacion',
   imports: [
-    RouterLink,
-    NgStyle,
     PanelModule,
     Divider
   ],

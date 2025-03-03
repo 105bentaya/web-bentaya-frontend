@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BookingBetaAlertComponent } from './booking-beta-alert.component';
+import {BookingBetaAlertComponent} from './booking-beta-alert.component';
 
 describe('BookingBetaAlertComponent', () => {
   let component: BookingBetaAlertComponent;
@@ -11,7 +11,7 @@ describe('BookingBetaAlertComponent', () => {
       imports: [BookingBetaAlertComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(BookingBetaAlertComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

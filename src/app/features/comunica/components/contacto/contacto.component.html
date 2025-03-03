@@ -15,13 +15,11 @@
       </ul>
       <div class="w-100">
         <iframe
+          title="Mapa Bentaya"
           width="100%"
           height="500"
           src="https://maps.google.com/maps?q=asociacion%20juvenil%20scouts%20exploradores%20de%20gran%20canaria%20bentaya&z=13&ie=UTF8&output=embed"
         ></iframe>
-        <a href="https://123movies-to.org"></a>
-        <br>
-        <a href="https://www.embedgooglemap.net"></a>
       </div>
     </div>
     <div class="col-12 col-lg-6" id="mensaje">
@@ -31,7 +29,7 @@
       <form [formGroup]="contactForm.form" class="form-container">
         <div class="row">
           <div class="col-12 col-sm-6">
-            <p-floatlabel>
+            <p-floatlabel variant="on">
               <input
                 pInputText
                 formControlName="name"
@@ -45,7 +43,7 @@
             }
           </div>
           <div class="col-12 col-sm-6">
-            <p-floatlabel>
+            <p-floatlabel variant="on">
               <input
                 pInputText
                 formControlName="surname"
@@ -58,7 +56,7 @@
         </div>
         <div class="row">
           <div class="col-12 col-sm-6 col-lg-12 col-xl-6">
-            <p-floatlabel>
+            <p-floatlabel variant="on">
               <input
                 formControlName="email"
                 id="email"
@@ -72,7 +70,7 @@
             }
           </div>
           <div class="col-12 col-sm-6 col-lg-12 col-xl-6">
-            <p-floatlabel>
+            <p-floatlabel variant="on">
               <input
                 pInputText
                 formControlName="subject"
@@ -88,14 +86,16 @@
         </div>
         <div class="row">
           <div class="col-12 mb-0">
-            <label class="required" for="message">
-              Breve comentario sobre la colaboración que desea realizar.
-            </label>
-            <app-form-text-area
-              id="message"
-              formControlName="message"
-              [maxLength]="65535"
-            ></app-form-text-area>
+            <p-floatlabel variant="on">
+              <label class="required" for="message">
+                Mensaje
+              </label>
+              <app-form-text-area
+                id="message"
+                formControlName="message"
+                [maxLength]="65535"
+              ></app-form-text-area>
+            </p-floatlabel>
             @if (contactForm.isDirtyAndInvalid('message')) {
               <small class="text-danger">
                 @if (contactForm.hasSpecificError('message', 'maxlength')) {
@@ -109,7 +109,7 @@
         </div>
         <div class="row">
           <div class="col-12 mb-2">
-            <app-checkbox-container controlName="privacy">
+            <app-checkbox-container controlName="privacy" [privacy]="true">
               <p-checkbox
                 id="privacy"
                 formControlName="privacy"
