@@ -4,6 +4,7 @@ import {RouterLink} from '@angular/router';
 import {
   GeneralAButtonComponent
 } from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
+import {moneyEmail} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-donation-menu',
@@ -16,4 +17,5 @@ import {
   ]
 })
 export class DonationMenuComponent {
+  protected readonly moneyEmail = moneyEmail;
 }

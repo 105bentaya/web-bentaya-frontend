@@ -13,3 +13,8 @@ export const sections = [
 export const genders = ["Masculino", "Femenino", "No Binario", "Otro"];
 
 export const maintenanceEmail = "informatica@105bentaya.org";
+export const generalEmail = "scouts@105bentaya.org";
+export const moneyEmail = "tesoreria@105bentaya.org";
+export const presidencyEmail = "presidencia@105bentaya.org";
+export const viceEmail = "vicepresidencia@105bentaya.org";
+export const secretaryEmail = "secretaria@105bentaya.org";

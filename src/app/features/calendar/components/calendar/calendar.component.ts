@@ -3,13 +3,13 @@ import {CalendarOptions} from "@fullcalendar/core";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DialogService} from "primeng/dynamicdialog";
 import {EventFormComponent} from "../event-form/event-form.component";
 import {EventService} from "../../services/event.service";
 import {EventInfoComponent} from "../event-info/event-info.component";
 import {FullCalendarComponent, FullCalendarModule} from "@fullcalendar/angular";
 import {BasicEvent} from "../../models/basic-event.model";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EventStatusService} from "../../services/event-status.service";
 import {delay, skip} from "rxjs";
 import {ScoutEvent} from "../../models/scout-event.model";
@@ -25,8 +25,9 @@ import {CalendarSubscriptionComponent} from "../calendar-subscription/calendar-s
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 import {UserMenuService} from "../../../../core/user-menu/user-menu.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {ToggleButton, ToggleButtonChangeEvent} from "primeng/togglebutton";
+import {ToggleButton} from "primeng/togglebutton";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {ProgressSpinner} from "primeng/progressspinner";
 
 @Component({
   selector: 'app-calendar',
@@ -44,7 +45,8 @@ import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.s
     Button,
     ToggleButton,
     ButtonDirective,
-    ButtonIcon
+    ButtonIcon,
+    ProgressSpinner
   ]
 })
 export class CalendarComponent implements OnInit {
@@ -52,12 +54,12 @@ export class CalendarComponent implements OnInit {
   private readonly dialogService = inject(DynamicDialogService);
   private readonly eventService = inject(EventService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly eventStatusService = inject(EventStatusService);
   private readonly loggedUserData = inject(LoggedUserDataService);
   private readonly userMenuService = inject(UserMenuService);
 
   protected options: CalendarOptions;
-  protected ref!: DynamicDialogRef;
   protected events!: BasicEvent[];
   protected calendarDate: Date;
   protected calendarView: boolean = true;
@@ -123,7 +125,7 @@ export class CalendarComponent implements OnInit {
       .pipe(takeUntilDestroyed())
       .subscribe(event => this.onEventAdd(event));
     this.userMenuService.expanded
-      .pipe(takeUntilDestroyed(), skip(1), delay(180))
+      .pipe(takeUntilDestroyed(), skip(1), delay(400))
       .subscribe(() => this.calendarComponent.getApi().render());
 
     this.userGroups = this.buildFilter();
@@ -216,11 +218,11 @@ export class CalendarComponent implements OnInit {
   }
 
   private openInfoDialog(eventId: number) {
-    this.ref = this.dialogService.openDialog(EventInfoComponent, "Actividad", "small", eventId);
+    return this.dialogService.openDialog(EventInfoComponent, "Actividad", "small", eventId);
   }
 
   protected openAddDialog() {
-    this.ref = this.dialogService.openDialog(EventFormComponent, "Añadir Actividad", "small", {calendarDate: this.calendarDate});
+    this.dialogService.openDialog(EventFormComponent, "Añadir Actividad", "small", {calendarDate: this.calendarDate});
   }
 
   protected next() {
@@ -247,7 +249,7 @@ export class CalendarComponent implements OnInit {
   private checkQueryParams() {
     this.route.queryParams.subscribe(params => {
       const eventId = params['actividad'];
-      if (eventId) this.openInfoDialog(eventId);
+      if (eventId) this.openInfoDialog(eventId).onClose.subscribe(() => this.router.navigate([], {replaceUrl: true}));
     });
   }
 
@@ -269,10 +271,6 @@ export class CalendarComponent implements OnInit {
   }
 
   protected openSubscribeDialog() {
-    this.ref = this.dialogService.openDialog(CalendarSubscriptionComponent, "Suscribirse al Calendario", "small");
-  }
-
-  test(event: ToggleButtonChangeEvent) {
-    this.pushEventsToCalendar(event.checked);
+    this.dialogService.openDialog(CalendarSubscriptionComponent, "Suscribirse al Calendario", "small");
   }
 }

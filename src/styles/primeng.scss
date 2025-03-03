@@ -1,3 +1,6 @@
+@import "./z-index";
+@import "./variables";
+
 :root {
   --bentaya-main-color: #044A93;
   --bentaya-secondary-color: #efd134;
@@ -54,9 +57,23 @@
   --p-card-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.3);
 }
 
+.html-container {
+  &:has(.space-holder.big) {
+    .p-progressspinner-spin {
+      left: $expanded-width;
+    }
+  }
+  &:has(.space-holder.small) {
+    .p-progressspinner-spin {
+      left: $contracted-width;
+    }
+  }
+}
+
 .p-progressspinner-spin {
   position: fixed !important;
   max-width: 120px;
+  z-index: $z-index-spinner;
 }
 
 .p-button-icon-only.p-selectbutton > div {

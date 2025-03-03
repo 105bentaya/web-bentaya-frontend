@@ -19,6 +19,7 @@ import {UserScout} from "../../../../core/auth/user-profile.model";
 import {RouterLink} from "@angular/router";
 import {TooltipModule} from "primeng/tooltip";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'app-event-info',
@@ -113,8 +114,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
 
   protected copyEventLink() {
     this.copied = true;
-    //todo: do not use location, use new property WB-240
-    const link = `${location.origin}/calendario?actividad=${this.event.id}`;
+    const link = `${environment.webUrl}/calendario?actividad=${this.event.id}`;
     navigator.clipboard.writeText(link).then(
       () => setTimeout(() => this.copied = false, 6000)
     );

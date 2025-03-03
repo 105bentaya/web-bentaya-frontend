@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {generalEmail} from "../../shared/constant";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-condiciones-uso',
@@ -7,4 +9,6 @@ import {Component} from '@angular/core';
   standalone: true
 })
 export class CondicionesUsoComponent {
+  protected readonly generalEmail = generalEmail;
+  protected readonly environment = environment;
 }

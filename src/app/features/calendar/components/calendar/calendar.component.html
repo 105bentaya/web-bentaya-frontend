@@ -18,7 +18,7 @@
             offIcon="pi pi-globe"
             class="no-label"
             styleClass="squared"
-            (onChange)="test($event)"
+            (onChange)="pushEventsToCalendar($event.checked)"
             title="Mostrar todos los eventos"
           ></p-toggle-button>
         }
@@ -75,15 +75,20 @@
         styleClass="squared"
         (click)="openSubscribeDialog()"
       ></p-button>
-      <p-button
-        size="small"
-        variant="outlined"
-        icon="pi pi-calendar-plus"
-        title="Añadir Actividad"
-        styleClass="squared"
-        (click)="openAddDialog()"
-      ></p-button>
+      @if (isScouter) {
+        <p-button
+          size="small"
+          variant="outlined"
+          icon="pi pi-calendar-plus"
+          title="Añadir Actividad"
+          styleClass="squared"
+          (click)="openAddDialog()"
+        ></p-button>
+      }
     </div>
   </div>
   <full-calendar #calendarComponent [options]="options"></full-calendar>
+  @if (loading) {
+    <p-progressSpinner></p-progressSpinner>
+  }
 </div>

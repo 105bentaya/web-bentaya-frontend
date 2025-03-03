@@ -21,7 +21,7 @@ import {
 import {
   LargeFormButtonsComponent
 } from "../../../../shared/components/buttons/large-form-buttons/large-form-buttons.component";
-import {maintenanceEmail} from "../../../../shared/constant";
+import {maintenanceEmail, moneyEmail} from "../../../../shared/constant";
 import {
   GeneralAButtonComponent
 } from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
@@ -58,6 +58,8 @@ export class DonationFormComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   protected readonly maintenanceEmail = maintenanceEmail;
+  protected readonly moneyEmail = moneyEmail;
+
   protected loading = false;
   protected donationSuccess = false;
   protected formHelper = new FormHelper();

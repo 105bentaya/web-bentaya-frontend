@@ -37,11 +37,11 @@
           type="button"
         ></app-table-icon-button>
         <div class="ms-auto text-end">
-                <span>
-                  {{ tab.processedData.length }}
-                  {{ tab.processedData.length == 1 ? "preinscripción hecha" : "preinscripciones hechas" }}
-                  con estas condiciones
-                </span>
+          <span>
+            {{ tab.processedData.length }}
+            {{ tab.processedData.length == 1 ? "preinscripción hecha" : "preinscripciones hechas" }}
+            con estas condiciones
+          </span>
         </div>
       </div>
     </ng-template>
@@ -85,6 +85,7 @@
         <th>
           <p-multiSelect
             (onChange)="tab.filter($event.value, 'section', 'in')"
+            (onClear)="tab.filter(null, 'section', 'in')"
             [options]="sections"
             [showHeader]="false"
             [autofocusFilter]="false"
@@ -102,6 +103,7 @@
         <th>
           <p-multiSelect
             (onChange)="tab.filter($event.value, 'status', 'in')"
+            (onClear)="tab.filter(null, 'status', 'in')"
             [options]="multiSelectStatuses"
             [showHeader]="false"
             [autofocusFilter]="false"

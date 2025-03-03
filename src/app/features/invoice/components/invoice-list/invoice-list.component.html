@@ -57,6 +57,8 @@
           <p-multiSelect
             [options]="invoiceData?.payers"
             (onChange)="dt.filter($event.value, 'payers', 'custom')"
+            (onClear)="dt.filter(null, 'payers', 'custom')"
+            showClear
             [autofocusFilter]="false"
             [maxSelectedLabels]="1"
             appendTo="body"
@@ -76,6 +78,8 @@
           <p-multiSelect
             [options]="invoiceData?.grants"
             (onChange)="dt.filter($event.value, 'grants', 'custom')"
+            (onClear)="dt.filter(null, 'grants', 'custom')"
+            showClear
             [autofocusFilter]="false"
             [maxSelectedLabels]="1"
             appendTo="body"
@@ -88,6 +92,8 @@
           <p-multiSelect
             [options]="invoiceData?.expenseTypes"
             (onChange)="dt.filter($event.value, 'expenseTypes', 'custom')"
+            (onClear)="dt.filter(null, 'expenseTypes', 'custom')"
+            showClear
             [autofocusFilter]="false"
             [maxSelectedLabels]="1"
             appendTo="body"

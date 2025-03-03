@@ -60,6 +60,7 @@
           <p-multiSelect
             [options]="groups"
             (onChange)="dt.filter($event.value, 'groupId', 'in')"
+            (onClear)="dt.filter(null, 'groupId', 'in')"
             [showHeader]="false"
             [autofocusFilter]="false"
             [showClear]="true"

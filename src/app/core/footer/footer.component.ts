@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {socialMediaButtons} from "../../shared/constant";
+import {generalEmail, socialMediaButtons} from "../../shared/constant";
 import {DividerModule} from "primeng/divider";
 import {ButtonDirective, ButtonIcon} from "primeng/button";
 
@@ -12,4 +12,5 @@ import {ButtonDirective, ButtonIcon} from "primeng/button";
 })
 export class FooterComponent {
   protected readonly socialMediaButtons = socialMediaButtons;
+  protected readonly generalEmail = generalEmail;
 }

@@ -5,8 +5,7 @@
       <span class="fw-bold">Descripción</span>
       <div class="d-flex gap-1 ms-auto" style="height: 1.75rem;">
         <p-button
-          styleClass="h-100"
-          [style]="{'width': '2rem'}"
+          styleClass="h-100 px-2 w-fit"
           [icon]="copied ? 'pi pi-copy' : 'pi pi-link'"
           [disabled]="copied"
           [pTooltip]="copied ? '¡Link copiado!' : 'Copiar link de la actividad'"
@@ -14,9 +13,10 @@
           tooltipPosition="top"
           appendTo="body"
           (click)="copyEventLink()"
+          [label]="userCanEditEvent ? '' : 'Compartir'"
         ></p-button>
         @if (userCanEditEvent) {
-          <p-button styleClass="h-100" (click)="openEditDialog()">Editar Actividad</p-button>
+          <p-button styleClass="h-100 px-2" (click)="openEditDialog()">Editar Actividad</p-button>
         }
       </div>
     </div>

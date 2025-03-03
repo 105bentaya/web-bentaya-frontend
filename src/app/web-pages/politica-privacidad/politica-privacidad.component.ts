@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {generalEmail} from "../../shared/constant";
 
 @Component({
   selector: 'app-politica-privacidad',
@@ -7,4 +8,5 @@ import {Component} from '@angular/core';
   standalone: true
 })
 export class PoliticaPrivacidadComponent {
+  protected readonly generalEmail = generalEmail;
 }

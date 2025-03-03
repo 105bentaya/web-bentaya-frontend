@@ -12,7 +12,7 @@ import {
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {FloatLabelModule} from "primeng/floatlabel";
-import {maintenanceEmail} from "../../../../shared/constant";
+import {generalEmail, maintenanceEmail} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-contacto',
@@ -30,11 +30,13 @@ import {maintenanceEmail} from "../../../../shared/constant";
 })
 export class ContactoComponent implements OnInit {
 
-  private alertService = inject(AlertService);
-  private emailService = inject(EmailService);
+  private readonly alertService = inject(AlertService);
+  private readonly emailService = inject(EmailService);
+  protected readonly maintenanceEmail = maintenanceEmail;
+  protected readonly generalEmail = generalEmail;
   protected loading = false;
   protected contactForm = new FormHelper();
-  protected readonly maintenanceEmail = maintenanceEmail;
+
 
   ngOnInit(): void {
     this.initializeForm();
@@ -51,7 +53,7 @@ export class ContactoComponent implements OnInit {
     });
   }
 
-  submit() {
+  protected submit() {
     this.contactForm.validateAll();
     if (!this.contactForm.invalid) {
       const contactMessage: ContactMessage = {...this.contactForm.value};
