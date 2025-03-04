@@ -1,7 +1,7 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {EventService} from "../../services/event.service";
-import {ScoutEvent} from "../../models/scout-event.model";
+import {EventInfo} from "../../models/event-info.model";
 import {EventBasicAttendanceInfo} from "../../../attendance/models/event-basic-attendance-info.model";
 import {ConfirmationService} from "../../../attendance/services/confirmation.service";
 import {EventFormComponent} from "../event-form/event-form.component";
@@ -11,7 +11,7 @@ import {isNoAttendanceGroup} from "../../../../shared/model/group.model";
 import {GroupPipe} from '../../../../shared/pipes/group.pipe';
 import {SkeletonModule} from 'primeng/skeleton';
 import {Button} from 'primeng/button';
-import {DatePipe} from '@angular/common';
+import {DatePipe, NgTemplateOutlet} from '@angular/common';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
@@ -32,7 +32,8 @@ import {environment} from "../../../../../environments/environment";
     BasicLoadingInfoComponent,
     TooltipModule,
     Button,
-    RouterLink
+    RouterLink,
+    NgTemplateOutlet
   ]
 })
 export class EventInfoComponent implements OnInit, OnDestroy {
@@ -45,7 +46,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
   private readonly loggedUserData = inject(LoggedUserDataService);
   protected ref = inject(DynamicDialogRef);
 
-  protected event!: ScoutEvent;
+  protected event!: EventInfo;
   protected locationLink?: string;
   protected scoutConfirmations: EventBasicAttendanceInfo[] = [];
   protected userCanEditEvent = false;
@@ -65,7 +66,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  private buildEventData(event: ScoutEvent) {
+  private buildEventData(event: EventInfo) {
     this.locationLink = event.latitude && event.longitude ?
       `https://www.google.com/maps/place/${event.latitude},${event.longitude}` :
       undefined;
@@ -77,7 +78,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
     this.event = event;
   }
 
-  private scouterCanEditEvent(event: ScoutEvent) {
+  private scouterCanEditEvent(event: EventInfo) {
     return this.loggedUserData.hasRequiredPermission(["ROLE_SCOUTER"]) &&
       (
         event.groupId == this.loggedUserData.getGroupId() ||
@@ -91,7 +92,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
       new Date(date);
   }
 
-  private buildAttendance(data: ScoutEvent) {
+  private buildAttendance(data: EventInfo) {
     const userHasUserRole = this.loggedUserData.hasRequiredPermission(["ROLE_USER"]);
 
     if (userHasUserRole && data.hasAttendance) {

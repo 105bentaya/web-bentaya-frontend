@@ -59,7 +59,9 @@
       class="uncolored fw-bold"
       routerLink="/asistencias"
       (click)="ref.close()"
-    >Ir a asistencia</a>
+    >
+      Ir a asistencia <ng-container *ngTemplateOutlet="attendanceStatus"></ng-container>
+    </a>
     <ul>
       @if (scoutConfirmations.length < 1) {
         @for (scout of userScoutsInEvent; track scout.id) {
@@ -98,10 +100,18 @@
         routerLink="/unidad/asistencias"
         [queryParams]="{actividad: event.id}"
         (click)="ref.close()"
-      >Ir a lista de asistencia</a>
+      >
+        Ir a lista de asistencia <ng-container *ngTemplateOutlet="attendanceStatus"></ng-container>
+      </a>
     </div>
   }
 } @else {
   <app-basic-loading-info></app-basic-loading-info>
 }
-
+<ng-template #attendanceStatus>
+  @if (event.attendanceIsClosed) {
+    (cerrada)
+  } @else if (event.closeDateTime) {
+    (cierra el {{ event.closeDateTime | date:"dd/MM/yyyy 'a las' HH:mm" }})
+  }
+</ng-template>

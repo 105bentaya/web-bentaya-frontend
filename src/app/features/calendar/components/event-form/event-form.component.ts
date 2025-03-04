@@ -29,6 +29,11 @@ import {DatePicker} from "primeng/datepicker";
 import {
   CheckboxContainerComponent
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
+import {
+  RadioButtonContainerComponent
+} from "../../../../shared/components/radio-button-container/radio-button-container.component";
+import {RadioButton} from "primeng/radiobutton";
+import {Panel} from "primeng/panel";
 
 @Component({
   selector: 'app-event-form',
@@ -46,7 +51,10 @@ import {
     InputTextModule,
     BasicLoadingInfoComponent,
     DatePicker,
-    CheckboxContainerComponent
+    CheckboxContainerComponent,
+    RadioButtonContainerComponent,
+    RadioButton,
+    Panel
   ]
 })
 export class EventFormComponent implements OnInit {
@@ -109,11 +117,18 @@ export class EventFormComponent implements OnInit {
       addCoordinates: [addCoordinates ?? false],
       unknownTime: [event?.unknownTime ?? false],
       activateAttendanceList: [event?.activateAttendanceList ?? false],
-      closeAttendanceList: [event?.closeAttendanceList ?? false],
+      closeAttendanceMode: [this.getAttendanceMode(event)],
+      closeDateTime: [event?.closeDateTime ? new Date(event.closeDateTime) : null],
       activateAttendancePayment: [event?.activateAttendancePayment ?? false],
     }, {
       validators: [this.datesValidator, this.locationValidator]
     });
+  }
+
+  private getAttendanceMode(event?: FormEvent) {
+    if (event?.closeAttendanceList === true) return "now";
+    if (event?.closeDateTime) return "date";
+    return "end";
   }
 
   private getEventStartDate(event: FormEvent) {
@@ -138,13 +153,27 @@ export class EventFormComponent implements OnInit {
       }
       if (isNoAttendanceGroup(event.groupId)) {
         event.activateAttendanceList = false;
+        event.closeDateTime = undefined;
       }
-      if (this.existingEvent) {
-        event.id = this.existingEvent.id;
-        this.checkForUpdateMessage(event);
+      if (event.activateAttendanceList) {
+        const selectedMode = this.formHelper.controlValue("closeAttendanceMode");
+        event.closeAttendanceList = selectedMode === "now";
+        if (selectedMode !== "date") event.closeDateTime = undefined;
       } else {
-        this.save(event);
+        event.closeAttendanceList = false;
+        event.closeDateTime = undefined;
       }
+
+      this.checkForInfoMessages(event);
+    }
+  }
+
+  private saveOrUpdate(event: FormEvent) {
+    if (this.existingEvent) {
+      event.id = this.existingEvent.id;
+      this.update(event);
+    } else {
+      this.save(event);
     }
   }
 
@@ -169,23 +198,47 @@ export class EventFormComponent implements OnInit {
     return null;
   };
 
-  private checkForUpdateMessage(event: FormEvent) {
-    if (this.existingEvent.activateAttendanceList != event.activateAttendanceList && !event.activateAttendanceList) {
+  private checkForInfoMessages(event: FormEvent) {
+    let attendanceOffWarn = false;
+    let paymentOffWarn = false;
+    if (this.existingEvent) {
+      attendanceOffWarn = this.existingEvent.activateAttendanceList != event.activateAttendanceList && !event.activateAttendanceList;
+      paymentOffWarn = this.existingEvent.activateAttendancePayment != event.activateAttendancePayment && !event.activateAttendancePayment;
+    }
+
+    const eventClosedWarn = this.eventCloseEndDate(event);
+
+    if (attendanceOffWarn || paymentOffWarn || eventClosedWarn) {
+      let message = '¿Desea actualizar este evento? ';
+      if (attendanceOffWarn) {
+        message += `Esta acción eliminará la lista de asistencia asociada${this.existingEvent.activateAttendancePayment ? ' y lo pagos asociados a esta actividad.' : '.'} `;
+      } else if (paymentOffWarn) {
+        message += "Esta acción eliminará los pagos asociados a esta actividad. ";
+      }
+      if (eventClosedWarn) {
+        message += "La fecha de cierre de la asistencia es posterior a la fecha de fin de la actividad, por lo que los usuarios podrán seguir editando la asistencia tras el cierre de esta.";
+      }
       this.confirmationService.confirm({
-        message: '¿Desea actualizar este evento? Esta acción eliminará la lista de asistencia asociada' +
-          `${this.existingEvent.activateAttendancePayment ? ' y lo pagos asociados a esta actividad.' : '.'}`,
+        message,
         icon: 'pi pi-exclamation-triangle',
-        accept: () => this.update(event)
-      });
-    } else if (this.existingEvent.activateAttendancePayment != event.activateAttendancePayment && !event.activateAttendancePayment) {
-      this.confirmationService.confirm({
-        message: '¿Desea actualizar este evento? Esta acción eliminará los pagos asociados a esta actividad.',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => this.update(event)
+        accept: () => this.saveOrUpdate(event)
       });
     } else {
-      this.update(event);
+      this.saveOrUpdate(event);
     }
+  }
+
+  private eventCloseEndDate(event: FormEvent) {
+    if (event.closeDateTime) {
+      if (this.existingEvent?.closeDateTime) {
+        const oldTime = new Date(this.existingEvent.closeDateTime).toISOString();
+        const newTime = new Date(event.closeDateTime).toISOString();
+        if (oldTime === newTime) return false;
+      }
+      const endDate = event.unknownTime ? DateUtils.dateAtLastSecondOfDay(event.endDate) : event.endDate;
+      return event.closeDateTime.toISOString() > endDate.toISOString();
+    }
+    return false;
   }
 
   private save(event: FormEvent) {

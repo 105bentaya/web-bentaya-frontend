@@ -14,4 +14,5 @@ export interface FormEvent {
   activateAttendancePayment: boolean;
   closeAttendanceList: boolean;
   unknownTime: boolean;
+  closeDateTime?: Date;
 }

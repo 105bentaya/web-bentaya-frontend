@@ -10,5 +10,6 @@ export interface UserListInfo {
     attending?: boolean;
     closed: boolean;
     payed?: boolean;
+    endsSoon: boolean
   }[]
 }

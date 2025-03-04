@@ -74,6 +74,8 @@
               </a>
               @if (eventInfo.closed) {
                 <p-tag styleClass="rounded-2" class="d-sm-block" severity="danger" value="Cerrada"></p-tag>
+              } @else if (eventInfo.endsSoon) {
+                <p-tag styleClass="rounded-2" class="d-sm-block" severity="warn" value="Cierra Pronto"></p-tag>
               }
             </div>
           </td>

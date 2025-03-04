@@ -35,7 +35,7 @@
           </p-floatlabel>
         </div>
       </div>
-      <div class="row mb-2">
+      <div class="row mb-1">
         <div class="col-12 col-sm-6">
           <p-floatlabel variant="on">
             <p-datePicker
@@ -43,7 +43,6 @@
               formControlName="startDate"
               appendTo="body"
               [showTime]="!formHelper.controlValue('unknownTime')"
-              [hourFormat]="'24'"
               [stepMinute]="5"
               [defaultDate]="defaultStartDate"
               [hideOnDateTimeSelect]="false"
@@ -61,7 +60,6 @@
               formControlName="endDate"
               appendTo="body"
               [showTime]="!formHelper.controlValue('unknownTime')"
-              [hourFormat]="'24'"
               [stepMinute]="5"
               [defaultDate]="defaultEndDate"
               [hideOnDateTimeSelect]="false"
@@ -80,8 +78,8 @@
           </app-checkbox-container>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
+      <div class="row mb-1">
+        <div class="col-12 mb-0">
           <p-floatlabel variant="on">
             <input id="location" formControlName="location" pInputText>
             <label for="location">Lugar</label>
@@ -89,7 +87,7 @@
         </div>
       </div>
       @if (formHelper.controlValue('location')) {
-        <div class="row mt-revert">
+        <div class="row">
           <div class="col-12">
             <app-checkbox-container label="Añadir coordenadas">
               <p-checkbox [binary]="true" formControlName="addCoordinates"></p-checkbox>
@@ -129,21 +127,52 @@
       }
       @if (showAttendanceCheckbox()) {
         <div class="row">
-          <div class="d-flex flex-column gap-1 mb-4">
-            <app-checkbox-container label="Activar asistencia">
-              <p-checkbox [binary]="true" formControlName="activateAttendanceList"></p-checkbox>
-            </app-checkbox-container>
-            @if (formHelper.controlValue('activateAttendanceList')) {
-              <app-checkbox-container label="Activar pago">
-                <p-checkbox [binary]="true" formControlName="activateAttendancePayment"></p-checkbox>
+          @if (!formHelper.controlValue('activateAttendanceList')) {
+            <div class="col-12">
+              <app-checkbox-container label="Activar asistencia">
+                <p-checkbox [binary]="true" formControlName="activateAttendanceList"></p-checkbox>
               </app-checkbox-container>
-              @if (existingEvent?.activateAttendanceList) {
-                <app-checkbox-container label="Cerrar asistencia">
-                  <p-checkbox [binary]="true" formControlName="closeAttendanceList"></p-checkbox>
-                </app-checkbox-container>
-              }
-            }
-          </div>
+            </div>
+          }
+          @if (formHelper.controlValue('activateAttendanceList')) {
+            <div class="col-12 mt-2">
+              <p-panel header="Ajustes de asistencia" class="attendance-panel w-100">
+                <div class="d-flex flex-column gap-2">
+                  <app-checkbox-container label="Activar asistencia">
+                    <p-checkbox [binary]="true" formControlName="activateAttendanceList"></p-checkbox>
+                  </app-checkbox-container>
+                  <app-checkbox-container label="Activar pago">
+                    <p-checkbox [binary]="true" formControlName="activateAttendancePayment"></p-checkbox>
+                  </app-checkbox-container>
+                </div>
+                <div class="mt-2">
+                  <span>Fecha de cierre:</span>
+                  <div class="d-flex flex-column gap-1">
+                    <app-radio-button-container label="Cerrar al final del evento">
+                      <p-radio-button formControlName="closeAttendanceMode" value="end"></p-radio-button>
+                    </app-radio-button-container>
+                    <app-radio-button-container label="Cerrar ahora">
+                      <p-radio-button formControlName="closeAttendanceMode" value="now"></p-radio-button>
+                    </app-radio-button-container>
+                    <app-radio-button-container label="Determinar fecha de cierre">
+                      <p-radio-button formControlName="closeAttendanceMode" value="date"></p-radio-button>
+                    </app-radio-button-container>
+                    @if (formHelper.controlValue('closeAttendanceMode') === 'date') {
+                      <p-datePicker
+                        appendTo="body"
+                        id="closeDateTime"
+                        formControlName="closeDateTime"
+                        [showTime]="true"
+                        [defaultDate]="formHelper.controlValue('endDate') ?? defaultEndDate"
+                        [stepMinute]="5"
+                        [hideOnDateTimeSelect]="false"
+                      ></p-datePicker>
+                    }
+                  </div>
+                </div>
+              </p-panel>
+            </div>
+          }
         </div>
       }
       <div class="d-flex align-items-center flex-column justify-content-center gap-1">

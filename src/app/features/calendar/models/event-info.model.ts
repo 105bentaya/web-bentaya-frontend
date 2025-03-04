@@ -1,4 +1,4 @@
-export interface ScoutEvent {
+export interface EventInfo {
   id: number;
   groupId: number;
   title: string;
@@ -10,4 +10,6 @@ export interface ScoutEvent {
   endDate: Date;
   hasAttendance: boolean;
   unknownTime: boolean;
+  attendanceIsClosed: boolean;
+  closeDateTime?: Date;
 }

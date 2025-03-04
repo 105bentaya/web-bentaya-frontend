@@ -12,7 +12,7 @@ import {BasicEvent} from "../../models/basic-event.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventStatusService} from "../../services/event-status.service";
 import {delay, skip} from "rxjs";
-import {ScoutEvent} from "../../models/scout-event.model";
+import {EventInfo} from "../../models/event-info.model";
 import {DatePipe} from "@angular/common";
 import {Button, ButtonDirective, ButtonIcon} from "primeng/button";
 import {ButtonGroupModule} from "primeng/buttongroup";
@@ -258,13 +258,13 @@ export class CalendarComponent implements OnInit {
     this.pushEventsToCalendar();
   }
 
-  private onEventAdd(event: ScoutEvent) {
+  private onEventAdd(event: EventInfo) {
     this.events.push(event);
     this.pushEventsToCalendar();
     this.openInfoDialog(event.id);
   }
 
-  private onEventUpdate(updatedEvent: ScoutEvent) {
+  private onEventUpdate(updatedEvent: EventInfo) {
     this.events.splice(this.events.findIndex(event => event.id === updatedEvent.id), 1);
     this.events.push(updatedEvent);
     this.pushEventsToCalendar();
