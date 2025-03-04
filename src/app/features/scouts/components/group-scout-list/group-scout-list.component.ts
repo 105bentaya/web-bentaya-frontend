@@ -26,6 +26,7 @@ import {
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {Dialog} from "primeng/dialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {SettingType} from "../../../settings/setting.model";
 
 @Component({
   selector: 'app-group-scout-list',
@@ -82,7 +83,7 @@ export class GroupScoutListComponent implements OnInit {
   }
 
   private getGroupScouts() {
-    this.settingService.getByName("currentYear").subscribe(data => this.currentYear = +data.value);
+    this.settingService.getByName(SettingType.CURRENT_YEAR).subscribe(data => this.currentYear = +data.value);
     this.scouts = undefined;
     this.scoutService.getAllByCurrentGroup().subscribe({
       next: scouts => {

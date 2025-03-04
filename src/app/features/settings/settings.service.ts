@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
-import {Setting} from "./setting.model";
+import {Setting, SettingType} from "./setting.model";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -16,7 +16,7 @@ export class SettingsService {
     return this.http.get<Setting[]>(this.settingsUrl);
   }
 
-  getByName(name: string): Observable<Setting> {
+  getByName(name: SettingType): Observable<Setting> {
     return this.http.get<Setting>(`${this.settingsUrl}/get/${name}`);
   }
 

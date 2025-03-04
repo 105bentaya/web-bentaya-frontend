@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {DialogService} from 'primeng/dynamicdialog';
 import {AuthService} from '../auth/services/auth.service';

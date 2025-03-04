@@ -3,6 +3,7 @@ import {SettingsService} from "../../../settings/settings.service";
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ClosedSerScoutComponent} from '../closed-ser-scout/closed-ser-scout.component';
 import {SerScoutComponent} from '../ser-scout/ser-scout.component';
+import {SettingType} from "../../../settings/setting.model";
 
 @Component({
   selector: 'app-ser-scout-control',
@@ -25,7 +26,7 @@ export class SerScoutControlComponent implements OnInit {
   protected error = false;
 
   ngOnInit(): void {
-    this.settingsService.getByName("formIsOpen").subscribe({
+    this.settingsService.getByName(SettingType.FORM_IS_OPEN).subscribe({
       next: setting => {
         this.showForm = setting.value === "1";
         this.formLoading = false;
@@ -36,7 +37,7 @@ export class SerScoutControlComponent implements OnInit {
         this.yearLoading = false;
       }
     });
-    this.settingsService.getByName("currentFormYear").subscribe({
+    this.settingsService.getByName(SettingType.CURRENT_FORM_YEAR).subscribe({
       next: setting => {
         this.formYear = +setting.value;
         this.yearLoading = false;

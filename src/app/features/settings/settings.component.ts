@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {SettingsService} from "./settings.service";
-import {Setting} from "./setting.model";
+import {Setting, SettingType} from "./setting.model";
 import {AlertService} from "../../shared/services/alert-service.service";
 import {CheckboxModule} from 'primeng/checkbox';
 import {FormsModule} from '@angular/forms';
@@ -67,16 +67,16 @@ export class SettingsComponent implements OnInit {
 
   private setSettingValue(setting: Setting): void {
     switch (setting.name) {
-      case "currentFormYear":
+      case SettingType.CURRENT_FORM_YEAR:
         this.setCurrentFormYearValue(setting);
         break;
-      case "formIsOpen":
+      case SettingType.FORM_IS_OPEN:
         this.setFormIsOpenValue(setting);
         break;
-      case "currentYear":
+      case SettingType.CURRENT_YEAR:
         this.setCurrentYearValue(setting);
         break;
-      case "maintenance":
+      case SettingType.MAINTENANCE:
         this.setCurrentMaintenance(setting);
         break;
     }
@@ -119,13 +119,13 @@ export class SettingsComponent implements OnInit {
   }
 
   protected saveChanges() {
-    this.updateSetting("currentFormYear", (2000 + this.originalCurrentFormYear).toString(), (2000 + this.currentFormYear).toString());
-    this.updateSetting("currentYear", (2000 + this.originalCurrentYear).toString(), (2000 + this.currentYear).toString());
-    this.updateSetting("formIsOpen", (+this.originalFormIsOpen).toString(), (+this.formIsOpen).toString());
-    this.updateSetting("maintenance", this.originalMaintenanceDate, this.maintenanceDate);
+    this.updateSetting(SettingType.CURRENT_FORM_YEAR, (2000 + this.originalCurrentFormYear).toString(), (2000 + this.currentFormYear).toString());
+    this.updateSetting(SettingType.CURRENT_YEAR, (2000 + this.originalCurrentYear).toString(), (2000 + this.currentYear).toString());
+    this.updateSetting(SettingType.FORM_IS_OPEN, (+this.originalFormIsOpen).toString(), (+this.formIsOpen).toString());
+    this.updateSetting(SettingType.MAINTENANCE, this.originalMaintenanceDate, this.maintenanceDate);
   }
 
-  private updateSetting(settingName: string, originalSettingValue: string, settingValue: string): void {
+  private updateSetting(settingName: SettingType, originalSettingValue: string, settingValue: string): void {
     if (originalSettingValue !== settingValue) {
       this.loading += 1;
       const settingToUpdate = {name: settingName, value: settingValue};

@@ -27,6 +27,7 @@ import {
   CheckboxContainerComponent
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {SettingType} from "../../../settings/setting.model";
 
 @Component({
   selector: 'app-ser-scout-table',
@@ -70,7 +71,7 @@ export class SerScoutTableComponent implements OnInit {
   @ViewChild('tab') table!: Table;
 
   ngOnInit(): void {
-    this.settingService.getByName("currentYear").subscribe(data => this.currentYear = +data.value);
+    this.settingService.getByName(SettingType.CURRENT_YEAR).subscribe(data => this.currentYear = +data.value);
     this.createStatuses();
     this.getPreInscriptions();
   }

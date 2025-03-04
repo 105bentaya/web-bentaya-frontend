@@ -15,6 +15,7 @@ import Lara from '@primeng/themes/lara';
 import {definePreset} from "@primeng/themes";
 import {HomeBarComponent} from "./core/home-bar/home-bar.component";
 import {UserMenuComponent} from "./core/user-menu/user-menu.component";
+import {SettingType} from "./features/settings/setting.model";
 
 @Component({
   selector: 'app-root',
@@ -111,7 +112,7 @@ export class AppComponent implements OnInit {
   }
 
   private checkForMaintenance() {
-    this.settingsService.getByName("maintenance").subscribe(
+    this.settingsService.getByName(SettingType.MAINTENANCE).subscribe(
       result => result.value !== "0" ? this.addMaintenanceMessage(new Date(result.value)) : noop()
     );
   }
