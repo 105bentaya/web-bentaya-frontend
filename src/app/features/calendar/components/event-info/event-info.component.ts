@@ -20,6 +20,7 @@ import {RouterLink} from "@angular/router";
 import {TooltipModule} from "primeng/tooltip";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {environment} from "../../../../../environments/environment";
+import {UserRole} from "../../../users/models/role.model";
 
 @Component({
   selector: 'app-event-info',
@@ -79,7 +80,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
   }
 
   private scouterCanEditEvent(event: EventInfo) {
-    return this.loggedUserData.hasRequiredPermission(["ROLE_SCOUTER"]) &&
+    return this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER) &&
       (
         event.groupId == this.loggedUserData.getGroupId() ||
         isNoAttendanceGroup(event.groupId)
@@ -93,7 +94,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
   }
 
   private buildAttendance(data: EventInfo) {
-    const userHasUserRole = this.loggedUserData.hasRequiredPermission(["ROLE_USER"]);
+    const userHasUserRole = this.loggedUserData.hasRequiredPermission(UserRole.USER);
 
     if (userHasUserRole && data.hasAttendance) {
       this.userScoutsInEvent = this.loggedUserData.getScouts()

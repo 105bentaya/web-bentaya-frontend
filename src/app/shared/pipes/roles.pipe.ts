@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {roles} from "../../features/users/models/role.model";
+import {roles, UserRole} from "../../features/users/models/role.model";
 import {RolePipe} from "./role.pipe";
 
 @Pipe({
@@ -8,16 +8,16 @@ import {RolePipe} from "./role.pipe";
 })
 export class RolesPipe implements PipeTransform {
 
-  private rolePipe = new RolePipe();
+  private readonly rolePipe = new RolePipe();
 
-  transform(roleIds: string[], byId = false, userGroup?: number): string {
+  transform(roleIds: UserRole[], byId = false, userGroup?: number): string {
     return roleIds
       .map(role => this.roleToString(role, byId, userGroup))
       .sort((a, b) => a.localeCompare(b))
       .join(", ");
   }
 
-  roleToString(roleProperty: string, byId: boolean, userGroup?: number): string {
+  roleToString(roleProperty: UserRole, byId: boolean, userGroup?: number): string {
     const roleName = byId ?
       roles.find(role => role.id == roleProperty)?.name! :
       roleProperty;

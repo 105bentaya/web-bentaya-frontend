@@ -1,7 +1,9 @@
+import {UserRole} from "../../features/users/models/role.model";
+
 export interface UserProfile {
   id: number;
   username: string;
-  roles: string[];
+  roles: UserRole[];
   groupId: number;
   scoutList: UserScout[];
 }

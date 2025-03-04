@@ -1,5 +1,6 @@
 import {LoggedUserDataService} from "../auth/services/logged-user-data.service";
 import {MenuItem} from "primeng/api";
+import {UserRole} from "../../features/users/models/role.model";
 
 const calendar = {label: "Calendario", icon: "pi pi-calendar", route: "/calendario"};
 const userScoutData = {label: "Datos", icon: "pi pi-id-card", route: "/datos"};
@@ -25,28 +26,28 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
   if (userIsScoutMember(user)) {
     menuItems.push(calendar);
   }
-  if (user.hasRequiredPermission(["ROLE_USER"])) {
+  if (user.hasRequiredPermission(UserRole.USER)) {
     menuItems.push(userScoutData, userAttendanceList);
   }
-  if (user.hasRequiredPermission(["ROLE_SCOUTER"])) {
+  if (user.hasRequiredPermission(UserRole.SCOUTER)) {
     menuItems.push(groupScoutList, groupAttendanceList, groupInscriptions, invoiceList);
   }
-  if (user.hasRequiredPermission(["ROLE_SCOUT_CENTER_REQUESTER"])) {
+  if (user.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) {
     menuItems.push(scoutCenterRequester);
   }
-  if (user.hasRequiredPermission(["ROLE_SCOUT_CENTER_MANAGER"])) {
+  if (user.hasRequiredPermission(UserRole.SCOUT_CENTER_MANAGER)) {
     menuItems.push(scoutCenterManager);
   }
-  if (user.hasRequiredPermission(["ROLE_GROUP_SCOUTER"])) {
+  if (user.hasRequiredPermission(UserRole.GROUP_SCOUTER)) {
     menuItems.push(groupScoutList, invoiceList);
   }
-  if (user.hasRequiredPermission(["ROLE_TRANSACTION"])) {
+  if (user.hasRequiredPermission(UserRole.TRANSACTION)) {
     menuItems.push(/*transactions, */donations);
   }
-  if (user.hasRequiredPermission(["ROLE_FORM"])) {
+  if (user.hasRequiredPermission(UserRole.FORM)) {
     menuItems.push(inscriptions, volunteers, senior);
   }
-  if (user.hasRequiredPermission(["ROLE_ADMIN"])) {
+  if (user.hasRequiredPermission(UserRole.ADMIN)) {
     menuItems.push(userList, scoutList, settings);
   }
 
@@ -70,7 +71,5 @@ function filter(menuItems: any[]) {
 }
 
 function userIsScoutMember(user: LoggedUserDataService): boolean {
-  return user.hasRequiredPermission(["ROLE_USER"]) ||
-    user.hasRequiredPermission(["ROLE_SCOUTER"]) ||
-    user.hasRequiredPermission(["ROLE_GROUP_SCOUTER"]);
+  return user.hasRequiredPermission(UserRole.USER, UserRole.SCOUTER, UserRole.GROUP_SCOUTER);
 }

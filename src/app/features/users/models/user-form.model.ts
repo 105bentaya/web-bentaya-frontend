@@ -1,9 +1,11 @@
+import {UserRole} from "./role.model";
+
 export interface UserForm {
   id?: number;
   username: string;
   password: string;
   enabled: boolean;
-  roles: string[];
+  roles: UserRole[];
   scoutIds?: number[];
   groupId?: number;
 }

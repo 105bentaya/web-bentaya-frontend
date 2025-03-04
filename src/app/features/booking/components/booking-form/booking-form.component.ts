@@ -32,6 +32,7 @@ import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-
 import {
   GeneralAButtonComponent
 } from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
+import {UserRole} from "../../../users/models/role.model";
 
 @Component({
   selector: 'app-booking-form',
@@ -86,7 +87,7 @@ export class BookingFormComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.currentUser = this.loggedUserData.getUsername();
     }
-    if (this.loggedUserData.hasRequiredPermission(["ROLE_SCOUT_CENTER_REQUESTER"])) {
+    if (this.loggedUserData.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) {
       this.bookingService.getLatestByCurrentUser().subscribe({
         next: res => this.initializeForm(res),
         error: () => this.initializeForm()

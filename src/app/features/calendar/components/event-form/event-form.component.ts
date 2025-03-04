@@ -34,6 +34,7 @@ import {
 } from "../../../../shared/components/radio-button-container/radio-button-container.component";
 import {RadioButton} from "primeng/radiobutton";
 import {Panel} from "primeng/panel";
+import {UserRole} from "../../../users/models/role.model";
 
 @Component({
   selector: 'app-event-form',
@@ -78,10 +79,10 @@ export class EventFormComponent implements OnInit {
   constructor() {
     this.groups = [];
     const groupId = this.loggedUserData.getGroupId();
-    if (this.loggedUserData.hasRequiredPermission(["ROLE_SCOUTER"])) {
+    if (this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER)) {
       if (groupId) this.groups.push(groups[groupId]);
       this.groups = this.groups.concat(getGeneralGroups());
-    } else if (this.loggedUserData.hasRequiredPermission(["ROLE_GROUP_SCOUTER"])) {
+    } else if (this.loggedUserData.hasRequiredPermission(UserRole.GROUP_SCOUTER)) {
       this.groups = getGeneralGroups();
     }
   }

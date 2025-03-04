@@ -10,6 +10,7 @@ import {noAuthGuard} from "./core/auth/guards/no-auth.guard";
 import {HistoriaComponent} from "./web-pages/historia/historia.component";
 import {MisionVisionValoresComponent} from "./web-pages/mision-vision-valores/mision-vision-valores.component";
 import {ReconocimientosComponent} from "./web-pages/reconocimientos/reconocimientos.component";
+import {UserRole} from "./features/users/models/role.model";
 
 export const routes: Routes = [
   {
@@ -25,7 +26,7 @@ export const routes: Routes = [
     path: "calendario",
     loadComponent: () => import('./features/calendar/components/calendar/calendar.component').then(c => c.CalendarComponent),
     canActivate: [authGuard],
-    data: {roles: ['ROLE_SCOUTER', 'ROLE_GROUP_SCOUTER', 'ROLE_USER']}
+    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER, UserRole.USER]}
   },
   {
     path: "login",
@@ -36,7 +37,7 @@ export const routes: Routes = [
     path: "unauthorized",
     loadComponent: () => import('./core/auth/unauthorized/unauthorized.component').then(c => c.UnauthorizedComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_EDITOR"]}
+    data: {roles: [UserRole.EDITOR]}
   },
   //todo: merge with change-password
   {
@@ -49,89 +50,89 @@ export const routes: Routes = [
     path: "ajustes",
     loadComponent: () => import('./features/settings/settings.component').then(c => c.SettingsComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_ADMIN"]}
+    data: {roles: [UserRole.ADMIN]}
   },
   {
     path: "usuarios",
     loadComponent: () => import('./features/users/components/user-list/user-list.component').then(c => c.UserListComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_ADMIN"]}
+    data: {roles: [UserRole.ADMIN]}
   },
   {
     path: "usuarios/:userId",
     loadComponent: () => import('./features/users/components/user-form/user-form.component').then(c => c.UserFormComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_ADMIN"]}
+    data: {roles: [UserRole.ADMIN]}
   },
   {
     path: "usuarios/new",
     loadComponent: () => import('./features/users/components/user-form/user-form.component').then(c => c.UserFormComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_ADMIN"]}
+    data: {roles: [UserRole.ADMIN]}
   },
   {
     path: "preinscripciones",
     loadComponent: () => import('./features/scout-forms/components/ser-scout-table/ser-scout-table.component').then(c => c.SerScoutTableComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_FORM"]}
+    data: {roles: [UserRole.FORM]}
   },
   {
     path: "voluntariado",
     loadComponent: () => import('./features/scouter-forms/components/ser-scouter-table/ser-scouter-table.component').then(c => c.SerScouterTableComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_FORM"]}
+    data: {roles: [UserRole.FORM]}
   },
   {
     path: "educandas",
     loadComponent: () => import('./features/scouts/components/scout-list/scout-list.component').then(c => c.ScoutListComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_ADMIN"]}
+    data: {roles: [UserRole.ADMIN]}
   },
   //Unidad
   {
     path: "unidad/educandas",
     loadComponent: () => import('./features/scouts/components/group-scout-list/group-scout-list.component').then(c => c.GroupScoutListComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]}
+    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
   },
   {
     path: "unidad/asistencias",
     loadComponent: () => import('./features/attendance/components/scouter-attendance-list/scouter-attendance-list.component').then(c => c.ScouterAttendanceListComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_SCOUTER"]}
+    data: {roles: [UserRole.SCOUTER]}
   },
   {
     path: "unidad/preinscripciones",
     loadComponent: () => import('./features/scout-forms/components/group-ser-scout-table/group-ser-scout-table.component').then(c => c.GroupSerScoutTableComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_SCOUTER"]}
+    data: {roles: [UserRole.SCOUTER]}
   },
   //Usuario
   {
     path: "asistencias",
     loadComponent: () => import('./features/attendance/components/user-attendance-list/user-attendance-list.component').then(c => c.UserAttendanceListComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_USER"]}
+    data: {roles: [UserRole.USER]}
   },
   {
     path: "datos",
     loadComponent: () => import('./features/scouts/components/user-scout-info/user-scout-info.component').then(c => c.UserScoutInfoComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_USER"]}
+    data: {roles: [UserRole.USER]}
   },
   //Donaciones
   {
     path: "donaciones/lista",
     loadComponent: () => import('./features/donations/components/donation-list/donation-list.component').then(c => c.DonationListComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_TRANSACTION"]}
+    data: {roles: [UserRole.TRANSACTION]}
   },
   //Facturas
   {
     path: "facturas",
     loadComponent: () => import('./features/invoice/components/invoice-list/invoice-list.component').then(c => c.InvoiceListComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]}
+    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
   },
   //Links del home
   {
@@ -182,7 +183,7 @@ export const routes: Routes = [
     path: "seccion-senior/lista",
     loadComponent: () => import('./features/senior-section/components/senior-form-list/senior-form-list.component').then(c => c.SeniorFormListComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_FORM"]}
+    data: {roles: [UserRole.FORM]}
   },
   //Asociación Bentaya
   {
@@ -260,19 +261,19 @@ const Booking: Route[] = [
     path: "seguimiento",
     loadComponent: () => import('./features/booking/components/booking-follow-up/booking-follow-up.component').then(c => c.BookingFollowUpComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_SCOUT_CENTER_REQUESTER"]}
+    data: {roles: [UserRole.SCOUT_CENTER_REQUESTER]}
   },
   {
     path: "gestion",
     loadComponent: () => import('./features/booking/components/booking-management/booking-management.component').then(c => c.BookingManagementComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_SCOUT_CENTER_MANAGER"]}
+    data: {roles: [UserRole.SCOUT_CENTER_MANAGER]}
   },
   {
     path: "gestion/:bookingId",
     loadComponent: () => import('./features/booking/components/booking-detail-control/booking-detail-control.component').then(c => c.BookingDetailControlComponent),
     canActivate: [authGuard],
-    data: {roles: ["ROLE_SCOUT_CENTER_MANAGER"]}
+    data: {roles: [UserRole.SCOUT_CENTER_MANAGER]}
   }
 ];
 

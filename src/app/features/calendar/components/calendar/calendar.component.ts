@@ -28,6 +28,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ToggleButton} from "primeng/togglebutton";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {ProgressSpinner} from "primeng/progressspinner";
+import {UserRole} from "../../../users/models/role.model";
 
 @Component({
   selector: 'app-calendar',
@@ -113,7 +114,7 @@ export class CalendarComponent implements OnInit {
 
     this.calendarDate = new Date();
     this.viewOptions = [{value: 'dayGridMonth', icon: 'pi pi-calendar'}, {value: 'customList', icon: 'pi pi-list'}];
-    this.isScouter = this.loggedUserData.hasRequiredPermission(["ROLE_SCOUTER", "ROLE_GROUP_SCOUTER"]);
+    this.isScouter = this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER, UserRole.GROUP_SCOUTER);
 
     this.eventStatusService.deletedEvent
       .pipe(takeUntilDestroyed())

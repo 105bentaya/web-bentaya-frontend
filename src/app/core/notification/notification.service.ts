@@ -3,6 +3,7 @@ import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {LoggedUserDataService} from "../auth/services/logged-user-data.service";
+import {UserRole} from "../../features/users/models/role.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class NotificationService {
   }
 
   public checkIfHasNotifications() {
-    if (this.loggedUserData.hasRequiredPermission(["ROLE_USER"])) {
+    if (this.loggedUserData.hasRequiredPermission(UserRole.USER)) {
       this.getNotificationInfo().subscribe(result => this.hasNotificationsSubject.next(result));
     }
   }

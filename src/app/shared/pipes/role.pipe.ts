@@ -1,5 +1,6 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {GroupPipe} from "./group.pipe";
+import {UserRole} from "../../features/users/models/role.model";
 
 @Pipe({
   name: 'role',
@@ -7,27 +8,27 @@ import {GroupPipe} from "./group.pipe";
 })
 export class RolePipe implements PipeTransform {
 
-  transform(role: string, userGroup?: number): string {
+  transform(role: UserRole, userGroup?: number): string {
     switch (role) {
-      case "ROLE_USER":
+      case UserRole.USER:
         return "USUARIO";
-      case "ROLE_SCOUTER": {
+      case UserRole.SCOUTER: {
         const userGroupName = userGroup ? ` ${new GroupPipe().transform(userGroup).toUpperCase()}` : '';
         return "SCOUTER" + userGroupName;
       }
-      case "ROLE_GROUP_SCOUTER":
+      case UserRole.GROUP_SCOUTER:
         return "SCOUTER DE GRUPO";
-      case "ROLE_EDITOR":
+      case UserRole.EDITOR:
         return "EDITOR";
-      case "ROLE_ADMIN":
+      case UserRole.ADMIN:
         return "ADMINISTRADOR";
-      case "ROLE_TRANSACTION":
+      case UserRole.TRANSACTION:
         return "TRANSACCIONES";
-      case "ROLE_FORM":
+      case UserRole.FORM:
         return "PREINSCRIPCIONES";
-      case "ROLE_SCOUT_CENTER_REQUESTER":
+      case UserRole.SCOUT_CENTER_REQUESTER:
         return "SOLICITANTE CENTRO SCOUTS";
-      case "ROLE_SCOUT_CENTER_MANAGER":
+      case UserRole.SCOUT_CENTER_MANAGER:
         return "GESTOR CENTROS SCOUT";
       default:
         return role;

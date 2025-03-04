@@ -4,6 +4,7 @@ import {identity, pickBy} from "lodash";
 import {noop} from "rxjs";
 import {AuthService} from "./auth.service";
 import {LoggedUserDataService} from "./logged-user-data.service";
+import {UserRole} from "../../../features/users/models/role.model";
 
 @Injectable({
   providedIn: 'root'
@@ -44,13 +45,13 @@ export class UserRoutesService {
 
   getUserHome() {
     if (this.authService.isLoggedIn()) {
-      if (this.userDataService.hasRequiredPermission(['ROLE_SCOUTER', 'ROLE_GROUP_SCOUTER', 'ROLE_USER'])) return "/calendario";
-      if (this.userDataService.hasRequiredPermission(['ROLE_SCOUT_CENTER_REQUESTER'])) return "/centros-scout/seguimiento";
-      if (this.userDataService.hasRequiredPermission(['ROLE_EDITOR'])) return "/unauthorized";
-      if (this.userDataService.hasRequiredPermission(['ROLE_SCOUT_CENTER_MANAGER'])) return "/centros-scout/gestion";
-      if (this.userDataService.hasRequiredPermission(['ROLE_FORM'])) return "/preinscripciones";
-      if (this.userDataService.hasRequiredPermission(['ROLE_TRANSACTION'])) return "/donaciones/lista";
-      if (this.userDataService.hasRequiredPermission(['ROLE_ADMIN'])) return "/usuarios";
+      if (this.userDataService.hasRequiredPermission(UserRole.SCOUTER, UserRole.GROUP_SCOUTER, UserRole.USER)) return "/calendario";
+      if (this.userDataService.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) return "/centros-scout/seguimiento";
+      if (this.userDataService.hasRequiredPermission(UserRole.EDITOR)) return "/unauthorized";
+      if (this.userDataService.hasRequiredPermission(UserRole.SCOUT_CENTER_MANAGER)) return "/centros-scout/gestion";
+      if (this.userDataService.hasRequiredPermission(UserRole.FORM)) return "/preinscripciones";
+      if (this.userDataService.hasRequiredPermission(UserRole.TRANSACTION)) return "/donaciones/lista";
+      if (this.userDataService.hasRequiredPermission(UserRole.ADMIN)) return "/usuarios";
     }
     return "inicio";
   }
