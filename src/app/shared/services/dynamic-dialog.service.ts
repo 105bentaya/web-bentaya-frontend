@@ -27,7 +27,8 @@ export class DynamicDialogService {
       maskStyleClass: "block-scroll",
       width: this.widths[width],
       focusOnShow: false,
-      modal: true
+      modal: true,
+      styleClass: "custom-scrollbar"
     });
   }
 }

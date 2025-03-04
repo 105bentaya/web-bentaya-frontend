@@ -3,6 +3,7 @@
 @import "./primeng";
 @import "./z-index";
 @import "./invalid-dirty";
+@import "./mixins";
 
 $row-padding: 0.35rem;
 
@@ -320,4 +321,8 @@ h1, h2, h3 {
     color: white;
     border-radius: 10px;
   }
+}
+
+.custom-scrollbar .p-dialog-content {
+  @include custom-scrollbar(#f0f0f0, #cdcdcd)
 }
