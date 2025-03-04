@@ -14,6 +14,7 @@
   <div [ngClass]="{'expanded': expanded}" class="sidebar animated">
     <p-button
       class="p-button-icon-only expand-button"
+      styleClass="z-1"
       rounded
       [icon]="expanded ? 'pi pi-chevron-left' : 'pi pi-chevron-right'"
       (onClick)="resizeMenu()"
@@ -58,7 +59,7 @@
         @for (item of bottomItems; track $index) {
           <a
             class="p-button p-button-text w-fit"
-            (click)="item.command()"
+            (click)="item?.command()"
             [routerLink]="item?.routerLink"
             [pTooltip]="expanded ? '' : item.label"
             showDelay="150"

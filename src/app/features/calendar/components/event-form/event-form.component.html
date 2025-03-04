@@ -136,7 +136,7 @@
           }
           @if (formHelper.controlValue('activateAttendanceList')) {
             <div class="col-12 mt-2">
-              <p-panel header="Ajustes de asistencia" class="attendance-panel w-100">
+              <p-panel header="Ajustes de asistencia" class="attendance-panel w-100" toggleable>
                 <div class="d-flex flex-column gap-2">
                   <app-checkbox-container label="Activar asistencia">
                     <p-checkbox [binary]="true" formControlName="activateAttendanceList"></p-checkbox>

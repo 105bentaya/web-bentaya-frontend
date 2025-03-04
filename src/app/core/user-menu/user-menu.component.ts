@@ -47,6 +47,11 @@ export class UserMenuComponent implements OnInit {
   protected items: any[] = [];
   protected bottomItems = [
     {
+      label: "Volver al Inicio",
+      icon: "pi pi-home",
+      routerLink: '/inicio'
+    },
+    {
       label: "Cambiar Contraseña",
       icon: "pi pi-unlock",
       command: () => this.changePassword()
