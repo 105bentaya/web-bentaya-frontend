@@ -35,5 +35,5 @@ export interface InvoiceGrant {
 export interface InvoicePayer {
   id: number;
   payer: string;
-  groupId: number;
+  group: number;
 }

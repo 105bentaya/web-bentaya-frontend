@@ -6,11 +6,10 @@ import {ScoutFormComponent} from "../scout-form/scout-form.component";
 import {ConfirmationService, FilterService} from "primeng/api";
 import {noop} from "rxjs";
 import {AlertService} from "../../../../shared/services/alert-service.service";
-import {unitGroups} from "../../../../shared/model/group.model";
+import {BasicGroupInfo} from "../../../../shared/model/group.model";
 import {ExcelService} from "../../../../shared/services/excel.service";
 import ScoutHelper from "../../scout.util";
 import FilterUtils from "../../../../shared/util/filter-utils";
-import {GroupPipe} from '../../../../shared/pipes/group.pipe';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {InputTextModule} from 'primeng/inputtext';
 import {TableModule} from 'primeng/table';
@@ -19,6 +18,7 @@ import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {GroupService} from "../../../../shared/services/group.service";
 
 @Component({
   selector: 'app-scout-list',
@@ -29,7 +29,6 @@ import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.s
     TableModule,
     InputTextModule,
     MultiSelectModule,
-    GroupPipe,
     Button,
     TableIconButtonComponent
   ]
@@ -42,14 +41,16 @@ export class ScoutListComponent implements OnInit {
   private readonly filterService = inject(FilterService);
   private readonly alertService = inject(AlertService);
   private readonly excelService = inject(ExcelService);
+  protected readonly groupService = inject(GroupService);
 
   protected scouts!: Scout[];
   protected loading = false;
   private ref!: DynamicDialogRef;
-  protected readonly groups = unitGroups;
+  protected groups!: BasicGroupInfo[];
   protected excelLoading = false;
 
   ngOnInit() {
+    this.groupService.getAllUppercase().subscribe(groups => this.groups = groups);
     this.getScouts();
   }
 

@@ -1,6 +1,9 @@
+import {BasicGroupForm, BasicGroupInfo} from "../../../shared/model/group.model";
+
 export interface PreScoutAssignation {
   preScoutId: number;
   status: number;
   comment?: string;
-  groupId: number;
+  group: BasicGroupInfo | BasicGroupForm;
+  assignationDate?: Date;
 }

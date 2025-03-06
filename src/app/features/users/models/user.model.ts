@@ -8,5 +8,5 @@ export interface User {
   enabled: boolean;
   roles: Role[];
   scoutList?: Scout[];
-  groupId?: number;
+  groupName?: string;
 }

@@ -185,7 +185,7 @@ export class SerScoutTableComponent implements OnInit {
   }
 
   private saveOrUpdate(preScoutAssignation: PreScoutAssignation, preScout: PreScout) {
-    if (preScout.assignationDate) {
+    if (preScout.assignation?.assignationDate) {
       return this.preScoutService.updatePreScoutAssignation(preScoutAssignation);
     } else {
       return this.preScoutService.savePreScoutAssignation(preScoutAssignation);

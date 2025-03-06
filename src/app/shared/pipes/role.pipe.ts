@@ -1,5 +1,4 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {GroupPipe} from "./group.pipe";
 import {UserRole} from "../../features/users/models/role.model";
 
 @Pipe({
@@ -8,12 +7,12 @@ import {UserRole} from "../../features/users/models/role.model";
 })
 export class RolePipe implements PipeTransform {
 
-  transform(role: UserRole, userGroup?: number): string {
+  transform(role: UserRole, userGroup?: string): string {
     switch (role) {
       case UserRole.USER:
         return "USUARIO";
       case UserRole.SCOUTER: {
-        const userGroupName = userGroup ? ` ${new GroupPipe().transform(userGroup).toUpperCase()}` : '';
+        const userGroupName = userGroup ? ` ${userGroup.toUpperCase()}` : '';
         return "SCOUTER" + userGroupName;
       }
       case UserRole.GROUP_SCOUTER:

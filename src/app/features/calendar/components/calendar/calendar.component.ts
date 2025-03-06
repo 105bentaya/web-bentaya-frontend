@@ -8,7 +8,7 @@ import {EventFormComponent} from "../event-form/event-form.component";
 import {EventService} from "../../services/event.service";
 import {EventInfoComponent} from "../event-info/event-info.component";
 import {FullCalendarComponent, FullCalendarModule} from "@fullcalendar/angular";
-import {BasicEvent} from "../../models/basic-event.model";
+import {CalendarEvent} from "../../models/calendar-event.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventStatusService} from "../../services/event-status.service";
 import {delay, skip} from "rxjs";
@@ -61,7 +61,7 @@ export class CalendarComponent implements OnInit {
   private readonly userMenuService = inject(UserMenuService);
 
   protected options: CalendarOptions;
-  protected events!: BasicEvent[];
+  protected events!: CalendarEvent[];
   protected calendarDate: Date;
   protected calendarView: boolean = true;
   protected viewOptions: any[];
@@ -89,7 +89,7 @@ export class CalendarComponent implements OnInit {
             start: new Date(),
             end: '2099-01-01'
           },
-          noEventsText: 'No se han encontrado futuras actividades para las unidades especificadas',
+          noEventsText: 'No se han encontrado futuras actividades',
           allDayText: 'Todo el día',
           listDayFormat: {
             month: 'long',
@@ -138,25 +138,16 @@ export class CalendarComponent implements OnInit {
 
   private buildFilter() {
     const filter = new Set<number>;
-    filter.add(0);
-
-    if (this.isScouter) {
-      filter.add(8);
-    }
-
-    const loggedUserGroupId = this.loggedUserData.getGroupId();
+    const loggedUserGroupId = this.loggedUserData.getGroup()?.id;
     if (loggedUserGroupId) filter.add(loggedUserGroupId);
     this.loggedUserData.getScoutGroupIds().forEach(groupId => filter.add(groupId));
-
     return [...filter];
   }
 
   private getAllEvents() {
     this.eventService.getAll().subscribe({
       next: (events) => {
-        this.events = events.sort((e1, e2) => {
-          return e1.groupId - e2.groupId;
-        });
+        this.events = events;
         this.pushEventsToCalendar();
         this.checkQueryParams();
       }, error: () => this.loading = false
@@ -165,38 +156,37 @@ export class CalendarComponent implements OnInit {
 
   protected pushEventsToCalendar(showAll = false) {
     this.loading = true;
-    this.options.events = this.events
-      .filter(e => showAll || this.userGroups.includes(e.groupId))
-      .map(basicEvent => (this.generateEventObject(basicEvent)));
+    const events = showAll ? this.events : this.events.filter(e => e.forEveryone || this.userGroups.includes(e.groupId!));
+    this.options.events = events.map(basicEvent => (this.generateEventObject(basicEvent)));
     this.loading = false;
   }
 
-  private generateEventObject(basicEvent: BasicEvent) {
+  private generateEventObject(event: CalendarEvent) {
     const eventClasses = [];
-    if (basicEvent.unknownTime) {
+    if (event.unknownTime) {
       eventClasses.push("unknown-time");
     }
-    if (basicEvent.groupId == 2 || basicEvent.groupId == 3) {
+    if (event.groupId == 2 || event.groupId == 3) {
       eventClasses.push("event-text-dark");
     }
     return {
-      id: basicEvent.id.toString(),
-      title: basicEvent.title,
-      start: this.getEventDate(basicEvent.startDate, basicEvent),
-      end: this.getEventDate(basicEvent.endDate, basicEvent),
-      color: this.getEventColor(basicEvent.groupId),
-      extendedProps: basicEvent,
+      id: event.id.toString(),
+      title: event.title + (event.forScouters ? ' (scouters)' : ''),
+      start: this.getEventDate(event.startDate, event),
+      end: this.getEventDate(event.endDate, event),
+      color: this.getEventColor(event.groupId),
+      extendedProps: event,
       className: eventClasses.join(" ")
     };
   }
 
-  protected getEventDate(date: Date, event: BasicEvent) {
+  protected getEventDate(date: Date, event: CalendarEvent) {
     return event.unknownTime ?
       DateUtils.shiftDateToUTC(date) :
       new Date(date);
   }
 
-  private getEventColor(groupId: number) {
+  private getEventColor(groupId: number | undefined) {
     switch (groupId) {
       case 1:
         return "#52d8fb";
@@ -212,8 +202,6 @@ export class CalendarComponent implements OnInit {
         return "#8a4c39";
       case 7:
         return "#e62a2d";
-      case 8:
-        return "#c279e8";
     }
     return "#622599";
   }
@@ -260,14 +248,14 @@ export class CalendarComponent implements OnInit {
   }
 
   private onEventAdd(event: EventInfo) {
-    this.events.push(event);
+    this.events.push({...event, groupId: event.group?.id});
     this.pushEventsToCalendar();
     this.openInfoDialog(event.id);
   }
 
   private onEventUpdate(updatedEvent: EventInfo) {
     this.events.splice(this.events.findIndex(event => event.id === updatedEvent.id), 1);
-    this.events.push(updatedEvent);
+    this.events.push({...updatedEvent, groupId: updatedEvent.group?.id});
     this.pushEventsToCalendar();
   }
 

@@ -4,7 +4,7 @@ import {BehaviorSubject, map, Observable, switchMap} from 'rxjs';
 import {Credentials} from '../credentials.model';
 import {environment} from "../../../../environments/environment";
 import {LoggedUserDataService} from "./logged-user-data.service";
-import {UserProfile} from "../user-profile.model";
+import {UserProfile} from "../../../features/users/models/user-profile.model";
 import {UserDataStorageHelper} from "./user-data-storage.helper";
 
 @Injectable({

@@ -1,7 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Scout} from "../../models/scout.model";
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
-import {GroupPipe} from '../../../../shared/pipes/group.pipe';
 import {DatePipe} from "@angular/common";
 import {TabsModule} from "primeng/tabs";
 
@@ -11,7 +10,6 @@ import {TabsModule} from "primeng/tabs";
   styleUrls: ['./scout-info.component.scss'],
   imports: [
     TabsModule,
-    GroupPipe,
     DatePipe
   ]
 })

@@ -1,3 +1,5 @@
+import {PreScoutAssignation} from "./pre-scout-assignation.model";
+
 export interface PreScout {
   id?: number;
   name: string;
@@ -19,10 +21,7 @@ export interface PreScout {
   priorityInfo?: string;
   creationDate?: Date;
   age?: string;
-  status?: number
-  groupId?: number
-  assignationComment?: string;
-  assignationDate?: Date;
+  assignation?: PreScoutAssignation;
   size?: string;
   inscriptionYear?: number;
 }

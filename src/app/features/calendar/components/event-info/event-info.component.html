@@ -50,7 +50,14 @@
     <span class="fw-bold">Unidad</span>
     <ul>
       <li>
-        {{ event.groupId | group }}
+        @if (event.forEveryone) {
+          Grupo
+        } @else {
+          {{ event.group?.name }}
+        }
+        @if (event.forScouters) {
+          (sólo scouters)
+        }
       </li>
     </ul>
   </div>

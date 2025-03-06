@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {UserDataStorageHelper} from "./user-data-storage.helper";
-import {UserProfile, UserScout} from "../user-profile.model";
+import {UserProfile, UserScout} from "../../../features/users/models/user-profile.model";
 import {find, uniq} from "lodash";
 import {UserRole} from "../../../features/users/models/role.model";
+import {BasicGroupInfo} from "../../../shared/model/group.model";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class LoggedUserDataService {
     );
   }
 
-  getGroupId(): number {
-    return this.userProfile.groupId;
+  getGroup(): BasicGroupInfo | undefined {
+    return this.userProfile.group;
   }
 
   getUsername(): string {
@@ -29,7 +30,7 @@ export class LoggedUserDataService {
   }
 
   getScoutGroupIds() {
-    return uniq(this.userProfile.scoutList.map(scout => scout.groupId));
+    return uniq(this.userProfile.scoutList.map(scout => scout.group.id));
   }
 
   getScouts(): UserScout[] {

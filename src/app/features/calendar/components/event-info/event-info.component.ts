@@ -7,15 +7,13 @@ import {ConfirmationService} from "../../../attendance/services/confirmation.ser
 import {EventFormComponent} from "../event-form/event-form.component";
 import {noop, Subscription} from "rxjs";
 import {EventStatusService} from "../../services/event-status.service";
-import {isNoAttendanceGroup} from "../../../../shared/model/group.model";
-import {GroupPipe} from '../../../../shared/pipes/group.pipe';
 import {SkeletonModule} from 'primeng/skeleton';
 import {Button} from 'primeng/button';
 import {DatePipe, NgTemplateOutlet} from '@angular/common';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
-import {UserScout} from "../../../../core/auth/user-profile.model";
+import {UserScout} from "../../../users/models/user-profile.model";
 import {RouterLink} from "@angular/router";
 import {TooltipModule} from "primeng/tooltip";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
@@ -28,7 +26,6 @@ import {UserRole} from "../../../users/models/role.model";
   styleUrls: ['./event-info.component.scss'],
   imports: [
     DatePipe,
-    GroupPipe,
     SkeletonModule,
     BasicLoadingInfoComponent,
     TooltipModule,
@@ -80,14 +77,13 @@ export class EventInfoComponent implements OnInit, OnDestroy {
   }
 
   private scouterCanEditEvent(event: EventInfo) {
-    return this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER) &&
-      (
-        event.groupId == this.loggedUserData.getGroupId() ||
-        isNoAttendanceGroup(event.groupId)
-      );
+    const userIsScouter = this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER);
+    const userIsGroupScouter = this.loggedUserData.hasRequiredPermission(UserRole.GROUP_SCOUTER);
+    return userIsScouter && (event.forEveryone || event.group?.id === this.loggedUserData.getGroup()?.id ) ||
+      userIsGroupScouter && event.forEveryone;
   }
 
-  getEventDate(date: Date, unknownTime: boolean) {
+  private getEventDate(date: Date, unknownTime: boolean) {
     return unknownTime ?
       DateUtils.shiftDateToUTC(date) :
       new Date(date);
@@ -98,7 +94,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
 
     if (userHasUserRole && data.hasAttendance) {
       this.userScoutsInEvent = this.loggedUserData.getScouts()
-        .filter(scout => scout.groupId == data.groupId)
+        .filter(scout => scout.group.id === data.group?.id)
         .sort((a, b) => a.name.localeCompare(b.name));
 
       this.confirmationService.getEventBasicAttendanceInfo(data.id).subscribe(data =>

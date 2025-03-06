@@ -95,7 +95,7 @@
           {{ scout.surname }}, {{ scout.name }}
         </td>
         <td>
-          {{ showAll ? (scout.groupId | group) : (currentYear - +(scout.birthday | date: "y")! | scoutYear:userGroup) }}
+          {{ showAll ? (scout.group.name) : (currentYear - +(scout.birthday | date: "y")! | scoutYear:userGroup?.id) }}
         </td>
         <td class="hide-900">
           <span>
@@ -149,7 +149,7 @@
   </p>
   <ul>
     @for (scout of noImageScouts; track $index) {
-      <li>{{ scout.name }} {{ scout.surname }} ({{ scout.groupId | group }})</li>
+      <li>{{ scout.name }} {{ scout.surname }} ({{ scout.group.name }})</li>
     }
   </ul>
 </p-dialog>

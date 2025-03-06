@@ -1,6 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {getGeneralGroups, groups, isNoAttendanceGroup} from "../../../../shared/model/group.model";
 import {
   AbstractControl,
   FormsModule,
@@ -11,7 +10,7 @@ import {
 } from "@angular/forms";
 import {EventService} from "../../services/event.service";
 import {AlertService} from "../../../../shared/services/alert-service.service";
-import {FormEvent} from "../../models/form-event.model";
+import {EventForm} from "../../models/event-form.model";
 import {ConfirmationService} from "primeng/api";
 import {EventStatusService} from "../../services/event-status.service";
 import {InputNumberModule} from 'primeng/inputnumber';
@@ -34,7 +33,6 @@ import {
 } from "../../../../shared/components/radio-button-container/radio-button-container.component";
 import {RadioButton} from "primeng/radiobutton";
 import {Panel} from "primeng/panel";
-import {UserRole} from "../../../users/models/role.model";
 
 @Component({
   selector: 'app-event-form',
@@ -68,7 +66,7 @@ export class EventFormComponent implements OnInit {
   private readonly loggedUserData = inject(LoggedUserDataService);
   private readonly eventStatusService = inject(EventStatusService);
 
-  protected existingEvent!: FormEvent;
+  protected existingEvent!: EventForm;
   protected formHelper = new FormHelper();
   protected groups: { name: string, id: number }[];
   protected defaultStartDate!: Date;
@@ -77,14 +75,9 @@ export class EventFormComponent implements OnInit {
   protected deleteLoading = false;
 
   constructor() {
-    this.groups = [];
-    const groupId = this.loggedUserData.getGroupId();
-    if (this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER)) {
-      if (groupId) this.groups.push(groups[groupId]);
-      this.groups = this.groups.concat(getGeneralGroups());
-    } else if (this.loggedUserData.hasRequiredPermission(UserRole.GROUP_SCOUTER)) {
-      this.groups = getGeneralGroups();
-    }
+    this.groups = [{id: 0, name: "GRUPO"}];
+    const scouterGroup = this.loggedUserData.getGroup();
+    if (scouterGroup) this.groups = [{id: scouterGroup.id, name: scouterGroup.name.toUpperCase()}].concat(this.groups);
   }
 
   ngOnInit(): void {
@@ -104,7 +97,7 @@ export class EventFormComponent implements OnInit {
     }
   }
 
-  private initForm(event?: FormEvent) {
+  private initForm(event?: EventForm) {
     const addCoordinates = !!event?.longitude && !!event?.latitude;
     this.formHelper.createForm({
       title: [event?.title, Validators.required],
@@ -112,7 +105,8 @@ export class EventFormComponent implements OnInit {
       location: [event?.location],
       latitude: [event?.latitude],
       longitude: [event?.longitude],
-      groupId: [event?.groupId, Validators.required],
+      groupId: [this.getGroupId(event), Validators.required],
+      forScouters: [event?.forScouters ?? false, Validators.required],
       startDate: [event ? this.getEventStartDate(event) : null, Validators.required],
       endDate: [event ? this.getEventEndDate(event) : null, Validators.required],
       addCoordinates: [addCoordinates ?? false],
@@ -122,23 +116,29 @@ export class EventFormComponent implements OnInit {
       closeDateTime: [event?.closeDateTime ? new Date(event.closeDateTime) : null],
       activateAttendancePayment: [event?.activateAttendancePayment ?? false],
     }, {
-      validators: [this.datesValidator, this.locationValidator]
+      validators: [this.datesValidator, this.locationValidator, this.eventIsClosedValidator]
     });
   }
 
-  private getAttendanceMode(event?: FormEvent) {
+  private getGroupId(event?: EventForm) {
+    if (!event) return null;
+    if (event.groupId) return event.groupId;
+    return 0;
+  }
+
+  private getAttendanceMode(event?: EventForm) {
     if (event?.closeAttendanceList === true) return "now";
     if (event?.closeDateTime) return "date";
     return "end";
   }
 
-  private getEventStartDate(event: FormEvent) {
+  private getEventStartDate(event: EventForm) {
     return event.unknownTime ?
       DateUtils.shiftDateToUTC(event.startDate) :
       new Date(event.startDate);
   }
 
-  private getEventEndDate(event: FormEvent) {
+  private getEventEndDate(event: EventForm) {
     return event.unknownTime ?
       DateUtils.shiftDateToUTC(event.endDate) :
       new Date(event.endDate);
@@ -146,30 +146,33 @@ export class EventFormComponent implements OnInit {
 
   protected onSubmit() {
     this.formHelper.validateAll();
-    const event: FormEvent = {...this.formHelper.value};
+    const event: EventForm = {...this.formHelper.value};
     if (this.formHelper.valid) {
+      event.forEveryone = event.groupId == 0;
+      if (event.forEveryone) event.groupId = undefined;
+
       if (event.unknownTime) {
         event.localStartDate = DateUtils.toLocalDate(event.startDate);
         event.localEndDate = DateUtils.toLocalDate(event.endDate);
       }
-      if (isNoAttendanceGroup(event.groupId)) {
+
+      if (!event.activateAttendanceList || event.forScouters || event.forEveryone) {
         event.activateAttendanceList = false;
+        event.closeAttendanceList = false;
         event.closeDateTime = undefined;
       }
+
       if (event.activateAttendanceList) {
         const selectedMode = this.formHelper.controlValue("closeAttendanceMode");
         event.closeAttendanceList = selectedMode === "now";
         if (selectedMode !== "date") event.closeDateTime = undefined;
-      } else {
-        event.closeAttendanceList = false;
-        event.closeDateTime = undefined;
       }
 
       this.checkForInfoMessages(event);
     }
   }
 
-  private saveOrUpdate(event: FormEvent) {
+  private saveOrUpdate(event: EventForm) {
     if (this.existingEvent) {
       event.id = this.existingEvent.id;
       this.update(event);
@@ -199,7 +202,16 @@ export class EventFormComponent implements OnInit {
     return null;
   };
 
-  private checkForInfoMessages(event: FormEvent) {
+  private readonly eventIsClosedValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const attendanceIsActive = control.get('activateAttendanceList')?.value === true && control.get('groupId')?.value !== 0 && control.get('forScouters')?.value === false;
+    if (attendanceIsActive && control.get('closeAttendanceMode')?.value === 'date') {
+      const closeDate = control.get('closeDateTime')?.value;
+      if (!closeDate) return {closeDateNeeded: true};
+    }
+    return null;
+  };
+
+  private checkForInfoMessages(event: EventForm) {
     let attendanceOffWarn = false;
     let paymentOffWarn = false;
     if (this.existingEvent) {
@@ -217,7 +229,7 @@ export class EventFormComponent implements OnInit {
         message += "Esta acción eliminará los pagos asociados a esta actividad. ";
       }
       if (eventClosedWarn) {
-        message += "La fecha de cierre de la asistencia es posterior a la fecha de fin de la actividad, por lo que los usuarios podrán seguir editando la asistencia tras el cierre de esta.";
+        message += "La fecha de cierre de la asistencia es posterior a la fecha de fin de la actividad, por lo que los usuarios podrán seguir editando la asistencia tras finalizar la actividad.";
       }
       this.confirmationService.confirm({
         message,
@@ -229,7 +241,7 @@ export class EventFormComponent implements OnInit {
     }
   }
 
-  private eventCloseEndDate(event: FormEvent) {
+  private eventCloseEndDate(event: EventForm) {
     if (event.closeDateTime) {
       if (this.existingEvent?.closeDateTime) {
         const oldTime = new Date(this.existingEvent.closeDateTime).toISOString();
@@ -242,7 +254,7 @@ export class EventFormComponent implements OnInit {
     return false;
   }
 
-  private save(event: FormEvent) {
+  private save(event: EventForm) {
     this.saveLoading = true;
     this.eventService.save(event).subscribe({
       next: result => {
@@ -254,7 +266,7 @@ export class EventFormComponent implements OnInit {
     });
   }
 
-  private update(event: FormEvent) {
+  private update(event: EventForm) {
     this.saveLoading = true;
     this.eventService.update(event).subscribe({
       next: result => {
@@ -267,8 +279,9 @@ export class EventFormComponent implements OnInit {
   }
 
   protected confirmDeletion() {
+    let message = `¿Desea eliminar esta actividad?${this.existingEvent.activateAttendanceList ? ' La lista de asistencia será eliminada. ' : ' '}Esta acción no se podrá deshacer.`;
     this.confirmationService.confirm({
-      message: '¿Desea eliminar esta actividad? Esta acción no se podrá deshacer.',
+      message: message,
       icon: 'pi pi-exclamation-triangle',
       accept: () => this.deleteEvent()
     });
@@ -288,7 +301,8 @@ export class EventFormComponent implements OnInit {
 
   protected showAttendanceCheckbox(): boolean {
     const groupId = this.formHelper.controlValue('groupId');
-    return groupId && !isNoAttendanceGroup(groupId);
+    const forScouters = this.formHelper.controlValue('forScouters');
+    return groupId && groupId !== 0 && !forScouters;
   }
 
   protected checkDate(date: "startDate" | "endDate") {

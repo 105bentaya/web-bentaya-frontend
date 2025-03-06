@@ -1,6 +1,10 @@
+import {BasicGroupInfo} from "../../../shared/model/group.model";
+
 export interface EventInfo {
   id: number;
-  groupId: number;
+  group?: BasicGroupInfo;
+  forScouters: boolean;
+  forEveryone: boolean
   title: string;
   description: string;
   location: string;

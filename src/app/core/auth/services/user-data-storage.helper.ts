@@ -1,4 +1,4 @@
-import {UserProfile} from "../user-profile.model";
+import {UserProfile} from "../../../features/users/models/user-profile.model";
 
 export class UserDataStorageHelper {
   static saveUserInformation(user: UserProfile) {

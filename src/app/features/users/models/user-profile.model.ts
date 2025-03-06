@@ -1,16 +1,17 @@
-import {UserRole} from "../../features/users/models/role.model";
+import {UserRole} from "./role.model";
+import {BasicGroupInfo} from "../../../shared/model/group.model";
 
 export interface UserProfile {
   id: number;
   username: string;
   roles: UserRole[];
-  groupId: number;
+  group?: BasicGroupInfo;
   scoutList: UserScout[];
 }
 
 export interface UserScout {
   id: number;
-  groupId: number;
+  group: BasicGroupInfo;
   name: string;
   surname: string;
 }

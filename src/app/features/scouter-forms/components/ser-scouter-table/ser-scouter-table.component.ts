@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {PreScouter} from "../../../scout-forms/models/pre-scouter.model";
+import {PreScouter} from "../../pre-scouter.model";
 import {ScouterFormsService} from "../../scouter-forms.service";
 import {ConfirmationService} from "primeng/api";
 import {TableModule} from 'primeng/table';

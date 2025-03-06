@@ -1,6 +1,8 @@
-export interface FormEvent {
+export interface EventForm {
   id?: number;
-  groupId: number;
+  groupId?: number;
+  forScouters: boolean;
+  forEveryone: boolean
   title: string;
   description: string;
   location: string;

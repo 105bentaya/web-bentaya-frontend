@@ -61,14 +61,14 @@ export class GroupSerScoutTableComponent implements OnInit {
     this.preScoutService.getAllByScouter().subscribe(preScouts => {
       this.allPreScouts = preScouts.sort((a, b) => this.preScouterSorter(a, b));
       this.filterService.register("name-surname-filter", FilterUtils.nameSurnameFilter(this.allPreScouts));
-      this.hasRejected = this.allPreScouts.some(preScout => statusIsRejected(preScout.status!));
+      this.hasRejected = this.allPreScouts.some(preScout => statusIsRejected(preScout.assignation!.status));
       this.filterRejected(this.showRejected);
       this.loading = false;
     });
   }
 
   private preScouterSorter(ps1: PreScout, ps2: PreScout) {
-    return new Date(ps1.assignationDate!).toISOString().localeCompare(new Date(ps2.assignationDate!).toISOString());
+    return new Date(ps1.assignation!.assignationDate!).toISOString().localeCompare(new Date(ps2.assignation!.assignationDate!).toISOString());
   }
 
   protected downloadPreScoutAsPdf(preScout: PreScout) {
@@ -113,7 +113,7 @@ export class GroupSerScoutTableComponent implements OnInit {
     if (showRejected) {
       this.filteredPreScouts = this.allPreScouts;
     } else {
-      this.filteredPreScouts = this.allPreScouts.filter(preScouts => !statusIsRejected(preScouts.status!));
+      this.filteredPreScouts = this.allPreScouts.filter(preScouts => !statusIsRejected(preScouts.assignation!.status));
     }
   }
 }

@@ -5,15 +5,13 @@ import {ScoutService} from "../../services/scout.service";
 import {FilterService, SelectItem} from "primeng/api";
 import {ScoutFormComponent} from "../scout-form/scout-form.component";
 import {noop} from "rxjs";
-import {groups} from "../../../../shared/model/group.model";
+import {BasicGroupInfo} from "../../../../shared/model/group.model";
 import {ScoutInfoComponent} from "../scout-info/scout-info.component";
 import {SettingsService} from "../../../settings/settings.service";
 import {ExcelService} from "../../../../shared/services/excel.service";
 import ScoutHelper from "../../scout.util";
-import {SentenceCasePipe} from "../../../../shared/pipes/sentence-case.pipe";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {ScoutYearPipe} from '../../../../shared/pipes/scout-year.pipe';
-import {GroupPipe} from '../../../../shared/pipes/group.pipe';
 import {InputTextModule} from 'primeng/inputtext';
 import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
@@ -39,7 +37,6 @@ import {SettingType} from "../../../settings/setting.model";
     TableModule,
     InputTextModule,
     NgClass,
-    GroupPipe,
     DatePipe,
     ScoutYearPipe,
     Button,
@@ -58,7 +55,7 @@ export class GroupScoutListComponent implements OnInit {
   protected scouts: Scout[] | undefined;
   protected loading = false;
   protected groupScouts!: Scout[];
-  protected userGroup = inject(LoggedUserDataService).getGroupId();
+  protected userGroup: BasicGroupInfo | undefined = inject(LoggedUserDataService).getGroup();
   private readonly name: string = "";
   private ref!: DynamicDialogRef;
   protected currentYear!: number;
@@ -71,7 +68,7 @@ export class GroupScoutListComponent implements OnInit {
 
   constructor() {
     if (this.userGroup) {
-      this.name = new SentenceCasePipe().transform(groups[this.userGroup].name);
+      this.name = this.userGroup.name;
       this.options = [{label: this.name, value: false}, {label: 'Grupo', value: true}];
     } else {
       this.showAll = true;
@@ -142,7 +139,7 @@ export class GroupScoutListComponent implements OnInit {
     this.scoutService.getAllWithoutImageAuthorization().subscribe({
       next: scouts => {
         this.noImageScouts = scouts.sort((a, b) =>
-          (a.groupId - b.groupId) || (a.surname.localeCompare(b.surname))
+          (a.group.order! - b.group.order!) || (a.surname.localeCompare(b.surname))
         );
         this.showDialog = true;
       }

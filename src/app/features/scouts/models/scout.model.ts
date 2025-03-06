@@ -1,4 +1,5 @@
 import {Contact} from "./contact.model";
+import {BasicGroupForm, BasicGroupInfo} from "../../../shared/model/group.model";
 
 export interface Scout {
   id?: number;
@@ -6,7 +7,7 @@ export interface Scout {
   surname: string;
   dni?: string;
   birthday: Date;
-  groupId: number;
+  group: BasicGroupInfo | BasicGroupForm; //todo maybe create different form object
   medicalData: string;
   contactList: Contact[];
   gender: string;

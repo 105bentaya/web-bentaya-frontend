@@ -59,8 +59,8 @@
         <th>
           <p-multiSelect
             [options]="groups"
-            (onChange)="dt.filter($event.value, 'groupId', 'in')"
-            (onClear)="dt.filter(null, 'groupId', 'in')"
+            (onChange)="dt.filter($event.value, 'group.id', 'in')"
+            (onClear)="dt.filter(null, 'group.id', 'in')"
             [showHeader]="false"
             [autofocusFilter]="false"
             [showClear]="true"
@@ -91,7 +91,7 @@
           {{ scout.surname }}, {{ scout.name }}
         </td>
         <td>
-          {{ scout.groupId | group }}
+          {{ scout.group.name }}
         </td>
         <td class="text-center">
           <span>

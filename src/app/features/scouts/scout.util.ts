@@ -1,6 +1,5 @@
 import {Scout} from "./models/scout.model";
 import {DatePipe} from "@angular/common";
-import {GroupPipe} from "../../shared/pipes/group.pipe";
 
 export default class ScoutHelper {
 
@@ -13,7 +12,7 @@ export default class ScoutHelper {
         name: scout.name,
       };
       if (addSection) {
-        tempScout = {...tempScout, sect: new GroupPipe().transform(scout.groupId)};
+        tempScout = {...tempScout, sect: scout.group.name};
       }
       tempScout = {
         ...tempScout,

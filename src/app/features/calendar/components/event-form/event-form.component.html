@@ -9,6 +9,7 @@
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-6">
+          <div class="d-flex flex-column">
           <p-floatlabel variant="on">
             <p-select
               id="groupId"
@@ -20,6 +21,12 @@
             ></p-select>
             <label class="required" for="groupId">Unidad</label>
           </p-floatlabel>
+            <div class="mt-1">
+              <app-checkbox-container label="Crear sólo para scouters">
+                <p-check-box [binary]="true" formControlName="forScouters"></p-check-box>
+              </app-checkbox-container>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -166,6 +173,7 @@
                         [defaultDate]="formHelper.controlValue('endDate') ?? defaultEndDate"
                         [stepMinute]="5"
                         [hideOnDateTimeSelect]="false"
+                        [class]="formHelper.isDirtyAndInvalid() && formHelper.hasFormError('closeDateNeeded') ? 'ng-invalid ng-dirty' : ''"
                       ></p-datePicker>
                     }
                   </div>

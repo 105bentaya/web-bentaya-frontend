@@ -8,7 +8,6 @@ import {Confirmation} from "../models/confirmation.model";
 import {EventAttendanceInfo} from "../models/event-attendance-info.model";
 import {EventBasicAttendanceInfo} from "../models/event-basic-attendance-info.model";
 import {saveAs} from "file-saver";
-import {GroupPipe} from "../../../shared/pipes/group.pipe";
 import {LoggedUserDataService} from "../../../core/auth/services/logged-user-data.service";
 
 @Injectable({
@@ -56,7 +55,7 @@ export class ConfirmationService {
       )
       .pipe(tap((data: Blob) => {
         saveAs(data,
-          `Asistencia_${new GroupPipe().transform(this.loggedUserData.getGroupId())}_RS_Actual.xlsx`);
+          `Asistencia_${this.loggedUserData.getGroup()?.name}_RS_Actual.xlsx`);
       }));
   }
 }

@@ -13,7 +13,7 @@ import {
 } from "@angular/forms";
 import {Scout} from "../../models/scout.model";
 import {ScoutService} from "../../services/scout.service";
-import {unitGroups} from "../../../../shared/model/group.model";
+import {BasicGroupForm} from "../../../../shared/model/group.model";
 import {ConfirmationService} from "primeng/api";
 import {ScoutUserFormListComponent} from "../scout-user-form-list/scout-user-form-list.component";
 import {ScoutUsernamesUpdate} from "../../models/scout-usernames-update.model";
@@ -35,6 +35,7 @@ import {Contact} from "../../models/contact.model";
 import {DatePicker} from "primeng/datepicker";
 import {Textarea} from "primeng/textarea";
 import {TabsModule} from "primeng/tabs";
+import {GroupService} from "../../../../shared/services/group.service";
 
 @Component({
   selector: 'app-scout-form',
@@ -64,10 +65,11 @@ export class ScoutFormComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly scoutService = inject(ScoutService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly groupService = inject(GroupService);
 
-  protected readonly groups = unitGroups;
   protected readonly genders = genders;
   protected readonly options = [{label: 'Sí', value: true}, {label: 'No', value: false}];
+  protected groups!: BasicGroupForm[];
   protected scoutFormHelper = new FormHelper();
   protected scoutContactList!: FormArray;
   protected scout: Scout | undefined;
@@ -80,6 +82,7 @@ export class ScoutFormComponent implements OnInit {
   @ViewChild("userList") private readonly userTable!: ScoutUserFormListComponent;
 
   ngOnInit(): void {
+    this.groupService.getAllUppercase().subscribe(groups => this.groups = groups);
     if (this.config.data?.scout) {
       this.scout = this.config.data.scout;
       this.initForm(this.scout);
@@ -101,7 +104,7 @@ export class ScoutFormComponent implements OnInit {
       surname: [scout?.surname, Validators.required],
       dni: [scout?.dni],
       birthday: [scout ? new Date(scout.birthday) : null, Validators.required],
-      groupId: [scout?.groupId, Validators.required],
+      groupId: [scout?.group.id, Validators.required],
       gender: [scout?.gender, Validators.required],
       medicalData: [scout?.medicalData, Validators.maxLength(1024)],
       shirtSize: [scout?.shirtSize],
@@ -123,7 +126,7 @@ export class ScoutFormComponent implements OnInit {
       surname: pipe.transform(preScout.surname),
       dni: preScout.dni == "NO TIENE" ? undefined : preScout.dni,
       birthday: new Date(preScout.birthday.split("/").reverse().join("-")),
-      groupId: preScout.groupId!,
+      group: {id: preScout.assignation!.group.id},
       gender: pipe.transform(preScout.gender),
       medicalData: preScout.medicalData!,
       shirtSize: preScout.size,
@@ -169,6 +172,7 @@ export class ScoutFormComponent implements OnInit {
     if (this.formIsValid()) {
       this.loading = true;
       const scout: Scout = {...this.scoutFormHelper.value};
+      scout.group = {id: this.scoutFormHelper.controlValue("groupId")};
       const users = this.userTable.getUsernames();
       if (this.isNew) {
         if (!users || users.length == 0) {
@@ -202,7 +206,7 @@ export class ScoutFormComponent implements OnInit {
   }
 
   private checkGroupAndUpdateScout(scout: Scout, users?: string[]) {
-    if (this.scout?.groupId != scout.groupId) {
+    if (this.scout?.group.id != scout.group.id) {
       this.confirmationService.confirm({
         message: 'Esta acción eliminará a la persona educanda de su la lista de unidad y se eliminarán todas sus' +
           ' asistencias y pagos guardados.',

@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {map, Observable} from 'rxjs';
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {UserService} from '../../services/user.service';
-import {unitGroups} from "../../../../shared/model/group.model";
+import {BasicGroupInfo} from "../../../../shared/model/group.model";
 import {Scout} from "../../../scouts/models/scout.model";
 import {ScoutService} from "../../../scouts/services/scout.service";
 import {roles} from "../../models/role.model";
@@ -21,6 +21,7 @@ import {FormHelper} from "../../../../shared/util/form-helper";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {UserForm} from "../../models/user-form.model";
 import {FloatLabel} from "primeng/floatlabel";
+import {GroupService} from "../../../../shared/services/group.service";
 
 @Component({
   selector: 'app-user-form',
@@ -48,15 +49,17 @@ export class UserFormComponent implements OnInit {
   private readonly scoutService = inject(ScoutService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly groupService = inject(GroupService);
 
   protected readonly roles = roles;
   protected userForm = new FormHelper();
   protected scouts!: Scout[];
-  protected groups = unitGroups;
+  protected groups!: BasicGroupInfo[];
   protected user!: UserForm;
   protected loading = false;
 
   ngOnInit(): void {
+    this.groupService.getAllUppercase().subscribe(groups => this.groups = groups);
     const userId = this.route.snapshot.params['userId'];
     if (userId === "new") this.newForm();
     else this.getUserById(userId);

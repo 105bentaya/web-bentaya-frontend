@@ -3,34 +3,34 @@ import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {EventInfo} from "../models/event-info.model";
-import {BasicEvent} from "../models/basic-event.model";
-import {FormEvent} from "../models/form-event.model";
+import {CalendarEvent} from "../models/calendar-event.model";
+import {EventForm} from "../models/event-form.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
-  private http = inject(HttpClient);
-  private eventUrl = `${environment.apiUrl}/event`;
+  private readonly http = inject(HttpClient);
+  private readonly eventUrl = `${environment.apiUrl}/event`;
 
-  getAll(): Observable<BasicEvent[]> {
-    return this.http.get<BasicEvent[]>(this.eventUrl);
+  getAll(): Observable<CalendarEvent[]> {
+    return this.http.get<CalendarEvent[]>(this.eventUrl);
   }
 
   getInfoById(id: number): Observable<EventInfo> {
     return this.http.get<EventInfo>(`${this.eventUrl}/get/${id}`);
   }
 
-  getFormById(id: number): Observable<FormEvent> {
-    return this.http.get<FormEvent>(`${this.eventUrl}/edit/${id}`);
+  getFormById(id: number): Observable<EventForm> {
+    return this.http.get<EventForm>(`${this.eventUrl}/edit/${id}`);
   }
 
-  save(event: FormEvent): Observable<EventInfo> {
+  save(event: EventForm): Observable<EventInfo> {
     return this.http.post<EventInfo>(this.eventUrl, event);
   }
 
-  update(event: FormEvent): Observable<EventInfo> {
+  update(event: EventForm): Observable<EventInfo> {
     return this.http.put<EventInfo>(this.eventUrl, event);
   }
 

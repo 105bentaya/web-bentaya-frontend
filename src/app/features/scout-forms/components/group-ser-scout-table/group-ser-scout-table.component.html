@@ -85,10 +85,10 @@
           {{ preScout.surname }}, {{ preScout.name }}
         </td>
         <td>
-          {{ preScout.status | status }}
+          {{ preScout.assignation.status | status }}
         </td>
         <td>
-          {{ preScout.assignationComment || '-' }}
+          {{ preScout.assignation.comment || '-' }}
         </td>
         <td>
           <div class="d-flex flex-row gap-2">
