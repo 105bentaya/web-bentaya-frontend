@@ -1,10 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {EventInfo} from "../models/event-info.model";
 import {CalendarEvent} from "../models/calendar-event.model";
 import {EventForm} from "../models/event-form.model";
+import {BasicGroupInfo} from "../../../shared/model/group.model";
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,13 @@ export class EventService {
 
   subscribeToCalendar(): Observable<string> {
     return this.http.get(`${this.eventUrl}/subscribe`, {responseType: 'text'});
+  }
+
+  checkForDateConflicts(startDate: string, endDate: string, groupId?: number): Observable<BasicGroupInfo[]> {
+    let params = new HttpParams({fromObject: {startDate, endDate}});
+
+    if (groupId) params = params.set('groupId', groupId);
+
+    return this.http.get<BasicGroupInfo[]>(`${this.eventUrl}/coincidences`, {params});
   }
 }

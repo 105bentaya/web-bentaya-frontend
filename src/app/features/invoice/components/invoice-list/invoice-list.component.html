@@ -121,7 +121,7 @@
           {{ invoice.nif }} - {{invoice.issuer}}
         </td>
         <td>
-          {{ invoice.grant?.grantName ?? 'Ninguna' }}
+          {{ invoice.grant?.grantName || 'Ninguna' }}
         </td>
         <td>
           {{ invoice.expenseType.expenseType }}

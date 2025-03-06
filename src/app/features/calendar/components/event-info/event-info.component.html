@@ -20,7 +20,7 @@
         }
       </div>
     </div>
-    <p style="white-space: pre-wrap;">{{ event.description ?? event.title }}</p>
+    <p style="white-space: pre-wrap;">{{ event.description || event.title }}</p>
   </div>
   <div class="mt-3">
     <span class="fw-bold">Fecha</span>
@@ -41,7 +41,7 @@
         @if (locationLink) {
           <a [href]="locationLink" target="_blank">{{ event.location }}</a>
         } @else {
-          {{ event.location ?? 'Sin especificar' }}
+          {{ event.location || 'Sin especificar' }}
         }
       </li>
     </ul>

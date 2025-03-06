@@ -33,6 +33,8 @@ import {
 } from "../../../../shared/components/radio-button-container/radio-button-container.component";
 import {RadioButton} from "primeng/radiobutton";
 import {Panel} from "primeng/panel";
+import {BasicGroupInfo} from "../../../../shared/model/group.model";
+import {Message} from "primeng/message";
 
 @Component({
   selector: 'app-event-form',
@@ -53,7 +55,8 @@ import {Panel} from "primeng/panel";
     CheckboxContainerComponent,
     RadioButtonContainerComponent,
     RadioButton,
-    Panel
+    Panel,
+    Message
   ]
 })
 export class EventFormComponent implements OnInit {
@@ -73,6 +76,7 @@ export class EventFormComponent implements OnInit {
   protected defaultEndDate!: Date;
   protected saveLoading = false;
   protected deleteLoading = false;
+  protected dateCoincidences: BasicGroupInfo[] = [];
 
   constructor() {
     this.groups = [{id: 0, name: "GRUPO"}];
@@ -118,6 +122,28 @@ export class EventFormComponent implements OnInit {
     }, {
       validators: [this.datesValidator, this.locationValidator, this.eventIsClosedValidator]
     });
+    if (event && !event.unknownTime) this.getDateConflicts(event.startDate, event.endDate, event.groupId);
+  }
+
+  protected checkForDateConflicts() {
+    const startDate = this.formHelper.controlValue('startDate');
+    const endDate = this.formHelper.controlValue('endDate');
+    const unknownTime = this.formHelper.controlValue('unknownTime');
+    const groupId = this.formHelper.controlValue('groupId');
+
+    if (!unknownTime && startDate && endDate) {
+      this.getDateConflicts(startDate, endDate, groupId);
+    } else {
+      this.dateCoincidences = [];
+    }
+  }
+
+  private getDateConflicts(startDate: Date, endDate: Date, groupId?: number) {
+    this.eventService.checkForDateConflicts(
+      new Date(startDate).toISOString(),
+      new Date(endDate).toISOString(),
+      groupId
+    ).subscribe(res => this.dateCoincidences = res);
   }
 
   private getGroupId(event?: EventForm) {
@@ -306,6 +332,7 @@ export class EventFormComponent implements OnInit {
   }
 
   protected checkDate(date: "startDate" | "endDate") {
+    this.checkForDateConflicts();
     const startDate = this.formHelper.controlValue("startDate");
     const endDate = this.formHelper.controlValue("endDate");
 

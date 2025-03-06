@@ -18,6 +18,7 @@
               appendTo="body"
               optionLabel="name"
               optionValue="id"
+              (onChange)="checkForDateConflicts()"
             ></p-select>
             <label class="required" for="groupId">Unidad</label>
           </p-floatlabel>
@@ -54,6 +55,7 @@
               [defaultDate]="defaultStartDate"
               [hideOnDateTimeSelect]="false"
               (onClose)="checkDate('endDate')"
+              (onClear)="checkForDateConflicts()"
               [class]="formHelper.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
               [showClear]="true"
             ></p-datePicker>
@@ -71,6 +73,7 @@
               [defaultDate]="defaultEndDate"
               [hideOnDateTimeSelect]="false"
               (onClose)="checkDate('startDate')"
+              (onClear)="checkForDateConflicts()"
               [class]="formHelper.hasFormError('endDateBefore') ? 'ng-invalid ng-dirty' : ''"
               [showClear]="true"
             ></p-datePicker>
@@ -81,9 +84,24 @@
       <div class="row mt-revert">
         <div class="col-12">
           <app-checkbox-container label="Hora sin especificar">
-            <p-checkbox formControlName="unknownTime" [binary]="true"></p-checkbox>
+            <p-checkbox formControlName="unknownTime" [binary]="true" (onChange)="checkForDateConflicts()"></p-checkbox>
           </app-checkbox-container>
         </div>
+        @if (dateCoincidences.length > 0) {
+          <p-message severity="warn" class="mt-1 mb-3">
+            Las fechas del evento coinciden con el inicio o fin de las actividades de otras unidades:
+            <ul>
+              @for (group of dateCoincidences; track group.id) {
+                <li>{{ group.name }}</li>
+              }
+            </ul>
+            <p>
+              Revisa en el calendario los lugares y horas de estas unidades (haciendo click en
+              <i class="pi pi-globe align-middle"></i>) para evitar conflictos de lugar y horario (y que las familias no
+              tengan que teletransportarse).
+            </p>
+          </p-message>
+        }
       </div>
       <div class="row mb-1">
         <div class="col-12 mb-0">
