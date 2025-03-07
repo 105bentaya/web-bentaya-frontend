@@ -138,44 +138,9 @@ label, span, th {
   }
 }
 
-.dialog-width { //rework
-  @media screen and (max-width: 700px) {
-    width: 100%;
-  }
-
-  @media screen and (min-width: 700px) {
-    min-width: 700px;
-    max-width: 1200px;
-
-    &.medium-dw {
-      width: 950px;
-    }
-
-    &.small-dw {
-      width: 700px;
-    }
-  }
-
-  &.login {
-    max-width: 500px;
-  }
-}
-
-.invert-tab-menu {
-  .p-tabmenu .p-tabmenu-nav {
-    border-width: 2px 0 0 0;
-  }
-
-  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
-    border-width: 2px 0 0 0;
-    border-color: #dee2e6 transparent transparent transparent;
-    border-radius: 0 0 3px 3px;
-    margin: -2px 0 0 0;
-  }
-
-  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
-    border-color: #2196F3;
-  }
+.basic-dialog {
+  width: 650px;
+  max-width: 99vw;
 }
 
 .attendance-multiselect {
