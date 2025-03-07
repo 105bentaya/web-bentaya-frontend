@@ -102,40 +102,27 @@ export class EventFormComponent implements OnInit {
   }
 
   private initForm(event?: EventForm) {
-    const addCoordinates = !!event?.longitude && !!event?.latitude;
+    const specifyLocations = !!event?.meetingLocation || !!event?.pickupLocation;
     this.formHelper.createForm({
       title: [event?.title, Validators.required],
       description: [event?.description, Validators.maxLength(4095)],
       location: [event?.location],
-      latitude: [event?.latitude],
-      longitude: [event?.longitude],
+      meetingLocation: [event?.meetingLocation, this.locationValidator],
+      pickupLocation: [event?.pickupLocation, this.locationValidator],
       groupId: [this.getGroupId(event), Validators.required],
       forScouters: [event?.forScouters ?? false, Validators.required],
       startDate: [event ? this.getEventStartDate(event) : null, Validators.required],
       endDate: [event ? this.getEventEndDate(event) : null, Validators.required],
-      addCoordinates: [addCoordinates ?? false],
+      specifyLocations: [specifyLocations ?? false],
       unknownTime: [event?.unknownTime ?? false],
       activateAttendanceList: [event?.activateAttendanceList ?? false],
       closeAttendanceMode: [this.getAttendanceMode(event)],
       closeDateTime: [event?.closeDateTime ? new Date(event.closeDateTime) : null],
       activateAttendancePayment: [event?.activateAttendancePayment ?? false],
     }, {
-      validators: [this.datesValidator, this.locationValidator, this.eventIsClosedValidator]
+      validators: [this.datesValidator, this.eventIsClosedValidator]
     });
     if (event && !event.unknownTime) this.getDateConflicts(event.startDate, event.endDate, event.groupId);
-  }
-
-  protected checkForDateConflicts() {
-    const startDate = this.formHelper.controlValue('startDate');
-    const endDate = this.formHelper.controlValue('endDate');
-    const unknownTime = this.formHelper.controlValue('unknownTime');
-    const groupId = this.formHelper.controlValue('groupId');
-
-    if (!unknownTime && startDate && endDate) {
-      this.getDateConflicts(startDate, endDate, groupId);
-    } else {
-      this.dateCoincidences = [];
-    }
   }
 
   private getDateConflicts(startDate: Date, endDate: Date, groupId?: number) {
@@ -170,6 +157,32 @@ export class EventFormComponent implements OnInit {
       new Date(event.endDate);
   }
 
+  private readonly datesValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    let startDate = control.get('startDate')?.value;
+    let endDate = control.get('endDate')?.value;
+    if (!startDate || !endDate) return null;
+    if (control.get('unknownTime')?.value) {
+      startDate = new Date(DateUtils.toLocalDate(startDate));
+      endDate = new Date(DateUtils.toLocalDate(endDate));
+      endDate.setMinutes(1);
+    }
+    return startDate >= endDate ? {endDateBefore: true} : null;
+  };
+
+  private readonly locationValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const specifyLocationActivated = this.formHelper.get('specifyLocations')?.value;
+    return (!specifyLocationActivated || control.value) ? null : {locationNeeded: true};
+  };
+
+  private readonly eventIsClosedValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const attendanceIsActive = control.get('activateAttendanceList')?.value === true && control.get('groupId')?.value !== 0 && control.get('forScouters')?.value === false;
+    if (attendanceIsActive && control.get('closeAttendanceMode')?.value === 'date') {
+      const closeDate = control.get('closeDateTime')?.value;
+      if (!closeDate) return {closeDateNeeded: true};
+    }
+    return null;
+  };
+
   protected onSubmit() {
     this.formHelper.validateAll();
     const event: EventForm = {...this.formHelper.value};
@@ -180,6 +193,11 @@ export class EventFormComponent implements OnInit {
       if (event.unknownTime) {
         event.localStartDate = DateUtils.toLocalDate(event.startDate);
         event.localEndDate = DateUtils.toLocalDate(event.endDate);
+      }
+
+      if (!event.location || !this.formHelper.controlValue("specifyLocations")) {
+        event.meetingLocation = undefined;
+        event.pickupLocation = undefined;
       }
 
       if (!event.activateAttendanceList || event.forScouters || event.forEveryone) {
@@ -197,45 +215,6 @@ export class EventFormComponent implements OnInit {
       this.checkForInfoMessages(event);
     }
   }
-
-  private saveOrUpdate(event: EventForm) {
-    if (this.existingEvent) {
-      event.id = this.existingEvent.id;
-      this.update(event);
-    } else {
-      this.save(event);
-    }
-  }
-
-  private readonly datesValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    let startDate = control.get('startDate')?.value;
-    let endDate = control.get('endDate')?.value;
-    if (!startDate || !endDate) return null;
-    if (control.get('unknownTime')?.value) {
-      startDate = new Date(DateUtils.toLocalDate(startDate));
-      endDate = new Date(DateUtils.toLocalDate(endDate));
-      endDate.setMinutes(1);
-    }
-    return startDate >= endDate ? {endDateBefore: true} : null;
-  };
-
-  private readonly locationValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    if (control.get('addCoordinates')?.value) {
-      const latitude = control.get('latitude')?.value;
-      const longitude = control.get('longitude')?.value;
-      return !(latitude || latitude === 0) || !(longitude || longitude === 0) ? {coordinatesNeeded: true} : null;
-    }
-    return null;
-  };
-
-  private readonly eventIsClosedValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const attendanceIsActive = control.get('activateAttendanceList')?.value === true && control.get('groupId')?.value !== 0 && control.get('forScouters')?.value === false;
-    if (attendanceIsActive && control.get('closeAttendanceMode')?.value === 'date') {
-      const closeDate = control.get('closeDateTime')?.value;
-      if (!closeDate) return {closeDateNeeded: true};
-    }
-    return null;
-  };
 
   private checkForInfoMessages(event: EventForm) {
     let attendanceOffWarn = false;
@@ -280,6 +259,15 @@ export class EventFormComponent implements OnInit {
     return false;
   }
 
+  private saveOrUpdate(event: EventForm) {
+    if (this.existingEvent) {
+      event.id = this.existingEvent.id;
+      this.update(event);
+    } else {
+      this.save(event);
+    }
+  }
+
   private save(event: EventForm) {
     this.saveLoading = true;
     this.eventService.save(event).subscribe({
@@ -305,7 +293,7 @@ export class EventFormComponent implements OnInit {
   }
 
   protected confirmDeletion() {
-    let message = `¿Desea eliminar esta actividad?${this.existingEvent.activateAttendanceList ? ' La lista de asistencia será eliminada. ' : ' '}Esta acción no se podrá deshacer.`;
+    const message = `¿Desea eliminar esta actividad?${this.existingEvent.activateAttendanceList ? ' La lista de asistencia será eliminada. ' : ' '}Esta acción no se podrá deshacer.`;
     this.confirmationService.confirm({
       message: message,
       icon: 'pi pi-exclamation-triangle',
@@ -344,6 +332,19 @@ export class EventFormComponent implements OnInit {
       const newStartDate = new Date(endDate);
       newStartDate.setHours(newStartDate.getHours() - 2);
       this.formHelper.get("startDate").setValue(newStartDate);
+    }
+  }
+
+  protected checkForDateConflicts() {
+    const startDate = this.formHelper.controlValue('startDate');
+    const endDate = this.formHelper.controlValue('endDate');
+    const unknownTime = this.formHelper.controlValue('unknownTime');
+    const groupId = this.formHelper.controlValue('groupId');
+
+    if (!unknownTime && startDate && endDate) {
+      this.getDateConflicts(startDate, endDate, groupId);
+    } else {
+      this.dateCoincidences = [];
     }
   }
 }

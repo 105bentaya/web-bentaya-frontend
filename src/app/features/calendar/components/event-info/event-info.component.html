@@ -37,13 +37,13 @@
   <div>
     <span class="fw-bold">Lugar</span>
     <ul>
-      <li>
-        @if (locationLink) {
-          <a [href]="locationLink" target="_blank">{{ event.location }}</a>
-        } @else {
-          {{ event.location || 'Sin especificar' }}
-        }
-      </li>
+      <li>{{ event.location || 'Sin especificar' }}</li>
+      @if (event.meetingLocation) {
+        <li>Quedada en: {{ event.meetingLocation }}</li>
+      }
+      @if (event.pickupLocation) {
+        <li>Recogida en: {{ event.pickupLocation }}</li>
+      }
     </ul>
   </div>
   <div>

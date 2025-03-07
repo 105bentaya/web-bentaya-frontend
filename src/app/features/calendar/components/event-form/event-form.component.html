@@ -114,38 +114,32 @@
       @if (formHelper.controlValue('location')) {
         <div class="row">
           <div class="col-12">
-            <app-checkbox-container label="Añadir coordenadas">
-              <p-checkbox [binary]="true" formControlName="addCoordinates"></p-checkbox>
+            <app-checkbox-container label="Especificar lugares de quedada y recogida">
+              <p-checkbox [binary]="true" formControlName="specifyLocations"></p-checkbox>
             </app-checkbox-container>
           </div>
         </div>
       }
-      @if (formHelper.controlValue("addCoordinates")) {
+      @if (formHelper.controlValue("specifyLocations") && formHelper.controlValue('location')) {
         <div class="row">
           <div class="col-12 col-sm-6">
             <p-floatlabel variant="on">
-              <p-inputNumber
-                id="latitude"
-                formControlName="latitude"
-                [useGrouping]="false"
-                [maxFractionDigits]="6"
-                locale="en"
-                [class]="formHelper.isDirtyAndInvalid() && formHelper.hasFormError('coordinatesNeeded') ? 'ng-invalid ng-dirty' : ''"
-              ></p-inputNumber>
-              <label class="required" for="latitude">Latitud</label>
+              <input
+                pInputText
+                id="meetingLocation"
+                formControlName="meetingLocation"
+              >
+              <label class="required" for="meetingLocation">Quedada</label>
             </p-floatlabel>
           </div>
           <div class="col-12 col-sm-6">
             <p-floatlabel variant="on">
-              <p-inputNumber
-                id="longitude"
-                formControlName="longitude"
-                [useGrouping]="false"
-                [maxFractionDigits]="6"
-                locale="en"
-                [class]="formHelper.isDirtyAndInvalid() && formHelper.hasFormError('coordinatesNeeded') ? 'ng-invalid ng-dirty' : ''"
-              ></p-inputNumber>
-              <label class="required" for="longitude">Longitud</label>
+              <input
+                pInputText
+                id="pickupLocation"
+                formControlName="pickupLocation"
+              >
+              <label class="required" for="pickupLocation">Recogida</label>
             </p-floatlabel>
           </div>
         </div>

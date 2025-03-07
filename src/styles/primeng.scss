@@ -55,6 +55,10 @@
   --p-button-badge-size: 0.75rem;
 
   --p-card-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.3);
+
+  .p-drawer-footer {
+    padding-top: 0;
+  }
 }
 
 .html-container {
@@ -117,13 +121,6 @@ p-toggle-button.no-label {
   color: var(--p-togglebutton-hover-color);
   background: var(--p-togglebutton-hover-background);
   border-color: var(--p-togglebutton-border-color);
-}
-
-
-:root {
-  .p-drawer-footer {
-    padding-top: 0;
-  }
 }
 
 .p-badge.lower {

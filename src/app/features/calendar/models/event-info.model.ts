@@ -8,8 +8,8 @@ export interface EventInfo {
   title: string;
   description: string;
   location: string;
-  longitude?: number;
-  latitude?: number;
+  meetingLocation?: string;
+  pickupLocation?: string;
   startDate: Date;
   endDate: Date;
   hasAttendance: boolean;

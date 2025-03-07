@@ -45,7 +45,6 @@ export class EventInfoComponent implements OnInit, OnDestroy {
   protected ref = inject(DynamicDialogRef);
 
   protected event!: EventInfo;
-  protected locationLink?: string;
   protected scoutConfirmations: EventBasicAttendanceInfo[] = [];
   protected userCanEditEvent = false;
   protected userScoutsInEvent: UserScout[] = [];
@@ -65,9 +64,6 @@ export class EventInfoComponent implements OnInit, OnDestroy {
   }
 
   private buildEventData(event: EventInfo) {
-    this.locationLink = event.latitude && event.longitude ?
-      `https://www.google.com/maps/place/${event.latitude},${event.longitude}` :
-      undefined;
     this.config.header = `Actividad - ${event.title}`;
     this.userCanEditEvent = this.scouterCanEditEvent(event);
     event.startDate = this.getEventDate(event.startDate, event.unknownTime);
