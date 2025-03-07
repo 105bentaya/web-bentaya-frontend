@@ -320,7 +320,6 @@ export class EventFormComponent implements OnInit {
   }
 
   protected checkDate(date: "startDate" | "endDate") {
-    this.checkForDateConflicts();
     const startDate = this.formHelper.controlValue("startDate");
     const endDate = this.formHelper.controlValue("endDate");
 
@@ -333,6 +332,7 @@ export class EventFormComponent implements OnInit {
       newStartDate.setHours(newStartDate.getHours() - 2);
       this.formHelper.get("startDate").setValue(newStartDate);
     }
+    this.checkForDateConflicts();
   }
 
   protected checkForDateConflicts() {
