@@ -107,14 +107,14 @@ export class CalendarComponent implements OnInit {
         hour: '2-digit',
         minute: '2-digit'
       },
-      eventClick: (info) => {
-        this.openInfoDialog(+info.event.id);
-      }
+      eventClick: (info) => this.openInfoDialog(+info.event.id)
     };
 
     this.calendarDate = new Date();
     this.viewOptions = [{value: 'dayGridMonth', icon: 'pi pi-calendar'}, {value: 'customList', icon: 'pi pi-list'}];
     this.isScouter = this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER, UserRole.GROUP_SCOUTER);
+
+    if (this.isScouter) this.options.dateClick = (arg) => this.openAddDialog(arg.date);
 
     this.eventStatusService.deletedEvent
       .pipe(takeUntilDestroyed())
@@ -210,8 +210,11 @@ export class CalendarComponent implements OnInit {
     return this.dialogService.openDialog(EventInfoComponent, "Actividad", "small", eventId);
   }
 
-  protected openAddDialog() {
-    this.dialogService.openDialog(EventFormComponent, "Añadir Actividad", "small", {calendarDate: this.calendarDate});
+  protected openAddDialog(clickDate?: Date) {
+    this.dialogService.openDialog(EventFormComponent, "Añadir Actividad", "small", {
+      calendarDate: this.calendarDate,
+      clickDate
+    });
   }
 
   protected next() {

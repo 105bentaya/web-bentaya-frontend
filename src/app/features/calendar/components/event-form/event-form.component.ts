@@ -77,6 +77,7 @@ export class EventFormComponent implements OnInit {
   protected saveLoading = false;
   protected deleteLoading = false;
   protected dateCoincidences: BasicGroupInfo[] = [];
+  private clickDate!: Date;
 
   constructor() {
     this.groups = [{id: 0, name: "GRUPO"}];
@@ -88,6 +89,7 @@ export class EventFormComponent implements OnInit {
     const defaultDate = this.config.data?.calendarDate ?? new Date();
     this.defaultStartDate = DateUtils.dateTruncatedToDay(defaultDate, 11);
     this.defaultEndDate = DateUtils.dateTruncatedToDay(defaultDate, 13);
+    this.clickDate = this.config.data?.clickDate;
     if (this.config.data?.id) {
       this.eventService.getFormById(this.config.data.id).subscribe({
         next: data => {
@@ -111,8 +113,8 @@ export class EventFormComponent implements OnInit {
       pickupLocation: [event?.pickupLocation, this.locationValidator],
       groupId: [this.getGroupId(event), Validators.required],
       forScouters: [event?.forScouters ?? false, Validators.required],
-      startDate: [event ? this.getEventStartDate(event) : null, Validators.required],
-      endDate: [event ? this.getEventEndDate(event) : null, Validators.required],
+      startDate: [this.getEventStartDate(event), Validators.required],
+      endDate: [this.getEventEndDate(event), Validators.required],
       specifyLocations: [specifyLocations ?? false],
       unknownTime: [event?.unknownTime ?? false],
       activateAttendanceList: [event?.activateAttendanceList ?? false],
@@ -145,16 +147,28 @@ export class EventFormComponent implements OnInit {
     return "end";
   }
 
-  private getEventStartDate(event: EventForm) {
-    return event.unknownTime ?
-      DateUtils.shiftDateToUTC(event.startDate) :
-      new Date(event.startDate);
+  private getEventStartDate(event?: EventForm) {
+    if (event) {
+      return event.unknownTime ?
+        DateUtils.shiftDateToUTC(event.startDate) :
+        new Date(event.startDate);
+    }
+    if (this.clickDate) {
+      return DateUtils.dateTruncatedToDay(this.clickDate, 11);
+    }
+    return null;
   }
 
-  private getEventEndDate(event: EventForm) {
-    return event.unknownTime ?
-      DateUtils.shiftDateToUTC(event.endDate) :
-      new Date(event.endDate);
+  private getEventEndDate(event?: EventForm) {
+    if (event) {
+      return event.unknownTime ?
+        DateUtils.shiftDateToUTC(event.endDate) :
+        new Date(event.endDate);
+    }
+    if (this.clickDate) {
+      return DateUtils.dateTruncatedToDay(this.clickDate, 13);
+    }
+    return null;
   }
 
   private readonly datesValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
