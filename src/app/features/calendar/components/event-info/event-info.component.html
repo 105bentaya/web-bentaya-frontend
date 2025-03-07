@@ -39,10 +39,10 @@
     <ul>
       <li>{{ event.location || 'Sin especificar' }}</li>
       @if (event.meetingLocation) {
-        <li>Quedada en: {{ event.meetingLocation }}</li>
+        <li>Quedada: {{ event.meetingLocation }}</li>
       }
       @if (event.pickupLocation) {
-        <li>Recogida en: {{ event.pickupLocation }}</li>
+        <li>Recogida: {{ event.pickupLocation }}</li>
       }
     </ul>
   </div>
