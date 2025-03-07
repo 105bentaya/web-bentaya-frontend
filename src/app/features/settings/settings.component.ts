@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {SettingsService} from "./settings.service";
-import {Setting, SettingType} from "./setting.model";
+import {Setting, settingFormType, SettingType} from "./setting.model";
 import {AlertService} from "../../shared/services/alert-service.service";
 import {CheckboxModule} from 'primeng/checkbox';
 import {FormsModule} from '@angular/forms';
@@ -12,6 +12,10 @@ import {CheckboxContainerComponent} from "../../shared/components/checkbox-conta
 import {FloatLabel} from "primeng/floatlabel";
 import {InputGroup} from "primeng/inputgroup";
 import {InputGroupAddon} from "primeng/inputgroupaddon";
+import {forkJoin} from "rxjs";
+import {InputText} from "primeng/inputtext";
+import {Dialog} from "primeng/dialog";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-settings',
@@ -27,30 +31,28 @@ import {InputGroupAddon} from "primeng/inputgroupaddon";
     CheckboxContainerComponent,
     FloatLabel,
     InputGroup,
-    InputGroupAddon
+    InputGroupAddon,
+    InputText,
+    Dialog,
+    NgClass
   ]
 })
+
 export class SettingsComponent implements OnInit {
+
+  private readonly emailRegex = "[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*";
+  private readonly singleEmailRegex = new RegExp(`^${this.emailRegex}$`);
+  private readonly oneOrMoreMailRegex = new RegExp(`^(${this.emailRegex})(?:,(${this.emailRegex}))*$`);
+  private readonly twoOrMoreMailRegex = new RegExp(`^(${this.emailRegex})(?:,(${this.emailRegex}))+$`);
 
   private readonly settingsService = inject(SettingsService);
   private readonly alertService = inject(AlertService);
+  protected readonly SettingType = SettingType;
 
-  private originalCurrentFormYear!: number;
-  protected currentFormYear!: number;
+  protected settingsForm!: settingFormType;
 
-  private originalCurrentYear!: number;
-  protected currentYear!: number;
-
-  private originalFormIsOpen!: boolean;
-  protected formIsOpen!: boolean;
-
-  private originalMaintenanceDate!: string;
-  private maintenanceDate!: string;
-  protected dateValue!: Date;
-
-  protected settingsLoaded = false;
-  protected loading = 0;
-
+  protected loading: boolean = false;
+  protected dialogVisible: boolean = false;
 
   ngOnInit(): void {
     this.getAllSettings();
@@ -59,88 +61,83 @@ export class SettingsComponent implements OnInit {
   private getAllSettings(): void {
     this.settingsService.getAll().subscribe({
       next: settings => {
-        settings.forEach(setting => this.setSettingValue(setting));
-        this.settingsLoaded = true;
+        this.settingsForm = settings.reduce((acc, setting) => {
+          const value = this.getSettingValue(setting);
+          acc[setting.name] = {
+            currentValue: value,
+            originalValue: value,
+            valueType: setting.type
+          };
+          return acc;
+        }, {} as settingFormType);
       }
     });
   }
 
-  private setSettingValue(setting: Setting): void {
-    switch (setting.name) {
-      case SettingType.CURRENT_FORM_YEAR:
-        this.setCurrentFormYearValue(setting);
-        break;
-      case SettingType.FORM_IS_OPEN:
-        this.setFormIsOpenValue(setting);
-        break;
-      case SettingType.CURRENT_YEAR:
-        this.setCurrentYearValue(setting);
-        break;
-      case SettingType.MAINTENANCE:
-        this.setCurrentMaintenance(setting);
-        break;
-    }
-  }
-
-  private setCurrentFormYearValue(setting: Setting): void {
-    this.currentFormYear = +setting.value - 2000;
-    this.originalCurrentFormYear = this.currentFormYear;
-  }
-
-  private setFormIsOpenValue(setting: Setting): void {
-    this.formIsOpen = setting.value == "1";
-    this.originalFormIsOpen = this.formIsOpen;
-  }
-
-  private setCurrentYearValue(setting: Setting): void {
-    this.currentYear = +setting.value - 2000;
-    this.originalCurrentYear = this.currentYear;
-  }
-
-  private setCurrentMaintenance(setting: Setting): void {
-    this.maintenanceDate = setting.value;
-    this.originalMaintenanceDate = setting.value;
-    if (setting.value != "0") this.dateValue = new Date(setting.value);
+  private getSettingValue(setting: Setting) {
+    if (setting.type == "BOOLEAN") return setting.value === "1";
+    if (setting.type == "NUMBER") return +setting.value;
+    if (setting.type == "DATE") return setting.value ? new Date(setting.value) : undefined;
+    return setting.value;
   }
 
   protected saveButtonDisabled(): boolean {
-    return this.originalCurrentFormYear === this.currentFormYear
-      && this.originalFormIsOpen === this.formIsOpen
-      && this.originalCurrentYear === this.currentYear
-      && this.originalMaintenanceDate === this.maintenanceDate;
-  }
-
-  protected clearDate(): void {
-    this.maintenanceDate = "0";
-  }
-
-  protected setDate(date: Date): void {
-    this.maintenanceDate = date.toISOString();
+    return !Object.values(this.settingsForm).some(a => a.currentValue !== a.originalValue);
   }
 
   protected saveChanges() {
-    this.updateSetting(SettingType.CURRENT_FORM_YEAR, (2000 + this.originalCurrentFormYear).toString(), (2000 + this.currentFormYear).toString());
-    this.updateSetting(SettingType.CURRENT_YEAR, (2000 + this.originalCurrentYear).toString(), (2000 + this.currentYear).toString());
-    this.updateSetting(SettingType.FORM_IS_OPEN, (+this.originalFormIsOpen).toString(), (+this.formIsOpen).toString());
-    this.updateSetting(SettingType.MAINTENANCE, this.originalMaintenanceDate, this.maintenanceDate);
+    const modifiedKeys = Object.keys(this.settingsForm)
+      .filter(k => {
+        const setting = this.settingsForm[k as SettingType];
+        return setting.originalValue !== setting.currentValue;
+      }) as Array<SettingType>;
+
+    let wrongEmails = false;
+    modifiedKeys.filter(key => key.includes("MAIL"))
+      .forEach(key => {
+        const value = this.settingsForm[key].currentValue as string;
+        if (key === "ADMINISTRATION_MAIL" && !RegExp(this.singleEmailRegex).exec(value) ||
+          key === "COMPLAINT_MAIL" && !RegExp(this.twoOrMoreMailRegex).exec(value) ||
+          !RegExp(this.oneOrMoreMailRegex).exec(value)
+        ) {
+          this.settingsForm[key].invalid = true;
+          wrongEmails = true;
+        } else {
+          this.settingsForm[key].invalid = false;
+        }
+      });
+    if (wrongEmails) {
+      this.alertService.sendBasicErrorMessage("Hay correos inválidos, revise si están bien escritos o el número permitido en el panel de ayuda");
+    } else {
+      this.updateSettings(modifiedKeys);
+    }
   }
 
-  private updateSetting(settingName: SettingType, originalSettingValue: string, settingValue: string): void {
-    if (originalSettingValue !== settingValue) {
-      this.loading += 1;
-      const settingToUpdate = {name: settingName, value: settingValue};
-      this.settingsService.update(settingToUpdate).subscribe({
-        next: setting => {
-          this.setSettingValue(setting);
-          this.alertService.sendMessage({
-            title: "Éxito al guardar",
-            message: `El ajuste "${setting.name}" se ha guardado con éxito`,
-            severity: "success"
-          });
-          this.loading -= 1;
-        },
-        error: () => this.loading -= 1
-      });
+  protected updateSettings(keys: SettingType[]) {
+    this.loading = true;
+    const updates = keys.map(key => this.settingsService.update(key, this.settingsForm[key].currentValue));
+
+    forkJoin(updates).subscribe({
+      next: updatedSettings => {
+        this.alertService.sendBasicSuccessMessage(this.getObservableMessage(updatedSettings));
+        updatedSettings.forEach(setting => {
+          const settingForm = this.settingsForm[setting.name];
+          const settingValue = this.getSettingValue(setting);
+          settingForm.originalValue = settingValue;
+          settingForm.currentValue = settingValue;
+        });
+        this.loading = false;
+      },
+      error: () => {
+        this.alertService.sendBasicErrorMessage("Error al guardar los ajustes. Recargue la página o avise a algún informático");
+      }
+    });
+  }
+
+  private getObservableMessage(settings: Setting[]) {
+    if (settings.length > 1) {
+      return `Los ajustes "${settings.map(s => s.name).join(', ')}" se han guardado con éxito`;
     }
+    return `El ajuste "${settings[0].name}" se ha guardado con éxito`;
   }
 }

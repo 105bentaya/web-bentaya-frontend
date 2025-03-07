@@ -1,22 +1,21 @@
 <div class="container">
   <h1>Ajustes</h1>
-  @if (settingsLoaded) {
+  @if (settingsForm) {
     <div class="d-flex flex-column gap-3">
       <h2>Ajustes generales</h2>
       <p-floatlabel variant="on">
         <p-inputgroup>
           <p-inputgroup-addon>
-            <span>{{ currentYear - 1 + 2000 }}/</span>
+            <span>{{ settingsForm[SettingType.CURRENT_YEAR].currentValue - 1 }}/</span>
           </p-inputgroup-addon>
           <p-inputNumber
             id="current-year"
             class="w-100"
-            [(ngModel)]="currentYear"
+            [(ngModel)]="settingsForm[SettingType.CURRENT_YEAR].currentValue"
             mode="decimal"
             [useGrouping]="false"
             [allowEmpty]="false"
-            [min]="23"
-            [max]="99"
+            [min]="2025"
           ></p-inputNumber>
           <label for="current-year">Ronda actual</label>
         </p-inputgroup>
@@ -25,11 +24,10 @@
         <p-datePicker
           id="maintenance"
           styleClass="w-100"
-          [(ngModel)]="dateValue"
+          [(ngModel)]="settingsForm[SettingType.MAINTENANCE].currentValue"
           [showTime]="true"
           [showClear]="true"
-          (onClear)="clearDate()"
-          (onSelect)="setDate($event)"
+          (onClear)="settingsForm[SettingType.MAINTENANCE].currentValue = undefined"
           [readonlyInput]="true"
         ></p-datePicker>
         <label for="maintenance">Fecha de mantenimiento</label>
@@ -37,32 +35,101 @@
       <h2>Ajustes formulario inscripción</h2>
       <app-checkbox-container label="Abrir formulario de preinscripción">
         <p-checkbox
-          [(ngModel)]="formIsOpen"
+          [(ngModel)]="settingsForm[SettingType.FORM_IS_OPEN].currentValue"
           [binary]="true"
         ></p-checkbox>
       </app-checkbox-container>
       <p-floatlabel variant="on">
         <p-inputgroup>
           <p-inputgroup-addon>
-            <span>{{ currentFormYear - 1 + 2000 }}/</span>
+            <span>{{ settingsForm[SettingType.CURRENT_FORM_YEAR].currentValue - 1 }}/</span>
           </p-inputgroup-addon>
           <p-inputNumber
             class="w-100"
             [allowEmpty]="false"
             id="inscription-year"
-            [(ngModel)]="currentFormYear"
+            [(ngModel)]="settingsForm[SettingType.CURRENT_FORM_YEAR].currentValue"
             mode="decimal"
             [useGrouping]="false"
-            [min]="22"
-            [max]="99"
+            [min]="2025"
           ></p-inputNumber>
           <label for="inscription-year">Ronda de la inscripciones</label>
         </p-inputgroup>
       </p-floatlabel>
+      <h2>
+        Ajustes de correos
+        <i class="pi pi-question-circle fs-5 align-middle cursor-pointer" (click)="dialogVisible = true"></i>
+      </h2>
+      <p-floatlabel variant="on">
+        <label for="adminMail">Correo de administración</label>
+        <input
+          maxlength="4095"
+          [(ngModel)]="settingsForm[SettingType.ADMINISTRATION_MAIL].currentValue"
+          class="w-100"
+          pInputText
+          id="adminMail"
+          [ngClass]="{'ng-invalid ng-dirty': settingsForm[SettingType.ADMINISTRATION_MAIL].invalid}"
+        >
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <label for="bookingMail">Correos de centros scout</label>
+        <input
+          maxlength="4095"
+          [(ngModel)]="settingsForm[SettingType.BOOKING_MAIL].currentValue"
+          class="w-100"
+          pInputText
+          id="bookingMail"
+          [ngClass]="{'ng-invalid ng-dirty': settingsForm[SettingType.BOOKING_MAIL].invalid}"
+        >
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <label for="contactMail">Correos de contacto</label>
+        <input
+          maxlength="4095"
+          [(ngModel)]="settingsForm[SettingType.CONTACT_MAIL].currentValue"
+          class="w-100"
+          pInputText
+          id="contactMail"
+          [ngClass]="{'ng-invalid ng-dirty': settingsForm[SettingType.CONTACT_MAIL].invalid}"
+        >
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <label for="complaintMail">Correos de denuncia</label>
+        <input
+          maxlength="4095"
+          [(ngModel)]="settingsForm[SettingType.COMPLAINT_MAIL].currentValue"
+          class="w-100"
+          pInputText
+          id="complaintMail"
+          [ngClass]="{'ng-invalid ng-dirty': settingsForm[SettingType.COMPLAINT_MAIL].invalid}"
+        >
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <label for="formMail">Correos de formulario</label>
+        <input
+          maxlength="4095"
+          [(ngModel)]="settingsForm[SettingType.FORM_MAIL].currentValue"
+          class="w-100"
+          pInputText
+          id="formMail"
+          [ngClass]="{'ng-invalid ng-dirty': settingsForm[SettingType.FORM_MAIL].invalid}"
+        >
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <label for="treasuryMail">Correos de tesorería</label>
+        <input
+          maxlength="4095"
+          [(ngModel)]="settingsForm[SettingType.TREASURY_MAIL].currentValue"
+          class="w-100"
+          pInputText
+          id="treasuryMail"
+          [ngClass]="{'ng-invalid ng-dirty': settingsForm[SettingType.TREASURY_MAIL].invalid}"
+        >
+      </p-floatlabel>
       <app-save-buttons
         class="mt-2"
         [saveDisabled]="saveButtonDisabled()"
-        [saveLoading]="loading > 0"
+        [saveLoading]="loading"
         (onSave)="saveChanges()"
       ></app-save-buttons>
     </div>
@@ -70,3 +137,37 @@
     <app-basic-loading-info></app-basic-loading-info>
   }
 </div>
+<p-dialog [(visible)]="dialogVisible" modal [draggable]="false" header="Explicación correos" [style]="{'max-width': '700px'}">
+  <p>En estos inputs se pueden añadir uno o varios correos a los que llegan distintas notificaciones por parte de la
+    web. Para añadir varios correos, separarlos por una coma sin espacio.<br>
+    Ejemplo: correo1&#64;correo.es,correo2&#64;correo.es
+  </p>
+  <ul>
+    <li>
+      <b>Correo de administración:</b> le llegan los correos de las encuestas (en desuso) y es el correo de ayuda en los
+      correos de alta de usuario y de educanda. Añadir <b>un correo cómo máximo</b>.
+    </li>
+    <li>
+      <b>Correos de centros scouts:</b> le llegan los correos correspondientes a la gestión de los centros scouts, como
+      reservas, cancelaciones, etc.
+    </li>
+    <li>
+      <b>Correos de contacto:</b> le llegan los correos de los formularios de contacto y colaboración.
+    </li>
+    <li>
+      <b>Correos de denuncia:</b> correos a los cuales llegan las denuncias hechas por el canal de denuncias. Poner como
+      <b>mínimo dos correos gestionados por personas distintas</b>.
+    </li>
+    <li>
+      <b>Correos de formulario:</b> le llegan los correos correspondientes a la gestión de preinscripciones
+      (asignaciones rechazadas por parte de los scouters) y los nuevos voluntarios.
+    </li>
+    <li>
+      <b>Correos de tesorería:</b> los correos de las donaciones.
+    </li>
+  </ul>
+  <p>
+    En el caso que se especifiquen varios correos electrónicos, se tomará el primero como el principal, y será el que
+    se muestre a los usuarios a la hora de resolver dudas.
+  </p>
+</p-dialog>

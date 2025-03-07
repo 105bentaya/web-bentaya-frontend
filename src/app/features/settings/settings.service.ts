@@ -20,7 +20,7 @@ export class SettingsService {
     return this.http.get<Setting>(`${this.settingsUrl}/get/${name}`);
   }
 
-  update(setting: Setting): Observable<Setting> {
-    return this.http.put<Setting>(`${this.settingsUrl}/${setting.name}`, setting.value);
+  update(settingName: SettingType, settingValue: any): Observable<Setting> {
+    return this.http.put<Setting>(`${this.settingsUrl}/${settingName}`, {settingValue});
   }
 }

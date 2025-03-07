@@ -159,6 +159,12 @@ p-dynamicdialog > .p-dialog-mask {
   margin-right: 0.5rem;
 }
 
+//p-inputgroup con un addon borra el border radius del lado que no hay cuadrado, ver settings
+.p-inputgroup > .p-inputwrapper > .p-component {
+  border-top-right-radius: var(--p-inputtext-border-radius);
+  border-bottom-right-radius: var(--p-inputtext-border-radius);
+}
+
 /*
  blue inputnumber button
 .p-inputnumber-button {

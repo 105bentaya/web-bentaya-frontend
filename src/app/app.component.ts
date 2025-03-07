@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
 
   private checkForMaintenance() {
     this.settingsService.getByName(SettingType.MAINTENANCE).subscribe(
-      result => result.value !== "0" ? this.addMaintenanceMessage(new Date(result.value)) : noop()
+      result => result.value ? this.addMaintenanceMessage(new Date(result.value)) : noop()
     );
   }
 
