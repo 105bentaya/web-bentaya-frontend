@@ -45,7 +45,7 @@
     ></p-steps>
     <div>
       <div class="step-form-title">{{ steps[formHelper.currentPage].label }}</div>
-      <form [formGroup]="formHelper.form" (submit)="sendForm()" class="form-container">
+      <form [formGroup]="formHelper.form" class="form-container">
         @switch (formHelper.currentPage) {
           @case (0) {
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
@@ -370,6 +370,7 @@
       <app-large-form-buttons
         [form]="formHelper"
         [loading]="loading"
+        (onSubmit)="sendForm()"
       ></app-large-form-buttons>
     </div>
   }

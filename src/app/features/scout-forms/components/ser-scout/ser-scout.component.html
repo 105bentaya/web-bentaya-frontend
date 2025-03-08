@@ -14,7 +14,7 @@
       Rellénalo y te añadiremos en nuestra lista de espera para ponernos en contacto contigo.
     </p>
     <p-steps class="steps-no-label" id="form-steps" [model]="steps" [activeIndex]="preScoutForm.currentPage"></p-steps>
-    <form [formGroup]="preScoutForm.form" (submit)="sendForm()" class="form-container">
+    <form [formGroup]="preScoutForm.form" class="form-container">
       @if (preScoutForm.currentPage >= 0) {
         <div class="step-form-title">{{ steps[preScoutForm.currentPage].label }}</div>
       }
@@ -490,6 +490,7 @@
       [form]="preScoutForm"
       [loading]="loading"
       [showPrevAtFirstPage]="true"
+      (onSubmit)="sendForm()"
     ></app-large-form-buttons>
   }
 </div>
