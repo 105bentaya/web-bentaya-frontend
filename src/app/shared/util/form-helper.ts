@@ -47,7 +47,7 @@ export class FormHelper {
       if (valid) {
         document.getElementById("form-steps")?.scrollIntoView();
         this.currentPage++;
-        if (this.currentPage == this.pages.length) this.onLastPage();
+        if (this.currentPage == this.pages.length - 1) this.onLastPage();
       }
     });
   }
