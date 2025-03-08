@@ -67,6 +67,7 @@ export class SerScoutTableComponent implements OnInit {
   protected excelLoading = false;
   protected multiSelectStatuses!: { id: number | null, name: string }[];
   protected currentYear!: number;
+  protected currentYearIndex: number = 0;
   private ref!: DynamicDialogRef;
   @ViewChild('tab') table!: Table;
 
@@ -99,7 +100,7 @@ export class SerScoutTableComponent implements OnInit {
     preScouts.forEach(preScout => years.add(preScout.inscriptionYear!));
     const yearList = [...years].sort((n1, n2) => n2 - n1);
     this.yearList = yearList.map(year => ({label: `RS ${year - 1}/${year - 2000}`, year: year}));
-    this.filterByYear(this.yearList[0].year);
+    this.filterByYear(this.yearList[this.currentYearIndex].year);
   }
 
   protected exportExcelScout() {

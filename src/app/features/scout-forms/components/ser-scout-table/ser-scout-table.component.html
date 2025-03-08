@@ -8,7 +8,7 @@
   @if (yearList && yearList.length < 1) {
     No hay preinscripciones
   }
-  <p-tabs [value]="0" scrollable>
+  <p-tabs [value]="currentYearIndex" scrollable>
     <p-tablist>
       @for (year of yearList; track $index) {
         <p-tab [value]="$index" (click)="filterByYear(year.year)">{{ year.label }}</p-tab>
@@ -76,6 +76,7 @@
       <tr>
         <th>
           <input
+            class="w-100"
             (input)="tab.filter($any($event.target).value, 'id', 'name-surname-filter')"
             pInputText
             placeholder="ID o nombre"
@@ -102,8 +103,8 @@
         <th></th>
         <th>
           <p-multiSelect
-            (onChange)="tab.filter($event.value, 'status', 'in')"
-            (onClear)="tab.filter(null, 'status', 'in')"
+            (onChange)="tab.filter($event.value, 'assignation.status', 'in')"
+            (onClear)="tab.filter(null, 'assignation.status', 'in')"
             [options]="multiSelectStatuses"
             [showHeader]="false"
             [autofocusFilter]="false"
