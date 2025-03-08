@@ -241,7 +241,8 @@ export class CalendarComponent implements OnInit {
   private checkQueryParams() {
     this.route.queryParams.subscribe(params => {
       const eventId = params['actividad'];
-      if (eventId) this.openInfoDialog(eventId).onClose.subscribe(() => this.router.navigate([], {replaceUrl: true}));
+      if (eventId) this.openInfoDialog(eventId);
+      this.router.navigate([], {replaceUrl: true});
     });
   }
 
