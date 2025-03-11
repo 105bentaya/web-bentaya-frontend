@@ -20,7 +20,9 @@ export function authInterceptor(request: HttpRequest<any>, next: HttpHandlerFn):
   return next(request).pipe(
     tap(response => responseAuthIsExpired(response) ? authService.logout() : noop()),
     catchError(error => {
-      if (error.error?.[authException]) {
+      if (error.status === 503) {
+        alertService.sendBasicErrorMessage("La página web no está disponible en este momento, vuelva a intentarlo en un rato");
+      } else if (error.error?.[authException]) {
         alertService.sendBasicErrorMessage(error.error[authException]);
         authService.logout();
         if (!request.url.endsWith(AuthService.userInfoUrl)) {
