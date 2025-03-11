@@ -150,7 +150,7 @@
                       chooseLabel="Subir"
                       [multiple]="true"
                       accept=".pdf"
-                      [maxFileSize]="1048576"
+                      [maxFileSize]="maxFileUploadByteSize"
                       (uploadHandler)="uploadFiles($event, booking)"
                       [customUpload]="true"
                       invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
@@ -168,17 +168,17 @@
                           @if (booking.userConfirmedDocuments) {
                             Sus documentos están siendo revisados. Cuando finalice la revisión le informaremos de si su reserva ha sido aceptada o si ha habido algún error en los documentos para que pueda corregirlos.
                           } @else {
-                            Suba aquí todos los archivos en formato <b>pdf</b>. El tamaño máximo de cada archivo es de
-                            <b>1MB</b>.<br>
-                            Una vez los haya subido
-                            <b>todos</b>, haga click en el botón de confirmar para que podamos seguir con el proceso.
+                            Suba aquí todos los archivos en formato <b>pdf</b>. Una vez los haya subido
+                            <b>todos</b>, haga click en el botón de 'Confirmar Documentos' para que podamos seguir con el proceso.
                           }
                         </div>
                       </ng-template>
-                      <ng-template pTemplate="file"></ng-template>
                       <ng-template pTemplate="content" let-uploaderFiles>
                         @if (uploaderFiles.length > 0) {
-                          Subiendo <i class="pi pi-spinner pi-spin ms-1"></i>
+                          <div>
+                            <span>Subiendo</span>
+                            <i class="pi pi-spinner pi-spin ms-1"></i>
+                          </div>
                           <hr>
                         }
                         <div>{{ files.length > 0 ? 'Archivos subidos:' : 'Aún no ha subido archivos' }}</div>
@@ -210,7 +210,7 @@
                               @if (!booking.userConfirmedDocuments) {
                                 <app-table-icon-button
                                   icon="pi pi-trash"
-                                  class="p-button-danger"
+                                  severity="danger"
                                   [disabled]="loading"
                                   (click)="deleteFile(file)"
                                   title="Borrar"

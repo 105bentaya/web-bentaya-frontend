@@ -27,6 +27,7 @@ import {Button} from "primeng/button";
 import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../constant/confirm-messages.constants";
 import {TabsModule} from "primeng/tabs";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {maxFileUploadByteSize} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-booking-follow-up',
@@ -57,6 +58,8 @@ export class BookingFollowUpComponent implements OnInit {
   private readonly alertService = inject(AlertService);
   private readonly dialogService = inject(DynamicDialogService);
   private readonly confirmationService = inject(ConfirmationService);
+
+  protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
 
   @ViewChild('uploader') private readonly uploader!: FileUpload;
   @ViewChild('incidentsUploader') private readonly incidentUploader!: FileUpload;
