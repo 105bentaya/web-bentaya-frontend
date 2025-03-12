@@ -1,12 +1,12 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ConfirmationService} from "primeng/api";
-import {FormTextAreaComponent} from '../../../../shared/components/form-text-area/form-text-area.component';
+import {FormTextAreaComponent} from '../../../../../shared/components/form-text-area/form-text-area.component';
 import {FormsModule} from '@angular/forms';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {NgClass} from '@angular/common';
 import {FloatLabelModule} from "primeng/floatlabel";
-import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
+import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
 
 @Component({
   selector: 'app-booking-status-update',

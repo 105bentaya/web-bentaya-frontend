@@ -1,20 +1,20 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {
   BookingFormCenterSelectionComponent
-} from "../booking-form-center-selection/booking-form-center-selection.component";
-import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
+} from "../../booking-form-center-selection/booking-form-center-selection.component";
+import {FormTextAreaComponent} from "../../../../../shared/components/form-text-area/form-text-area.component";
 import {CheckboxModule} from "primeng/checkbox";
-import {FormHelper} from "../../../../shared/util/form-helper";
+import {FormHelper} from "../../../../../shared/util/form-helper";
 import {FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
-import {OwnBookingForm} from "../../model/own-booking-form.model";
+import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
+import {OwnBookingForm} from "../../../model/own-booking-form.model";
 import {DynamicDialogRef} from "primeng/dynamicdialog";
-import {BookingService} from "../../service/booking.service";
-import {AlertService} from "../../../../shared/services/alert-service.service";
+import {BookingService} from "../../../service/booking.service";
+import {AlertService} from "../../../../../shared/services/alert-service.service";
 import {FloatLabel} from "primeng/floatlabel";
 import {
   CheckboxContainerComponent
-} from "../../../../shared/components/checkbox-container/checkbox-container.component";
+} from "../../../../../shared/components/checkbox-container/checkbox-container.component";
 
 @Component({
   selector: 'app-own-booking-form',

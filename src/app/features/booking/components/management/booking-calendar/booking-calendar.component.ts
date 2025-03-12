@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {CalendarOptions, EventClickArg} from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import {Status} from "../../constant/status.constant";
-import {BookingDate} from "../../model/booking-date.model";
+import {Status} from "../../../constant/status.constant";
+import {BookingDate} from "../../../model/booking-date.model";
 import {FullCalendarModule} from '@fullcalendar/angular';
 
 @Component({
@@ -12,6 +12,12 @@ import {FullCalendarModule} from '@fullcalendar/angular';
   imports: [FullCalendarModule]
 })
 export class BookingCalendarComponent implements OnChanges {
+
+  @Input() dateRanges: BookingDate[] = [];
+  @Input() currentReservationId!: number;
+  @Input() enableEventClick: boolean = true;
+  @Input() calendarDate!: Date;
+  @Output() changeId = new EventEmitter<number>();
 
   protected options: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -26,12 +32,6 @@ export class BookingCalendarComponent implements OnChanges {
     eventOrder: 'priority',
     eventClick: (e) => this.onEventClick(e)
   };
-
-  @Input() dateRanges: BookingDate[] = [];
-  @Input() currentReservationId!: number;
-  @Input() enableEventClick: boolean = true;
-  @Input() calendarDate!: Date;
-  @Output() changeId = new EventEmitter<number>();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['dateRanges'] && this.dateRanges) {

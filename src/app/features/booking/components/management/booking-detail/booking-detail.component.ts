@@ -1,25 +1,25 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {BookingService} from "../../service/booking.service";
-import {Booking} from "../../model/booking.model";
-import {centerIsAlwaysExclusive, documents} from "../../constant/scout-center.constant";
-import {Status} from "../../constant/status.constant";
-import {AlertService} from "../../../../shared/services/alert-service.service";
+import {BookingService} from "../../../service/booking.service";
+import {Booking} from "../../../model/booking.model";
+import {centerIsAlwaysExclusive, documents} from "../../../constant/scout-center.constant";
+import {Status} from "../../../constant/status.constant";
+import {AlertService} from "../../../../../shared/services/alert-service.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
-import {ScoutCenterStatusPipe} from "../../pipe/scout-center-status.pipe";
-import {BookingDocument, DocumentStatus} from "../../model/booking-document.model";
+import {ScoutCenterStatusPipe} from "../../../pipe/scout-center-status.pipe";
+import {BookingDocument, DocumentStatus} from "../../../model/booking-document.model";
 import {saveAs} from "file-saver";
 import {ConfirmationService} from "primeng/api";
 import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe} from "@angular/common";
-import {ScoutCenterPipe} from "../../pipe/scout-center.pipe";
+import {ScoutCenterPipe} from "../../../pipe/scout-center.pipe";
 import {DividerModule} from "primeng/divider";
-import {DocumentStatusPipe} from "../../pipe/dcoument-status.pipe";
+import {DocumentStatusPipe} from "../../../pipe/dcoument-status.pipe";
 import {
   TableIconButtonComponent
-} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+} from "../../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DialogModule} from "primeng/dialog";
-import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-booking-detail',

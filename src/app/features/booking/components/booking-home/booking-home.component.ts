@@ -8,16 +8,16 @@ import {FlexCardComponent} from '../../../../shared/components/flex-card/flex-ca
 import {RouterLink} from '@angular/router';
 
 @Component({
-  selector: 'app-booking-menu',
-  templateUrl: './booking-menu.component.html',
-  styleUrls: ['./booking-menu.component.scss'],
+  selector: 'app-booking-home',
+  templateUrl: './booking-home.component.html',
+  styleUrls: ['./booking-home.component.scss'],
   imports: [
     RouterLink,
     FlexCardComponent,
     BookingInformationComponent
   ]
 })
-export class BookingMenuComponent {
+export class BookingHomeComponent {
 
   protected selectedOption = 0;
   protected colors = ["#ED5565", "#f89853", "#2ECC71", "#AC92EC"];

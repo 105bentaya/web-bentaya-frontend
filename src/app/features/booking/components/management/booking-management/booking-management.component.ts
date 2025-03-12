@@ -1,10 +1,10 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {ScoutCenters} from "../../constant/scout-center.constant";
-import {BookingService} from "../../service/booking.service";
-import {Booking} from "../../model/booking.model";
-import {ScoutCenterStatusesValues} from "../../constant/status.constant";
-import {ScoutCenterStatusPipe} from '../../pipe/scout-center-status.pipe';
-import {ScoutCenterPipe} from '../../pipe/scout-center.pipe';
+import {ScoutCenters} from "../../../constant/scout-center.constant";
+import {BookingService} from "../../../service/booking.service";
+import {Booking} from "../../../model/booking.model";
+import {ScoutCenterStatusesValues} from "../../../constant/status.constant";
+import {ScoutCenterStatusPipe} from '../../../pipe/scout-center-status.pipe';
+import {ScoutCenterPipe} from '../../../pipe/scout-center.pipe';
 import {RouterLink} from '@angular/router';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {TableModule} from 'primeng/table';
@@ -14,7 +14,7 @@ import {DialogService} from "primeng/dynamicdialog";
 import {OwnBookingFormComponent} from "../own-booking-form/own-booking-form.component";
 import {noop} from "rxjs";
 import {TabsModule} from "primeng/tabs";
-import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-booking-management',

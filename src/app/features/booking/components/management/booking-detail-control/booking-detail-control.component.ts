@@ -1,16 +1,16 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
+import {BasicLoadingInfoComponent} from "../../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.component";
-import {BookingService} from "../../service/booking.service";
-import {Booking} from "../../model/booking.model";
-import {ScoutCenter} from "../../constant/scout-center.constant";
-import {BookingDate} from "../../model/booking-date.model";
+import {BookingService} from "../../../service/booking.service";
+import {Booking} from "../../../model/booking.model";
+import {ScoutCenter} from "../../../constant/scout-center.constant";
+import {BookingDate} from "../../../model/booking-date.model";
 import {BookingDetailComponent} from "../booking-detail/booking-detail.component";
 import {OwnBookingDetailComponent} from "../own-booking-detail/own-booking-detail.component";
 import {
   GeneralAButtonComponent
-} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
+} from "../../../../../shared/components/buttons/general-a-button/general-a-button.component";
 
 @Component({
   selector: 'app-booking-detail-control',

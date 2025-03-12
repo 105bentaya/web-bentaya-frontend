@@ -8,7 +8,7 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
 import {saveAs} from "file-saver";
 import {documents, ScoutCentersInfo} from "../../constant/scout-center.constant";
 import {Status} from "../../constant/status.constant";
-import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
+import {BookingStatusUpdateComponent} from "../management/booking-status-update/booking-status-update.component";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ConfirmationService} from "primeng/api";
 import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";

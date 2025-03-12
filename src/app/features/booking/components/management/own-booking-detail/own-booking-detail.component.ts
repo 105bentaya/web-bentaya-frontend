@@ -1,15 +1,15 @@
 import {Component, inject, Input} from '@angular/core';
-import {BookingService} from "../../service/booking.service";
+import {BookingService} from "../../../service/booking.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {ScoutCenterStatusPipe} from "../../pipe/scout-center-status.pipe";
-import {Booking} from "../../model/booking.model";
+import {ScoutCenterStatusPipe} from "../../../pipe/scout-center-status.pipe";
+import {Booking} from "../../../model/booking.model";
 import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {DialogModule} from "primeng/dialog";
 import {DividerModule} from "primeng/divider";
-import {ScoutCenterPipe} from "../../pipe/scout-center.pipe";
+import {ScoutCenterPipe} from "../../../pipe/scout-center.pipe";
 import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
-import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 
 @Component({
   selector: 'app-own-booking-detail',

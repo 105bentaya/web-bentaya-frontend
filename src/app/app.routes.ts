@@ -251,7 +251,7 @@ const Booking: Route[] = [
   },
   {
     path: "informacion",
-    loadComponent: () => import('./features/booking/components/booking-menu/booking-menu.component').then(c => c.BookingMenuComponent)
+    loadComponent: () => import('./features/booking/components/booking-home/booking-home.component').then(c => c.BookingHomeComponent)
   },
   {
     path: "reserva",
@@ -265,13 +265,13 @@ const Booking: Route[] = [
   },
   {
     path: "gestion",
-    loadComponent: () => import('./features/booking/components/booking-management/booking-management.component').then(c => c.BookingManagementComponent),
+    loadComponent: () => import('./features/booking/components/management/booking-management/booking-management.component').then(c => c.BookingManagementComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.SCOUT_CENTER_MANAGER]}
   },
   {
     path: "gestion/:bookingId",
-    loadComponent: () => import('./features/booking/components/booking-detail-control/booking-detail-control.component').then(c => c.BookingDetailControlComponent),
+    loadComponent: () => import('./features/booking/components/management/booking-detail-control/booking-detail-control.component').then(c => c.BookingDetailControlComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.SCOUT_CENTER_MANAGER]}
   }
