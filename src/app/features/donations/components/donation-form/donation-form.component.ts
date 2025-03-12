@@ -156,9 +156,9 @@ export class DonationFormComponent implements OnInit {
     };
     this.donationsService.getNewDonationInfo(donationId, urls).subscribe({
       next: data => {
-        this.signatureVersion.nativeElement.value = data.ds_SignatureVersion;
-        this.parameters.nativeElement.value = data.ds_MerchantParameters;
-        this.signature.nativeElement.value = data.ds_Signature;
+        this.signatureVersion.nativeElement.value = data.Ds_SignatureVersion;
+        this.parameters.nativeElement.value = data.Ds_MerchantParameters;
+        this.signature.nativeElement.value = data.Ds_Signature;
         this.tpvForm.nativeElement.submit();
       },
       error: () => this.loading = false

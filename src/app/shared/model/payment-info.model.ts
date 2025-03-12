@@ -1,5 +1,5 @@
 export interface PaymentInfo {
-  ds_SignatureVersion: string;
-  ds_MerchantParameters: string;
-  ds_Signature: string;
+  Ds_SignatureVersion: string;
+  Ds_MerchantParameters: string;
+  Ds_Signature: string;
 }
