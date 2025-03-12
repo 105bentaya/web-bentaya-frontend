@@ -56,6 +56,11 @@
 
   --p-card-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.3);
 
+  --p-selectbutton-border-radius: var(--p-form-field-border-radius);
+  --p-togglebutton-border-color: var(--p-form-field-border-color);
+  --p-togglebutton-checked-color: var(--p-highlight-color);
+  --p-togglebutton-hover-background: var(--p-surface-100);
+
   .p-drawer-footer {
     padding-top: 0;
   }

@@ -54,11 +54,16 @@ export class AppComponent implements OnInit {
 
   private checkIfRouteIsProtected() {
     let route = this.activatedRoute;
+    let routeIsProtected = false;
     while (route.firstChild) {
+      if (route.routeConfig?.canActivate) {
+        routeIsProtected = true;
+        break;
+      }
       route = route.firstChild;
     }
     const routeConfig = route.routeConfig;
-    this.routeIsProtected = !!routeConfig?.canActivate;
+    this.routeIsProtected = routeIsProtected || !!routeConfig?.canActivate;
     this.routeIsLogin = this.routeIsNotAuthGuard(routeConfig?.path);
   }
 

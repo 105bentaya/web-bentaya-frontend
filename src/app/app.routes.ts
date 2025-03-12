@@ -11,6 +11,13 @@ import {HistoriaComponent} from "./web-pages/historia/historia.component";
 import {MisionVisionValoresComponent} from "./web-pages/mision-vision-valores/mision-vision-valores.component";
 import {ReconocimientosComponent} from "./web-pages/reconocimientos/reconocimientos.component";
 import {UserRole} from "./features/users/models/role.model";
+import {
+  PendingBookingsComponent
+} from "./features/booking/components/management/pending-bookings/pending-bookings.component";
+import {
+  BookingCalendarComponent
+} from "./features/booking/components/management/booking-calendar/booking-calendar.component";
+import {BookingListComponent} from "./features/booking/components/management/booking-list/booking-list.component";
 
 export const routes: Routes = [
   {
@@ -265,12 +272,26 @@ const Booking: Route[] = [
   },
   {
     path: "gestion",
-    loadComponent: () => import('./features/booking/components/management/booking-management/booking-management.component').then(c => c.BookingManagementComponent),
+    loadComponent: () => import('./features/booking/components/management/booking-management-menu/booking-management-menu.component').then(c => c.BookingManagementMenuComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SCOUT_CENTER_MANAGER]}
+    data: {roles: [UserRole.SCOUT_CENTER_MANAGER]},
+    children: [
+      {
+        path: 'pendientes',
+        component: PendingBookingsComponent
+      },
+      {
+        path: 'calendario',
+        component: BookingCalendarComponent
+      },
+      {
+        path: 'lista',
+        component: BookingListComponent
+      }
+    ]
   },
   {
-    path: "gestion/:bookingId",
+    path: "gestion/reserva/:bookingId",
     loadComponent: () => import('./features/booking/components/management/booking-detail-control/booking-detail-control.component').then(c => c.BookingDetailControlComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.SCOUT_CENTER_MANAGER]}

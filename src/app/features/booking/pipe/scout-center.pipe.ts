@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {ScoutCentersDropdown} from "../constant/scout-center.constant";
+import {scoutCentersDropdown} from "../constant/scout-center.constant";
 
 @Pipe({
   name: 'scoutCenter',
@@ -8,6 +8,6 @@ import {ScoutCentersDropdown} from "../constant/scout-center.constant";
 export class ScoutCenterPipe implements PipeTransform {
 
   transform(value: string): string {
-    return ScoutCentersDropdown.find(center => center.value == value)?.label || value;
+    return scoutCentersDropdown.find(center => center.value == value)?.label || value;
   }
 }

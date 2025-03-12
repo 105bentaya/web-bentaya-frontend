@@ -2,7 +2,7 @@ import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
 import {
   centerIsAlwaysExclusive,
   ScoutCenter,
-  ScoutCentersDropdown,
+  scoutCentersDropdown,
   ScoutCentersInfo
 } from "../../constant/scout-center.constant";
 import {DatePipe} from "@angular/common";
@@ -59,7 +59,7 @@ export class BookingFormCenterSelectionComponent implements OnInit {
   protected fullyOccupiedInfo: BookingInterval[] = [];
   protected occupiedInfo: BookingInterval[] = [];
   protected reservedInfo: BookingInterval[] = [];
-  protected readonly scoutCenters = ScoutCentersDropdown;
+  protected readonly scoutCenters = scoutCentersDropdown;
   private centerIsAlwaysExclusive: boolean = false;
 
   @Output() onInit = new EventEmitter<FormGroup>();

@@ -75,14 +75,14 @@ export default class FilterUtils {
       this.queryString(personNameReverseComma).includes(this.queryString(filter.toString()));
   }
 
-  public static lazyEventToFilter(event: LazyLoadEvent): Filter {
+  public static lazyEventToFilter(event: LazyLoadEvent, defaultSort?: string): Filter {
     const filter: Filter = {
       page: event.first! / event.rows!,
       countPerPage: event.rows!
     };
 
-    if (event.sortField) {
-      filter.sortedBy = event.sortField;
+    if (event.sortField || defaultSort) {
+      filter.sortedBy = event.sortField ?? defaultSort;
       filter.asc = event.sortOrder === 1;
     }
 

@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {ReservationDate} from "../model/reservation-date.model";
 import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {BookingForm} from "../model/booking-form.model";
 import {Booking} from "../model/booking.model";
@@ -11,6 +11,7 @@ import {BookingInterval} from "../model/booking-interval.model";
 import {BookingUpdateStatus} from "../model/booking-update-status.model";
 import {BookingDocument, DocumentStatus} from "../model/booking-document.model";
 import {OwnBookingForm} from "../model/own-booking-form.model";
+import {Page} from "../../../shared/model/page.model";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class BookingService {
   private readonly http = inject(HttpClient);
   private readonly bookingUrl = `${environment.apiUrl}/booking`;
 
-  getAll(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(this.bookingUrl);
+  getAll(filter: HttpParams): Observable<Page<Booking>> {
+    return this.http.get<Page<Booking>>(this.bookingUrl, {params: filter});
   }
 
   getAllByCurrentUser(): Observable<Booking[]> {

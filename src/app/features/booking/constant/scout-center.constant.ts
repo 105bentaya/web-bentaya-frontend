@@ -23,7 +23,7 @@ export const ScoutCentersInfo = {
   "PALMITAL": palmital
 };
 
-export const ScoutCentersDropdown = [
+export const scoutCentersDropdown = [
   {label: "Campamento Bentaya", value: "TERRENO"},
   {label: "Refugio Luis Martín", value: "REFUGIO_TERRENO"},
   {label: "Refugio Bentayga", value: "TEJEDA"},

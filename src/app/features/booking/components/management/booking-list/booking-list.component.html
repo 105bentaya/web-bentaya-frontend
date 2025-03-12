@@ -1,0 +1,128 @@
+<p-table
+  #tab
+  showGridlines
+  [value]="bookings"
+  [loading]="loading"
+  [lazy]="true"
+  (onLazyLoad)="loadBookingWithFilter($event)"
+  [totalRecords]="totalRecords"
+  [paginator]="true"
+  [rows]="25"
+  [rowsPerPageOptions]="[5,10,25,50]"
+  responsiveLayout="scroll"
+  selectionMode="single"
+  [filters]="{scoutCenters: {value: scoutCenterFilter}, statuses: {value: statusFilter}}"
+  [sortOrder]="-1"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th class="text-center w-min" pSortableColumn="id">
+        Nº
+      </th>
+      <th>Entidad</th>
+      <th>CIF</th>
+      <th>Centro</th>
+      <th>Estado</th>
+      <th pSortableColumn="startDate">
+        Fechas
+        <p-sortIcon field="startDate"></p-sortIcon>
+      </th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>
+        <input
+          pInputText
+          class="w-100"
+          placeholder="Filtrar"
+          type="text"
+          (input)="tab.filter($any($event.target).value, 'organizationName', 'custom')"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          class="w-100"
+          placeholder="Filtrar"
+          type="text"
+          (input)="tab.filter($any($event.target).value, 'cif', 'custom')"
+        />
+      </th>
+      <th>
+        <p-multiSelect
+          [autofocusFilter]="false"
+          [options]="centers"
+          (onChange)="tab.filter($event.value, 'scoutCenters', 'custom')"
+          (onClear)="tab.filter(null, 'scoutCenters', 'custom')"
+          [showHeader]="false"
+          appendTo="body"
+          scrollHeight="300px"
+          placeholder="Filtrar"
+          styleClass="w-100 fw-normal"
+          showClear
+          [ngModel]="scoutCenterFilter"
+        ></p-multiSelect>
+      </th>
+      <th>
+        <p-multiSelect
+          [autofocusFilter]="false"
+          [options]="statusesOptions"
+          (onChange)="tab.filter($event.value, 'statuses', 'custom')"
+          (onClear)="tab.filter(null, 'statuses', 'custom')"
+          [showHeader]="false"
+          appendTo="body"
+          scrollHeight="300px"
+          placeholder="Filtrar"
+          styleClass="w-100 fw-normal"
+          showClear
+          [ngModel]="statusFilter"
+        ></p-multiSelect>
+      </th>
+      <th>
+        <p-date-picker
+          selectionMode="range"
+          styleClass="w-100 fw-normal"
+          appendTo="body"
+          [(ngModel)]="dateRange"
+          (onClose)="filterDates();"
+          (onClear)="filterDates()"
+          readonlyInput
+          showClear
+        ></p-date-picker>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-booking>
+    <tr style="outline: none;" pSelectableRow routerLink="/centros-scout/gestion/reserva/{{booking.id}}">
+      <td class="text-center">
+        {{ booking.id }}
+      </td>
+      <td>
+        {{ booking.ownBooking ? 'Asociación Scouts 105 Bentaya' : booking.organizationName }}
+      </td>
+      <td>
+        {{ booking.cif }}
+      </td>
+      <td>
+        {{ booking.scoutCenter | scoutCenter }}
+      </td>
+      <td>
+        {{ booking.status | scoutCenterStatus }}
+      </td>
+      <td>
+        <div class="text-center w-fit">{{ booking.startDate | date:"dd/MM/yy" }} - {{ booking.endDate | date:"dd/MM/yy" }}</div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr class="bg-white">
+      <td colspan="6">
+        @if (bookings.length == 0) {
+          No hay nuevas reservas :(
+        } @else {
+          No hay resultados
+        }
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

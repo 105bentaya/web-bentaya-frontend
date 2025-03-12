@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {ScoutCenterStatusesValues} from "../constant/status.constant";
+import {scoutCenterStatusesValues} from "../constant/status.constant";
 
 @Pipe({
   name: 'scoutCenterStatus',
@@ -8,7 +8,7 @@ import {ScoutCenterStatusesValues} from "../constant/status.constant";
 export class ScoutCenterStatusPipe implements PipeTransform {
 
   transform(value: string, styleClass = false): string {
-    const status = ScoutCenterStatusesValues.find(status => status.value == value);
+    const status = scoutCenterStatusesValues.find(status => status.value == value);
     return (styleClass ? status?.styleClass : status?.label) ?? value;
   }
 }
