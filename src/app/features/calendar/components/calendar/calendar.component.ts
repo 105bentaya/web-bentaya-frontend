@@ -126,7 +126,7 @@ export class CalendarComponent implements OnInit {
       .pipe(takeUntilDestroyed())
       .subscribe(event => this.onEventAdd(event));
     this.userMenuService.expanded
-      .pipe(takeUntilDestroyed(), skip(1), delay(400))
+      .pipe(takeUntilDestroyed(), skip(1), delay(280))
       .subscribe(() => this.calendarComponent.getApi().render());
 
     this.userGroups = this.buildFilter();
