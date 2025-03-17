@@ -36,7 +36,9 @@
         </div>
       </ng-template>
       <ng-template pTemplate="selectedItems">
-        <div style="overflow: hidden; text-overflow: ellipsis;">{{ selectedInfo | scouts }}</div>
+        @if (selectedInfo) {
+          <div class="overflow-ellipsis">{{ selectedInfo | scouts }}</div>
+        }
       </ng-template>
     </p-multiSelect>
   } @else {

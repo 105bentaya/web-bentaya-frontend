@@ -128,12 +128,6 @@ p-toggle-button.no-label {
 }
 
 //fixes
-
-p-dynamicdialog > .p-dialog-mask {
-  pointer-events: auto !important;
-  animation: p-overlay-mask-enter-animation 150ms forwards !important;
-}
-
 .p-datepicker-input:has(~ timesicon) {
   padding-right: 40px;
   ~ timesicon {

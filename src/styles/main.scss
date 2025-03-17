@@ -291,3 +291,8 @@ h1, h2, h3 {
 .custom-scrollbar .p-dialog-content {
   @include custom-scrollbar(#f0f0f0, #cdcdcd)
 }
+
+.overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

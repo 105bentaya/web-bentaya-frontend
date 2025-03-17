@@ -35,7 +35,7 @@
     >
       <ng-template let-selectedIds pTemplate="selectedItems">
         @if (selectedIds) {
-          {{ selectedIds | roles:true }}
+          <div class="overflow-ellipsis">{{ selectedIds | roles:true }}</div>
         }
       </ng-template>
       <ng-template let-role pTemplate="item">
