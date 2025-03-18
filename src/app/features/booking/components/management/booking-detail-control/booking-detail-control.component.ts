@@ -49,10 +49,10 @@ export class BookingDetailControlComponent implements OnInit {
   }
 
   private getDateRanges(center: ScoutCenter) {
-    this.bookingService.getBookingDates(center).subscribe(result => this.dateRanges = result);
+    this.bookingService.getCenterBookingDates({scoutCenters: center}).subscribe(result => this.dateRanges = result);
   }
 
   protected reloadInfo(eventId: number) {
-    this.router.navigate([`/centros-scout/gestion/${eventId}`]).then();
+    this.router.navigateByUrl(`/centros-scout/gestion/reserva/${eventId}`);
   }
 }

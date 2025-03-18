@@ -9,7 +9,7 @@ import {DateUtils} from "../../../shared/util/date-utils";
 })
 export class BookingDateService {
 
-  private bookingService = inject(BookingService);
+  private readonly bookingService = inject(BookingService);
 
   private fullyOccupiedDates: Set<string> = new Set<string>();
   private occupiedDates: Set<string> = new Set<string>();

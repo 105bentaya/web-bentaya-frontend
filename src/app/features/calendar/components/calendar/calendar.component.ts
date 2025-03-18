@@ -98,11 +98,7 @@ export class CalendarComponent implements OnInit {
           }
         }
       },
-      headerToolbar: {
-        left: '',
-        center: '',
-        right: ''
-      },
+      headerToolbar: false,
       eventTimeFormat: {
         hour: '2-digit',
         minute: '2-digit'

@@ -1,3 +1,28 @@
+:root {
+  --fc-button-bg-color: var(--p-button-primary-background);
+  --fc-button-border-color: var(--p-button-primary-border-color);
+  --fc-button-text-color: var(--p-button-danger-color);
+
+  --fc-button-active-bg-color: var(--p-button-primary-active-background);
+  --fc-button-active-border-color: var(--p-button-primary-active-border-color);
+
+  --fc-button-hover-bg-color: var(--p-button-primary-hover-background);
+  --fc-button-hover-border-color: var(--p-button-primary-hover-border-color);
+}
+
+.fc .fc-button:focus, .fc .fc-button-primary:not(:disabled):active:focus {
+  outline-offset: 0;
+  outline: unset 0;
+  box-shadow: none;
+}
+
+.fc .fc-button:focus-visible {
+  outline: var(--p-button-focus-ring-width) var(--p-button-focus-ring-style) var(--p-button-primary-focus-ring-color);
+  outline-offset: var(--p-button-focus-ring-offset);
+  outline-color: var(--p-button-primary-focus-ring-color);
+  box-shadow: var(--p-button-primary-focus-ring-shadow);
+}
+
 .fc-list-empty {
   text-align: center;
 }
@@ -6,11 +31,14 @@
   margin: 5em 10px;
 }
 
-.fc {
-  .fc-toolbar.fc-header-toolbar {
-    display: none;
-  }
+.fc .fc-button {
+  border-radius: var(--p-button-border-radius);
+}
 
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 0.5rem;
+}
+.fc {
   a {
     text-decoration: none;
   }

@@ -18,6 +18,9 @@ import {
   BookingCalendarComponent
 } from "./features/booking/components/management/booking-calendar/booking-calendar.component";
 import {BookingListComponent} from "./features/booking/components/management/booking-list/booking-list.component";
+import {
+  BookingManagementCalendarComponent
+} from "./features/booking/components/management/booking-management-calendar/booking-management-calendar.component";
 
 export const routes: Routes = [
   {
@@ -277,12 +280,17 @@ const Booking: Route[] = [
     data: {roles: [UserRole.SCOUT_CENTER_MANAGER]},
     children: [
       {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'pendientes'
+      },
+      {
         path: 'pendientes',
         component: PendingBookingsComponent
       },
       {
         path: 'calendario',
-        component: BookingCalendarComponent
+        component: BookingManagementCalendarComponent
       },
       {
         path: 'lista',

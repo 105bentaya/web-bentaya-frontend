@@ -1,1 +1,7 @@
-<full-calendar [options]="options"></full-calendar>
+<div class="position-relative">
+  <full-calendar [options]="options"></full-calendar>
+  @if (loading) {
+    <div class="loading-overlay"></div>
+    <i class="pi pi-spinner pi-spin loading-spinner"></i>
+  }
+</div>

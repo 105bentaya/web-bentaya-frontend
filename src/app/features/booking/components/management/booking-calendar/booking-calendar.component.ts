@@ -14,9 +14,9 @@ import {FullCalendarModule} from '@fullcalendar/angular';
 export class BookingCalendarComponent implements OnChanges {
 
   @Input() dateRanges: BookingDate[] = [];
-  @Input() currentReservationId!: number;
-  @Input() enableEventClick: boolean = true;
+  @Input() currentReservationId: number | undefined;
   @Input() calendarDate!: Date;
+  @Input() loading = false;
   @Output() changeId = new EventEmitter<number>();
 
   protected options: CalendarOptions = {
@@ -25,6 +25,9 @@ export class BookingCalendarComponent implements OnChanges {
     height: "auto",
     locale: "es-ES",
     firstDay: 1,
+    buttonText: {
+      today: 'Hoy'
+    },
     eventTimeFormat: {
       hour: '2-digit',
       minute: '2-digit'
@@ -115,7 +118,7 @@ export class BookingCalendarComponent implements OnChanges {
   }
 
   private onEventClick(e: EventClickArg) {
-    if (this.enableEventClick && +e.event.id !== this.currentReservationId) {
+    if (+e.event.id !== this.currentReservationId) {
       this.changeId.emit(+e.event.id);
     }
   }

@@ -59,8 +59,8 @@ export class BookingService {
     return this.http.get<ReservationDate[]>(`${this.bookingUrl}/public/${center}`);
   }
 
-  getBookingDates(center: string): Observable<BookingDate[]> {
-    return this.http.get<BookingDate[]>(`${this.bookingUrl}/dates/${center}`);
+  getCenterBookingDates(filter: any): Observable<BookingDate[]> {
+    return this.http.get<BookingDate[]>(`${this.bookingUrl}/dates`, {params: new HttpParams({fromObject: filter})});
   }
 
   sendForm(form: BookingForm): Observable<void> {
