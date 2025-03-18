@@ -14,7 +14,7 @@
       [maxSelectedLabels]="10"
     >
       <ng-template let-label pTemplate="selectedItems">
-        <div style="overflow: hidden; text-overflow: ellipsis;">{{ label | join:undefined:scoutCenterPipe }}</div>
+        <div class="overflow-ellipsis">{{ label | join:undefined:scoutCenterPipe }}</div>
       </ng-template>
     </p-multi-select>
   </div>
@@ -33,7 +33,7 @@
       [maxSelectedLabels]="10"
     >
       <ng-template let-label pTemplate="selectedItems">
-        <div style="overflow: hidden; text-overflow: ellipsis;">{{ label | join:undefined:statusPipe }}</div>
+        <div class="overflow-ellipsis">{{ label | join:undefined:statusPipe }}</div>
       </ng-template>
     </p-multi-select>
   </div>

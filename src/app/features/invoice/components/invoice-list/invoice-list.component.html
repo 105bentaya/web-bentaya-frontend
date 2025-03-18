@@ -70,6 +70,7 @@
         <th scope="col">
           <input
             pInputText
+            class="w-100"
             type="text"
             (input)="dt.filter($any($event.target).value, 'issuer', 'custom')"
           />
@@ -149,7 +150,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="5">No se han encontrado facturas</td>
+        <td colspan="7">No se han encontrado facturas</td>
       </tr>
     </ng-template>
   </p-table>

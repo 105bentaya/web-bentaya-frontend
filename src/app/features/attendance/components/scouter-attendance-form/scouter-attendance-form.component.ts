@@ -4,7 +4,7 @@ import {ConfirmationService} from "../../services/confirmation.service";
 import {EventAttendanceInfo} from "../../models/event-attendance-info.model";
 import {Confirmation} from "../../models/confirmation.model";
 import FilterUtils from "../../../../shared/util/filter-utils";
-import {Subject} from "rxjs";
+import {finalize, forkJoin, tap} from "rxjs";
 import {ScoutsPipe} from '../../../../shared/pipes/scouts.pipe';
 import {FormTextAreaComponent} from '../../../../shared/components/form-text-area/form-text-area.component';
 import {SelectButtonModule} from 'primeng/selectbutton';
@@ -123,7 +123,7 @@ export class ScouterAttendanceFormComponent implements OnInit {
 
   protected onSingleSubmit(value: Confirmation) {
     this.loading = true;
-    this.updateConfirmation(value).subscribe(() => this.loading = false);
+    this.updateConfirmation(value).pipe(finalize(() => this.loading = false)).subscribe();
   }
 
   //todo improve to allow more dynamic selection, including checkbox with minus sign
@@ -155,49 +155,33 @@ export class ScouterAttendanceFormComponent implements OnInit {
   }
 
   protected onMultipleSubmit() {
-    let count = this.selectedInfo.length;
     this.loading = true;
-    this.selectedInfo.forEach(info => {
-        const confirmation: Confirmation = {
-          scoutId: info.scoutId,
-          eventId: this.eventId,
-          text: info.text,
-          attending: info.attending,
-          payed: info.payed
-        };
-        confirmation.attending = this.multipleAttending!;
-        if (this.multiplePaying === true || this.multiplePaying === false) {
-          confirmation.payed = this.multiplePaying;
-        }
-      //todo update multiple with one call
-        this.updateConfirmation(confirmation).subscribe(() => {
-          count--;
-          if (count == 0) {
-            this.loading = false;
-            this.generateGroupedInfo();
-            this.onMultipleSelect();
-          }
-        });
-      }
-    );
+    forkJoin(this.selectedInfo.map(info => {
+      const confirmation: Confirmation = {
+        scoutId: info.scoutId,
+        eventId: this.eventId,
+        text: info.text,
+        attending: info.attending,
+        payed: info.payed
+      };
+      confirmation.attending = this.multipleAttending!;
+      if (this.multiplePaying === true || this.multiplePaying === false) confirmation.payed = this.multiplePaying;
+      return this.updateConfirmation(confirmation);
+    })).pipe(finalize(() => {
+      this.loading = false;
+      this.generateGroupedInfo();
+      this.onMultipleSelect();
+    })).subscribe();
   }
 
   private updateConfirmation(confirmation: Confirmation) {
-    const subj = new Subject<void>();
-    this.confirmationService.updateByScouter(confirmation).subscribe({
-      next: value => {
+    return this.confirmationService.updateByScouter(confirmation).pipe(tap(
+      value => {
         const existingScout = this.info.find(a => a.scoutId == value.scoutId);
         existingScout!.attending = value.attending;
         existingScout!.payed = value.payed;
         existingScout!.text = value.text;
-        subj.next();
-        subj.complete();
-      },
-      error: () => {
-        subj.next();
-        subj.complete();
       }
-    });
-    return subj.asObservable();
+    ));
   }
 }

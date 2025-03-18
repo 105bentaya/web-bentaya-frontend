@@ -7,6 +7,9 @@ import {MenuItem} from "primeng/api";
 import {Drawer} from "primeng/drawer";
 import {filter} from "rxjs";
 import {NgClass} from "@angular/common";
+import {StringUtils} from "../../shared/util/string.utils";
+import {AuthService} from "../auth/services/auth.service";
+import {UserRoutesService} from "../auth/services/user-routes.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -22,15 +25,40 @@ import {NgClass} from "@angular/common";
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent implements OnInit {
+
+  private readonly router = inject(Router);
+  protected readonly authService = inject(AuthService);
+  protected readonly userRoutes = inject(UserRoutesService);
+
+  protected currentUrl = "";
+  protected sidebarVisible: boolean = false;
+
   ngOnInit(): void {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd || event instanceof NavigationSkipped)
     ).subscribe((event) => {
       this.sidebarVisible = false;
-      const url = event instanceof NavigationEnd ? event.urlAfterRedirects : event.url;
-      this.currentUrl = url.split('#')[0];
+      this.currentUrl = StringUtils.getUrlPath(event instanceof NavigationEnd ? event.urlAfterRedirects : event.url);
       this.checkForExpansion(this.items);
       this.checkForSelection(this.items);
+    });
+    this.currentUrl = StringUtils.getUrlPath(this.router.url);
+    this.checkForExpansion(this.items);
+    this.checkForSelection(this.items);
+
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      const scoutCentersItems = this.items.find(item => item.id === 'scout-centers')!.items!;
+      if (isLoggedIn) {
+        scoutCentersItems.push(
+          {
+            id: 'reservations',
+            label: "Mis Reservas",
+            routerLink: "/centros-scout/seguimiento"
+          });
+      } else {
+        const reservationsItems = scoutCentersItems.findIndex(item => item.id === 'reservations');
+        if (reservationsItems >= 0) scoutCentersItems.splice(reservationsItems, 1);
+      }
     });
   }
 
@@ -48,10 +76,6 @@ export class SidebarComponent implements OnInit {
       if (item.items) this.checkForSelection(item.items);
     });
   }
-
-  currentUrl = "";
-  sidebarVisible: boolean = false;
-  protected readonly router = inject(Router);
 
   items: MenuItem[] = [
     {
@@ -120,6 +144,7 @@ export class SidebarComponent implements OnInit {
       ]
     },
     {
+      id: 'scout-centers',
       label: "Centros Scout",
       expandWhenUrl: '/centros-scout',
       items: [
