@@ -132,6 +132,27 @@ p-toggle-button.no-label {
   top: 3px;
 }
 
+.fixed-table {
+  table {
+    table-layout: fixed;
+  }
+  .p-datatable-tbody > tr {
+    > td {
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+    }
+
+    &:last-child > td {
+      border-bottom: 0;
+    }
+  }
+}
+
+.reduce-padding-y .p-panel-content {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+
 //fixes
 .p-datepicker-input:has(~ timesicon) {
   padding-right: 40px;

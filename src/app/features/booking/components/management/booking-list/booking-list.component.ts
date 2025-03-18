@@ -14,7 +14,6 @@ import {InputText} from "primeng/inputtext";
 import {DatePicker} from "primeng/datepicker";
 import {FormsModule} from "@angular/forms";
 import {DateUtils} from "../../../../../shared/util/date-utils";
-import {HttpParams} from "@angular/common/http";
 import {castArray, pick} from "lodash";
 
 @Component({
@@ -60,7 +59,7 @@ export class BookingListComponent {
 
   protected loadBookingWithFilter(tableLazyLoadEvent: any) {
     const filter = FilterUtils.lazyEventToFilter(tableLazyLoadEvent, 'startDate');
-    this.bookingService.getAll(new HttpParams({fromObject: filter})).subscribe({
+    this.bookingService.getAll(filter).subscribe({
       next: bookingPage => {
         this.bookings = bookingPage.data;
         this.totalRecords = bookingPage.count;

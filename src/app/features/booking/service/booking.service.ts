@@ -12,6 +12,8 @@ import {BookingUpdateStatus} from "../model/booking-update-status.model";
 import {BookingDocument, DocumentStatus} from "../model/booking-document.model";
 import {OwnBookingForm} from "../model/own-booking-form.model";
 import {Page} from "../../../shared/model/page.model";
+import {Filter, PagedFilter} from "../../../shared/model/filter.model";
+import {PendingBookings} from "../model/pending-bookings.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +23,12 @@ export class BookingService {
   private readonly http = inject(HttpClient);
   private readonly bookingUrl = `${environment.apiUrl}/booking`;
 
-  getAll(filter: HttpParams): Observable<Page<Booking>> {
-    return this.http.get<Page<Booking>>(this.bookingUrl, {params: filter});
+  getAll(filter?: PagedFilter): Observable<Page<Booking>> {
+    return this.http.get<Page<Booking>>(this.bookingUrl, {params: new HttpParams({fromObject: filter})});
+  }
+
+  getAllPending(filter?: Filter): Observable<PendingBookings> {
+    return this.http.get<PendingBookings>(`${this.bookingUrl}/pending`, {params: filter});
   }
 
   getAllByCurrentUser(): Observable<Booking[]> {

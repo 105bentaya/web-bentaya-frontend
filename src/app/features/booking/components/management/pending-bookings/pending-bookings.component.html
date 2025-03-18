@@ -1,1 +1,87 @@
-<p>pending-bookings works!</p>
+<div class="mb-4">
+  <p-multi-select
+    [autofocusFilter]="false"
+    [options]="centers"
+    [showHeader]="false"
+    (onChange)="onFilterChange()"
+    (onClear)="onFilterChange()"
+    appendTo="body"
+    placeholder="Filtrar centros scout"
+    styleClass="fw-normal w-100"
+    showClear
+    [(ngModel)]="scoutCenterFilter"
+    [maxSelectedLabels]="10"
+  >
+    <ng-template let-label pTemplate="selectedItems">
+      <div class="overflow-ellipsis">{{ label | join:undefined:scoutCenterPipe }}</div>
+    </ng-template>
+  </p-multi-select>
+</div>
+@if (pendingBookings) {
+  <div class="d-flex flex-column gap-3">
+    <ng-container
+      *ngTemplateOutlet="panel; context {$implicit: {title: 'Pendientes por aceptar', bookings: pendingBookings.newBookings}}"
+    ></ng-container>
+    <ng-container
+      *ngTemplateOutlet="panel; context {$implicit: {title: 'Pendientes por confirmar', bookings: pendingBookings.acceptedBookings}}"
+    ></ng-container>
+    <ng-container
+      *ngTemplateOutlet="panel; context {$implicit: {title: 'Pendientes por realizarse', bookings: pendingBookings.confirmedBookings}}"
+    ></ng-container>
+    <ng-container
+      *ngTemplateOutlet="panel; context {$implicit: {title: 'Recientemente finalizada', bookings: pendingBookings.finishedBookings}}"
+    ></ng-container>
+  </div>
+} @else {
+  <app-basic-loading-info></app-basic-loading-info>
+}
+<ng-template #panel let-panel>
+  <p-panel styleClass="reduce-padding-y" toggleable>
+    <ng-template pTemplate="header">
+      <div class="p-panel-title">
+        {{ panel.title }}
+        @if (panel.bookings?.length > 0) {
+          ({{ panel.bookings.length }})
+        }
+      </div>
+    </ng-template>
+    <div>
+      <p-table
+        [value]="panel.bookings"
+        responsiveLayout="scroll"
+        selectionMode="single"
+        class="fixed-table"
+        [loading]="loading"
+      >
+        <ng-template pTemplate="body" let-booking>
+          <tr style="outline: none;" pSelectableRow routerLink="/centros-scout/gestion/reserva/{{booking.id}}">
+            <td class="text-center" style="width: 3rem">
+              {{ booking.id }}
+            </td>
+            <td>
+              {{ booking.ownBooking ? 'Asociación Scouts 105 Bentaya' : booking.organizationName }}
+            </td>
+            <td>
+              {{ booking.scoutCenter | scoutCenter }}
+            </td>
+            <td class="d-none d-md-table-cell text-center">
+              <div class="text-center w-fit">
+                {{ booking.startDate | date:"dd/MM/yy" }} - {{ booking.endDate | date:"dd/MM/yy" }}
+              </div>
+            </td>
+            <td class="d-none d-xl-table-cell" style="width: 8rem">
+              {{ booking.packs }} personas
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr class="bg-white">
+            <td>
+              No hay reservas {{ panel.title | lowercase }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-panel>
+</ng-template>

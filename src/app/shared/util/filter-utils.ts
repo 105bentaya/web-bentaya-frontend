@@ -1,4 +1,4 @@
-import {Filter} from "../model/filter.model";
+import {PagedFilter} from "../model/filter.model";
 import {LazyLoadEvent} from "primeng/api";
 
 export default class FilterUtils {
@@ -75,8 +75,8 @@ export default class FilterUtils {
       this.queryString(personNameReverseComma).includes(this.queryString(filter.toString()));
   }
 
-  public static lazyEventToFilter(event: LazyLoadEvent, defaultSort?: string): Filter {
-    const filter: Filter = {
+  public static lazyEventToFilter(event: LazyLoadEvent, defaultSort?: string): PagedFilter {
+    const filter: PagedFilter = {
       page: event.first! / event.rows!,
       countPerPage: event.rows!
     };

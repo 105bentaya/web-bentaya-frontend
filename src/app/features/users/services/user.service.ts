@@ -5,7 +5,7 @@ import {User} from '../models/user.model';
 import {ForgotPassword} from "../../login/components/reset-password/forgot-password.model";
 import {Page} from "../../../shared/model/page.model";
 import {environment} from "../../../../environments/environment";
-import {Filter} from "../../../shared/model/filter.model";
+import {PagedFilter} from "../../../shared/model/filter.model";
 import {UserForm} from "../models/user-form.model";
 
 @Injectable({
@@ -16,7 +16,7 @@ export class UserService {
   private readonly http = inject(HttpClient);
   private readonly userUrl = `${environment.apiUrl}/user`;
 
-  getAll(filter: Filter): Observable<Page<User>> {
+  getAll(filter: PagedFilter): Observable<Page<User>> {
     return this.http.get<Page<User>>(this.userUrl, {
       params: new HttpParams({fromObject: filter})
     });

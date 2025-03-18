@@ -4,7 +4,7 @@ import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
 import {Invoice, InvoiceData} from "./invoice.model";
 import {Page} from "../../shared/model/page.model";
-import {Filter} from "../../shared/model/filter.model";
+import {PagedFilter} from "../../shared/model/filter.model";
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +14,7 @@ export class InvoiceService {
     private readonly http = inject(HttpClient);
     private readonly invoiceUrl = `${environment.apiUrl}/invoice`;
 
-    getAll(filter: Filter): Observable<Page<Invoice>> {
+    getAll(filter: PagedFilter): Observable<Page<Invoice>> {
         return this.http.get<Page<Invoice>>(this.invoiceUrl, {
             params: new HttpParams({fromObject: filter})
         });
