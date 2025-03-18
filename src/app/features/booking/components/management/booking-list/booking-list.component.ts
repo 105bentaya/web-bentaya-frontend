@@ -15,6 +15,7 @@ import {DatePicker} from "primeng/datepicker";
 import {FormsModule} from "@angular/forms";
 import {DateUtils} from "../../../../../shared/util/date-utils";
 import {castArray, pick} from "lodash";
+import {BookingManagementService} from "../../../service/booking-management.service";
 
 @Component({
   selector: 'app-booking-list',
@@ -35,6 +36,7 @@ import {castArray, pick} from "lodash";
 export class BookingListComponent {
 
   private readonly bookingService = inject(BookingService);
+  private readonly bookingManagement = inject(BookingManagementService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -77,5 +79,9 @@ export class BookingListComponent {
     } else {
       this.table.filter(null, "filterDates", "custom");
     }
+  }
+
+  protected updateRoute() {
+    this.bookingManagement.updateLastRoute("lista", this.route.snapshot.queryParams);
   }
 }

@@ -13,6 +13,7 @@ import {JoinPipe} from "../../../../../shared/pipes/join.pipe";
 import {PrimeTemplate} from "primeng/api";
 import {ScoutCenterStatusPipe} from "../../../pipe/scout-center-status.pipe";
 import {ScoutCenterPipe} from "../../../pipe/scout-center.pipe";
+import {BookingManagementService} from "../../../service/booking-management.service";
 
 @Component({
   selector: 'app-booking-management-calendar',
@@ -29,6 +30,7 @@ import {ScoutCenterPipe} from "../../../pipe/scout-center.pipe";
 export class BookingManagementCalendarComponent implements OnInit {
 
   private readonly bookingService = inject(BookingService);
+  private readonly bookingManagement = inject(BookingManagementService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   protected readonly statusPipe = new ScoutCenterStatusPipe();
@@ -68,6 +70,7 @@ export class BookingManagementCalendarComponent implements OnInit {
   }
 
   protected navigateToDetail(id: number) {
+    this.bookingManagement.updateLastRoute("calendario", this.route.snapshot.queryParams);
     this.router.navigateByUrl(`/centros-scout/gestion/reserva/${id}`);
   }
 }

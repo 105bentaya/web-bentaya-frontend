@@ -16,6 +16,7 @@ import {
   BasicLoadingInfoComponent
 } from "../../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {finalize} from "rxjs";
+import {BookingManagementService} from "../../../service/booking-management.service";
 
 @Component({
   selector: 'app-pending-bookings',
@@ -41,6 +42,7 @@ export class PendingBookingsComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly bookingService = inject(BookingService);
+  private readonly bookingManagement = inject(BookingManagementService);
 
   protected readonly centers = scoutCentersDropdown;
   protected scoutCenterPipe = new ScoutCenterPipe();
@@ -67,5 +69,9 @@ export class PendingBookingsComponent implements OnInit {
     this.bookingService.getAllPending(omitBy({scoutCenters: this.scoutCenterFilter}, isNull))
       .pipe(finalize(() => this.loading = false))
       .subscribe(result => this.pendingBookings = result);
+  }
+
+  protected updateLastRoute() {
+    this.bookingManagement.updateLastRoute("pendientes", this.route.snapshot.queryParams);
   }
 }

@@ -54,7 +54,7 @@
         [loading]="loading"
       >
         <ng-template pTemplate="body" let-booking>
-          <tr style="outline: none;" pSelectableRow routerLink="/centros-scout/gestion/reserva/{{booking.id}}">
+          <tr style="outline: none;" pSelectableRow (click)="updateLastRoute()" routerLink="/centros-scout/gestion/reserva/{{booking.id}}">
             <td class="text-center" style="width: 3rem">
               {{ booking.id }}
             </td>

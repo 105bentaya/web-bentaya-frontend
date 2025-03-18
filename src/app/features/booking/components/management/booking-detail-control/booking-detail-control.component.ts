@@ -11,6 +11,7 @@ import {OwnBookingDetailComponent} from "../own-booking-detail/own-booking-detai
 import {
   GeneralAButtonComponent
 } from "../../../../../shared/components/buttons/general-a-button/general-a-button.component";
+import {BookingManagementService} from "../../../service/booking-management.service";
 
 @Component({
   selector: 'app-booking-detail-control',
@@ -30,6 +31,7 @@ export class BookingDetailControlComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly bookingService = inject(BookingService);
+  protected readonly bookingManagement = inject(BookingManagementService);
 
   protected id!: number;
   protected booking: Booking | undefined;
@@ -54,5 +56,9 @@ export class BookingDetailControlComponent implements OnInit {
 
   protected reloadInfo(eventId: number) {
     this.router.navigateByUrl(`/centros-scout/gestion/reserva/${eventId}`);
+  }
+
+  goBack() {
+    this.router.navigate([`/centros-scout/gestion/${this.bookingManagement.getLastRoute()}`], {queryParams: this.bookingManagement.getLastParams()});
   }
 }
