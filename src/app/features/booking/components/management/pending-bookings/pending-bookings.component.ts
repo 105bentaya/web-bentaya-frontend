@@ -17,6 +17,7 @@ import {
 } from "../../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {finalize} from "rxjs";
 import {BookingManagementService} from "../../../service/booking-management.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-pending-bookings',
@@ -53,6 +54,7 @@ export class PendingBookingsComponent implements OnInit {
 
   constructor() {
     this.scoutCenterFilter = castArray(this.route.snapshot.queryParams['scoutCenters'] ?? []);
+    this.bookingManagement.onUpdateBooking.pipe(takeUntilDestroyed()).subscribe(() => this.getBookings());
   }
 
   ngOnInit() {

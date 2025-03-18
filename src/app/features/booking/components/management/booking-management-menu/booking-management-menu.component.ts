@@ -4,6 +4,8 @@ import {Button} from 'primeng/button';
 import {DialogService} from "primeng/dynamicdialog";
 import {OwnBookingFormComponent} from "../own-booking-form/own-booking-form.component";
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
+import {BookingManagementService} from "../../../service/booking-management.service";
+import {noop} from "rxjs";
 
 @Component({
   selector: 'app-booking-management-menu',
@@ -20,6 +22,7 @@ import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialo
 export class BookingManagementMenuComponent implements OnInit {
 
   private readonly dialogService = inject(DynamicDialogService);
+  private readonly bookingManagement = inject(BookingManagementService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -37,9 +40,8 @@ export class BookingManagementMenuComponent implements OnInit {
     });
   }
 
-
   protected openOwnBookingDialog() {
     const ref = this.dialogService.openDialog(OwnBookingFormComponent, 'Añadir Reserva Propia', "medium");
-    ref.onClose.subscribe(saved => saved /*todo ? this.getBookings() : noop()*/);
+    ref.onClose.subscribe(saved => saved ? this.bookingManagement.updateBooking() : noop());
   }
 }

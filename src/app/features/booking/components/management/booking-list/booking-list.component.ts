@@ -16,6 +16,7 @@ import {FormsModule} from "@angular/forms";
 import {DateUtils} from "../../../../../shared/util/date-utils";
 import {castArray, pick} from "lodash";
 import {BookingManagementService} from "../../../service/booking-management.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-booking-list',
@@ -57,6 +58,7 @@ export class BookingListComponent {
     const filterParams = this.route.snapshot.queryParams;
     this.scoutCenterFilter = castArray(filterParams['scoutCenters'] ?? []);
     this.statusFilter = castArray(filterParams['statuses'] ?? []);
+    this.bookingManagement.onUpdateBooking.pipe(takeUntilDestroyed()).subscribe(() => this.table._filter());
   }
 
   protected loadBookingWithFilter(tableLazyLoadEvent: any) {
