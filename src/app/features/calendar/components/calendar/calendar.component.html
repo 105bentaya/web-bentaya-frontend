@@ -17,7 +17,8 @@
         offIcon="pi pi-globe"
         class="no-label"
         styleClass="squared"
-        (onChange)="pushEventsToCalendar($event.checked)"
+        [(ngModel)]="showAll"
+        (onChange)="pushEventsToCalendar()"
         title="Mostrar todos los eventos"
       ></p-toggle-button>
       </div>

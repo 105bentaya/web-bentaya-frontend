@@ -68,6 +68,7 @@ export class CalendarComponent implements OnInit {
   protected currentView: string = "dayGridMonth";
   protected isScouter: boolean = false;
   protected loading = true;
+  protected showAll = false;
   private readonly userGroups: number[];
 
   @ViewChild('calendarComponent') private readonly calendarComponent!: FullCalendarComponent;
@@ -154,9 +155,9 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  protected pushEventsToCalendar(showAll = false) {
+  protected pushEventsToCalendar() {
     this.loading = true;
-    const events = showAll ? this.events : this.events.filter(e => e.forEveryone || this.userGroups.includes(e.groupId!));
+    const events = this.showAll ? this.events : this.events.filter(e => e.forEveryone || this.userGroups.includes(e.groupId!));
     this.options.events = events.map(basicEvent => (this.generateEventObject(basicEvent)));
     this.loading = false;
   }
