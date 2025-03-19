@@ -1,7 +1,7 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
 import {Booking} from "../../../model/booking.model";
-import {centerIsAlwaysExclusive, documents} from "../../../constant/scout-center.constant";
+import {documents} from "../../../constant/scout-center.constant";
 import {Status} from "../../../constant/status.constant";
 import {AlertService} from "../../../../../shared/services/alert-service.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
@@ -12,7 +12,6 @@ import {saveAs} from "file-saver";
 import {ConfirmationService} from "primeng/api";
 import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe} from "@angular/common";
-import {ScoutCenterPipe} from "../../../pipe/scout-center.pipe";
 import {DividerModule} from "primeng/divider";
 import {DocumentStatusPipe} from "../../../pipe/dcoument-status.pipe";
 import {
@@ -28,7 +27,6 @@ import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialo
   providers: [DialogService, ScoutCenterStatusPipe, DynamicDialogService],
   imports: [
     DatePipe,
-    ScoutCenterPipe,
     CurrencyPipe,
     ScoutCenterStatusPipe,
     DividerModule,
@@ -53,7 +51,6 @@ export class BookingDetailComponent implements OnInit {
   protected readonly documents = documents;
   protected showDocuments = false;
   protected dialogVisible = false;
-  protected readonly centerIsAlwaysExclusive = centerIsAlwaysExclusive;
 
   ngOnInit(): void {
     this.getFiles(this.booking.id);

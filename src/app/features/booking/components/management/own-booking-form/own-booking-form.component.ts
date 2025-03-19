@@ -61,7 +61,7 @@ export class OwnBookingFormComponent implements OnInit {
     ownBooking.startDate = this.selectedCenterForm.startDate;
     ownBooking.endDate = this.selectedCenterForm.endDate;
     ownBooking.packs = this.selectedCenterForm.packs;
-    ownBooking.scoutCenter = this.selectedCenterForm.scoutCenter;
+    ownBooking.scoutCenterId = this.selectedCenterForm.scoutCenterId;
     this.bookingService.addOwnBooking(ownBooking).subscribe({
       next: () => {
         this.alertService.sendBasicSuccessMessage("Reserva guardada con éxito");

@@ -25,16 +25,18 @@
     En cambio, la solicitud de el Aula de la Naturaleza El Palmital ya está disponible para todo tipo de asociaciones
     educativas. Se permiten reservas hasta septiembre 2025, inclusive.
   </p>
-  <div>
-    <app-flex-card
-      [options]="scoutCenters"
-      (selectedIndexEvent)="this.selectedOption = $event"
-    ></app-flex-card>
-  </div>
-  <div class="mt-md-5">
-    <app-booking-information
-      [information]="scoutCenters[selectedOption].scoutCenter"
-      [color]="colors[selectedOption]"
-    ></app-booking-information>
-  </div>
+  @if (scoutCenters) {
+    <div>
+      <app-flex-card
+        [options]="scoutCenters"
+        (selectedIndexEvent)="this.selectedOption = $event"
+      ></app-flex-card>
+    </div>
+    <div class="mt-md-5">
+      <app-booking-information
+        [information]="scoutCenters[selectedOption].scoutCenter"
+        [color]="colors[selectedOption]"
+      ></app-booking-information>
+    </div>
+  }
 </div>

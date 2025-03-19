@@ -1,18 +1,28 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Params} from "@angular/router";
-import {Subject} from "rxjs";
+import {lastValueFrom, Subject} from "rxjs";
+import {BasicScoutCenter} from "../model/booking.model";
+import {ScoutCenterService} from "./scout-center.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingManagementService {
 
+  private scoutCenterService = inject(ScoutCenterService);
+
   private lastManagementRoute: string = "";
   private lastQueryParams?: Params;
   private readonly updateBookingSubject = new Subject<void>();
+  private scoutCenters: BasicScoutCenter[] | undefined;
 
   get onUpdateBooking() {
     return this.updateBookingSubject.asObservable();
+  }
+
+  async getScoutCenterDropdown() {
+    if (!this.scoutCenters) this.scoutCenters = await lastValueFrom(this.scoutCenterService.getAll());
+    return this.scoutCenters.map(center => ({label: center.name, value: center.id}));
   }
 
   updateBooking() {

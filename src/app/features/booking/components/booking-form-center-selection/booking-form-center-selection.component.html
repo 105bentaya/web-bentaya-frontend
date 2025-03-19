@@ -3,15 +3,17 @@
     <div class="col">
       <p-floatlabel variant="on">
         <p-select
-          formControlName="scoutCenter"
-          id="scoutCenter"
+          formControlName="scoutCenterId"
+          id="scoutCenterId"
           [options]="scoutCenters"
           (onChange)="loadCenterData()"
           appendTo="body"
+          optionLabel="name"
+          optionValue="id"
         ></p-select>
-        <label class="required" for="scoutCenter">Centro Scout</label>
+        <label class="required" for="scoutCenterId">Centro Scout</label>
       </p-floatlabel>
-      @if (formHelper.isDirtyAndInvalid('scoutCenter')) {
+      @if (formHelper.isDirtyAndInvalid('scoutCenterId')) {
         <small class="text-danger">Elija un centro Scout</small>
       } @else if (selectedCenterInfo) {
         <small>Aforo máximo del centro: {{ selectedCenterInfo.maxCapacity }}</small>

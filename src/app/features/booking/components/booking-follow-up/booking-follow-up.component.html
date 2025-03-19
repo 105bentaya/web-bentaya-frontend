@@ -13,7 +13,7 @@
         <p-tablist>
           @for (booking of bookings; track booking.id) {
             <p-tab [value]="$index" (click)="onTabChange(booking)">
-              {{booking.scoutCenter | scoutCenter}} - {{booking.startDate | date: 'dd/MM'}}
+              {{ booking.scoutCenter.name }} - {{ booking.startDate | date: 'dd/MM' }}
             </p-tab>
           }
         </p-tablist>
@@ -62,7 +62,7 @@
                   <p-divider type="dashed" class="mb-2"><h5><b>Datos de la reserva</b></h5></p-divider>
                   <div class="col-12 col-sm-6 col-lg-3">
                     <b>Centro solicitado</b>
-                    <div>{{ booking.scoutCenter | scoutCenter }}</div>
+                    <div>{{ booking.scoutCenter.name }}</div>
                   </div>
                   <div class="col-12 col-sm-6 col-lg-3">
                     <b>Número de participantes</b>
@@ -128,7 +128,7 @@
                       Antes que nada, instamos a que se lea las normas del lugar que se le enviaron por correo. También
                       puede
                       consultarlas haciendo click
-                      <a href="{{info[booking.scoutCenter].rules}}">aquí</a>.
+<!--                      <a href="{{info[booking.scoutCenter].rules}}">aquí</a>.-->
                     </p>
                     <p class="mb-2">
                       Precisamos de los siguientes documentos para poder completar la reserva. Tiene como máximo para
@@ -273,7 +273,7 @@
                         a
                         su reserva y con al menos dos días de antelación respecto al inicio de la misma. La información de
                         contacto la puede consultar en el PDF con las normas haciendo click
-                        <a href="{{info[booking.scoutCenter].rules}}">aquí</a>.
+<!--                        <a href="{{info[booking.scoutCenter].rules}}">aquí</a>.-->
                       </p>
                       <p>
                         Una vez finalice su estancia, rellene y suba el siguiente documento (opcional) y marque la reserva
@@ -283,7 +283,7 @@
                       <ul>
                         <li>
                           Registro de incidencias y estados.
-                          <a href="{{info[booking.scoutCenter].incidentsRegister}}" download>(Puede descargarlo aquí)</a>
+<!--                          <a href="{{info[booking.scoutCenter].incidentsRegister}}" download>(Puede descargarlo aquí)</a>-->
                         </li>
                       </ul>
                       <p-fileupload

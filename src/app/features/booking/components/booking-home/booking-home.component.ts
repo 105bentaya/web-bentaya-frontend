@@ -1,11 +1,8 @@
-import {Component} from '@angular/core';
-import {palmital} from "../../constant/palmital.information";
-import {tejeda} from "../../constant/tejeda.information";
-import {terreno} from "../../constant/terreno.information";
-import {refugioTerreno} from "../../constant/refugio-terreno.information";
+import {Component, inject, OnInit} from '@angular/core';
 import {BookingInformationComponent} from '../booking-information/booking-information.component';
 import {FlexCardComponent} from '../../../../shared/components/flex-card/flex-card.component';
 import {RouterLink} from '@angular/router';
+import {ScoutCenterService} from "../../service/scout-center.service";
 
 @Component({
   selector: 'app-booking-home',
@@ -17,38 +14,25 @@ import {RouterLink} from '@angular/router';
     BookingInformationComponent
   ]
 })
-export class BookingHomeComponent {
+export class BookingHomeComponent implements OnInit {
 
+  private readonly scoutCenterService = inject(ScoutCenterService);
   protected selectedOption = 0;
   protected colors = ["#ED5565", "#f89853", "#2ECC71", "#AC92EC"];
-  protected scoutCenters = [
-    {
-      mainText: "Aula de la Naturaleza El Palmital",
-      subText: "El Palmital, Guía",
-      backgroundImageUrl: "assets/centros-scout/palmital/menu.png",
-      iconClass: "fa-solid fa-bed",
-      scoutCenter: palmital
-    },
-    {
-      mainText: "Campamento Bentaya",
-      subText: "El Picacho, Arucas",
-      backgroundImageUrl: "assets/centros-scout/terreno/menu.jpg",
-      iconClass: "fa-solid fa-tree",
-      scoutCenter: terreno
-    },
-    {
-      mainText: "Refugio Luis Martín",
-      subText: "El Picacho, Arucas",
-      backgroundImageUrl: "assets/centros-scout/refugio/menu.jpg",
-      iconClass: "fa-solid fa-tent",
-      scoutCenter: refugioTerreno
-    },
-    {
-      mainText: "Refugio Bentayga",
-      subText: "La Higuerilla, Tejeda",
-      backgroundImageUrl: "assets/centros-scout/tejeda/menu.jpg",
-      iconClass: "fa-solid fa-house-chimney",
-      scoutCenter: tejeda
-    }
-  ];
+  protected scoutCenters!: any;
+  protected extras: { [key: number]: any } = {
+    4: {icon: "fa-solid fa-bed", image: "assets/centros-scout/palmital/menu.png"},
+    1: {icon: "fa-solid fa-tree", image: "assets/centros-scout/terreno/menu.jpg"},
+    2: {icon: "fa-solid fa-tent", image: "assets/centros-scout/tejeda/menu.jpg"},
+    3: {icon: "fa-solid fa-house-chimney", image: "assets/centros-scout/refugio/menu.jpg"}
+  };
+
+  ngOnInit() {
+    this.scoutCenterService.getAll().subscribe(result => {
+      this.scoutCenters = result.map(scoutCenter => ({
+        scoutCenter,
+        extras: this.extras[scoutCenter.id]
+      }));
+    });
+  }
 }

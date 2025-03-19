@@ -34,7 +34,7 @@
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <b>Centro solicitado</b>
-      <div>{{ booking.scoutCenter | scoutCenter }}</div>
+      <div>{{ booking.scoutCenter.name }}</div>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <b>Número de participantes</b>
@@ -175,7 +175,7 @@
               } @else {
                 <p-button
                   icon="pi pi-check"
-                  [label]="!centerIsAlwaysExclusive(booking.scoutCenter) && booking.exclusiveReservation ? 'Confirmar Reserva sin exclusividad' : 'Confirmar Reserva'"
+                  [label]="booking.scoutCenter.minExclusiveCapacity !== 0 && booking.exclusiveReservation ? 'Confirmar Reserva sin exclusividad' : 'Confirmar Reserva'"
                   severity="success"
                   [loading]="loading"
                   (click)="openStatusForm('OCCUPIED',{required: booking.exclusiveReservation},booking.exclusiveReservation ? 'Motivo por el rechazo de la exclusividad' : undefined)"

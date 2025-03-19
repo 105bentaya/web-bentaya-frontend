@@ -6,7 +6,6 @@ import {BookingForm} from "../../model/booking-form.model";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {AuthService} from "../../../../core/auth/services/auth.service";
 import {Booking} from "../../model/booking.model";
-import {ScoutCenterPipe} from '../../pipe/scout-center.pipe';
 import {CheckboxModule} from 'primeng/checkbox';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {FormTextAreaComponent} from '../../../../shared/components/form-text-area/form-text-area.component';
@@ -53,7 +52,6 @@ import {UserRole} from "../../../users/models/role.model";
     NgClass,
     LargeFormButtonsComponent,
     DatePipe,
-    ScoutCenterPipe,
     CheckboxContainerComponent,
     GeneralAButtonComponent
   ]
@@ -121,7 +119,7 @@ export class BookingFormComponent implements OnInit {
       this.booking.startDate = this.centerSelectionComponent.startDate;
       this.booking.endDate = this.centerSelectionComponent.endDate;
       this.booking.packs = this.centerSelectionComponent.packs;
-      this.booking.scoutCenter = this.centerSelectionComponent.scoutCenter;
+      this.booking.scoutCenterId = this.centerSelectionComponent.scoutCenterId;
     };
   }
 

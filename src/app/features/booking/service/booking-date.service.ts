@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core';
 import {BookingService} from "./booking.service";
-import {ScoutCenter} from "../constant/scout-center.constant";
 import {map} from "rxjs";
 import {DateUtils} from "../../../shared/util/date-utils";
 
@@ -15,11 +14,11 @@ export class BookingDateService {
   private occupiedDates: Set<string> = new Set<string>();
   private reservedDates: Set<string> = new Set<string>();
 
-  public loadDates(center: ScoutCenter) {
+  public loadDates(centerId: number) {
     this.fullyOccupiedDates = new Set<string>();
     this.occupiedDates = new Set<string>();
     this.reservedDates = new Set<string>();
-    return this.bookingService.getReservedDates(center).pipe(
+    return this.bookingService.getReservedDates(centerId).pipe(
       map(result => {
         result.forEach(date => {
           const currentDate = DateUtils.dateTruncatedToDay(date.startDate);

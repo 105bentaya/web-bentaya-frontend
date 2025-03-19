@@ -1,9 +1,7 @@
-import {ScoutCenter} from "../constant/scout-center.constant";
-
 export interface OwnBookingForm {
   id?: number;
   packs: number;
-  scoutCenter: ScoutCenter;
+  scoutCenterId: number;
   startDate: Date | string;
   endDate: Date | string;
   observations: string;

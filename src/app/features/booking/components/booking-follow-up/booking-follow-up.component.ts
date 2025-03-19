@@ -6,7 +6,7 @@ import {forkJoin} from "rxjs";
 import {BookingDocument} from "../../model/booking-document.model";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {saveAs} from "file-saver";
-import {documents, ScoutCentersInfo} from "../../constant/scout-center.constant";
+import {documents} from "../../constant/scout-center.constant";
 import {Status} from "../../constant/status.constant";
 import {BookingStatusUpdateComponent} from "../management/booking-status-update/booking-status-update.component";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
@@ -14,7 +14,6 @@ import {ConfirmationService} from "primeng/api";
 import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";
 import {DocumentStatusPipe} from '../../pipe/dcoument-status.pipe';
 import {ScoutCenterStatusPipe} from '../../pipe/scout-center-status.pipe';
-import {ScoutCenterPipe} from '../../pipe/scout-center.pipe';
 import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
 import {FieldsetModule} from 'primeng/fieldset';
@@ -36,7 +35,6 @@ import {maxFileUploadByteSize} from "../../../../shared/constant";
   providers: [DialogService, DynamicDialogService],
   imports: [
     BookingBetaAlertComponent,
-    ScoutCenterPipe,
     DatePipe,
     FieldsetModule,
     DividerModule,
@@ -66,7 +64,7 @@ export class BookingFollowUpComponent implements OnInit {
   protected bookings!: Booking[];
   protected selectedBooking!: Booking;
   protected readonly documents = documents;
-  protected readonly info = ScoutCentersInfo;
+  protected readonly info: any; //todo
   protected files: BookingDocument[] = [];
   protected loading = false;
   private ref!: DynamicDialogRef;

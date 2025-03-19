@@ -1,10 +1,11 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {BasicLoadingInfoComponent} from "../../../../../shared/components/basic-loading-info/basic-loading-info.component";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {
+  BasicLoadingInfoComponent
+} from "../../../../../shared/components/basic-loading-info/basic-loading-info.component";
+import {ActivatedRoute, Router} from "@angular/router";
 import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.component";
 import {BookingService} from "../../../service/booking.service";
 import {Booking} from "../../../model/booking.model";
-import {ScoutCenter} from "../../../constant/scout-center.constant";
 import {BookingDate} from "../../../model/booking-date.model";
 import {BookingDetailComponent} from "../booking-detail/booking-detail.component";
 import {OwnBookingDetailComponent} from "../own-booking-detail/own-booking-detail.component";
@@ -17,7 +18,6 @@ import {BookingManagementService} from "../../../service/booking-management.serv
   selector: 'app-booking-detail-control',
   imports: [
     BasicLoadingInfoComponent,
-    RouterLink,
     BookingCalendarComponent,
     BookingDetailComponent,
     OwnBookingDetailComponent,
@@ -44,14 +44,14 @@ export class BookingDetailControlComponent implements OnInit {
       this.bookingService.getById(this.id).subscribe({
         next: (result) => {
           this.booking = result;
-          this.getDateRanges(result.scoutCenter);
+          this.getDateRanges(result.scoutCenter.id);
         }
       });
     });
   }
 
-  private getDateRanges(center: ScoutCenter) {
-    this.bookingService.getCenterBookingDates({scoutCenters: center}).subscribe(result => this.dateRanges = result);
+  private getDateRanges(centerId: number) {
+    this.bookingService.getCenterBookingDates({scoutCenters: centerId}).subscribe(result => this.dateRanges = result);
   }
 
   protected reloadInfo(eventId: number) {

@@ -197,7 +197,7 @@
           }
           @case (3) {
             <div>
-              @if (true) {
+              @if (centerSelectionComponent.eligibleForExclusiveness) {
                 <div class="row">
                   <div class="col-12">
                     <span class="user-select-none">Ha alcanzado el aforo necesario para poder realizar una reserva en exclusividad, ¿desea
@@ -283,7 +283,7 @@
                   <b class="fs-5">Datos de la solicitud</b>
                 </div>
                 <div class="col-12 col-lg-6">
-                  <b>Centro Scout:</b> {{ booking.scoutCenter | scoutCenter }}
+                  <b>Centro Scout:</b> {{ centerSelectionComponent.selectedCenterName }}
                 </div>
                 <div class="col-12 col-lg-6">
                   <b>Número de personas:</b> {{ booking.packs }}

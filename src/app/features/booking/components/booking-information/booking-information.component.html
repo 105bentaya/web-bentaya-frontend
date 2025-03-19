@@ -4,13 +4,13 @@
       [pAutoFocus]="true"
       class="fs-5"
       [style.color]="color"
-    >{{ information.title }}
+    >{{ information.name }}
     </h3>
     <hr [style.border-color]="color" style="border-width:3px">
-    <p>{{ information.description }}</p>
+    <p>{{ information.information }}</p>
     <p>Este sitio tan idílico cuenta con las siguientes características:</p>
     <ul>
-      @for (info of information.listInfo; track $index) {
+      @for (info of information.features; track $index) {
         <li>{{ info }}</li>
       }
     </ul>
@@ -104,6 +104,7 @@
       variant="outlined"
       routerLink="/centros-scout/reserva"
     ></app-general-a-button>
+<!--
     @if (information.images && information.images.length > 0) {
       <p-button
         icon="pi pi-images"
@@ -127,4 +128,5 @@
       <img [src]="image" alt="{{information.title}}" class="galleria-img"/>
     </ng-template>
   </p-galleria>
+-->
 </div>

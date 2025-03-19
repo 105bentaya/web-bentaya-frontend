@@ -1,12 +1,11 @@
 import {Component, inject, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {CenterInformation} from "../../model/center-information.model";
+import {ScoutCenter} from "../../model/scout-center.model";
 import {BookingDateService} from "../../service/booking-date.service";
 import {GalleriaModule} from 'primeng/galleria';
 import {RouterLink} from '@angular/router';
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {AutoFocus} from "primeng/autofocus";
 import {DatePicker} from "primeng/datepicker";
-import {Button} from "primeng/button";
 import {
   GeneralAButtonComponent
 } from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
@@ -20,7 +19,6 @@ import {
     GalleriaModule,
     AutoFocus,
     DatePicker,
-    Button,
     GeneralAButtonComponent
   ]
 })
@@ -28,7 +26,7 @@ export class BookingInformationComponent implements OnChanges {
 
   private readonly bookingDateService = inject(BookingDateService);
 
-  @Input() information!: CenterInformation;
+  @Input() information!: ScoutCenter;
   @Input() color: any;
   protected minDate: Date = DateUtils.tomorrow();
   protected maxDate: Date = this.bookingDateService.getBookingDate();
@@ -42,7 +40,7 @@ export class BookingInformationComponent implements OnChanges {
   }
 
   private loadDates() {
-    this.bookingDateService.loadDates(this.information.center).subscribe(
+    this.bookingDateService.loadDates(this.information.id).subscribe(
       () => setTimeout(() => this.datesLoaded = true, 200)
     );
   }

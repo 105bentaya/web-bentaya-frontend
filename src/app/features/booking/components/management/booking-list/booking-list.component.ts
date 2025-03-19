@@ -1,6 +1,5 @@
 import {Component, inject, ViewChild} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
-import {scoutCentersDropdown} from "../../../constant/scout-center.constant";
 import {scoutCenterStatusesValues} from "../../../constant/status.constant";
 import {Booking} from "../../../model/booking.model";
 import {Table, TableModule} from "primeng/table";
@@ -8,7 +7,6 @@ import {MultiSelect} from "primeng/multiselect";
 import {ScoutCenterStatusPipe} from "../../../pipe/scout-center-status.pipe";
 import {DatePipe} from "@angular/common";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {ScoutCenterPipe} from "../../../pipe/scout-center.pipe";
 import FilterUtils from "../../../../../shared/util/filter-utils";
 import {InputText} from "primeng/inputtext";
 import {DatePicker} from "primeng/datepicker";
@@ -17,6 +15,7 @@ import {DateUtils} from "../../../../../shared/util/date-utils";
 import {castArray, pick} from "lodash";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MenuItem} from "primeng/api";
 
 @Component({
   selector: 'app-booking-list',
@@ -26,7 +25,6 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     ScoutCenterStatusPipe,
     DatePipe,
     RouterLink,
-    ScoutCenterPipe,
     InputText,
     DatePicker,
     FormsModule
@@ -41,24 +39,25 @@ export class BookingListComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
-  protected readonly centers = scoutCentersDropdown;
-  protected readonly statusesOptions = scoutCenterStatusesValues;
   protected bookings!: Booking[];
 
   protected loading = true;
   protected totalRecords: number = 0;
   protected dateRange: Date[] | undefined;
 
-  protected scoutCenterFilter: string[];
+  protected centers!: MenuItem[];
+  protected readonly statusesOptions = scoutCenterStatusesValues;
+  protected scoutCenterFilter: number[];
   protected statusFilter: string[];
 
   @ViewChild("tab") private readonly table!: Table;
 
   constructor() {
     const filterParams = this.route.snapshot.queryParams;
-    this.scoutCenterFilter = castArray(filterParams['scoutCenters'] ?? []);
+    this.scoutCenterFilter = castArray(filterParams['scoutCenters'] ?? []).map(id => +id);
     this.statusFilter = castArray(filterParams['statuses'] ?? []);
     this.bookingManagement.onUpdateBooking.pipe(takeUntilDestroyed()).subscribe(() => this.table._filter());
+    this.bookingManagement.getScoutCenterDropdown().then(res => this.centers = res);
   }
 
   protected loadBookingWithFilter(tableLazyLoadEvent: any) {

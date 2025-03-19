@@ -11,11 +11,7 @@
     showClear
     [(ngModel)]="scoutCenterFilter"
     [maxSelectedLabels]="10"
-  >
-    <ng-template let-label pTemplate="selectedItems">
-      <div class="overflow-ellipsis">{{ label | join:undefined:scoutCenterPipe }}</div>
-    </ng-template>
-  </p-multi-select>
+  ></p-multi-select>
 </div>
 @if (pendingBookings) {
   <div class="d-flex flex-column gap-3">
@@ -29,7 +25,7 @@
       *ngTemplateOutlet="panel; context {$implicit: {title: 'Pendientes por realizarse', bookings: pendingBookings.confirmedBookings}}"
     ></ng-container>
     <ng-container
-      *ngTemplateOutlet="panel; context {$implicit: {title: 'Recientemente finalizada', bookings: pendingBookings.finishedBookings}}"
+      *ngTemplateOutlet="panel; context {$implicit: {title: 'Recientemente finalizadas', bookings: pendingBookings.finishedBookings}}"
     ></ng-container>
   </div>
 } @else {
@@ -62,7 +58,7 @@
               {{ booking.ownBooking ? 'Asociación Scouts 105 Bentaya' : booking.organizationName }}
             </td>
             <td>
-              {{ booking.scoutCenter | scoutCenter }}
+              {{ booking.scoutCenter.name }}
             </td>
             <td class="d-none d-md-table-cell text-center">
               <div class="text-center w-fit">

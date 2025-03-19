@@ -1,7 +1,3 @@
-export const ScoutCenterStatuses = [
-  "NEW", "RESERVED", "OCCUPIED", "FULLY_OCCUPIED", "FINISHED", "CANCELED", "REJECTED", "LEFT"
-];
-
 export const scoutCenterStatusesValues = [
   {label: "Nueva Pre Reserva", value: "NEW", styleClass: "bg-primary-subtle"},
   {label: "Pre Reserva Aceptada", value: "RESERVED", styleClass: "bg-warning-subtle"},

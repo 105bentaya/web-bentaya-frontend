@@ -7,7 +7,6 @@ import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {DialogModule} from "primeng/dialog";
 import {DividerModule} from "primeng/divider";
-import {ScoutCenterPipe} from "../../../pipe/scout-center.pipe";
 import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 
@@ -18,7 +17,6 @@ import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialo
     DatePipe,
     DialogModule,
     DividerModule,
-    ScoutCenterPipe,
     ScoutCenterStatusPipe,
     Button
   ],

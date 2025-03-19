@@ -1,10 +1,4 @@
 import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
-import {
-  centerIsAlwaysExclusive,
-  ScoutCenter,
-  scoutCentersDropdown,
-  ScoutCentersInfo
-} from "../../constant/scout-center.constant";
 import {DatePipe} from "@angular/common";
 import {SelectModule} from "primeng/select";
 import {FloatLabelModule} from "primeng/floatlabel";
@@ -24,10 +18,11 @@ import {BookingDateService} from "../../service/booking-date.service";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {map, Observable} from "rxjs";
 import {BookingInterval} from "../../model/booking-interval.model";
-import {CenterInformation} from "../../model/center-information.model";
 import {BookingService} from "../../service/booking.service";
 import {DatePicker} from "primeng/datepicker";
 import {Message} from "primeng/message";
+import {ScoutCenterService} from "../../service/scout-center.service";
+import {ScoutCenter} from '../../model/scout-center.model';
 
 @Component({
   selector: 'app-booking-form-center-selection',
@@ -48,23 +43,25 @@ export class BookingFormCenterSelectionComponent implements OnInit {
 
   private readonly bookingDateService = inject(BookingDateService);
   private readonly bookingService = inject(BookingService);
+  private readonly scoutCenterService = inject(ScoutCenterService);
 
   protected formHelper = new FormHelper();
   protected datesForm = new FormHelper();
   protected defaultDate: Date = DateUtils.dateTruncatedToHours(new Date());
   protected maxDate: Date = this.bookingDateService.getBookingDate();
-  protected selectedCenterInfo!: CenterInformation;
+  protected selectedCenterInfo!: ScoutCenter;
+  protected scoutCenters!: ScoutCenter[];
   protected centerLoaded = false;
   protected noOverlapping = false;
   protected fullyOccupiedInfo: BookingInterval[] = [];
   protected occupiedInfo: BookingInterval[] = [];
   protected reservedInfo: BookingInterval[] = [];
-  protected readonly scoutCenters = scoutCentersDropdown;
   private centerIsAlwaysExclusive: boolean = false;
 
   @Output() onInit = new EventEmitter<FormGroup>();
 
   ngOnInit() {
+    this.scoutCenterService.getAll().subscribe(result => this.scoutCenters = result);
     this.datesForm.createForm({
       startDate: [null, Validators.required],
       endDate: [null, Validators.required]
@@ -76,7 +73,7 @@ export class BookingFormCenterSelectionComponent implements OnInit {
     this.formHelper.createForm({
       packs: [null, [Validators.required, Validators.min(1), Validators.max(this.selectedCenterInfo?.maxCapacity)]],
       dates: this.datesForm.form,
-      scoutCenter: [null, Validators.required]
+      scoutCenterId: [null, Validators.required]
     });
     this.onInit.emit(this.formHelper.form);
   }
@@ -86,10 +83,11 @@ export class BookingFormCenterSelectionComponent implements OnInit {
   }
 
   public loadCenterData() {
-    const center: ScoutCenter = this.formHelper.controlValue('scoutCenter');
-    this.selectedCenterInfo = ScoutCentersInfo[center];
-    this.centerIsAlwaysExclusive = centerIsAlwaysExclusive(center);
-    this.bookingDateService.loadDates(this.formHelper.controlValue('scoutCenter')).subscribe(() => {
+    const centerId: number = this.formHelper.controlValue('scoutCenterId');
+    this.selectedCenterInfo = this.scoutCenters.find(center => center.id === centerId)!;
+    console.log(this.selectedCenterInfo);
+    this.centerIsAlwaysExclusive = this.selectedCenterInfo.minExclusiveCapacity === 0;
+    this.bookingDateService.loadDates(this.formHelper.controlValue('scoutCenterId')).subscribe(() => {
       this.centerLoaded = true;
       this.datesForm.form.updateValueAndValidity();
     });
@@ -133,7 +131,7 @@ export class BookingFormCenterSelectionComponent implements OnInit {
     return this.bookingService.checkBookingDates({
       startDate: DateUtils.toLocalDateTime(startDate),
       endDate: DateUtils.toLocalDateTime(endDate),
-      scoutCenter: this.formHelper.controlValue('scoutCenter')
+      scoutCenterId: this.formHelper.controlValue('scoutCenterId')
     });
   }
 
@@ -146,7 +144,11 @@ export class BookingFormCenterSelectionComponent implements OnInit {
 
   get eligibleForExclusiveness() {
     return this.occupiedInfo.length == 0 && this.reservedInfo.length == 0 && !this.centerIsAlwaysExclusive &&
-      this.formHelper.controlValue("packs") >= this.selectedCenterInfo.exclusiveReservationCapacity;
+      this.formHelper.controlValue("packs") >= this.selectedCenterInfo.minExclusiveCapacity;
+  }
+
+  get selectedCenterName() {
+    return this.selectedCenterInfo.name;
   }
 
   get startDate() {
@@ -161,8 +163,8 @@ export class BookingFormCenterSelectionComponent implements OnInit {
     return this.formHelper.controlValue("packs");
   }
 
-  get scoutCenter(): ScoutCenter {
-    return this.formHelper.controlValue("scoutCenter");
+  get scoutCenterId(): number {
+    return this.formHelper.controlValue("scoutCenterId");
   }
 
   get form(): FormGroup {

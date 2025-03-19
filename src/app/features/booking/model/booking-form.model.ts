@@ -1,5 +1,3 @@
-import {ScoutCenter} from "../constant/scout-center.constant";
-
 export interface BookingForm {
   groupName: string;
   cif: string;
@@ -9,7 +7,7 @@ export interface BookingForm {
   email: string;
   phone: string;
   packs: number;
-  scoutCenter: ScoutCenter;
+  scoutCenterId: number;
   startDate: Date | string;
   endDate: Date | string;
   observations: string;

@@ -1,4 +1,3 @@
-import {ScoutCenter} from "../constant/scout-center.constant";
 import {Status} from "../constant/status.constant";
 
 export interface Booking {
@@ -10,7 +9,7 @@ export interface Booking {
   contactMail: string;
   contactPhone: string;
   packs: number;
-  scoutCenter: ScoutCenter;
+  scoutCenter: BasicScoutCenter;
   startDate: Date;
   endDate: Date;
   creationDate: Date;
@@ -22,4 +21,12 @@ export interface Booking {
   ownBooking: boolean;
   userConfirmedDocuments: boolean;
   price: number;
+}
+
+export interface BasicScoutCenter {
+  id: number;
+  name: string;
+  maxCapacity: number;
+  minExclusiveCapacity: number;
+  price: number
 }

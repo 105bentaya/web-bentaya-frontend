@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgClass} from '@angular/common';
+import {ScoutCenter} from "../../../features/booking/model/scout-center.model";
 
 @Component({
   selector: 'app-flex-card',
@@ -8,7 +9,7 @@ import {NgClass} from '@angular/common';
   imports: [NgClass]
 })
 export class FlexCardComponent {
-  @Input() options: { mainText: string; subText: string; backgroundImageUrl: string; iconClass: string }[] = [];
+  @Input() options: { scoutCenter: ScoutCenter; extras: {icon: string, image: string} }[] = [];
   @Output() selectedIndexEvent = new EventEmitter<number>();
   protected selectedIndex: number = 0;
 
