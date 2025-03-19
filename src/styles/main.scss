@@ -242,12 +242,23 @@ h1, h2, h3 {
   }
 }
 
-.expand-button button {
-  $diameter: 54px;
-  $radius: $diameter / 2;
+$expand-button-diameter: 50px;
 
-  width: $diameter !important;
-  height: $diameter !important;
+.menu-title {
+  color: white;
+  text-align: center;
+  margin-bottom: 0;
+  cursor: default;
+  user-select: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(-50% - $expand-button-diameter / 4), -50%);
+}
+
+.expand-button button {
+  width: $expand-button-diameter !important;
+  height: $expand-button-diameter !important;
   background-color: var(--bentaya-secondary-color);
   border-color: var(--bentaya-secondary-color);
   color: var(--bentaya-main-color);
@@ -258,19 +269,21 @@ h1, h2, h3 {
   }
 
   position: absolute;
-  top: 98 / 2 - $radius;
-  left: calc(100% - $radius);
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
 
   &.solo {
     $diameter: 45px;
-    $radius: $diameter / 2;
 
     width: $diameter !important;
     height: $diameter !important;
 
     position: fixed;
-    top: (81 / 2) - $radius;
+    top: (81 / 2) - calc($diameter / 2);
     left: 10px;
+    right: unset;
+    transform: unset;
     z-index: $z-index-menu
   }
 

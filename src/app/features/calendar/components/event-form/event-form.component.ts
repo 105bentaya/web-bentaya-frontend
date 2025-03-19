@@ -286,7 +286,7 @@ export class EventFormComponent implements OnInit {
     this.saveLoading = true;
     this.eventService.save(event).subscribe({
       next: result => {
-        this.alertService.sendBasicSuccessMessage("Éxisto al crear el evento");
+        this.alertService.sendBasicSuccessMessage("Éxito al crear el evento");
         this.eventStatusService.addEvent(result);
         this.ref.close();
       },
@@ -298,7 +298,7 @@ export class EventFormComponent implements OnInit {
     this.saveLoading = true;
     this.eventService.update(event).subscribe({
       next: result => {
-        this.alertService.sendBasicSuccessMessage("Éxisto al actualizar el evento");
+        this.alertService.sendBasicSuccessMessage("Éxito al actualizar el evento");
         this.eventStatusService.updateEvent(result);
         this.ref.close();
       },
