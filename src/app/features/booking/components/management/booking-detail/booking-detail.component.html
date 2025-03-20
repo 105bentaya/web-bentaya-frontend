@@ -328,8 +328,8 @@
     @for (document of documents; track $index) {
       <li>
         {{ document.name }}
-        @if (document.path) {
-          <a href="{{document.path}}" download>(Puede descargarlo aquí)</a>
+        @if (document.attendance) {
+          <a class="link cursor-pointer" (click)="downloadAttendanceFile(booking.scoutCenter.id)">(Puede descargarlo aquí)</a>.
         }
       </li>
     }

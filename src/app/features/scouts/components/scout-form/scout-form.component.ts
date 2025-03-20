@@ -5,7 +5,6 @@ import {
   AbstractControl,
   FormArray,
   FormBuilder,
-  FormGroup,
   ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
@@ -162,8 +161,6 @@ export class ScoutFormComponent implements OnInit {
 
   private formIsValid() {
     this.scoutFormHelper.validateAll();
-    const contactListFormGroups = this.scoutContactList.controls as FormGroup[];
-    contactListFormGroups.forEach(con => FormHelper.validateControls(con));
     this.usernamesValid = this.userTable.usersAreValid();
     return !this.scoutFormHelper.isDirtyAndInvalid() && this.usernamesValid;
   }

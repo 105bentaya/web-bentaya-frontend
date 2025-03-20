@@ -43,7 +43,7 @@ export class FormHelper {
 
   goToNextPage() {
     if (this.currentPage >= this.pages.length) return;
-    this.validateControls(this.pages[this.currentPage]).then(valid => {
+    this.validateControlsAsync(this.pages[this.currentPage]).then(valid => {
       if (valid) {
         document.getElementById("form-steps")?.scrollIntoView();
         this.currentPage++;
@@ -84,20 +84,6 @@ export class FormHelper {
     this.form = this.formBuilder.group(controls, options);
   }
 
-  validateAll(): void {
-    this.hasBeenValidated = true;
-    this.validateControls(Object.keys(this.form.controls));
-  }
-
-  async validateAllWithAsync(): Promise<void> {
-    this.hasBeenValidated = true;
-    await this.validateControls(Object.keys(this.form.controls));
-  }
-
-  private async validateControls(controls: string[]): Promise<boolean> {
-    return FormHelper._validateControls(controls, this.form);
-  }
-
   controlValue(control: string) {
     return this.get(control)?.value;
   }
@@ -122,15 +108,50 @@ export class FormHelper {
     return this.form.value;
   }
 
-  static validateControls(group: FormGroup): void {
-    this._validateControls(Object.keys(group.controls), group);
+  validateAll(): boolean {
+    this.hasBeenValidated = true;
+    return this.validateControls(Object.keys(this.form.controls));
   }
 
-  private static async _validateControls(controls: string[], group: FormGroup): Promise<boolean> {
+  private validateControls(controls: string[]): boolean {
+    return FormHelper._validateControls(controls, this.form);
+  }
+
+  async validateAllWithAsync(): Promise<void> {
+    this.hasBeenValidated = true;
+    await this.validateControlsAsync(Object.keys(this.form.controls));
+  }
+
+  private async validateControlsAsync(controls: string[]): Promise<boolean> {
+    return FormHelper._validateControlsAsync(controls, this.form);
+  }
+
+  private static _validateControls(controls: string[], group: FormGroup): boolean {
     let valid = true;
     for (const key of controls) {
       const control = group.get(key)!;
-      if (!(await this.checkForGroups(control as FormGroup))) {
+      if (!this.checkForGroups(control as FormGroup)) {
+        valid = false;
+      }
+      if (typeof control.value === 'string') control.setValue(control.value.trim());
+      control.updateValueAndValidity();
+      if (control.invalid || !control.valid) {
+        valid = false;
+        control.markAsDirty();
+      }
+    }
+    return valid;
+  }
+
+  private static checkForGroups(control: FormGroup): boolean {
+    return control.controls ? this._validateControls(Object.keys(control.controls), control) : true;
+  }
+
+  private static async _validateControlsAsync(controls: string[], group: FormGroup): Promise<boolean> {
+    let valid = true;
+    for (const key of controls) {
+      const control = group.get(key)!;
+      if (!(await this.checkForGroupsAsync(control as FormGroup))) {
         valid = false;
       }
       if (typeof control.value === 'string') control.setValue(control.value.trim());
@@ -150,7 +171,7 @@ export class FormHelper {
     return valid;
   }
 
-  private static async checkForGroups(control: FormGroup): Promise<boolean> {
-    return control.controls ? await this._validateControls(Object.keys(control.controls), control) : true;
+  private static async checkForGroupsAsync(control: FormGroup): Promise<boolean> {
+    return control.controls ? await this._validateControlsAsync(Object.keys(control.controls), control) : true;
   }
 }

@@ -19,6 +19,8 @@ import {
 } from "../../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DialogModule} from "primeng/dialog";
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
+import {FileUtils} from "../../../../../shared/util/file.utils";
+import {ScoutCenterService} from "../../../service/scout-center.service";
 
 @Component({
   selector: 'app-booking-detail',
@@ -39,6 +41,7 @@ import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialo
 export class BookingDetailComponent implements OnInit {
 
   private readonly bookingService = inject(BookingService);
+  private readonly scoutCenterService = inject(ScoutCenterService);
   private readonly alertService = inject(AlertService);
   private readonly dialogService = inject(DynamicDialogService);
   private readonly pipe = inject(ScoutCenterStatusPipe);
@@ -138,5 +141,9 @@ export class BookingDetailComponent implements OnInit {
       },
       error: () => this.loading = false
     });
+  }
+
+  downloadAttendanceFile(centerId: number) {
+    this.scoutCenterService.getAttendanceFile(centerId).subscribe(result => FileUtils.downloadFile(result));
   }
 }

@@ -85,7 +85,6 @@ export class BookingFormCenterSelectionComponent implements OnInit {
   public loadCenterData() {
     const centerId: number = this.formHelper.controlValue('scoutCenterId');
     this.selectedCenterInfo = this.scoutCenters.find(center => center.id === centerId)!;
-    console.log(this.selectedCenterInfo);
     this.centerIsAlwaysExclusive = this.selectedCenterInfo.minExclusiveCapacity === 0;
     this.bookingDateService.loadDates(this.formHelper.controlValue('scoutCenterId')).subscribe(() => {
       this.centerLoaded = true;

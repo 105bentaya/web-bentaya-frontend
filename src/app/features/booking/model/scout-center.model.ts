@@ -1,4 +1,4 @@
-export interface ScoutCenter {
+export interface ScoutCenter { //todo repasar todos
   id: number;
   name: string;
   place: string;

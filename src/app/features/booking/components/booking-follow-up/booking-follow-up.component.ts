@@ -27,6 +27,8 @@ import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../const
 import {TabsModule} from "primeng/tabs";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {maxFileUploadByteSize} from "../../../../shared/constant";
+import {FileUtils} from "../../../../shared/util/file.utils";
+import {ScoutCenterService} from "../../service/scout-center.service";
 
 @Component({
   selector: 'app-booking-follow-up',
@@ -56,6 +58,7 @@ export class BookingFollowUpComponent implements OnInit {
   private readonly alertService = inject(AlertService);
   private readonly dialogService = inject(DynamicDialogService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly scoutCenterService = inject(ScoutCenterService);
 
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
 
@@ -203,5 +206,17 @@ export class BookingFollowUpComponent implements OnInit {
         }
       }
     });
+  }
+
+  downloadRuleFile(centerId: number) {
+    this.scoutCenterService.getRuleFile(centerId).subscribe(result => FileUtils.downloadFile(result));
+  }
+
+  downloadIncidencesFile(centerId: number) {
+    this.scoutCenterService.getIncidenceFile(centerId).subscribe(result => FileUtils.downloadFile(result));
+  }
+
+  downloadAttendanceFile(centerId: number) {
+    this.scoutCenterService.getAttendanceFile(centerId).subscribe(result => FileUtils.downloadFile(result));
   }
 }

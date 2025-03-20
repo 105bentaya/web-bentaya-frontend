@@ -92,7 +92,7 @@
   height: var(--p-button-icon-only-width) !important;
 }
 
-.p-button.p-button-icon-only:not(.p-button-sm, .p-splitbutton-dropdown) {
+.p-button.p-button-icon-only:not(.p-button-sm, .p-splitbutton-dropdown, .p-inputgroupaddon .p-button-icon-only) {
   height: var(--p-button-icon-only-width);
 }
 
@@ -183,6 +183,14 @@ p-toggle-button.no-label {
 .p-inputgroup > .p-inputwrapper > .p-component {
   border-top-right-radius: var(--p-inputtext-border-radius);
   border-bottom-right-radius: var(--p-inputtext-border-radius);
+}
+
+.p-inputgroupaddon .p-button-icon-only {
+  width: 2.75rem;
+}
+
+.p-inputgroupaddon p-button {
+  height: 100%;
 }
 
 /*

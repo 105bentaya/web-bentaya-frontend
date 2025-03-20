@@ -6,6 +6,10 @@
   user-select: none;
   overflow: hidden;
   text-overflow: ellipsis;
+  &.empty {
+    border-color: var(--p-red-500);
+    color: var(--p-red-500);
+  }
 }
 
 .uploader-img {

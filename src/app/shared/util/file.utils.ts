@@ -36,7 +36,6 @@ export class FileUtils {
   }
 
   private static getFilename(headers: any) {
-    console.log(headers);
     if (headers.get("X-Filename")) return headers.get("X-Filename");
     const contentDisposition = headers.get('Content-Disposition');
     if (contentDisposition) {

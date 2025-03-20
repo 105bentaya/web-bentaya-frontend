@@ -1,8 +1,8 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ScoutCenterService} from "../../../service/scout-center.service";
 import {ScoutCenter, ScoutCenterFile, ScoutCenterWithFiles} from "../../../model/scout-center.model";
-import {Tab, TabList, TabPanel, TabPanels, Tabs} from "primeng/tabs";
-import {CurrencyPipe} from "@angular/common";
+import {TabsModule} from "primeng/tabs";
+import {CurrencyPipe, NgClass} from "@angular/common";
 import {Button} from "primeng/button";
 import {FileUpload, FileUploadHandlerEvent} from "primeng/fileupload";
 import {maxFileUploadByteSize} from "../../../../../shared/constant";
@@ -17,23 +17,19 @@ import {
 } from "../../../../../shared/components/buttons/general-a-button/general-a-button.component";
 import {FloatLabel} from "primeng/floatlabel";
 import {InputText} from "primeng/inputtext";
-import {FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {FormHelper} from "../../../../../shared/util/form-helper";
 import {InputNumber} from "primeng/inputnumber";
 import {InputGroup} from "primeng/inputgroup";
 import {InputGroupAddon} from "primeng/inputgroupaddon";
-import {SettingType} from "../../../../settings/setting.model";
 import {Dialog} from "primeng/dialog";
 import {FormTextAreaComponent} from "../../../../../shared/components/form-text-area/form-text-area.component";
+import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
 
 @Component({
   selector: 'app-scout-center-management',
   imports: [
-    Tab,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
+    TabsModule,
     CurrencyPipe,
     Button,
     FileUpload,
@@ -47,7 +43,9 @@ import {FormTextAreaComponent} from "../../../../../shared/components/form-text-
     InputGroup,
     InputGroupAddon,
     Dialog,
-    FormTextAreaComponent
+    FormTextAreaComponent,
+    NgClass,
+    SaveButtonsComponent
   ],
   templateUrl: './scout-center-management.component.html',
   styleUrl: './scout-center-management.component.scss'
@@ -148,26 +146,41 @@ export class ScoutCenterManagementComponent implements OnInit {
     this.editForm.createForm({
       id: center.id,
       name: [center.name, [Validators.required, Validators.maxLength(127)]],
-      place: [center.name, [Validators.required, Validators.maxLength(127)]],
+      place: [center.place, [Validators.required, Validators.maxLength(127)]],
       price: [center.price / 100, [Validators.required, Validators.min(0)]],
       maxCapacity: [center.maxCapacity, [Validators.required, Validators.min(0)]],
       minExclusiveCapacity: [center.minExclusiveCapacity, [Validators.required, Validators.min(0)]],
       icon: [center.icon, [Validators.required, Validators.maxLength(63)]],
       information: [center.information, [Validators.required, Validators.maxLength(1023)]],
-      features: this.formBuilder.array([
-        {feature: ["asdasdasd", Validators.required]},
-        {feature: ["13123121", Validators.required]}]
-      )
+      features: this.formBuilder.array(center.features.map(feature => ([
+        feature, [Validators.required, Validators.maxLength(255)]
+      ])), Validators.minLength(1))
     });
     this.editing = true;
   }
 
-  async submit() {
-    this.editForm.validateAll();
-    // price *= 100
+  submit() {
+    if (this.editForm.validateAll()) {
+      this.loading = true;
+      const scoutCenter: ScoutCenter = this.editForm.value;
+      scoutCenter.price *= 100;
+      this.scoutCenterService.updateScoutCenter(scoutCenter)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(result => {
+          this.alertService.sendBasicSuccessMessage(`Se ha guardado el centro scout ${result.name}`);
+          this.scoutCenters.find(center => center.scoutCenter.id === result.id)!.scoutCenter = result;
+          this.editing = false;
+        });
+    }
   }
 
-  addFeature() {
+  addFeature(index: number) {
+    this.editForm.getFormArray("features").controls.splice(index + 1, 0, (this.formBuilder.control('', [Validators.required, Validators.maxLength(255)])));
+  }
 
+  deleteFeature(index: number) {
+    const array = this.editForm.getFormArray("features");
+    array.removeAt(index);
+    if (array.length < 1) this.addFeature(0);
   }
 }

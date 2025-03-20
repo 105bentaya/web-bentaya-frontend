@@ -50,13 +50,13 @@
                   <div class="col-12 col-sm-6 col-xl-3">
                     <b>Correo</b>
                     <div>
-                      <a href="mailto:{{booking.contactMail}}">{{ booking.contactMail }}</a>
+                      <a class="p-0" href="mailto:{{booking.contactMail}}">{{ booking.contactMail }}</a>
                     </div>
                   </div>
                   <div class="col-12 col-sm-6 col-xl-3">
                     <b>Teléfono</b>
                     <div>
-                      <a href="tel:{{booking.contactPhone}}">{{ booking.contactPhone }}</a>
+                      <a class="p-0" href="tel:{{booking.contactPhone}}">{{ booking.contactPhone }}</a>
                     </div>
                   </div>
                   <p-divider type="dashed" class="mb-2"><h5><b>Datos de la reserva</b></h5></p-divider>
@@ -126,9 +126,8 @@
                     }
                     <p>
                       Antes que nada, instamos a que se lea las normas del lugar que se le enviaron por correo. También
-                      puede
-                      consultarlas haciendo click
-<!--                     todo <a href="{{info[booking.scoutCenter].rules}}">aquí</a>.-->
+                      puede descargarlas haciendo click
+                      <a class="link cursor-pointer" (click)="downloadRuleFile(booking.scoutCenter.id)">aquí</a>.
                     </p>
                     <p class="mb-2">
                       Precisamos de los siguientes documentos para poder completar la reserva. Tiene como máximo para
@@ -139,8 +138,8 @@
                       @for (document of documents; track $index) {
                         <li>
                           {{ document.name }}.
-                          @if (document.path) {
-                            <a href="{{document.path}}" download>(Puede descargarlo aquí)</a>
+                          @if (document.attendance) {
+                            <a class="link cursor-pointer" (click)="downloadAttendanceFile(booking.scoutCenter.id)">(Puede descargarlo aquí)</a>.
                           }
                         </li>
                       }
@@ -273,17 +272,17 @@
                         a
                         su reserva y con al menos dos días de antelación respecto al inicio de la misma. La información de
                         contacto la puede consultar en el PDF con las normas haciendo click
-<!--                        <a href="{{info[booking.scoutCenter].rules}}">aquí</a>.-->
+                        <a class="link cursor-pointer" (click)="downloadRuleFile(booking.scoutCenter.id)">aquí</a>.
                       </p>
                       <p>
                         Una vez finalice su estancia, rellene y suba el siguiente documento (opcional) y marque la reserva
-                        como
-                        finalizada.
+                        como finalizada.
                       </p>
                       <ul>
                         <li>
                           Registro de incidencias y estados.
-<!--                          <a href="{{info[booking.scoutCenter].incidentsRegister}}" download>(Puede descargarlo aquí)</a>-->
+                          <a class="link cursor-pointer" (click)="downloadIncidencesFile(booking.scoutCenter.id)">(Puede
+                            descargarlo aquí)</a>.
                         </li>
                       </ul>
                       <p-fileupload

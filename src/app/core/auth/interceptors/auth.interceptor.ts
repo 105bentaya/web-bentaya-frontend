@@ -33,6 +33,8 @@ export function authInterceptor(request: HttpRequest<any>, next: HttpHandlerFn):
         alertService.sendBasicErrorMessage(error.error[bentayaException]);
       } else if (error.status === 403 || error.status === 401) {
         alertService.sendBasicErrorMessage("No cuenta con los permisos para realizar esta operación");
+      } else if (error.status === 404) {
+        alertService.sendBasicErrorMessage("No se ha encontrado el recurso solicitado");
       } else {
         alertService.sendBasicErrorMessage(`Ha ocurrido un error desconocido. Vuelva a intentarlo o envíe un correo a ${maintenanceEmail}`);
       }

@@ -31,7 +31,12 @@
                 </div>
                 <div class="col-12 col-sm-6 col-lg-4">
                   <b>Aforo mínimo para la exclusividad</b>
-                  <div>{{ center.minExclusiveCapacity }}</div>
+                  <div>
+                    {{ center.minExclusiveCapacity }}
+                    @if (center.minExclusiveCapacity === 0) {
+                      (Siempre es exclusivo)
+                    }
+                  </div>
                 </div>
                 <div class="col">
                   <b>Icono</b>
@@ -51,19 +56,22 @@
                     }
                   </ul>
                 </div>
-                <div class="col-12">
+                <div class="text-center mb-0">
                   <p-button
-                    label="Editar datos"
+                    label="Editar datos básicos"
                     (onClick)="enableEditMode(center)"
                   ></p-button>
                 </div>
               </div>
             </div>
+            <hr>
             <div class="d-flex flex-column gap-3">
               <div>
                 <b>Normas</b>
                 <div class="d-flex align-items-center gap-2">
-                  <div class="bordered">{{ scoutCenter.rules?.name ?? 'No hay normas subidas' }}</div>
+                  <div class="bordered" [ngClass]="{'empty': !scoutCenter.rules}">
+                    {{ scoutCenter.rules?.name ?? 'No hay normas subidas' }}
+                  </div>
                   <p-fileupload
                     mode="basic"
                     [chooseButtonProps]="{size: 'small', label: ''}"
@@ -98,7 +106,9 @@
               <div>
                 <b>Registro de incidencias y estados</b>
                 <div class="d-flex align-items-center gap-2">
-                  <div class="bordered">{{ scoutCenter.incidencesDoc?.name ?? 'No hay documento de incidencias' }}</div>
+                  <div class="bordered" [ngClass]="{'empty': !scoutCenter.incidencesDoc}">
+                    {{ scoutCenter.incidencesDoc?.name ?? 'No hay documento de incidencias' }}
+                  </div>
                   <p-fileupload
                     mode="basic"
                     [chooseButtonProps]="{size: 'small', label: ''}"
@@ -124,7 +134,9 @@
               <div>
                 <b>Registro de asistentes</b>
                 <div class="d-flex align-items-center gap-2">
-                  <div class="bordered">{{ scoutCenter.attendanceDoc?.name ?? 'No hay documento de asistentes' }}</div>
+                  <div class="bordered" [ngClass]="{'empty': !scoutCenter.attendanceDoc}">
+                    {{ scoutCenter.attendanceDoc?.name ?? 'No hay documento de asistentes' }}
+                  </div>
                   <p-fileupload
                     mode="basic"
                     [chooseButtonProps]="{size: 'small', label: ''}"
@@ -150,7 +162,9 @@
               <div>
                 <b>Foto principal (recomendable formato 4:3)</b>
                 <div class="d-flex align-items-center gap-2">
-                  <div class="bordered">{{ scoutCenter.mainPhoto?.name ?? 'No hay foto principal' }}</div>
+                  <div class="bordered" [ngClass]="{'empty': !scoutCenter.mainPhoto}">
+                    {{ scoutCenter.mainPhoto?.name ?? 'No hay foto principal' }}
+                  </div>
                   <p-fileupload
                     mode="basic"
                     [chooseButtonProps]="{size: 'small', label: ''}"
@@ -186,7 +200,8 @@
                 invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
               >
                 <ng-template
-                  #header let-files
+                  #header
+                  let-files
                   let-chooseCallback="chooseCallback"
                   let-clearCallback="clearCallback"
                   let-uploadCallback="uploadCallback"
@@ -201,14 +216,14 @@
                     />
                     @if (!loading && files.length > 0) {
                       <p-button
-                        label="Subir selección"
+                        label="Confirmar selección"
                         icon="pi pi-cloud-upload"
                         (onClick)="uploadCallback(center.id)"
                         severity="success"
                         size="small"
                       />
                       <p-button
-                        label="Borrar selección"
+                        label="Descartar selección"
                         icon="pi pi-times"
                         (onClick)="clearCallback()"
                         severity="danger"
@@ -278,7 +293,7 @@
               id="name"
               maxlength="127"
             >
-            <label for="name">Nombre</label>
+            <label for="name" class="required">Nombre</label>
           </p-float-label>
         </div>
         <div class="col-12 col-sm-6 col-lg-4">
@@ -289,7 +304,7 @@
               id="place"
               maxlength="127"
             >
-            <label for="place">Lugar</label>
+            <label for="place" class="required">Lugar</label>
           </p-float-label>
         </div>
         <div class="col-12 col-sm-6 col-lg-4">
@@ -301,7 +316,7 @@
               formControlName="price"
               [min]="0"
             />
-            <label for="price">Precio por persona y día</label>
+            <label for="price" class="required">Precio por persona y día</label>
           </p-float-label>
         </div>
         <div class="col-12 col-sm-6 col-lg-4">
@@ -312,7 +327,7 @@
               formControlName="maxCapacity"
               [min]="0"
             />
-            <label for="price">Aforo máximo</label>
+            <label for="price" class="required">Aforo máximo</label>
           </p-float-label>
         </div>
         <div class="col-12 col-sm-6 col-lg-4">
@@ -323,7 +338,7 @@
               formControlName="minExclusiveCapacity"
               [min]="0"
             />
-            <label for="minExclusiveCapacity">Aforo mínimo para la exclusividad</label>
+            <label for="minExclusiveCapacity" class="required">Aforo mínimo para exclusividad</label>
           </p-float-label>
         </div>
         <div class="col">
@@ -335,12 +350,12 @@
                 formControlName="icon"
                 maxlength="63"
               >
-              <label for="icon">Icono</label>
+              <label for="icon" class="required">Icono</label>
               <p-inputgroup-addon>
                 <i [class]="editForm.controlValue('icon')"></i>
               </p-inputgroup-addon>
-              <p-inputgroup-addon class="cursor-pointer">
-                <i class="pi pi-question fw-bold" (click)="showHelpDialog = true"></i>
+              <p-inputgroup-addon class="cursor-pointer" (click)="showHelpDialog = true">
+                <i class="pi pi-question fw-bold"></i>
               </p-inputgroup-addon>
             </p-inputgroup>
           </p-floatlabel>
@@ -352,31 +367,40 @@
               formControlName="information"
               id="information"
             ></app-form-text-area>
-            <label for="information">Información</label>
+            <label for="information" class="required">Información</label>
           </p-float-label>
         </div>
         <div class="col-12">
-
           <div formArrayName="features">
-            <h2>Características</h2>
-            <button type="button" (click)="addFeature()">+ Add another alias</button>
-            @for (feature of editForm.getFormArray('features').controls; track $index) {
-              <input type="text" [formControlName]="$index">
-            }
+            <label
+              for="features"
+              class="required fw-semibold"
+              [ngClass]="{'ng-dirty': editForm.isDirtyAndInvalid('features')}"
+            >
+              Características
+            </label>
+            <div class="d-flex flex-column gap-2" id="features">
+              @for (control of editForm.getFormArray('features').controls; track control) {
+                <p-inputgroup>
+                  <input pInputText [formControlName]="$index">
+                  <p-inputgroup-addon class="cursor-pointer">
+                    <p-button severity="danger" text icon="pi pi-trash" (onClick)="deleteFeature($index)"></p-button>
+                  </p-inputgroup-addon>
+                  <p-inputgroup-addon>
+                    <p-button text icon="pi pi-plus" (onClick)="addFeature($index)"></p-button>
+                  </p-inputgroup-addon>
+                </p-inputgroup>
+              }
+            </div>
           </div>
-
-
-          <ul class="mb-0">
-            <!--@for (feature of center.features; track $index) {
-              <li>{{ feature }}</li>
-            }-->
-          </ul>
         </div>
         <div class="col-12">
-          <p-button
-            label="Guardar Cambios"
-            (onClick)="submit()"
-          ></p-button>
+          <app-save-buttons
+            [showCancelButton]="true"
+            (onCancel)="editing = false"
+            (onSave)="submit()"
+            [saveLoading]="loading"
+          ></app-save-buttons>
         </div>
       </div>
     </form>
@@ -391,8 +415,9 @@
   styleClass="basic-dialog"
 >
   <p>
-    Para elegir un icono entra en alguna de estas página, y pone el nombre del icono que más te guste. A la derecha del
-    texto aparecerá el icono si está bien escrito:
+    Para elegir un icono entra en alguna de estas página, y escoge un icono que te guste. A continuación sigue los pasos
+    explicados al lado de los vínculos para escribir el nombre del icono en el campo de texto. Si está bien escrito, el
+    icono deberá aparecer al lado del texto:
   </p>
   <div>
     <a href="https://fontawesome.com/v6/search?ic=free" target="_blank">FontAwesome Free Icons</a>.

@@ -65,7 +65,7 @@ export class ScoutCenterService {
     return `${this.url}/public/photo/${uuid}`;
   }
 
-  getCentersPhotos(centerId: number) {
-    return this.http.get<ScoutCenterFile[]>(`${this.url}/public/photos/${centerId}`);
+  updateScoutCenter(scoutCenter: ScoutCenter): Observable<ScoutCenter> {
+    return this.http.post<ScoutCenter>(`${this.url}/${scoutCenter.id}`, scoutCenter);
   }
 }

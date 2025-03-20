@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {ScoutCenter, ScoutCenterFile, ScoutCenterInformation} from "../../model/scout-center.model";
+import {ScoutCenterInformation} from "../../model/scout-center.model";
 import {BookingDateService} from "../../service/booking-date.service";
 import {GalleriaModule} from 'primeng/galleria';
 import {RouterLink} from '@angular/router';

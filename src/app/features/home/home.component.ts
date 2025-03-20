@@ -115,6 +115,7 @@ export class HomeComponent implements OnInit {
         .map(center => ({
           src: this.scoutCenterService.getPhotoUrl(center.mainPhoto!.uuid!),
           alt: center.name
-        })));
+        }))
+    );
   }
 }
