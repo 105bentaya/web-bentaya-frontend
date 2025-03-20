@@ -5,6 +5,7 @@
   --bentaya-main-color: #044A93;
   --bentaya-secondary-color: #efd134;
   --bentaya-dark-color: #292929;
+  --bentaya-light-color: #d1dce7;
 
   --p-button-border-radius: 12px;
   --p-button-padding-x: 1rem;
@@ -41,7 +42,7 @@
 
   --p-mask-color: var(--bentaya-dark-color);
 
-  --menu-select-color: #d1dce7;
+  --menu-select-color: var(--bentaya-light-color);
 
   --p-datepicker-panel-padding: .5rem;
   --p-datepicker-date-padding: .25rem;
@@ -60,6 +61,8 @@
   --p-togglebutton-border-color: var(--p-form-field-border-color);
   --p-togglebutton-checked-color: var(--p-highlight-color);
   --p-togglebutton-hover-background: var(--p-surface-100);
+
+  --p-dialog-header-padding: 1rem 1rem 0.5rem 1rem;
 
   .p-drawer-footer {
     padding-top: 0;
@@ -93,7 +96,7 @@
   height: var(--p-button-icon-only-width);
 }
 
-.p-button.p-button-icon-only.p-button-sm.squared {
+.p-button.p-button-icon-only.p-button-sm {
   width: 2rem;
 }
 

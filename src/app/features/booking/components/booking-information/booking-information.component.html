@@ -104,8 +104,7 @@
       variant="outlined"
       routerLink="/centros-scout/reserva"
     ></app-general-a-button>
-<!--
-    @if (information.images && information.images.length > 0) {
+    @if (information.photos.length > 0) {
       <p-button
         icon="pi pi-images"
         label="Ver Fotos del Lugar"
@@ -116,7 +115,7 @@
   </div>
   <p-galleria
     [containerStyle]="{'max-width': '800px'}"
-    [value]="information.images"
+    [value]="information.photos"
     [(visible)]="displayBasic"
     [numVisible]="6"
     [circular]="true"
@@ -125,8 +124,7 @@
     [showThumbnails]="false"
   >
     <ng-template pTemplate="item" let-image>
-      <img [src]="image" alt="{{information.title}}" class="galleria-img"/>
+      <img [src]="scoutCenterService.getPhotoUrl(image.uuid)" [alt]="image.name" class="galleria-img"/>
     </ng-template>
   </p-galleria>
--->
 </div>

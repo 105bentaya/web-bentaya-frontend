@@ -14,9 +14,6 @@ import {UserRole} from "./features/users/models/role.model";
 import {
   PendingBookingsComponent
 } from "./features/booking/components/management/pending-bookings/pending-bookings.component";
-import {
-  BookingCalendarComponent
-} from "./features/booking/components/management/booking-calendar/booking-calendar.component";
 import {BookingListComponent} from "./features/booking/components/management/booking-list/booking-list.component";
 import {
   BookingManagementCalendarComponent
@@ -301,6 +298,12 @@ const Booking: Route[] = [
   {
     path: "gestion/reserva/:bookingId",
     loadComponent: () => import('./features/booking/components/management/booking-detail-control/booking-detail-control.component').then(c => c.BookingDetailControlComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUT_CENTER_MANAGER]}
+  },
+  {
+    path: "datos",
+    loadComponent: () => import('./features/booking/components/management/scout-center-management/scout-center-management.component').then(c => c.ScoutCenterManagementComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.SCOUT_CENTER_MANAGER]}
   }

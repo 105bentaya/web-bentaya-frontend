@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-basic-loading-info',
@@ -7,4 +7,5 @@ import {Component} from '@angular/core';
   styleUrl: './basic-loading-info.component.scss'
 })
 export class BasicLoadingInfoComponent {
+  @Input() text = "Cargando...";
 }

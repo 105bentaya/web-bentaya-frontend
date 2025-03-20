@@ -3,6 +3,7 @@ import {BookingInformationComponent} from '../booking-information/booking-inform
 import {FlexCardComponent} from '../../../../shared/components/flex-card/flex-card.component';
 import {RouterLink} from '@angular/router';
 import {ScoutCenterService} from "../../service/scout-center.service";
+import {ScoutCenter, ScoutCenterInformation} from "../../model/scout-center.model";
 
 @Component({
   selector: 'app-booking-home',
@@ -19,8 +20,9 @@ export class BookingHomeComponent implements OnInit {
   private readonly scoutCenterService = inject(ScoutCenterService);
   protected selectedOption = 0;
   protected colors = ["#ED5565", "#f89853", "#2ECC71", "#AC92EC"];
-  protected scoutCenters!: any;
-  protected extras: { [key: number]: any } = {
+  protected scoutCenters!: ScoutCenterInformation[];
+
+  protected extras: { [key: number]: any } = { //todo
     4: {icon: "fa-solid fa-bed", image: "assets/centros-scout/palmital/menu.png"},
     1: {icon: "fa-solid fa-tree", image: "assets/centros-scout/terreno/menu.jpg"},
     2: {icon: "fa-solid fa-tent", image: "assets/centros-scout/tejeda/menu.jpg"},
@@ -28,11 +30,6 @@ export class BookingHomeComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.scoutCenterService.getAll().subscribe(result => {
-      this.scoutCenters = result.map(scoutCenter => ({
-        scoutCenter,
-        extras: this.extras[scoutCenter.id]
-      }));
-    });
+    this.scoutCenterService.getAllInformation().subscribe(result => this.scoutCenters = result);
   }
 }

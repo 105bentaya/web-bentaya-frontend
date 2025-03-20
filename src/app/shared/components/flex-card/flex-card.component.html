@@ -4,17 +4,17 @@
       <div
         class="option"
         [ngClass]="{'active': selectedIndex === $index}"
-        [style.background-image]="'url(' + option.extras.image + ')'"
+        [style.background-image]="'url(' + scoutCenterService.getPhotoUrl(option.mainPhoto?.uuid ?? '') + ')'"
         (click)="selectOption($index)"
       >
         <div class="shadow"></div>
         <div class="label">
           <div class="icon">
-            <i [class]="option.extras.icon"></i>
+            <i [class]="option.icon"></i>
           </div>
           <div class="info">
-            <div class="main">{{ option.scoutCenter.name }}</div>
-            <div class="sub">{{ option.scoutCenter.name }}</div>
+            <div class="main">{{ option.name }}</div>
+            <div class="sub">{{ option.place }}</div>
           </div>
         </div>
       </div>

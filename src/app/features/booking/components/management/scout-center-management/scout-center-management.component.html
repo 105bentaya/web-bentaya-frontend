@@ -1,0 +1,341 @@
+<div class="container">
+  <h1>Información Centros Scout</h1>
+  <p-tabs [value]="1" scrollable>
+    <p-tablist>
+      @for (center of scoutCenters; track center.scoutCenter.id) {
+        <p-tab [value]="center.scoutCenter.id">{{ center.scoutCenter.name }}</p-tab>
+      }
+    </p-tablist>
+    <p-tabpanels>
+      @for (scoutCenter of scoutCenters; track scoutCenter.scoutCenter.id) {
+        @let center = scoutCenter.scoutCenter;
+        <p-tabpanel [value]="center.id">
+          <div class="info-container">
+            <div class="row">
+              <div class="col-12 col-sm-6 col-lg-4">
+                <b>Nombre</b>
+                <div>{{ center.name }}</div>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-4">
+                <b>Lugar</b>
+                <div>{{ center.place }}</div>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-4">
+                <b>Precio por persona y día</b>
+                <div>{{ center.price / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-4">
+                <b>Aforo máximo</b>
+                <div>{{ center.maxCapacity }}</div>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-4">
+                <b>Aforo mínimo para la exclusividad</b>
+                <div>{{ center.minExclusiveCapacity }}</div>
+              </div>
+              <div class="col">
+                <b>Icono</b>
+                <div>
+                  <i [class]="center.icon"></i>
+                </div>
+              </div>
+              <!--
+                            <div class="col-12">
+                              <b>Información</b>
+                              <div>{{ center.information }}</div>
+                            </div>
+                            <div class="col-12">
+                              <b>Características</b>
+                              <ul>
+                                @for (feature of center.features; track $index) {
+                                  <li>{{ feature }}</li>
+                                }
+                              </ul>
+                            </div>
+              -->
+              <div>
+                <b>Normas</b>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="bordered">{{ scoutCenter.rules?.name ?? 'No hay normas subidas' }}</div>
+                  <p-fileupload
+                    #b1
+                    mode="basic"
+                    [chooseButtonProps]="{size: 'small', label: ''}"
+                    chooseIcon="pi pi-upload"
+                    accept=".pdf"
+                    chooseLabel="Subir nuevo documento"
+                    [maxFileSize]="maxFileUploadByteSize"
+                    (uploadHandler)="uploadRule($event, scoutCenter, b1)"
+                    [customUpload]="true"
+                    [auto]="true"
+                  />
+                  @if (scoutCenter.rules) {
+                    <div class="d-flex gap-1 ms-1">
+                      <p-button
+                        icon="pi pi-eye"
+                        size="small"
+                        outlined
+                        (onClick)="openRuleFile(center.id)"
+                        title="Ver"
+                      ></p-button>
+                      <p-button
+                        icon="pi pi-download"
+                        size="small"
+                        outlined
+                        (onClick)="downloadRuleFile(center.id)"
+                        title="Descargar"
+                      ></p-button>
+                    </div>
+                  }
+                </div>
+              </div>
+              <div>
+                <b>Registro de incidencias y estados</b>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="bordered">{{ scoutCenter.incidencesDoc?.name ?? 'No hay documento de incidencias' }}</div>
+                  <p-fileupload
+                    mode="basic"
+                    [chooseButtonProps]="{size: 'small', label: ''}"
+                    chooseIcon="pi pi-upload"
+                    [accept]="docTypes"
+                    [maxFileSize]="maxFileUploadByteSize"
+                    (uploadHandler)="uploadIncidence($event, scoutCenter)"
+                    [customUpload]="true"
+                    [auto]="true"
+                  />
+                  @if (scoutCenter.incidencesDoc) {
+                    <p-button
+                      class="ms-1"
+                      icon="pi pi-download"
+                      size="small"
+                      outlined
+                      (onClick)="downloadIncidenceFile(center.id)"
+                      title="Descargar"
+                    ></p-button>
+                  }
+                </div>
+              </div>
+              <div>
+                <b>Registro de asistentes</b>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="bordered">{{ scoutCenter.attendanceDoc?.name ?? 'No hay documento de asistentes' }}</div>
+                  <p-fileupload
+                    mode="basic"
+                    [chooseButtonProps]="{size: 'small', label: ''}"
+                    chooseIcon="pi pi-upload"
+                    [accept]="docTypes"
+                    [maxFileSize]="maxFileUploadByteSize"
+                    (uploadHandler)="uploadAttendance($event, scoutCenter)"
+                    [customUpload]="true"
+                    [auto]="true"
+                  />
+                  @if (scoutCenter.attendanceDoc) {
+                    <p-button
+                      class="ms-1"
+                      icon="pi pi-download"
+                      size="small"
+                      outlined
+                      (onClick)="downloadAttendanceFile(center.id)"
+                      title="Descargar"
+                    ></p-button>
+                  }
+                </div>
+              </div>
+              <div>
+                <b>Foto principal (recomendable formato 4:3)</b>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="bordered">{{ scoutCenter.mainPhoto?.name ?? 'No hay foto principal' }}</div>
+                  <p-fileupload
+                    mode="basic"
+                    [chooseButtonProps]="{size: 'small', label: ''}"
+                    chooseIcon="pi pi-upload"
+                    accept="image/*"
+                    [maxFileSize]="maxFileUploadByteSize"
+                    (uploadHandler)="uploadMainPhoto($event, scoutCenter)"
+                    [customUpload]="true"
+                    [auto]="true"
+                  />
+                  @if (scoutCenter.mainPhoto) {
+                    <app-general-a-button
+                      class="ms-1"
+                      icon="pi pi-eye"
+                      size="small"
+                      variant="outlined"
+                      [href]="scoutCenterService.getPhotoUrl(scoutCenter.mainPhoto.uuid)"
+                    ></app-general-a-button>
+                  }
+                </div>
+              </div>
+              <b>Fotos</b>
+              <p-fileupload
+                #photoUploader
+                [multiple]="true"
+                accept="image/*"
+                [maxFileSize]="maxFileUploadByteSize"
+                (uploadHandler)="uploadNewPhotos($event, scoutCenter)"
+                customUpload
+                invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
+                invalidFileSizeMessageDetail="el tamaño máximo es {0}."
+                invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
+                invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
+              >
+                <ng-template
+                  #header let-files
+                  let-chooseCallback="chooseCallback"
+                  let-clearCallback="clearCallback"
+                  let-uploadCallback="uploadCallback"
+                >
+                  <div class="d-flex gap-2">
+                    <p-button
+                      label="Seleccionar"
+                      icon="pi pi-images"
+                      (onClick)="chooseCallback()"
+                      size="small"
+                      outlined
+                    />
+                    @if (!loading && files.length > 0) {
+                      <p-button
+                        label="Subir selección"
+                        icon="pi pi-cloud-upload"
+                        (onClick)="uploadCallback(center.id)"
+                        severity="success"
+                        size="small"
+                      />
+                      <p-button
+                        label="Borrar selección"
+                        icon="pi pi-times"
+                        (onClick)="clearCallback()"
+                        severity="danger"
+                        size="small"
+                      />
+                    }
+                  </div>
+                </ng-template>
+                <ng-template #content let-files let-removeFileCallback="removeFileCallback">
+                  <div>
+                    @if (loading) {
+                      <app-basic-loading-info text="Subiendo..."/>
+                    } @else if (files.length > 0) {
+                      <b>Fotos seleccionadas:</b>
+                      <div class="row row-cols-4">
+                        @for (file of files; track $index) {
+                          <div class="col">
+                            <div class="uploader-img">
+                              <img [src]="file.objectURL" [alt]="file.name">
+                              <span> {{ file.name }}</span>
+                              <p-button
+                                icon="pi pi-trash"
+                                severity="danger"
+                                (onClick)="removeFileCallback($event, $index)"
+                              ></p-button>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    }
+                    <div class="mt-3"><b>Fotos subidas</b>
+                      @if (scoutCenter.photos.length < 1) {
+                        <div>Actualmente no hay fotos subidas</div>
+                      } @else {
+                        <div class="row row-cols-4">@for (file of scoutCenter.photos; track $index) {
+                          <div class="col">
+                            <div class="uploader-img">
+                              <img [src]="scoutCenterService.getPhotoUrl(file.uuid)" [alt]="file.name">
+                              <span> {{ file.name }}</span>
+                              <p-button
+                                icon="pi pi-trash"
+                                severity="danger"
+                                (onClick)="removeUploadedFile(file, scoutCenter, $index)"
+                                [disabled]="loadingDelete"
+                              ></p-button>
+                            </div>
+                          </div>
+                        }</div>
+                      }</div>
+                  </div>
+                </ng-template>
+                <ng-template #file></ng-template>
+              </p-fileupload>
+            </div>
+          </div>
+        </p-tabpanel>
+      }
+    </p-tabpanels>
+  </p-tabs>
+</div>
+<!--
+<form>
+  <div class="form-container">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            class="w-100"
+            id="name"
+          >
+          <label for="name">Nombre</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-md-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            class="w-100"
+            id="place"
+          >
+          <label for="place">Lugar</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            class="w-100"
+            id="name2"
+          >
+          <label for="name2">Capacidad</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            class="w-100"
+            id="place2"
+          >
+          <label for="place2">Capacidad para solicitar en exclusividad (0 si siempre es exclusiva)</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            class="w-100"
+            id="price"
+          >
+          <label for="price">Aportación de mantenimiento por persona y día</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            class="w-100"
+            id="information"
+          >
+          <label for="information">Información del lugar</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            class="w-100"
+            id="list"
+          >
+          <label for="list">Lista</label>
+        </p-floatlabel>
+      </div>
+    </div>
+  </div>
+</form>-->

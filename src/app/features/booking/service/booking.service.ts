@@ -57,10 +57,6 @@ export class BookingService {
     return this.http.post<void>(`${this.bookingUrl}/document/${bookingId}`, formData);
   }
 
-  public create(bookingId: number, file: File): Observable<void> {
-    return this.http.post<void>(`${this.bookingUrl}/document/${bookingId}`, file);
-  }
-
   getReservedDates(centerId: number): Observable<ReservationDate[]> {
     return this.http.get<ReservationDate[]>(`${this.bookingUrl}/public/${centerId}`);
   }

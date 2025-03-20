@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
 import {UpperCasePipe} from '@angular/common';
 import {GalleriaModule} from "primeng/galleria";
+import {ScoutCenterService} from "../booking/service/scout-center.service";
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ import {GalleriaModule} from "primeng/galleria";
     GalleriaModule
   ]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
   protected readonly formButtons: {
     subtitle: string;
@@ -68,25 +69,6 @@ export class HomeComponent {
     {stripClass: "strip-tent", text: "Actividades al Aire Libre", svg: "assets/home/tent.svg"}
   ];
 
-  protected readonly scoutCenterImages: { src: string; alt: string }[] = [
-    {
-      src: "/assets/centros-scout/palmital/menu.png",
-      alt: "Aula de la Naturaleza El Palmital"
-    },
-    {
-      src: "/assets/centros-scout/terreno/menu.jpg",
-      alt: "Campamento Bentaya"
-    },
-    {
-      src: "/assets/centros-scout/refugio/menu.jpg",
-      alt: "Refugio Luis Martín"
-    },
-    {
-      src: "/assets/centros-scout/tejeda/menu.jpg",
-      alt: "Refugio Bentayga"
-    }
-  ];
-
   protected readonly cards: { id: string; title: string; description: string; link: string; target?: string }[] = [
     {
       id: '01',
@@ -120,4 +102,19 @@ export class HomeComponent {
       link: '/calidad',
     }
   ];
+
+
+  protected scoutCenterImages: { src: string; alt: string }[] = [];
+
+  private readonly scoutCenterService = inject(ScoutCenterService);
+
+  ngOnInit() {
+    this.scoutCenterService.getAllInformation().subscribe(result =>
+      this.scoutCenterImages = result
+        .filter(center => center.mainPhoto)
+        .map(center => ({
+          src: this.scoutCenterService.getPhotoUrl(center.mainPhoto!.uuid!),
+          alt: center.name
+        })));
+  }
 }
