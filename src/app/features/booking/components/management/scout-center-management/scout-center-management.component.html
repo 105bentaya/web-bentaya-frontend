@@ -1,70 +1,77 @@
 <div class="container">
   <h1>Información Centros Scout</h1>
-  <p-tabs [value]="1" scrollable>
-    <p-tablist>
-      @for (center of scoutCenters; track center.scoutCenter.id) {
-        <p-tab [value]="center.scoutCenter.id">{{ center.scoutCenter.name }}</p-tab>
-      }
-    </p-tablist>
-    <p-tabpanels>
-      @for (scoutCenter of scoutCenters; track scoutCenter.scoutCenter.id) {
-        @let center = scoutCenter.scoutCenter;
-        <p-tabpanel [value]="center.id">
-          <div class="info-container">
-            <div class="row">
-              <div class="col-12 col-sm-6 col-lg-4">
-                <b>Nombre</b>
-                <div>{{ center.name }}</div>
-              </div>
-              <div class="col-12 col-sm-6 col-lg-4">
-                <b>Lugar</b>
-                <div>{{ center.place }}</div>
-              </div>
-              <div class="col-12 col-sm-6 col-lg-4">
-                <b>Precio por persona y día</b>
-                <div>{{ center.price / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
-              </div>
-              <div class="col-12 col-sm-6 col-lg-4">
-                <b>Aforo máximo</b>
-                <div>{{ center.maxCapacity }}</div>
-              </div>
-              <div class="col-12 col-sm-6 col-lg-4">
-                <b>Aforo mínimo para la exclusividad</b>
-                <div>{{ center.minExclusiveCapacity }}</div>
-              </div>
-              <div class="col">
-                <b>Icono</b>
-                <div>
-                  <i [class]="center.icon"></i>
+  @if (!editing) {
+    <p-tabs [value]="1" scrollable>
+      <p-tablist>
+        @for (center of scoutCenters; track center.scoutCenter.id) {
+          <p-tab [value]="center.scoutCenter.id">{{ center.scoutCenter.name }}</p-tab>
+        }
+      </p-tablist>
+      <p-tabpanels>
+        @for (scoutCenter of scoutCenters; track scoutCenter.scoutCenter.id) {
+          @let center = scoutCenter.scoutCenter;
+          <p-tabpanel [value]="center.id">
+            <div class="info-container">
+              <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <b>Nombre</b>
+                  <div>{{ center.name }}</div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <b>Lugar</b>
+                  <div>{{ center.place }}</div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <b>Precio por persona y día</b>
+                  <div>{{ center.price / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <b>Aforo máximo</b>
+                  <div>{{ center.maxCapacity }}</div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <b>Aforo mínimo para la exclusividad</b>
+                  <div>{{ center.minExclusiveCapacity }}</div>
+                </div>
+                <div class="col">
+                  <b>Icono</b>
+                  <div>
+                    <i [class]="center.icon"></i>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <b>Información</b>
+                  <div>{{ center.information }}</div>
+                </div>
+                <div class="col-12">
+                  <b>Características</b>
+                  <ul class="mb-0">
+                    @for (feature of center.features; track $index) {
+                      <li>{{ feature }}</li>
+                    }
+                  </ul>
+                </div>
+                <div class="col-12">
+                  <p-button
+                    label="Editar datos"
+                    (onClick)="enableEditMode(center)"
+                  ></p-button>
                 </div>
               </div>
-              <!--
-                            <div class="col-12">
-                              <b>Información</b>
-                              <div>{{ center.information }}</div>
-                            </div>
-                            <div class="col-12">
-                              <b>Características</b>
-                              <ul>
-                                @for (feature of center.features; track $index) {
-                                  <li>{{ feature }}</li>
-                                }
-                              </ul>
-                            </div>
-              -->
+            </div>
+            <div class="d-flex flex-column gap-3">
               <div>
                 <b>Normas</b>
                 <div class="d-flex align-items-center gap-2">
                   <div class="bordered">{{ scoutCenter.rules?.name ?? 'No hay normas subidas' }}</div>
                   <p-fileupload
-                    #b1
                     mode="basic"
                     [chooseButtonProps]="{size: 'small', label: ''}"
                     chooseIcon="pi pi-upload"
                     accept=".pdf"
                     chooseLabel="Subir nuevo documento"
                     [maxFileSize]="maxFileUploadByteSize"
-                    (uploadHandler)="uploadRule($event, scoutCenter, b1)"
+                    (uploadHandler)="uploadRule($event, scoutCenter)"
                     [customUpload]="true"
                     [auto]="true"
                   />
@@ -171,7 +178,7 @@
                 [multiple]="true"
                 accept="image/*"
                 [maxFileSize]="maxFileUploadByteSize"
-                (uploadHandler)="uploadNewPhotos($event, scoutCenter)"
+                (uploadHandler)="uploadNewPhotos($event, scoutCenter, photoUploader)"
                 customUpload
                 invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
                 invalidFileSizeMessageDetail="el tamaño máximo es {0}."
@@ -256,86 +263,143 @@
                 <ng-template #file></ng-template>
               </p-fileupload>
             </div>
+          </p-tabpanel>
+        }
+      </p-tabpanels>
+    </p-tabs>
+  } @else {
+    <form [formGroup]="editForm.form" class="form-container">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-lg-4">
+          <p-float-label variant="on">
+            <input
+              pInputText
+              formControlName="name"
+              id="name"
+              maxlength="127"
+            >
+            <label for="name">Nombre</label>
+          </p-float-label>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <p-float-label variant="on">
+            <input
+              pInputText
+              formControlName="place"
+              id="place"
+              maxlength="127"
+            >
+            <label for="place">Lugar</label>
+          </p-float-label>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <p-float-label variant="on">
+            <p-inputNumber
+              id="price"
+              mode="currency"
+              currency="EUR"
+              formControlName="price"
+              [min]="0"
+            />
+            <label for="price">Precio por persona y día</label>
+          </p-float-label>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <p-float-label variant="on">
+            <p-inputNumber
+              id="maxCapacity"
+              mode="decimal"
+              formControlName="maxCapacity"
+              [min]="0"
+            />
+            <label for="price">Aforo máximo</label>
+          </p-float-label>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <p-float-label variant="on">
+            <p-inputNumber
+              id="minExclusiveCapacity"
+              mode="decimal"
+              formControlName="minExclusiveCapacity"
+              [min]="0"
+            />
+            <label for="minExclusiveCapacity">Aforo mínimo para la exclusividad</label>
+          </p-float-label>
+        </div>
+        <div class="col">
+          <p-floatlabel variant="on">
+            <p-inputgroup>
+              <input
+                pInputText
+                id="icon"
+                formControlName="icon"
+                maxlength="63"
+              >
+              <label for="icon">Icono</label>
+              <p-inputgroup-addon>
+                <i [class]="editForm.controlValue('icon')"></i>
+              </p-inputgroup-addon>
+              <p-inputgroup-addon class="cursor-pointer">
+                <i class="pi pi-question fw-bold" (click)="showHelpDialog = true"></i>
+              </p-inputgroup-addon>
+            </p-inputgroup>
+          </p-floatlabel>
+        </div>
+        <div class="col-12">
+          <p-float-label variant="on">
+            <app-form-text-area
+              [maxLength]="1023"
+              formControlName="information"
+              id="information"
+            ></app-form-text-area>
+            <label for="information">Información</label>
+          </p-float-label>
+        </div>
+        <div class="col-12">
+
+          <div formArrayName="features">
+            <h2>Características</h2>
+            <button type="button" (click)="addFeature()">+ Add another alias</button>
+            @for (feature of editForm.getFormArray('features').controls; track $index) {
+              <input type="text" [formControlName]="$index">
+            }
           </div>
-        </p-tabpanel>
-      }
-    </p-tabpanels>
-  </p-tabs>
+
+
+          <ul class="mb-0">
+            <!--@for (feature of center.features; track $index) {
+              <li>{{ feature }}</li>
+            }-->
+          </ul>
+        </div>
+        <div class="col-12">
+          <p-button
+            label="Guardar Cambios"
+            (onClick)="submit()"
+          ></p-button>
+        </div>
+      </div>
+    </form>
+  }
 </div>
-<!--
-<form>
-  <div class="form-container">
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            class="w-100"
-            id="name"
-          >
-          <label for="name">Nombre</label>
-        </p-floatlabel>
-      </div>
-      <div class="col-12 col-md-6">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            class="w-100"
-            id="place"
-          >
-          <label for="place">Lugar</label>
-        </p-floatlabel>
-      </div>
-      <div class="col-6">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            class="w-100"
-            id="name2"
-          >
-          <label for="name2">Capacidad</label>
-        </p-floatlabel>
-      </div>
-      <div class="col-6">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            class="w-100"
-            id="place2"
-          >
-          <label for="place2">Capacidad para solicitar en exclusividad (0 si siempre es exclusiva)</label>
-        </p-floatlabel>
-      </div>
-      <div class="col-6">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            class="w-100"
-            id="price"
-          >
-          <label for="price">Aportación de mantenimiento por persona y día</label>
-        </p-floatlabel>
-      </div>
-      <div class="col-6">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            class="w-100"
-            id="information"
-          >
-          <label for="information">Información del lugar</label>
-        </p-floatlabel>
-      </div>
-      <div class="col-6">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            class="w-100"
-            id="list"
-          >
-          <label for="list">Lista</label>
-        </p-floatlabel>
-      </div>
-    </div>
+<p-dialog
+  header="Cómo elegir icono"
+  [(visible)]="showHelpDialog"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="basic-dialog"
+>
+  <p>
+    Para elegir un icono entra en alguna de estas página, y pone el nombre del icono que más te guste. A la derecha del
+    texto aparecerá el icono si está bien escrito:
+  </p>
+  <div>
+    <a href="https://fontawesome.com/v6/search?ic=free" target="_blank">FontAwesome Free Icons</a>.
+    Haz click en el icono que te guste y copia lo que pone dentro de 'class'. Ejemplo: fa-solid fa-house.
   </div>
-</form>-->
+  <div>
+    <a href="https://primeng.org/icons#list" target="_blank">PrimeNG Icons</a>.
+    Copia el texto debajo del icono y escríbelo poniendo 'pi' delante. Ejemplo: pi pi-user.
+  </div>
+</p-dialog>

@@ -1,4 +1,4 @@
-import {AbstractControlOptions, FormBuilder, FormGroup} from "@angular/forms";
+import {AbstractControlOptions, FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {inject} from "@angular/core";
 import {lastValueFrom, skip, take} from "rxjs";
 
@@ -84,7 +84,12 @@ export class FormHelper {
     this.form = this.formBuilder.group(controls, options);
   }
 
-  async validateAll(): Promise<void> {
+  validateAll(): void {
+    this.hasBeenValidated = true;
+    this.validateControls(Object.keys(this.form.controls));
+  }
+
+  async validateAllWithAsync(): Promise<void> {
     this.hasBeenValidated = true;
     await this.validateControls(Object.keys(this.form.controls));
   }
@@ -99,6 +104,10 @@ export class FormHelper {
 
   get(control: string) {
     return this.form?.controls[control];
+  }
+
+  getFormArray(control: string) {
+    return this.form?.controls[control] as FormArray;
   }
 
   get valid() {

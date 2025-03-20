@@ -38,20 +38,22 @@
     </div>
     <div class="light-bg pb-3">
       <div class="flex-column-reverse flex-md-row row m-0 align-items-center pt-1">
-        <div class="col-md-7 col-lg-6 col-xxl-5">
-          <p-galleria
-            [value]="this.scoutCenterImages"
-            [containerStyle]="{'width':'100%'}"
-            [showItemNavigators]="true"
-            [showThumbnails]="false"
-            [showItemNavigatorsOnHover]="false"
-            [circular]="true"
-          >
-            <ng-template pTemplate="item" let-item>
-              <img [src]="item.src" alt="Centro scout" class="rounded-3 w-100">
-            </ng-template>
-          </p-galleria>
-        </div>
+        @if (this.scoutCenterImages.length > 0) {
+          <div class="col-md-7 col-lg-6 col-xxl-5">
+            <p-galleria
+              [value]="this.scoutCenterImages"
+              [containerStyle]="{'width':'100%'}"
+              [showItemNavigators]="true"
+              [showThumbnails]="false"
+              [showItemNavigatorsOnHover]="false"
+              [circular]="true"
+            >
+              <ng-template pTemplate="item" let-item>
+                <img [src]="item.src" alt="Centro scout" class="rounded-3 w-100">
+              </ng-template>
+            </p-galleria>
+          </div>
+        }
         <div class="col text-center fw-semibold px-lg-3 px-xl-5">
           <p class="flex-column">
             Los Centros Scout son el lugar perfecto para disfrutar de actividades al aire libre y
@@ -95,8 +97,8 @@
           class="rounded-4 object-fit-cover d-xxl-none"
         >
         <button class="btn btn-bentaya rounded-3 py-xxl-4 zoom-animation" routerLink="/asociacion/grupo">
-            LEER MÁS
-          </button>
+          LEER MÁS
+        </button>
       </div>
       <div class="d-flex flex-column align-items-center flex-xxl-row gap-4">
         <img class="me-xxl-4" src="assets/home/aprender-jugando.png" width="190" alt="Aprender Jugando">
