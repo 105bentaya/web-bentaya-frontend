@@ -22,6 +22,10 @@ body {
   }
 }
 
+.color-bentaya {
+  color: var(--bentaya-main-color);
+}
+
 a {
   &.uncolored {
     color: unset !important;

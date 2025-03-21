@@ -130,6 +130,10 @@ export class SidebarComponent implements OnInit {
           ]
         },
         {
+          label: "Secciones Educativas",
+          routerLink: '/asociacion/secciones',
+        },
+        {
           label: "Historia",
           routerLink: '/asociacion/historia',
         },

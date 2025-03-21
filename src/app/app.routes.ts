@@ -11,6 +11,7 @@ import {HistoriaComponent} from "./web-pages/historia/historia.component";
 import {MisionVisionValoresComponent} from "./web-pages/mision-vision-valores/mision-vision-valores.component";
 import {ReconocimientosComponent} from "./web-pages/reconocimientos/reconocimientos.component";
 import {UserRole} from "./features/users/models/role.model";
+import {UnidadesComponent} from "./web-pages/unidades/unidades.component";
 
 export const routes: Routes = [
   {
@@ -189,6 +190,10 @@ export const routes: Routes = [
   {
     path: "asociacion/grupo",
     loadComponent: () => AsociacionComponent
+  },
+  {
+    path: "asociacion/secciones",
+    loadComponent: () => UnidadesComponent
   },
   {
     path: "asociacion/historia",

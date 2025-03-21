@@ -1,12 +1,14 @@
 import {Component} from '@angular/core';
 import {PanelModule} from "primeng/panel";
 import {Divider} from "primeng/divider";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-asociacion',
   imports: [
     PanelModule,
-    Divider
+    Divider,
+    RouterLink
   ],
   templateUrl: './asociacion.component.html',
   styleUrl: './asociacion.component.scss'
