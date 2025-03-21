@@ -1,6 +1,6 @@
 import {Component, inject, ViewChild} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
-import {scoutCenterStatusesValues} from "../../../constant/status.constant";
+import {bookingStatusesValues} from "../../../constant/status.constant";
 import {Booking} from "../../../model/booking.model";
 import {Table, TableModule} from "primeng/table";
 import {MultiSelect} from "primeng/multiselect";
@@ -46,7 +46,7 @@ export class BookingListComponent {
   protected dateRange: Date[] | undefined;
 
   protected centers!: MenuItem[];
-  protected readonly statusesOptions = scoutCenterStatusesValues;
+  protected readonly statusesOptions = bookingStatusesValues;
   protected scoutCenterFilter: number[];
   protected statusFilter: string[];
 

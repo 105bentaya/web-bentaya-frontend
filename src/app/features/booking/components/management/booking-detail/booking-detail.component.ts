@@ -13,7 +13,7 @@ import {ConfirmationService} from "primeng/api";
 import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {DividerModule} from "primeng/divider";
-import {DocumentStatusPipe} from "../../../pipe/dcoument-status.pipe";
+import {DocumentStatusPipe} from "../../../pipe/document-status.pipe";
 import {
   TableIconButtonComponent
 } from "../../../../../shared/components/buttons/table-icon-button/table-icon-button.component";

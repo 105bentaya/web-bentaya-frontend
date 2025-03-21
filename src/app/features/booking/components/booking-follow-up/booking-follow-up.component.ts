@@ -12,7 +12,7 @@ import {BookingStatusUpdateComponent} from "../management/booking-status-update/
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ConfirmationService} from "primeng/api";
 import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";
-import {DocumentStatusPipe} from '../../pipe/dcoument-status.pipe';
+import {DocumentStatusPipe} from '../../pipe/document-status.pipe';
 import {ScoutCenterStatusPipe} from '../../pipe/scout-center-status.pipe';
 import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';

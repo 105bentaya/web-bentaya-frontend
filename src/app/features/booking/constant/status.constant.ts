@@ -1,4 +1,4 @@
-export const scoutCenterStatusesValues = [
+export const bookingStatusesValues = [
   {label: "Nueva Pre Reserva", value: "NEW", styleClass: "bg-primary-subtle"},
   {label: "Pre Reserva Aceptada", value: "RESERVED", styleClass: "bg-warning-subtle"},
   {label: "Reserva Confirmada", value: "OCCUPIED", styleClass: "bg-success-subtle"},

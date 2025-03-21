@@ -13,6 +13,11 @@
       @for (info of information.features; track $index) {
         <li>{{ info }}</li>
       }
+      <li>
+        Aportación de mantenimiento:
+        {{information.price / 100 | currency:'EUR':undefined:undefined:'es'}}
+        por persona y día
+      </li>
     </ul>
   </div>
   <div class="d-flex flex-column gap-3 justify-content-center align-items-center mt-4">

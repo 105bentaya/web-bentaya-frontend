@@ -5,7 +5,7 @@ import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.com
 import {MultiSelect} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
 import {finalize} from "rxjs";
-import {scoutCenterStatusesValues} from "../../../constant/status.constant";
+import {bookingStatusesValues} from "../../../constant/status.constant";
 import {castArray, pick} from "lodash";
 import {ActivatedRoute, Router} from "@angular/router";
 import {JoinPipe} from "../../../../../shared/pipes/join.pipe";
@@ -35,7 +35,7 @@ export class BookingManagementCalendarComponent implements OnInit {
   protected readonly statusPipe = new ScoutCenterStatusPipe();
 
   protected centers!: MenuItem[];
-  protected readonly statuses = scoutCenterStatusesValues;
+  protected readonly statuses = bookingStatusesValues;
   protected scoutCenterFilter: number[];
   protected statusFilter: any;
 
