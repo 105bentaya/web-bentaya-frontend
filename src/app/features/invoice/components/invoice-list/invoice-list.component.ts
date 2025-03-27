@@ -1,9 +1,9 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {MultiSelectModule} from "primeng/multiselect";
 import {ConfirmationService, PrimeTemplate} from "primeng/api";
-import {Table, TableModule} from "primeng/table";
+import {TableLazyLoadEvent, TableModule} from "primeng/table";
 import {InvoiceService} from "../../invoice.service";
 import {Invoice, InvoiceData} from "../../invoice.model";
 import {CurrencyPipe, DatePipe} from "@angular/common";
@@ -16,6 +16,7 @@ import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {noop} from "rxjs";
 
 
 @Component({
@@ -46,14 +47,14 @@ export class InvoiceListComponent implements OnInit {
   protected totalRecords: number = 0;
   protected loading = true;
 
-  @ViewChild('dt')
-  private readonly dt!: Table;
+  private lastFilter: TableLazyLoadEvent | undefined;
 
   ngOnInit() {
     this.invoiceService.getData().subscribe(invoiceData => this.invoiceData = invoiceData);
   }
 
   protected loadUsersWithFilter(tableLazyLoadEvent: any) {
+    this.lastFilter = tableLazyLoadEvent;
     this.loading = true;
     this.invoiceService.getAll(FilterUtils.lazyEventToFilter(tableLazyLoadEvent)).subscribe({
       next: res => {
@@ -72,7 +73,7 @@ export class InvoiceListComponent implements OnInit {
       "medium",
       {invoiceData: cloneDeep(this.invoiceData), invoice}
     );
-    ref.onClose.subscribe(() => this.dt._filter());
+    ref.onClose.subscribe(() => this.lastFilter ? this.loadUsersWithFilter(this.lastFilter) : noop());
   }
 
   protected askForDeletion(invoice: Invoice) {
@@ -86,7 +87,7 @@ export class InvoiceListComponent implements OnInit {
     this.invoiceService.delete(id).subscribe({
       next: () => {
         this.alertService.sendBasicSuccessMessage("Factura borrada con éxito");
-        this.dt._filter();
+        if (this.lastFilter) this.loadUsersWithFilter(this.lastFilter);
       }
     });
   }
