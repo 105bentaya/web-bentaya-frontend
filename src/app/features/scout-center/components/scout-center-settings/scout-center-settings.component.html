@@ -1,0 +1,45 @@
+@if (formHelper.form) {
+  <form [formGroup]="formHelper.form" class="form-container">
+    <div class="row">
+      <div class="col-12">
+        <p-floatlabel variant="on">
+          <p-datePicker
+            id="maintenance"
+            styleClass="w-100"
+            [readonlyInput]="true"
+            [formControlName]="SettingType.BOOKING_DATE"
+          ></p-datePicker>
+          <label for="maintenance">Fecha máxima para hacer reservas</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <p-input-number
+            id="min"
+            styleClass="w-100"
+            [min]="0"
+            [max]="23"
+            [formControlName]="SettingType.BOOKING_MIN_DAY_NUMBER"
+          ></p-input-number>
+          <label for="min">Hora mínima para considerar un día</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <p-input-number
+            id="max"
+            styleClass="w-100"
+            [min]="0"
+            [max]="23"
+            [formControlName]="SettingType.BOOKING_MAX_DAY_NUMBER"
+          ></p-input-number>
+          <label for="max">Hora máxima para considerar un día</label>
+        </p-floatlabel>
+      </div>
+    </div>
+    <app-save-buttons
+      (onSave)="saveChanges()"
+      [saveLoading]="loading"
+    ></app-save-buttons>
+  </form>
+}

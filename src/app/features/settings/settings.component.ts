@@ -59,7 +59,7 @@ export class SettingsComponent implements OnInit {
   }
 
   private getAllSettings(): void {
-    this.settingsService.getAll().subscribe({
+    this.settingsService.getGeneralSettings().subscribe({
       next: settings => {
         this.settingsForm = settings.reduce((acc, setting) => {
           const value = this.getSettingValue(setting);

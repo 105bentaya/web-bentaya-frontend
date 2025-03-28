@@ -24,6 +24,7 @@ import {Dialog} from "primeng/dialog";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {centerIsAlwaysExclusive} from "../../../booking/model/booking.model";
+import {ScoutCenterSettingsComponent} from "../scout-center-settings/scout-center-settings.component";
 
 @Component({
   selector: 'app-scout-center-management',
@@ -44,7 +45,8 @@ import {centerIsAlwaysExclusive} from "../../../booking/model/booking.model";
     Dialog,
     FormTextAreaComponent,
     NgClass,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    ScoutCenterSettingsComponent
   ],
   templateUrl: './scout-center-management.component.html',
   styleUrl: './scout-center-management.component.scss'

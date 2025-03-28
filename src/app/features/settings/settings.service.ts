@@ -12,8 +12,12 @@ export class SettingsService {
   private readonly http = inject(HttpClient);
   private readonly settingsUrl = `${environment.apiUrl}/settings`;
 
-  getAll(): Observable<Setting[]> {
+  getGeneralSettings(): Observable<Setting[]> {
     return this.http.get<Setting[]>(this.settingsUrl);
+  }
+
+  getBookingSettings(): Observable<Setting[]> {
+    return this.http.get<Setting[]>(`${this.settingsUrl}/booking`);
   }
 
   getByName(name: SettingType): Observable<Setting> {
