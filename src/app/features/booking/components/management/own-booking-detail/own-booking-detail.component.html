@@ -40,8 +40,8 @@
     <div class="col-12">
       <div class="d-flex flex-column gap-1 align-items-start">
         <b>Estado actual</b>
-        <b [class]="booking.status | scoutCenterStatus:true" class="rounded-1 p-1">
-          {{ booking.status | scoutCenterStatus }}
+        <b [class]="booking.status | bookingStatus:'severity'" class="rounded-1 p-1">
+          {{ booking.status | bookingStatus }}
         </b>
         <div class="mt-3">
           @if (booking.status == 'CANCELED') {

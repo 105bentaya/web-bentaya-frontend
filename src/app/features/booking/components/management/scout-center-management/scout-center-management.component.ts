@@ -6,7 +6,7 @@ import {CurrencyPipe, NgClass} from "@angular/common";
 import {Button} from "primeng/button";
 import {FileUpload, FileUploadHandlerEvent} from "primeng/fileupload";
 import {maxFileUploadByteSize} from "../../../../../shared/constant";
-import {docTypes, FileUtils} from "../../../../../shared/util/file.utils";
+import {docTypes, FileUtils, imageTypes} from "../../../../../shared/util/file.utils";
 import {AlertService} from "../../../../../shared/services/alert-service.service";
 import {
   BasicLoadingInfoComponent
@@ -25,6 +25,7 @@ import {InputGroupAddon} from "primeng/inputgroupaddon";
 import {Dialog} from "primeng/dialog";
 import {FormTextAreaComponent} from "../../../../../shared/components/form-text-area/form-text-area.component";
 import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
+import {centerIsAlwaysExclusive} from "../../../model/booking.model";
 
 @Component({
   selector: 'app-scout-center-management',
@@ -53,9 +54,13 @@ import {SaveButtonsComponent} from "../../../../../shared/components/buttons/sav
 export class ScoutCenterManagementComponent implements OnInit {
   protected readonly scoutCenterService = inject(ScoutCenterService);
   private readonly alertService = inject(AlertService);
-  protected scoutCenters!: ScoutCenterWithFiles[];
+
+  protected readonly centerIsAlwaysExclusive = centerIsAlwaysExclusive;
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
   protected readonly docTypes = docTypes;
+  protected readonly imageTypes = imageTypes;
+
+  protected scoutCenters!: ScoutCenterWithFiles[];
   protected loading = false;
   protected loadingDelete = false;
 

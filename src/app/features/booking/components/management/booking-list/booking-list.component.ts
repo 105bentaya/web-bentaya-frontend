@@ -1,10 +1,10 @@
 import {Component, inject, ViewChild} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
-import {bookingStatusesValues} from "../../../constant/status.constant";
+import {bookingStatuses} from "../../../constant/status.constant";
 import {Booking} from "../../../model/booking.model";
 import {Table, TableModule} from "primeng/table";
 import {MultiSelect} from "primeng/multiselect";
-import {ScoutCenterStatusPipe} from "../../../pipe/scout-center-status.pipe";
+import {BookingStatusPipe} from "../../../pipe/scout-center-status.pipe";
 import {DatePipe} from "@angular/common";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import FilterUtils from "../../../../../shared/util/filter-utils";
@@ -22,7 +22,7 @@ import {MenuItem} from "primeng/api";
   imports: [
     TableModule,
     MultiSelect,
-    ScoutCenterStatusPipe,
+    BookingStatusPipe,
     DatePipe,
     RouterLink,
     InputText,
@@ -39,14 +39,14 @@ export class BookingListComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
-  protected bookings!: Booking[];
+  protected readonly statusesOptions = bookingStatuses;
 
+  protected bookings!: Booking[];
   protected loading = true;
   protected totalRecords: number = 0;
-  protected dateRange: Date[] | undefined;
 
+  protected dateRange: Date[] | undefined;
   protected centers!: MenuItem[];
-  protected readonly statusesOptions = bookingStatusesValues;
   protected scoutCenterFilter: number[];
   protected statusFilter: string[];
 

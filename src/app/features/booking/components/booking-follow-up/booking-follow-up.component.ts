@@ -13,7 +13,7 @@ import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ConfirmationService} from "primeng/api";
 import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";
 import {DocumentStatusPipe} from '../../pipe/document-status.pipe';
-import {ScoutCenterStatusPipe} from '../../pipe/scout-center-status.pipe';
+import {BookingStatusPipe} from '../../pipe/scout-center-status.pipe';
 import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
 import {FieldsetModule} from 'primeng/fieldset';
@@ -27,7 +27,7 @@ import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../const
 import {TabsModule} from "primeng/tabs";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {maxFileUploadByteSize} from "../../../../shared/constant";
-import {FileUtils} from "../../../../shared/util/file.utils";
+import {docTypes, FileUtils} from "../../../../shared/util/file.utils";
 import {ScoutCenterService} from "../../service/scout-center.service";
 
 @Component({
@@ -41,7 +41,7 @@ import {ScoutCenterService} from "../../service/scout-center.service";
     FieldsetModule,
     DividerModule,
     CurrencyPipe,
-    ScoutCenterStatusPipe,
+    BookingStatusPipe,
     NgTemplateOutlet,
     FileUploadModule,
     DocumentStatusPipe,
@@ -61,6 +61,7 @@ export class BookingFollowUpComponent implements OnInit {
   private readonly scoutCenterService = inject(ScoutCenterService);
 
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
+  protected readonly docTypes = docTypes;
 
   @ViewChild('uploader') private readonly uploader!: FileUpload;
   @ViewChild('incidentsUploader') private readonly incidentUploader!: FileUpload;
@@ -147,64 +148,35 @@ export class BookingFollowUpComponent implements OnInit {
     this.ref = this.dialogService.openDialog(BookingStatusUpdateComponent, "Cancelar reserva", "small", {
       floatLabel: "Motivo de la cancelación",
       required: true,
-      message: booking.status == "OCCUPIED" || booking.status == "FULLY_OCCUPIED" ?
+      message: booking.status == "OCCUPIED" ?
         "Comente el motivo de la cancelación, indicando claramente si es por una causa de fuerza mayor o está" +
         "cancelando de forma voluntaria. Según esto valorarémos si le devolvemos el importe íntegro o solo una parte." :
         ""
     });
     this.ref.onClose.subscribe(result => {
-      if (result) this.updateBookingStatus("CANCELED", result.comment, booking);
+      if (result) this.updateBookingStatus(Status.CANCELED, result.comment, booking);
     });
   }
 
   private updateBookingStatus(newStatus: Status, observations: string, booking: Booking) {
     this.loading = true;
-    this.bookingService.updateStatusByUser({id: booking.id, newStatus, observations}).subscribe({
-      next: result => {
-        const index = this.bookings.findIndex(book => book.id === result.id);
-        this.bookings[index].status = result.status;
-        this.bookings[index].statusObservations = result.statusObservations;
-        this.bookings[index].userConfirmedDocuments = result.userConfirmedDocuments;
-        this.loading = false;
-        this.alertService.sendBasicSuccessMessage("Reserva actualizada con éxito");
-      }, error: () => this.loading = false
-    });
+    // this.bookingService.updateStatusByUser({id: booking.id, newStatus, observations}).subscribe({
+    //   next: result => {
+    //     const index = this.bookings.findIndex(book => book.id === result.id);
+    //     this.bookings[index].status = result.status;
+    //     this.bookings[index].statusObservations = result.statusObservations;
+    //     this.bookings[index].userConfirmedDocuments = result.userConfirmedDocuments;
+    //     this.loading = false;
+    //     this.alertService.sendBasicSuccessMessage("Reserva actualizada con éxito");
+    //   }, error: () => this.loading = false
+    // });
   }
 
   protected confirmDocuments(booking: Booking) {
     this.confirmationService.confirm({
       header: "Confirmar",
       message: booking.userConfirmedDocuments ? confirmDocumentsAgainMessage : confirmDocumentsMessage,
-      accept: () => this.updateBookingStatus("RESERVED", "", booking)
-    });
-  }
-
-  protected finishReservation(booking: Booking) {
-    let message = "";
-    const hasUploadedDocument = this.incidentUploader.files.length >= 1;
-    if (!hasUploadedDocument) {
-      message += "No ha aportado el documento de registro de incidencias y estados.\n" +
-        "No es obligatorio aportarlo, pero lo agradecemos si lo hace.\n";
-    } else {
-      message += `Ha aportado el siguiente documento: ${this.incidentUploader.files[0].name}.\n`;
-    }
-    if (new Date() <= new Date(booking.endDate)) {
-      message += `La reserva aún no ha alcanzado su fecha de fin (${new DatePipe('es').transform(booking.endDate, "dd/MM/yyyy HH:mm")}).\n`;
-    }
-    message += "¿Desea continuar?";
-
-    this.confirmationService.confirm({
-      header: "Confirmar",
-      message: message,
-      accept: () => {
-        if (hasUploadedDocument) {
-          this.bookingService.uploadBookingDocument(booking.id, this.incidentUploader.files[0]).subscribe({
-            next: () => this.updateBookingStatus("LEFT", "Documents uploaded", booking)
-          });
-        } else {
-          this.updateBookingStatus("LEFT", "", booking);
-        }
-      }
+      accept: () => this.updateBookingStatus(Status.RESERVED, "", booking)
     });
   }
 

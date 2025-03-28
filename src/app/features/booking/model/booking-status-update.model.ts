@@ -1,6 +1,6 @@
 import {Status} from "../constant/status.constant";
 
-export interface BookingUpdateStatus {
+export interface BookingStatusUpdate {
   id: number;
   newStatus: Status;
   observations: string;

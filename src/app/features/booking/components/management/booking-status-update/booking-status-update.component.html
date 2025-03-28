@@ -1,40 +1,104 @@
-<div class="mb-4 mt-1">
-  @if (message) {
-    <p style="margin-bottom: 2rem;">{{ message }}</p>
-  }
-  @if (showPrice) {
-    <div class="mb-3">
-      <p-floatlabel variant="on">
-        <p-inputNumber
-          class="w-100"
-          styleClass="w-100"
-          id="amount"
-          currency="EUR"
-          mode="currency"
-          locale="es-ES"
-          [(ngModel)]="price"
-          [showButtons]="true"
-          [min]="0"
-        ></p-inputNumber>
-        <label class="required" for="amount">Precio total de la actividad (€)</label>
-      </p-floatlabel>
+<div class="mt-1">
+  <form [formGroup]="formHelper.form" class="form-container">
+    @if (message) {
+      <p style="margin-bottom: 2rem;">{{ message }}</p>
+    }
+    @if (showPrice) {
+      <div class="row">
+        <div class="col-12 col-sm-4">
+          <p-floatlabel variant="on">
+            <p-input-number
+              styleClass="w-100"
+              class="w-100"
+              id="amount"
+              currency="EUR"
+              mode="currency"
+              locale="es-ES"
+              formControlName="price"
+              [min]="0"
+            ></p-input-number>
+            <label class="required" for="amount">Aportación</label>
+          </p-floatlabel>
+        </div>
+        <div class="col">
+          <input
+            class="w-100"
+            pInputText
+            readonly
+            variant="filled"
+            style="pointer-events: none"
+            [value]="recommendedPrice"
+          >
+        </div>
+      </div>
+    }
+    @if (showSubject) {
+      <div class="row">
+        <div class="col-12">
+          <p-floatlabel variant="on">
+            <input
+              class="w-100"
+              pInputText
+              formControlName="subject"
+              id="subject"
+            />
+            <label for="subject" class="required">Asunto</label>
+          </p-floatlabel>
+        </div>
+      </div>
+    }
+    @if (showExclusiveness) {
+      <div class="row">
+        <div class="col-12 d-flex align-items-end gap-2">
+          <div class="d-flex flex-column">
+            <label for="exclusive" class="required">Exclusividad</label>
+            <p-selectButton
+              class="w-fit"
+              [allowEmpty]="false"
+              [options]="exclusiveOptions"
+              optionLabel="label"
+              optionValue="value"
+              formControlName="exclusive"
+              id="exclusive"
+            ></p-selectButton>
+          </div>
+          <input
+            class="w-100"
+            pInputText
+            readonly
+            variant="filled"
+            style="pointer-events: none"
+            value="Solicitada: {{exclusivenessRequested ? 'sí' : 'no'}}"
+          >
+        </div>
+      </div>
+    }
+    <div class="row">
+      <div class="col-12 mb-0">
+        <p-floatlabel variant="on">
+          <label [ngClass]="{'required': textRequired || exclusivenessRejected}" for="observations">
+            @if (exclusivenessRejected) {
+              Motivo del rechazo
+            } @else {
+              {{ textAreaLabel }}
+            }
+          </label>
+          <app-form-text-area
+            id="observations"
+            [maxLength]="2047"
+            formControlName="observations"
+            rows="6"
+          ></app-form-text-area>
+        </p-floatlabel>
+      </div>
     </div>
-  }
-  <p-floatlabel variant="on">
-    <label [ngClass]="{'required': required}" for="comment">{{ floatLabel }}</label>
-    <app-form-text-area
-      id="comment"
-      [maxLength]="2047"
-      [(ngModel)]="comment"
-      rows="6"
-      (isValid)="validText = $event"
-    ></app-form-text-area>
-  </p-floatlabel>
+    <app-save-buttons
+      class="w-100"
+      [showCancelButton]="true"
+      (onCancel)="ref.close()"
+      saveLabel="Actualizar"
+      [saveDisabled]="disableUpdateButton()"
+      (onSave)="submit()"
+    ></app-save-buttons>
+  </form>
 </div>
-<app-save-buttons
-  [showCancelButton]="true"
-  (onCancel)="ref.close()"
-  saveLabel="Actualizar"
-  [saveDisabled]="disableUpdateButton()"
-  (onSave)="submit()"
-></app-save-buttons>

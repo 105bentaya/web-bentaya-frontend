@@ -25,8 +25,8 @@ export class BookingDateService {
           const endDate = DateUtils.dateTruncatedToDay(date.endDate);
           while (currentDate <= endDate) {
             if (date.status == "RESERVED") this.reservedDates.add(currentDate.toDateString());
-            else if (date.status == "OCCUPIED") this.occupiedDates.add(currentDate.toDateString());
-            else if (date.status == "FULLY_OCCUPIED") this.fullyOccupiedDates.add(currentDate.toDateString());
+            else if (date.status == "OCCUPIED" && !date.fullyOccupied) this.occupiedDates.add(currentDate.toDateString());
+            else if (date.status == "OCCUPIED" && date.fullyOccupied) this.fullyOccupiedDates.add(currentDate.toDateString());
             currentDate.setDate(currentDate.getDate() + 1);
           }
         });

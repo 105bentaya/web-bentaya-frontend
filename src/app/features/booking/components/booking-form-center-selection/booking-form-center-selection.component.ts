@@ -17,12 +17,13 @@ import {DateUtils} from "../../../../shared/util/date-utils";
 import {BookingDateService} from "../../service/booking-date.service";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {map, Observable} from "rxjs";
-import {BookingInterval} from "../../model/booking-interval.model";
+import {BookingDateAndStatus} from "../../model/booking-date-and-status.model";
 import {BookingService} from "../../service/booking.service";
 import {DatePicker} from "primeng/datepicker";
 import {Message} from "primeng/message";
 import {ScoutCenterService} from "../../service/scout-center.service";
 import {ScoutCenter} from '../../model/scout-center.model';
+import {centerIsAlwaysExclusive} from "../../model/booking.model";
 
 @Component({
   selector: 'app-booking-form-center-selection',
@@ -53,9 +54,9 @@ export class BookingFormCenterSelectionComponent implements OnInit {
   protected scoutCenters!: ScoutCenter[];
   protected centerLoaded = false;
   protected noOverlapping = false;
-  protected fullyOccupiedInfo: BookingInterval[] = [];
-  protected occupiedInfo: BookingInterval[] = [];
-  protected reservedInfo: BookingInterval[] = [];
+  protected fullyOccupiedInfo: BookingDateAndStatus[] = [];
+  protected occupiedInfo: BookingDateAndStatus[] = [];
+  protected reservedInfo: BookingDateAndStatus[] = [];
   private centerIsAlwaysExclusive: boolean = false;
 
   @Output() onInit = new EventEmitter<FormGroup>();
@@ -85,7 +86,7 @@ export class BookingFormCenterSelectionComponent implements OnInit {
   public loadCenterData() {
     const centerId: number = this.formHelper.controlValue('scoutCenterId');
     this.selectedCenterInfo = this.scoutCenters.find(center => center.id === centerId)!;
-    this.centerIsAlwaysExclusive = this.selectedCenterInfo.minExclusiveCapacity === 0;
+    this.centerIsAlwaysExclusive = centerIsAlwaysExclusive(this.selectedCenterInfo);
     this.bookingDateService.loadDates(this.formHelper.controlValue('scoutCenterId')).subscribe(() => {
       this.centerLoaded = true;
       this.datesForm.form.updateValueAndValidity();
@@ -114,8 +115,8 @@ export class BookingFormCenterSelectionComponent implements OnInit {
     return this.checkBookingDates(startDate, endDate).pipe(
       map(result => {
         if (result) {
-          this.fullyOccupiedInfo = result.filter(range => range.status == "FULLY_OCCUPIED");
-          this.occupiedInfo = result.filter(range => range.status == "OCCUPIED");
+          this.fullyOccupiedInfo = result.filter(range => range.status == "OCCUPIED" && range.fullyOccupied);
+          this.occupiedInfo = result.filter(range => range.status == "OCCUPIED" && !range.fullyOccupied);
           this.reservedInfo = result.filter(range => range.status == "RESERVED");
           this.noOverlapping = result.length == 0;
           const validDateRange = this.fullyOccupiedInfo.length == 0;

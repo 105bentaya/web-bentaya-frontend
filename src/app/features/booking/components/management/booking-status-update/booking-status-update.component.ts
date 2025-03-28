@@ -2,11 +2,24 @@ import {Component, inject, OnInit} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ConfirmationService} from "primeng/api";
 import {FormTextAreaComponent} from '../../../../../shared/components/form-text-area/form-text-area.component';
-import {FormsModule} from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import {InputNumberModule} from 'primeng/inputnumber';
-import {NgClass} from '@angular/common';
+import {CurrencyPipe, NgClass} from '@angular/common';
 import {FloatLabelModule} from "primeng/floatlabel";
 import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
+import {Booking, bookingIsAlwaysExclusive} from "../../../model/booking.model";
+import {FormHelper} from "../../../../../shared/util/form-helper";
+import {InputText} from "primeng/inputtext";
+import {HourPipe} from "../../../../../shared/pipes/hour.pipe";
+import {SelectButton} from "primeng/selectbutton";
 
 @Component({
   selector: 'app-booking-status-update',
@@ -18,7 +31,10 @@ import {SaveButtonsComponent} from "../../../../../shared/components/buttons/sav
     InputNumberModule,
     FormsModule,
     FormTextAreaComponent,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    ReactiveFormsModule,
+    InputText,
+    SelectButton
   ]
 })
 export class BookingStatusUpdateComponent implements OnInit {
@@ -27,31 +43,79 @@ export class BookingStatusUpdateComponent implements OnInit {
   private readonly config = inject(DynamicDialogConfig);
   private readonly confirmationService = inject(ConfirmationService);
 
-  protected floatLabel: string = "Observaciones";
-  protected required: boolean = false;
+  protected readonly formHelper = new FormHelper();
+  protected readonly exclusiveOptions = [
+    {label: 'Sí', value: true},
+    {label: 'No', value: false}
+  ];
+
+  protected textAreaLabel: string = "Observaciones";
+  protected textRequired: boolean = false;
   protected showPrice: boolean = false;
-  protected message!: string;
-  protected comment!: string;
-  protected price!: number;
-  protected validText!: boolean;
+  protected message: string | undefined;
+  protected recommendedPrice!: string;
+  protected showExclusiveness: boolean | undefined;
+  protected exclusivenessRequested: boolean | undefined;
+  protected showSubject = false;
 
   ngOnInit(): void {
-    this.floatLabel = this.config.data.floatLabel;
-    this.required = this.config.data.required;
-    this.showPrice = this.config.data.showPrice;
+    this.textAreaLabel = this.config.data.textAreaLabel;
+    this.textRequired = this.config.data.textRequired;
+
     this.message = this.config.data.message;
+
+    this.showExclusiveness = this.config.data.showExclusiveness && !bookingIsAlwaysExclusive(this.config.data.booking);
+    if (this.showExclusiveness) this.exclusivenessRequested = this.config.data.booking.exclusiveReservation;
+
+    this.showSubject = this.config.data.showSubject;
+
+    this.showPrice = this.config.data.showPrice;
+    if (this.showPrice) this.calculateRecommendedPrice();
+    this.buildForm();
+  }
+
+  protected buildForm() {
+    this.formHelper.createForm({
+      observations: [null, this.observationsValidators()]
+    });
+    if (this.showPrice) this.formHelper.form.addControl("price", new FormControl(null, [Validators.required, Validators.min(0)]));
+    if (this.showExclusiveness) this.formHelper.form.addControl("exclusive", new FormControl(null, [Validators.required]));
+    if (this.showSubject) this.formHelper.form.addControl("subject", new FormControl(null, [Validators.required, Validators.maxLength(63)]));
   }
 
   protected submit() {
-    this.confirmationService.confirm({
-      message: "¿Desea confirmar los datos actuales?",
-      accept: () => this.ref.close({comment: this.comment, price: this.price})
-    });
+    if (this.formHelper.validateAll()) {
+      this.confirmationService.confirm({
+        message: "¿Desea confirmar los datos actuales?",
+        accept: () => this.ref.close(this.formHelper.value)
+      });
+    }
   }
 
   protected disableUpdateButton() {
-    return !this.validText ||
-      this.required && (!this.comment || this.comment.trim().length == 0) ||
-      this.showPrice && !this.price;
+    return false;
   }
+
+  private calculateRecommendedPrice() {
+    const booking: Booking = this.config.data.booking;
+    const priceCalculation = new CurrencyPipe('es', 'EUR').transform(booking.billableDays * booking.scoutCenter.price / 100 * booking.packs);
+    const realDays = new HourPipe().transform(booking.minutes, true);
+
+    this.recommendedPrice = `${booking.billableDays} días (${realDays}) × ${booking.packs}pax = ${priceCalculation}`;
+  }
+
+  private observationsValidators() {
+    const validators = [Validators.maxLength(2047)];
+    if (this.textRequired) validators.push(Validators.required);
+    if (this.showExclusiveness) validators.push(this.exclusivenessRejectedValidator);
+    return validators;
+  }
+
+  get exclusivenessRejected(): boolean {
+    return !!(this.showExclusiveness && this.exclusivenessRequested && this.formHelper.controlValue("exclusive") === false);
+  }
+
+  private readonly exclusivenessRejectedValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    return this.exclusivenessRejected && (!control.value || control.value.length < 1) ? {required: true} : null;
+  };
 }

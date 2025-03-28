@@ -1,17 +1,17 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
-import {Booking} from "../../../model/booking.model";
+import {Booking, bookingIsAlwaysExclusive} from "../../../model/booking.model";
 import {documents} from "../../../constant/scout-center.constant";
 import {Status} from "../../../constant/status.constant";
 import {AlertService} from "../../../../../shared/services/alert-service.service";
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DialogService} from "primeng/dynamicdialog";
 import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
-import {ScoutCenterStatusPipe} from "../../../pipe/scout-center-status.pipe";
+import {BookingStatusPipe} from "../../../pipe/scout-center-status.pipe";
 import {BookingDocument, DocumentStatus} from "../../../model/booking-document.model";
 import {saveAs} from "file-saver";
 import {ConfirmationService} from "primeng/api";
 import {Button} from "primeng/button";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {DocumentStatusPipe} from "../../../pipe/document-status.pipe";
 import {
@@ -21,66 +21,120 @@ import {DialogModule} from "primeng/dialog";
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 import {FileUtils} from "../../../../../shared/util/file.utils";
 import {ScoutCenterService} from "../../../service/scout-center.service";
+import {HourPipe} from "../../../../../shared/pipes/hour.pipe";
+import {Tag} from "primeng/tag";
+import {filter, Observable} from "rxjs";
+import {BookingStatusService} from "../../../service/booking-status.service";
+import {identity} from "lodash";
 
 @Component({
   selector: 'app-booking-detail',
   templateUrl: './booking-detail.component.html',
   styleUrls: ['./booking-detail.component.scss'],
-  providers: [DialogService, ScoutCenterStatusPipe, DynamicDialogService],
+  providers: [DialogService, BookingStatusPipe, DynamicDialogService],
   imports: [
     DatePipe,
     CurrencyPipe,
-    ScoutCenterStatusPipe,
+    BookingStatusPipe,
     DividerModule,
     DocumentStatusPipe,
     TableIconButtonComponent,
     DialogModule,
-    Button
+    Button,
+    HourPipe,
+    Tag,
+    NgTemplateOutlet
   ]
 })
 export class BookingDetailComponent implements OnInit {
 
   private readonly bookingService = inject(BookingService);
+  private readonly bookingStatusService = inject(BookingStatusService);
   private readonly scoutCenterService = inject(ScoutCenterService);
   private readonly alertService = inject(AlertService);
   private readonly dialogService = inject(DynamicDialogService);
-  private readonly pipe = inject(ScoutCenterStatusPipe);
   private readonly confirmationService = inject(ConfirmationService);
+
+  protected readonly bookingIsAlwaysExclusive = bookingIsAlwaysExclusive;
 
   @Input() public booking!: Booking;
   protected loading = false;
-  private ref!: DynamicDialogRef;
   protected files: BookingDocument[] = [];
   protected readonly documents = documents;
+  protected readonly Status = Status;
   protected showDocuments = false;
   protected dialogVisible = false;
+  protected showMoreData = !!localStorage.getItem("bd_show_more_data");
+
+  protected buttonsInfo = {
+    "accept": {label: "Aceptar", icon: "pi pi-check", severity: "success", action: () => this.acceptBooking()},
+    "confirm": {label: "Confirmar", icon: "pi pi-check", severity: "success", action: () => this.confirmBooking()},
+    "warn": {label: "Notificar", icon: "pi pi-exclamation-triangle", severity: "warn", action: () => this.sendWarn()},
+    "reject": {label: "Denegar", icon: "pi pi-times", severity: "danger", action: () => this.rejectBooking()},
+  };
 
   ngOnInit(): void {
     this.getFiles(this.booking.id);
   }
 
-  protected openStatusForm(newStatus: Status, data?: {
-    required?: boolean,
-    showPrice?: boolean,
-    message?: string
-  }, floatLabel = "Alguna observación que considere") {
-    const header = this.booking.status === "RESERVED" && newStatus === "RESERVED" ?
-      'Rechazar documentos para subsanar' :
-      `Actualizar a '${this.pipe.transform(newStatus)}'`;
-    this.ref = this.dialogService.openDialog(BookingStatusUpdateComponent, header, "small", {
-      floatLabel,
-      required: data?.required,
-      message: data?.message,
-      showPrice: data?.showPrice
-    });
-    this.ref.onClose.subscribe(result => {
-      if (result) this.updateBookingStatus(newStatus, result.comment, result.price);
-    });
+  protected acceptBooking() {
+    this.openDialog("Aceptar Reserva", {
+      textAreaLabel: "Alguna observación que considere",
+      showPrice: true,
+      booking: this.booking
+    }).onClose
+      .pipe(filter(identity))
+      .subscribe(({price, observations}) => this.updateBookingStatus(
+        this.bookingStatusService.acceptBooking(this.booking.id, {price, observations})
+      ));
   }
 
-  private updateBookingStatus(newStatus: Status, observations: string, price?: number) {
+  protected confirmBooking() {
+    //todo, mensaje cuando no están todos los documentos subidos;
+    //informar que una vez confirmada la reserva ya no pueden subir documentos, así que mejor esperar
+    this.openDialog("Confirmar Reserva", {
+      textAreaLabel: "Alguna observación que considere",
+      showExclusiveness: true,
+      booking: this.booking
+    }).onClose
+      .pipe(filter(identity))
+      .subscribe(({exclusive, observations}) => this.updateBookingStatus(
+        this.bookingStatusService.confirmBooking(this.booking.id, {exclusive, observations})
+      ));
+  }
+
+  protected sendWarn() {
+    this.openDialog("Mandar notificación", {
+      textAreaLabel: "Mensaje",
+      textRequired: true,
+      showSubject: true,
+      booking: this.booking
+    }).onClose
+      .pipe(filter(identity))
+      .subscribe(({subject, observations}) => this.updateBookingStatus(
+        this.bookingStatusService.sendBookingWarning(this.booking.id, {subject, observations})
+      ));
+  }
+
+  protected rejectBooking() {
+    this.openDialog("Denegar Reserva", {
+      textAreaLabel: "Motivo de denegación",
+      textRequired: true,
+      booking: this.booking
+    }).onClose
+      .pipe(filter(identity))
+      .subscribe(({observations}) => this.updateBookingStatus(
+        this.bookingStatusService.rejectBooking(this.booking.id, {observations})
+      ));
+  }
+
+  private openDialog(header: string, data: any) {
+    return this.dialogService.openDialog(BookingStatusUpdateComponent, header, "small", data);
+  }
+
+  private updateBookingStatus(request: Observable<Booking>) {
     this.loading = true;
-    this.bookingService.updateStatus({id: this.booking.id, newStatus, observations, price}).subscribe({
+    request.subscribe({
       next: result => {
         this.booking = result;
         this.loading = false;
@@ -143,7 +197,13 @@ export class BookingDetailComponent implements OnInit {
     });
   }
 
-  downloadAttendanceFile(centerId: number) {
+  protected downloadAttendanceFile(centerId: number) {
     this.scoutCenterService.getAttendanceFile(centerId).subscribe(result => FileUtils.downloadFile(result));
+  }
+
+  protected queryShowMoreData() {
+    this.showMoreData = !this.showMoreData;
+    if (this.showMoreData) localStorage.setItem("bd_show_more_data", "1");
+    else localStorage.removeItem("bd_show_more_data");
   }
 }

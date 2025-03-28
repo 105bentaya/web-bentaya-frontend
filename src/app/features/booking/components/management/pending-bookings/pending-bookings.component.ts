@@ -15,6 +15,8 @@ import {
 import {finalize} from "rxjs";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {ContextMenu} from "primeng/contextmenu";
+import {Booking} from "../../../model/booking.model";
 
 @Component({
   selector: 'app-pending-bookings',
@@ -28,7 +30,8 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     TableModule,
     LowerCasePipe,
     NgTemplateOutlet,
-    BasicLoadingInfoComponent
+    BasicLoadingInfoComponent,
+    ContextMenu
   ],
   templateUrl: './pending-bookings.component.html',
   styleUrl: './pending-bookings.component.scss'
@@ -45,6 +48,17 @@ export class PendingBookingsComponent implements OnInit {
 
   protected pendingBookings!: PendingBookings;
   protected loading = false;
+
+  protected contextMenuItem: MenuItem[] = [
+    {
+      label: 'Abrir en pestaña nueva',
+      icon: 'pi pi-external-link',
+      target: 'blank',
+      routerLink: () => `/centros-scout/gestion/reserva/${this.selectedBooking!.id}`,
+      command: () => this.updateLastRoute()
+    },
+  ];
+  protected selectedBooking: Booking | undefined;
 
   constructor() {
     this.scoutCenterFilter = castArray(this.route.snapshot.queryParams['scoutCenters'] ?? []).map(id => +id);

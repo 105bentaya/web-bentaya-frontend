@@ -21,6 +21,8 @@ export interface Booking {
   ownBooking: boolean;
   userConfirmedDocuments: boolean;
   price: number;
+  minutes: number;
+  billableDays: number;
 }
 
 export interface BasicScoutCenter {
@@ -29,4 +31,12 @@ export interface BasicScoutCenter {
   maxCapacity: number;
   minExclusiveCapacity: number;
   price: number
+}
+
+export function bookingIsAlwaysExclusive(booking: Booking) {
+  return centerIsAlwaysExclusive(booking.scoutCenter);
+}
+
+export function centerIsAlwaysExclusive(center: BasicScoutCenter) {
+  return center.minExclusiveCapacity < 1;
 }

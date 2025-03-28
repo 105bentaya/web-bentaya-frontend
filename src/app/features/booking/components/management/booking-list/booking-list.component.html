@@ -109,10 +109,10 @@
         {{ booking.scoutCenter.name }}
       </td>
       <td>
-        {{ booking.status | scoutCenterStatus }}
+        {{ booking.status | bookingStatus }}
       </td>
       <td>
-        <div class="text-center w-fit">{{ booking.startDate | date:"dd/MM/yy" }} - {{ booking.endDate | date:"dd/MM/yy" }}</div>
+        <div class="text-center">{{ booking.startDate | date:"dd/MM/yy" }} - {{ booking.endDate | date:"dd/MM/yy" }}</div>
       </td>
     </tr>
   </ng-template>

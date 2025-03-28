@@ -106,7 +106,7 @@
                 <div class="d-flex flex-column gap-1 align-items-start">
                   <b>Estado actual de la reserva</b>
                   <b class="rounded-1 p-1"
-                     [class]="booking.status | scoutCenterStatus:true">{{ booking.status | scoutCenterStatus }}</b>
+                     [class]="booking.status | bookingStatus:'severity'">{{ booking.status | bookingStatus }}</b>
                 </div>
                 @switch (booking.status) {
                   @case ("NEW") {
@@ -131,7 +131,7 @@
                     </p>
                     <p class="mb-2">
                       Precisamos de los siguientes documentos para poder completar la reserva. Tiene como máximo para
-                      presentarlos hasta <b>5 días antes</b> del inicio de su reserva. Si para dicha fecha no han sido
+                      presentarlos hasta <b>10 días antes</b> del inicio de su reserva. Si para dicha fecha no han sido
                       correctamente presentados, corre el riesgo de perder su reserva:
                     </p>
                     <ul>
@@ -245,7 +245,7 @@
                       <a routerLink="/centros-scout/reserva">formulario</a>.
                     </p>
                   }
-                  @case ("LEFT") {
+                  <!--@case ("LEFT") {
                     <p>
                       Una vez hayamos completado la revisión del lugar, marcaremos la reserva como finalizada.
                     </p>
@@ -253,8 +253,8 @@
                       Si lo desea, puede volver a realizar una reserva desde nuestro
                       <a routerLink="/centros-scout/reserva">formulario</a>.
                     </p>
-                  }
-                  @case ("FINISHED") {
+                  }-->
+                  <!--@case ("FINISHED") {
                     <p>La reserva ha finalizado. Gracias por haberse quedado con nosotros.</p>
                     <p>Resultado de la revisión: {{ booking.statusObservations }}</p>
                     <p>
@@ -262,9 +262,9 @@
                       nuestro
                       <a routerLink="/centros-scout/reserva">formulario</a>.
                     </p>
-                  }
+                  }-->
                   @default {
-                    @if (booking.status == "OCCUPIED" || booking.status == "FULLY_OCCUPIED") {
+                    @if (booking.status == "OCCUPIED") {
                       <p>Su reserva ha sido aceptada y confirmada.</p>
                       <p>
                         Para retirar las llaves del lugar, pónganse en contacto con la persona responsable la semana
@@ -288,7 +288,7 @@
                       <p-fileupload
                         #incidentsUploader
                         chooseLabel="Subir"
-                        accept=".pdf,.docx"
+                        [accept]="docTypes"
                         [maxFileSize]="1048576"
                         (uploadHandler)="uploadFiles($event, booking)"
                         [customUpload]="true"
@@ -321,7 +321,6 @@
                           label="FINALIZAR RESERVA"
                           [loading]="loading"
                           loadingIcon="pi pi-spin pi-spinner"
-                          (click)="finishReservation(booking)"
                         ></p-button>
                         <ng-container *ngTemplateOutlet="cancelButton"></ng-container>
                       </div>

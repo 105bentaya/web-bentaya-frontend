@@ -1,16 +1,16 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
-import {BookingDate} from "../../../model/booking-date.model";
+import {BookingCalendarInfo} from "../../../model/booking-calendar-info.model";
 import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.component";
 import {MultiSelect} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
 import {finalize} from "rxjs";
-import {bookingStatusesValues} from "../../../constant/status.constant";
+import {bookingStatuses} from "../../../constant/status.constant";
 import {castArray, pick} from "lodash";
 import {ActivatedRoute, Router} from "@angular/router";
 import {JoinPipe} from "../../../../../shared/pipes/join.pipe";
 import {MenuItem, PrimeTemplate} from "primeng/api";
-import {ScoutCenterStatusPipe} from "../../../pipe/scout-center-status.pipe";
+import {BookingStatusPipe} from "../../../pipe/scout-center-status.pipe";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
@@ -32,14 +32,15 @@ export class BookingManagementCalendarComponent implements OnInit {
   private readonly bookingManagement = inject(BookingManagementService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  protected readonly statusPipe = new ScoutCenterStatusPipe();
+  protected readonly statusPipe = new BookingStatusPipe();
+
+  protected readonly statuses = bookingStatuses;
 
   protected centers!: MenuItem[];
-  protected readonly statuses = bookingStatusesValues;
   protected scoutCenterFilter: number[];
   protected statusFilter: any;
 
-  protected dateRanges: BookingDate[] = [];
+  protected dateRanges: BookingCalendarInfo[] = [];
   protected loading: boolean = false;
 
 

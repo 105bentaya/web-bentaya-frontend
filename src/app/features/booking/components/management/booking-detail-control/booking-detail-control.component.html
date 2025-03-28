@@ -7,7 +7,7 @@
       (click)="goBack()"
       title="Atrás"
     ></app-general-a-button>
-    <h1 class="mb-0">Gestor de Reservas Nº {{ id }}</h1>
+    <h2 class="mb-0">{{ booking?.scoutCenter!.name }} Nº{{ id }}</h2>
   </div>
   <hr>
   @if (booking) {
@@ -16,6 +16,18 @@
     } @else {
       <app-booking-detail [booking]="booking"></app-booking-detail>
     }
+    <div class="d-flex justify-content-end mb-2">
+      <p-toggle-button
+        offIcon="fa-solid fa-file-circle-xmark"
+        onIcon="fa-solid fa-file-circle-xmark"
+        class="no-label"
+        styleClass="squared"
+        size="large"
+        title="Mostrar reservas canceladas"
+        [(ngModel)]="showCancelled"
+        (onChange)="filterDateRanges()"
+      ></p-toggle-button>
+    </div>
     <app-booking-calendar
       [dateRanges]="dateRanges"
       [currentReservationId]="id"

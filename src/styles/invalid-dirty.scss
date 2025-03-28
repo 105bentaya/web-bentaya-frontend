@@ -1,5 +1,5 @@
 %focus {
-  border-color: var(--p-inputtext-invalid-border-color);
+  border-color: var(--p-form-field-invalid-border-color);
   box-shadow: var(--p-button-danger-focus-ring-shadow);
 }
 
@@ -28,7 +28,8 @@ p-datepicker.ng-invalid.ng-dirty .p-datepicker.p-inputwrapper .p-inputtext {
 }
 
 
-p-inputnumber.ng-invalid.ng-dirty > .p-inputtext {
+.p-inputnumber.ng-invalid.ng-dirty > .p-inputtext {
+
   &:enabled:focus {
     @extend %focus;
   }
@@ -36,6 +37,9 @@ p-inputnumber.ng-invalid.ng-dirty > .p-inputtext {
   &:hover {
     @extend %hover;
   }
+
+  //fix
+  border-color: var(--p-inputtext-invalid-border-color);
 }
 
 
@@ -69,7 +73,7 @@ p-radiobutton.ng-invalid.ng-dirty .p-radiobutton:not(.p-disabled):has(.p-radiobu
 
 app-form-text-area.ng-invalid.ng-dirty {
   textarea {
-    border-color: var(--p-inputtext-invalid-border-color);
+    border-color: var(--p-textarea-invalid-border-color);
   }
 
   label {

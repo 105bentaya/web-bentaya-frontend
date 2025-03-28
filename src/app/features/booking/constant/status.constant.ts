@@ -1,14 +1,24 @@
-export const bookingStatusesValues = [
-  {label: "Nueva Pre Reserva", value: "NEW", styleClass: "bg-primary-subtle"},
-  {label: "Pre Reserva Aceptada", value: "RESERVED", styleClass: "bg-warning-subtle"},
-  {label: "Reserva Confirmada", value: "OCCUPIED", styleClass: "bg-success-subtle"},
-  {label: "Reserva Con Exclusividad Confirmada", value: "FULLY_OCCUPIED", styleClass: "bg-success-subtle"},
-  {label: "Reserva Finalizada y Revisada", value: "FINISHED", styleClass: "bg-success-subtle"},
-  {label: "Reserva Cancelada", value: "CANCELED", styleClass: "bg-danger-subtle"},
-  {label: "Reserva Denegada", value: "REJECTED", styleClass: "bg-danger-subtle"},
-  {label: "Reserva Finalizada a la espera de revisión", value: "LEFT", styleClass: "bg-warning-subtle"}
-];
+export const bookingStatusValues: { [key: string]: { label: string; severity: string } } = {
+  NEW: {label: "Nueva Pre Reserva", severity: "primary"},
+  RESERVED: {label: "Pre Reserva Aceptada", severity: "warn"},
+  OCCUPIED: {label: "Reserva Confirmada", severity: "success"},
+  CANCELED: {label: "Reserva Cancelada", severity: "danger"},
+  REJECTED: {label: "Reserva Denegada", severity: "danger"},
+};
 
+export const bookingStatuses = Object.entries(bookingStatusValues).map(
+  ([value, {label, severity}]) => ({
+    value,
+    label,
+    severity
+  })
+);
 
-export type Status = "NEW" | "RESERVED" | "OCCUPIED" | "FULLY_OCCUPIED" | "FINISHED" | "CANCELED" | "REJECTED" | "LEFT";
+export enum Status {
+  NEW = "NEW",
+  RESERVED = "RESERVED",
+  OCCUPIED = "OCCUPIED",
+  CANCELED = "CANCELED",
+  REJECTED = "REJECTED",
+}
 

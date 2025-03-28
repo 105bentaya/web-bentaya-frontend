@@ -1,7 +1,8 @@
 import {Status} from "../constant/status.constant";
 
-export interface ReservationDate {
+export interface BookingDateAndStatus {
   startDate: Date;
   endDate: Date;
   status: Status;
+  fullyOccupied?: boolean;
 }

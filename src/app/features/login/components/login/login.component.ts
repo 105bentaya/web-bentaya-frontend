@@ -9,6 +9,7 @@ import {Credentials} from "../../../../core/auth/credentials.model";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {UserRoutesService} from "../../../../core/auth/services/user-routes.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -31,8 +32,12 @@ export class LoginComponent implements OnInit {
 
   protected loginForm: FormHelper = new FormHelper();
   protected loading = false;
-  protected login = true;
+  protected login: boolean;
   protected forgotUsername!: string;
+
+  constructor() {
+    this.login = !inject(ActivatedRoute).snapshot.queryParams['forgot'];
+  }
 
   ngOnInit(): void {
     this.formInit();
@@ -60,7 +65,7 @@ export class LoginComponent implements OnInit {
     this.userService.forgotPassword(this.forgotUsername).subscribe({
       next: () => {
         this.alertService.sendBasicSuccessMessage(
-          `El usuario ${this.forgotUsername} ha recibido un correo, en caso de que este exista`
+          `El usuario '${this.forgotUsername}' ha recibido un correo, en caso de que este exista`
         );
         this.loading = false;
         this.login = true;

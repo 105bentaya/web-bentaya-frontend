@@ -33,7 +33,7 @@
                   <b>Aforo mínimo para la exclusividad</b>
                   <div>
                     {{ center.minExclusiveCapacity }}
-                    @if (center.minExclusiveCapacity === 0) {
+                    @if (centerIsAlwaysExclusive(center)) {
                       (Siempre es exclusivo)
                     }
                   </div>
@@ -169,7 +169,7 @@
                     mode="basic"
                     [chooseButtonProps]="{size: 'small', label: ''}"
                     chooseIcon="pi pi-upload"
-                    accept="image/*"
+                    [accept]="imageTypes"
                     [maxFileSize]="maxFileUploadByteSize"
                     (uploadHandler)="uploadMainPhoto($event, scoutCenter)"
                     [customUpload]="true"
@@ -190,7 +190,7 @@
               <p-fileupload
                 #photoUploader
                 [multiple]="true"
-                accept="image/*"
+                [accept]="imageTypes"
                 [maxFileSize]="maxFileUploadByteSize"
                 (uploadHandler)="uploadNewPhotos($event, scoutCenter, photoUploader)"
                 customUpload

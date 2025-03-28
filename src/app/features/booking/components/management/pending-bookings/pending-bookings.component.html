@@ -42,30 +42,41 @@
       </div>
     </ng-template>
     <div>
+      <p-context-menu #cm [model]="contextMenuItem"/>
       <p-table
+        stripedRows
         [value]="panel.bookings"
         responsiveLayout="scroll"
         selectionMode="single"
         class="fixed-table"
         [loading]="loading"
+        [contextMenu]="cm"
+        [(contextMenuSelection)]="selectedBooking"
       >
         <ng-template pTemplate="body" let-booking>
-          <tr style="outline: none;" pSelectableRow (click)="updateLastRoute()" routerLink="/centros-scout/gestion/reserva/{{booking.id}}">
-            <td class="text-center" style="width: 3rem">
+          <tr
+            style="outline: none; position: relative; cursor: pointer;"
+            pSelectableRow
+            [pContextMenuRow]="booking"
+            [pContextMenuRowIndex]="1"
+            (click)="updateLastRoute()"
+            routerLink="/centros-scout/gestion/reserva/{{booking.id}}"
+          >
+            <td class="text-center" style="width: 3rem; position: relative;">
               {{ booking.id }}
             </td>
-            <td>
+            <td style="position: relative;">
               {{ booking.ownBooking ? 'Asociación Scouts 105 Bentaya' : booking.organizationName }}
             </td>
-            <td>
+            <td style="position: relative;">
               {{ booking.scoutCenter.name }}
             </td>
-            <td class="d-none d-md-table-cell text-center">
-              <div class="text-center w-fit">
+            <td class="d-none d-md-table-cell text-center" style="position: relative;">
+              <div class="text-center w-fit ps-4">
                 {{ booking.startDate | date:"dd/MM/yy" }} - {{ booking.endDate | date:"dd/MM/yy" }}
               </div>
             </td>
-            <td class="d-none d-xl-table-cell" style="width: 8rem">
+            <td class="d-none d-xl-table-cell" style="width: 8rem; position: relative;">
               {{ booking.packs }} personas
             </td>
           </tr>

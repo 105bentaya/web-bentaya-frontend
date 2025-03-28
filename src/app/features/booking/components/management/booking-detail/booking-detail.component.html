@@ -1,258 +1,171 @@
-<div class="info-container">
-  <div class="row">
-    <div class="col-12 col-sm-6 col-xl-3">
-      <b>Nombre de la asociación</b>
-      <div>{{ booking.organizationName }}</div>
-    </div>
-    <div class="col-12 col-sm-6 col-xl-3">
-      <b>CIF de la asociación</b>
-      <div>{{ booking.cif }}</div>
-    </div>
-    <div class="col-12">
-      <b>Uso de instalaciones</b>
-      <div>{{ booking.facilityUse }}</div>
-    </div>
-    <div class="col-12 col-sm-6 col-xl-3">
-      <b>Nombre contacto</b>
-      <div>{{ booking.contactName }}</div>
-    </div>
-    <div class="col-12 col-sm-6 col-xl-3">
-      <b>Relación</b>
-      <div>{{ booking.contactRelationship }}</div>
-    </div>
-    <div class="col-12 col-sm-6 col-xl-3">
-      <b>Correo</b>
-      <div>
-        <a href="mailto:{{booking.contactMail}}">{{ booking.contactMail }}</a>
-      </div>
-    </div>
-    <div class="col-12 col-sm-6 col-xl-3">
-      <b>Teléfono</b>
-      <div>
-        <a href="tel:{{booking.contactPhone}}">{{ booking.contactPhone }}</a>
-      </div>
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <b>Centro solicitado</b>
-      <div>{{ booking.scoutCenter.name }}</div>
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <b>Número de participantes</b>
-      <div>{{ booking.packs }}</div>
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <b>Fecha de entrada</b>
-      <div>{{ booking.startDate | date:"dd/MM/yyyy HH:mm" }}</div>
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <b>Fecha de salida</b>
-      <div>{{ booking.endDate | date:"dd/MM/yyyy HH:mm" }}</div>
-    </div>
-    <div class="col-12">
-      <b>Observaciones</b>
-      <div>{{ booking.observations || 'Ninguna' }}</div>
-    </div>
-    <div class="col-12 col-lg-6">
-      <b>Solicita centro en exclusividad</b>
-      <div>{{ booking.exclusiveReservation ? 'Sí' : 'No' }}</div>
-    </div>
-    <div class="col-12 col-lg-6">
-      <b>Fecha de solicitud</b>
-      <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
-    </div>
-    @if (booking.price) {
-      <div class="col-12">
-        <b>Precio establecido</b>
-        <div>{{ booking.price | currency:'EUR':undefined:undefined:'es' }}</div>
-      </div>
-    }
-    <div class="col-12">
-      <div class="d-flex flex-column gap-1 align-items-start">
-        <b>Estado actual</b>
-        <b [class]="booking.status | scoutCenterStatus:true" class="rounded-1 p-1">
-          {{ booking.status | scoutCenterStatus }}
-        </b>
-        @switch (booking.status) {
-          @case ('NEW') {
-            <div>
-              ¡Nueva Pre Reserva! Revisa bien los datos, sobre todo el aforo que piden y las fechas en las que son.
-              Puedes fijarte en el calendario de abajo para esto. Si la reserva se superpone con otra, revisa las
-              horas para comprobar si hay solapamiento.
-            </div>
+<div>
+  <div class="d-flex gap-2 align-items-center mb-1">
+    <h2 class="mb-0 fw-bold fs-5 text-dark">Datos</h2>
+    <p-button
+      [label]="showMoreData ? 'Mostrar menos' : 'Mostrar más'"
+      (onClick)="queryShowMoreData()"
+      styleClass="py-1"
+      outlined
+      severity="secondary"
+      size="small"
+    ></p-button>
+  </div>
+  <div class="d-flex flex-column gap-3">
+    <div class="info-container">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-xl-3">
+          <b>Nombre de la asociación</b>
+          <div>{{ booking.organizationName }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <b>CIF de la asociación</b>
+          <div>{{ booking.cif }}</div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <b>Fecha de solicitud</b>
+          <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <b>Nombre contacto</b>
+          <div>{{ booking.contactName }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <b>Relación</b>
+          <div>{{ booking.contactRelationship }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <b>Correo</b>
+          <div class="overflow-ellipsis">
+            <a href="mailto:{{booking.contactMail}}">{{ booking.contactMail }}</a>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <b>Teléfono</b>
+          <div>
+            <a href="tel:{{booking.contactPhone}}">{{ booking.contactPhone }}</a>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+          <b>Número de participantes</b>
+          <div>{{ booking.packs }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+          <b>Fecha de entrada</b>
+          <div>{{ booking.startDate | date:"dd/MM/yyyy HH:mm" }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+          <b>Fecha de salida</b>
+          <div>{{ booking.endDate | date:"dd/MM/yyyy HH:mm" }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+          <b>Días</b>
+          <div>{{ booking.billableDays }} ({{ booking.minutes | hour }})</div>
+        </div>
+        <div class="col-12 col-lg-6">
+          @if (booking.status === 'OCCUPIED') {
+            <b>Centro en exclusividad</b>
+          } @else {
+            <b>Solicita centro en exclusividad</b>
           }
+          <div>
+            {{ booking.exclusiveReservation ? 'Sí' : 'No' }}
+            @if (bookingIsAlwaysExclusive(booking)) {
+              (Siempre es exclusivo)
+            }
+          </div>
+        </div>
+        @if (booking.price) {
+          <div class="col-12 col-lg-6">
+            <b>Precio establecido</b>
+            <div>{{ booking.price | currency:'EUR':undefined:undefined:'es' }}</div>
+          </div>
+        }
+        <div class="col-12">
+          <b>Observaciones</b>
+          <div>{{ booking.observations || 'Ninguna' }}</div>
+        </div>
+        @if (showMoreData) {
+          <div class="col-12">
+            <b>Uso de instalaciones</b>
+            <div>{{ booking.facilityUse }}</div>
+          </div>
+        }
+      </div>
+    </div>
+    <div>
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <h2 class="mb-0 fw-bold fs-5 text-dark">Estado actual</h2>
+        <p-tag
+          [value]="booking.status | bookingStatus"
+          [severity]="booking.status | bookingStatus:'severity'"
+          styleClass="fs-6 rounded-3"
+        />
+      </div>
+      <div class="d-flex flex-column gap-1 align-items-start mt-2">
+        @switch (booking.status) {
           @case ('CANCELED') {
             <div>La persona solicitante ha cancelado la reserva por el siguiente motivo:</div>
             <span>{{ booking.statusObservations }}</span>
           }
           @case ('REJECTED') {
-            <div class="col-12">
-              <b>Se ha denegado la reserva por el siguiente motivo:</b>
+            <div>
+              <b>Motivo de la denegación:</b>
               <div>{{ booking.statusObservations }}</div>
             </div>
           }
           @case ('RESERVED') {
             <div>
-              Ahora debes esperar a que la entidad solicitante suba los documentos requeridos y revisar que estén
-              bien. Una vez hecho, puedes confirmar o denegar la reserva. Si los documentos son incompletos o
-              erróneos, puedes avisar a la entidad para que los subsane.
-            </div>
-            <div>
               @if (booking.userConfirmedDocuments) {
-                La persona solicitante <b>ya ha confirmado sus documentos</b>, por lo tanto puede pasar a revisarlos.
+                La persona solicitante <b>ya ha confirmado sus documentos</b>.
               } @else {
-                La persona solicitante <b>aún no ha confirmado sus documentos</b>, por lo que estos pueden no ser
-                  definitivos. Piénselo bien antes de notificar a la persona solicitante.
+                La persona solicitante <b>aún no ha confirmado sus documentos</b>.
               }
             </div>
-          }
-          @case ('LEFT') {
-            <div>
-              El usuario ha marcado la reserva como finalizada. Ahora debe revisar el lugar y cuando lo haya hecho
-              actualizar la reserva indicando si ha habido algún problema.
-            </div>
-            <div>
-              @if (booking.userConfirmedDocuments) {
-                Además, el usuario ha subido el registro de estados. Puede verlo en el apartado de documentos.
-              } @else {
-                Lamentablemente, el usuario no ha subido el registro de estados.
-              }
-            </div>
-          }
-          @case ('FINISHED') {
-            <div>
-              ¡Reserva finalizada! Ya no hay que preocuparse. La revisión tuvo este resultado:
-            </div>
-            <div>{{ booking.statusObservations }}</div>
-          }
-          @default {
-            @if (booking.status == 'OCCUPIED' || booking.status == 'FULLY_OCCUPIED') {
-              <div>
-                ¡Muy bien! Has completado una reserva. Cuando se acerque el inicio de esta, (la semana antes), la
-                persona de contacto te llamará y tendrás que concertar una cita para la recogida de llaves e indicar
-                como te serán devueltas. Esto es <b>tú</b> responsabilidad, hazlo bien.
-              </div>
-              <div>
-                Si a dos días de la fecha de inicio de la reserva la persona de contacto todavía no te ha contactado,
-                manda un correo o llama, que a lo mejor se le ha olvidado.
-              </div>
-              <div>
-                Una vez haya finalizado la estancia, la persona de contacto podrá subir el registro de estados y
-                marcar la reserva como finalizada. Esto es opcional, así que puede ser que no lo hagan y tendrás que
-                pasar a la revisión.
-              </div>
-              <div>
-                Cuando hayas revisado todo, podrás marcar la reserva como finalizada y revisada. Cuando hayas hecho
-                esto, al usuario se le informará de que todo ha ido bien (o no, según cómo haya ido la revisión) y
-                finalizará esta reserva.
-              </div>
-            }
           }
         }
       </div>
     </div>
-    @if (booking.status != 'REJECTED' && booking.status != 'CANCELED' && booking.status != 'FINISHED') {
-      <div class="col-12 my-3">
-        <div class="d-flex flex-column gap-1 align-items-start">
-          <b>Actualizar Estado</b>
-          <div class="d-flex gap-2 flex-wrap">
-            @if (booking.status == 'NEW') {
-              <p-button
-                icon="pi pi-check"
-                label="Aceptar Pre Reserva"
-                severity="success"
-                [loading]="loading"
-                (click)="openStatusForm('RESERVED', {showPrice: true})"
-              ></p-button>
-            } @else if (booking.status == 'RESERVED') {
-              @if (booking.exclusiveReservation) {
-                <p-button
-                  icon="pi pi-check"
-                  label="Confirmar Reserva en exclusividad"
-                  severity="success"
-                  [loading]="loading"
-                  (click)="openStatusForm('FULLY_OCCUPIED')"
-                ></p-button>
-              } @else {
-                <p-button
-                  icon="pi pi-check"
-                  [label]="booking.scoutCenter.minExclusiveCapacity !== 0 && booking.exclusiveReservation ? 'Confirmar Reserva sin exclusividad' : 'Confirmar Reserva'"
-                  severity="success"
-                  [loading]="loading"
-                  (click)="openStatusForm('OCCUPIED',{required: booking.exclusiveReservation},booking.exclusiveReservation ? 'Motivo por el rechazo de la exclusividad' : undefined)"
-                ></p-button>
-              }
-              <p-button
-                icon="pi pi-exclamation-triangle"
-                label="Subsanar Documentos"
-                severity="warn"
-                [loading]="loading"
-                (click)="openStatusForm('RESERVED', {required: true},'Motivo de la subsanación')"
-              ></p-button>
-            }
-            @if (booking.status == 'NEW' || booking.status == 'RESERVED') {
-              <p-button
-                icon="pi pi-times"
-                label="Denegar Pre Reserva"
-                severity="danger"
-                [loading]="loading"
-                (click)="openStatusForm('REJECTED', {required: true},'Motivo de la denegación')"
-              ></p-button>
-            } @else if (booking.status == 'OCCUPIED' || booking.status == 'FULLY_OCCUPIED' || booking.status == 'LEFT') {
-              <!--TODO: esto cambiarlo por un botón de cancelar y un aviso al darle. Buscar una manera de que siga mostrándose en el calendario público-->
-              <p>
-                <b>¡AVISO!</b> Sólo darle a este botón cuando las personas que han reservado hayan abandonado el
-                lugar, o cuando quieras cancelarla, ya que la reserva dejará de aparecer en el calendario público. En
-                el futuro próximo se arreglará esto.
-              </p>
-              <p-button
-                icon="pi pi-check"
-                label="Lugar Revisado"
-                severity="success"
-                [loading]="loading"
-                (click)="openStatusForm('FINISHED', {required: true},'Resultado de la revisión')"
-              ></p-button>
-            }
-          </div>
-        </div>
-      </div>
-    }
-  </div>
-  @if (booking.status !== 'NEW') {
-    <p-divider align="left" type="solid">
-      <div class="d-flex align-items-center gap-1">
-        <p-button
-          [icon]="showDocuments ? 'pi pi-eye-slash' : 'pi pi-eye'"
-          rounded
-          outlined
-          variant="text"
-          severity="secondary"
-          (click)="showDocuments = !showDocuments"
-          title="Descargar"
-        ></p-button>
-        <b class="cursor-pointer" (click)="showDocuments = !showDocuments">
-            <span>
-              @if (showDocuments) {
-                Ocultar Documentos
-              } @else {
-                Mostrar Documentos
-              }
-            </span>
-        </b>
-      </div>
-    </p-divider>
-    <div class="mb-3">
-      <div>
-        @if (files.length == 0) {
-          No hay ningún documento asociado
-        } @else if (!showDocuments && files.length == 1) {
-          Hay 1 documento asociado
-        } @else if (!showDocuments && files.length > 1) {
-          Hay {{ files.length }} documentos asociados
+    <div>
+      <div class="d-flex gap-2 align-items-center flex-wrap">
+        <h2 class="mb-0 fw-bold fs-5 text-dark">Acciones</h2>
+        @if (booking.status != Status.REJECTED && booking.status != Status.CANCELED) {
+          @if (booking.status == Status.NEW) {
+            <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: buttonsInfo['accept']}"/>
+          } @else if (booking.status == Status.RESERVED) {
+            <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: buttonsInfo['confirm']}"/>
+            <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: buttonsInfo['warn']}"/>
+          }
+          <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: buttonsInfo['reject']}"/>
+        } @else {
+          <p-tag severity="secondary" value="No hay acciones disponibles" styleClass="rounded-3"/>
         }
       </div>
-      @if (showDocuments) {
-        @for (file of files; track $index) {
-          <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 py-2 border-bottom">
+    </div>
+    <div>
+      <div class="d-flex gap-2 align-items-center">
+        <h2 class="mb-0 fw-bold fs-5 text-dark">Documentos</h2>
+        @if (files.length > 0) {
+          <p-button
+            [label]="showDocuments ? 'Ocultar' : 'Mostrar'"
+            (onClick)="showDocuments = !showDocuments"
+            styleClass="py-1"
+            outlined
+            severity="secondary"
+            size="small"
+          />
+        }
+        <p-button
+          outlined
+          icon="fa-solid fa-file-circle-question"
+          severity="secondary"
+          size="small"
+          (click)="dialogVisible = true"
+        />
+      </div>
+      <div class="mt-3">
+        @if (showDocuments) {
+          @for (file of files; track $index) {
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 py-2 border-bottom">
             <span>{{ file.fileName }} -
               <b
                 class="rounded-1 p-1"
@@ -260,61 +173,61 @@
                 [innerText]="file.status | documentStatus"
               ></b>
             </span>
-            <div class="d-flex gap-2">
-              <app-table-icon-button
-                icon="pi pi-download"
-                [disabled]="loading"
-                (click)="downloadFile(file)"
-                title="Descargar"
-              ></app-table-icon-button>
-              @if (file.fileName.endsWith('pdf')) {
+              <div class="d-flex gap-2">
                 <app-table-icon-button
-                  icon="pi pi-eye"
-                  severity="info"
+                  icon="pi pi-download"
                   [disabled]="loading"
-                  (click)="showFile(file)"
-                  title="Abrir"
+                  (click)="downloadFile(file)"
+                  title="Descargar"
                 ></app-table-icon-button>
-              }
-              <app-table-icon-button
-                icon="pi pi-trash"
-                severity="danger"
-                [disabled]="loading"
-                (click)="deleteFile(file)"
-                title="Borrar"
-              ></app-table-icon-button>
-              <app-table-icon-button
-                icon="pi pi-check"
-                severity="success"
-                [disabled]="loading"
-                (click)="updateFile(file, 'ACCEPTED')"
-                title="Marcar como válido"
-              ></app-table-icon-button>
-              <app-table-icon-button
-                icon="pi pi-times"
-                severity="danger"
-                [disabled]="loading"
-                (click)="updateFile(file, 'REJECTED')"
-                title="Marcar como inválido"
-              ></app-table-icon-button>
+                @if (file.fileName.endsWith('pdf')) {
+                  <app-table-icon-button
+                    icon="pi pi-eye"
+                    severity="info"
+                    [disabled]="loading"
+                    (click)="showFile(file)"
+                    title="Abrir"
+                  ></app-table-icon-button>
+                }
+                <app-table-icon-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [disabled]="loading"
+                  (click)="deleteFile(file)"
+                  title="Borrar"
+                ></app-table-icon-button>
+                <app-table-icon-button
+                  icon="pi pi-check"
+                  severity="success"
+                  [disabled]="loading"
+                  (click)="updateFile(file, 'ACCEPTED')"
+                  title="Marcar como válido"
+                ></app-table-icon-button>
+                <app-table-icon-button
+                  icon="pi pi-times"
+                  severity="danger"
+                  [disabled]="loading"
+                  (click)="updateFile(file, 'REJECTED')"
+                  title="Marcar como inválido"
+                ></app-table-icon-button>
+              </div>
             </div>
-          </div>
+          }
+        } @else {
+          <p-tag severity="secondary" styleClass="rounded-3">
+            @if (files.length == 0) {
+              No hay ningún documento asociado
+            } @else if (files.length == 1) {
+              Hay 1 documento asociado
+            } @else if (files.length > 1) {
+              Hay {{ files.length }} documentos asociados
+            }
+          </p-tag>
         }
-        <div class="my-2">
-          <p-button
-            icon='fa-solid fa-file-circle-question'
-            outlined
-            rounded
-            severity="secondary"
-            size="small"
-            title="Ver Documentos"
-            label="Documentos a entregar"
-            (click)="dialogVisible = true"
-          ></p-button>
-        </div>
-      }
+      </div>
     </div>
-  }
+  </div>
+
 </div>
 <p-dialog
   header="Documentos que nos tienen que entregar"
@@ -329,9 +242,33 @@
       <li>
         {{ document.name }}
         @if (document.attendance) {
-          <a class="link cursor-pointer" (click)="downloadAttendanceFile(booking.scoutCenter.id)">(Puede descargarlo aquí)</a>.
+          <a class="link cursor-pointer" (click)="downloadAttendanceFile(booking.scoutCenter.id)">(Puede descargarlo
+            aquí)</a>.
         }
       </li>
     }
   </ul>
 </p-dialog>
+
+<ng-template #actionButton let-info>
+  <p-button
+    class="d-none d-sm-block"
+    styleClass="py-1 px-2 gap-1 border-2"
+    [icon]="info.icon"
+    [label]="info.label"
+    [severity]="info.severity"
+    outlined
+    [loading]="loading"
+    (click)="info.action()"
+  ></p-button>
+  <p-button
+    size="small"
+    class="d-sm-none"
+    styleClass="border-2"
+    [icon]="info.icon"
+    [severity]="info.severity"
+    outlined
+    [loading]="loading"
+    (click)="info.action()"
+  ></p-button>
+</ng-template>

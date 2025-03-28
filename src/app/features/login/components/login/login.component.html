@@ -21,7 +21,7 @@
             [toggleMask]="true"
             [feedback]="false"
           ></p-password>
-          <a class="forgot mt-3" (click)="login = !login">
+          <a class="forgot mt-3" (click)="login = false">
             <small>Olvidé la contraseña</small>
           </a>
           <div class="mt-3">
@@ -46,7 +46,7 @@
           type="text"
           [(ngModel)]="forgotUsername"
         />
-        <a class="forgot mt-3" (click)="login = !login">
+        <a class="forgot mt-3" (click)="login = true">
           <small>Volver al inicio de sesión</small>
         </a>
         <app-save-buttons

@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '
 import {CalendarOptions, EventClickArg} from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import {Status} from "../../../constant/status.constant";
-import {BookingDate} from "../../../model/booking-date.model";
+import {BookingCalendarInfo} from "../../../model/booking-calendar-info.model";
 import {FullCalendarModule} from '@fullcalendar/angular';
 
 @Component({
@@ -13,7 +13,7 @@ import {FullCalendarModule} from '@fullcalendar/angular';
 })
 export class BookingCalendarComponent implements OnChanges {
 
-  @Input() dateRanges: BookingDate[] = [];
+  @Input() dateRanges: BookingCalendarInfo[] = [];
   @Input() currentReservationId: number | undefined;
   @Input() calendarDate!: Date;
   @Input() loading = false;
@@ -45,7 +45,7 @@ export class BookingCalendarComponent implements OnChanges {
     }
   }
 
-  private createEvent(dateRange: BookingDate): any {
+  private createEvent(dateRange: BookingCalendarInfo): any {
     const endDate = new Date(dateRange.endDate);
     endDate.setDate(endDate.getDate() + 1);
     return {
@@ -53,67 +53,65 @@ export class BookingCalendarComponent implements OnChanges {
       end: endDate,
       allDay: true,
       id: dateRange.id,
-      ...this.getEventStyle(dateRange.status, dateRange.id, dateRange.packs)
+      ...this.getEventStyle(dateRange)
     };
   }
 
-  private getEventStyle(status: Status, id: number, packs: number) {
-    let title = `${packs} packs - `;
-    let color;
-
-    if (id === this.currentReservationId) {
-      title += "Actual";
-      color = '#2b50e5';
-    } else if (status === "FULLY_OCCUPIED") {
-      title += "Totalmente Ocupada";
-      color = '#c50909';
-    } else if (status === "OCCUPIED") {
-      title += "Parcialmente Ocupada";
-      color = '#fa9f13';
-    } else if (status === "RESERVED") {
-      title += "A la espera";
-      color = '#e8dd08';
-    } else if (status === "NEW") {
-      title += "Nueva";
-      color = '#05cc6f';
-    } else if (status === "LEFT") {
-      title += "Esperando Revisión";
-      color = '#c47d06';
-    } else if (status === "FINISHED") {
-      title += "Reserva Finalizada";
-      color = '#00b9fb';
-    } else if (status === "CANCELED" || status == "REJECTED") {
-      title += status === "CANCELED" ? "Cancelada" : 'Rechazada';
-      color = '#c4064f';
-    } else {
-      title += status;
-      color = '#3d2d54';
-    }
-
-    title += ` - Nº ${id}`;
-
-    return {title, color, priority: this.getStatusPriority(status)};
+  private getEventStyle(calendarInfo: BookingCalendarInfo) {
+    return {
+      title: `${calendarInfo.packs} packs - ${this.getStatusName(calendarInfo)} - Nº ${calendarInfo.id}`,
+      class: 'fs-4',
+      color: this.getStatusBackground(calendarInfo),
+      priority: this.getStatusPriority(calendarInfo)
+    };
   }
 
-  private getStatusPriority(status: Status) {
-    if (status === "FULLY_OCCUPIED") {
-      return 10;
-    } else if (status === "OCCUPIED") {
-      return 20;
-    } else if (status === "RESERVED") {
-      return 30;
-    } else if (status === "NEW") {
-      return 40;
-    } else if (status === "LEFT") {
-      return 50;
-    } else if (status === "FINISHED") {
-      return 60;
-    } else if (status === "CANCELED") {
-      return 70;
-    } else if (status === "REJECTED") {
-      return 80;
-    } else {
-      return 100;
+  getStatusName(calendarInfo: BookingCalendarInfo) {
+    if (calendarInfo.id === this.currentReservationId) return "Actual";
+    switch (calendarInfo.status) {
+      case Status.NEW:
+        return "Nueva";
+      case Status.RESERVED:
+        return "A la espera";
+      case Status.OCCUPIED:
+        return calendarInfo.fullyOccupied ? "Totalmente Ocupada" : "Parcialmente Ocupada";
+      case Status.CANCELED:
+        return "Cancelada";
+      case Status.REJECTED:
+        return "Rechazada";
+    }
+  }
+
+  private getStatusBackground(calendarInfo: BookingCalendarInfo) {
+    if (calendarInfo.id === this.currentReservationId) return "var(--p-purple-500)";
+    switch (calendarInfo.status) {
+      case Status.NEW:
+        return `var(--p-blue-500)`;
+      case Status.RESERVED:
+        return `var(--p-orange-500)`;
+      case Status.OCCUPIED:
+        return calendarInfo.fullyOccupied ? `var(--p-green-700)` : `var(--p-green-500)`;
+      case Status.CANCELED:
+      case Status.REJECTED:
+        return `var(--p-red-500)`;
+    }
+  }
+
+  private getStatusPriority(calendarInfo: BookingCalendarInfo) {
+    if (calendarInfo.status == Status.OCCUPIED && calendarInfo.fullyOccupied) return 10;
+    switch (calendarInfo.status) {
+      case Status.OCCUPIED:
+        return 20;
+      case Status.RESERVED:
+        return 30;
+      case Status.NEW:
+        return 40;
+      case Status.CANCELED:
+        return 50;
+      case Status.REJECTED:
+        return 60;
+      default:
+        return 100;
     }
   }
 

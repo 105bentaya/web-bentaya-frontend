@@ -48,3 +48,4 @@ export class FileUtils {
 
 
 export const docTypes = ".docx,.doc,.dot,.dotx,.odt,.rtf";
+export const imageTypes = ".webp,.jpg,.png,.svg";

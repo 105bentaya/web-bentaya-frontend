@@ -6,13 +6,16 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.component";
 import {BookingService} from "../../../service/booking.service";
 import {Booking} from "../../../model/booking.model";
-import {BookingDate} from "../../../model/booking-date.model";
+import {BookingCalendarInfo} from "../../../model/booking-calendar-info.model";
 import {BookingDetailComponent} from "../booking-detail/booking-detail.component";
 import {OwnBookingDetailComponent} from "../own-booking-detail/own-booking-detail.component";
 import {
   GeneralAButtonComponent
 } from "../../../../../shared/components/buttons/general-a-button/general-a-button.component";
 import {BookingManagementService} from "../../../service/booking-management.service";
+import {ToggleButton} from "primeng/togglebutton";
+import {Status} from "../../../constant/status.constant";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-booking-detail-control',
@@ -21,7 +24,9 @@ import {BookingManagementService} from "../../../service/booking-management.serv
     BookingCalendarComponent,
     BookingDetailComponent,
     OwnBookingDetailComponent,
-    GeneralAButtonComponent
+    GeneralAButtonComponent,
+    ToggleButton,
+    FormsModule
   ],
   templateUrl: './booking-detail-control.component.html',
   styleUrl: './booking-detail-control.component.scss'
@@ -35,7 +40,10 @@ export class BookingDetailControlComponent implements OnInit {
 
   protected id!: number;
   protected booking: Booking | undefined;
-  protected dateRanges!: BookingDate[];
+
+  private allDateRanges!: BookingCalendarInfo[];
+  protected dateRanges!: BookingCalendarInfo[];
+  protected showCancelled = false;
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -51,14 +59,27 @@ export class BookingDetailControlComponent implements OnInit {
   }
 
   private getDateRanges(centerId: number) {
-    this.bookingService.getCenterBookingDates({scoutCenters: centerId}).subscribe(result => this.dateRanges = result);
+    this.bookingService.getCenterBookingDates({scoutCenters: centerId}).subscribe(result => {
+      this.allDateRanges = result;
+      this.filterDateRanges();
+    });
+  }
+
+  private dateRangeIsCanceledOrRejected(dateRange: BookingCalendarInfo) {
+    return dateRange.id !== this.id && (dateRange.status === Status.CANCELED || dateRange.status === Status.REJECTED);
   }
 
   protected reloadInfo(eventId: number) {
     this.router.navigateByUrl(`/centros-scout/gestion/reserva/${eventId}`);
   }
 
-  goBack() {
+  protected goBack() {
     this.router.navigate([`/centros-scout/gestion/${this.bookingManagement.getLastRoute()}`], {queryParams: this.bookingManagement.getLastParams()});
+  }
+
+  protected filterDateRanges() {
+    this.dateRanges = this.showCancelled ? this.allDateRanges :
+      this.allDateRanges.filter(dateRange => !this.dateRangeIsCanceledOrRejected(dateRange));
+
   }
 }

@@ -1,14 +1,12 @@
 import {inject, Injectable} from '@angular/core';
-import {ReservationDate} from "../model/reservation-date.model";
 import {Observable} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {BookingForm} from "../model/booking-form.model";
 import {Booking} from "../model/booking.model";
-import {BookingDate} from "../model/booking-date.model";
+import {BookingCalendarInfo} from "../model/booking-calendar-info.model";
 import {BookingDateForm} from "../model/booking-date-form.model";
-import {BookingInterval} from "../model/booking-interval.model";
-import {BookingUpdateStatus} from "../model/booking-update-status.model";
+import {BookingDateAndStatus} from "../model/booking-date-and-status.model";
 import {BookingDocument, DocumentStatus} from "../model/booking-document.model";
 import {OwnBookingForm} from "../model/own-booking-form.model";
 import {Page} from "../../../shared/model/page.model";
@@ -43,34 +41,26 @@ export class BookingService {
     return this.http.get<Booking>(`${this.bookingUrl}/${id}`);
   }
 
-  updateStatus(updateInfo: BookingUpdateStatus): Observable<Booking> {
-    return this.http.put<Booking>(`${this.bookingUrl}/update-status`, updateInfo);
-  }
-
-  updateStatusByUser(updateInfo: BookingUpdateStatus): Observable<Booking> {
-    return this.http.put<Booking>(`${this.bookingUrl}/update-status-user`, updateInfo);
-  }
-
   uploadBookingDocument(bookingId: number, file: File): Observable<void> {
     const formData = new FormData();
     formData.append("file", file);
     return this.http.post<void>(`${this.bookingUrl}/document/${bookingId}`, formData);
   }
 
-  getReservedDates(centerId: number): Observable<ReservationDate[]> {
-    return this.http.get<ReservationDate[]>(`${this.bookingUrl}/public/${centerId}`);
+  getReservedDates(centerId: number): Observable<BookingDateAndStatus[]> {
+    return this.http.get<BookingDateAndStatus[]>(`${this.bookingUrl}/public/${centerId}`);
   }
 
-  getCenterBookingDates(filter: any): Observable<BookingDate[]> {
-    return this.http.get<BookingDate[]>(`${this.bookingUrl}/dates`, {params: new HttpParams({fromObject: filter})});
+  getCenterBookingDates(filter: any): Observable<BookingCalendarInfo[]> {
+    return this.http.get<BookingCalendarInfo[]>(`${this.bookingUrl}/dates`, {params: new HttpParams({fromObject: filter})});
   }
 
   sendForm(form: BookingForm): Observable<void> {
     return this.http.post<void>(`${this.bookingUrl}/public/form`, form);
   }
 
-  checkBookingDates(dto: BookingDateForm): Observable<BookingInterval[]> {
-    return this.http.post<BookingInterval[]>(`${this.bookingUrl}/public/check-booking`, dto);
+  checkBookingDates(dto: BookingDateForm): Observable<BookingDateAndStatus[]> {
+    return this.http.post<BookingDateAndStatus[]>(`${this.bookingUrl}/public/check-booking`, dto);
   }
 
   getBookingDocuments(id: number) {

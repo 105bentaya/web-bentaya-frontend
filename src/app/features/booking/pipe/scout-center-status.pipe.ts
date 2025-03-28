@@ -1,14 +1,19 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {bookingStatusesValues} from "../constant/status.constant";
+import {bookingStatusValues, Status} from "../constant/status.constant";
 
 @Pipe({
-  name: 'scoutCenterStatus',
+  name: 'bookingStatus',
   standalone: true
 })
-export class ScoutCenterStatusPipe implements PipeTransform {
+export class BookingStatusPipe implements PipeTransform {
 
-  transform(value: string, styleClass = false): string {
-    const status = bookingStatusesValues.find(status => status.value == value);
-    return (styleClass ? status?.styleClass : status?.label) ?? value;
+  transform(value: Status, mode: 'label' | 'severity' = 'label'): any {
+    const status = bookingStatusValues[value];
+    switch (mode) {
+      case "label":
+        return status.label;
+      case "severity":
+        return status.severity;
+    }
   }
 }
