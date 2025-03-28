@@ -24,7 +24,8 @@
     <p class="my-3">
       Si le interesa alguno de los centros puede solicitarlo en el siguiente formulario, pero debe saber que sólo se
       cede su uso a Asociaciones y Centros Educativos. Si desea obtener más información sobre nuestros centros, haga
-      <a routerLink="/centros-scout/informacion">click aquí</a>. Se permiten reservas hasta septiembre 2025, inclusive.
+      <a routerLink="/centros-scout/informacion">click aquí</a>. Se permiten reservas hasta el
+      <b>{{ maxDate | date:"dd 'de' MMMM 'de' yyyy":undefined:'es' }}</b>, inclusive.
     </p>
     <app-booking-beta-alert></app-booking-beta-alert>
     @if (bookingForm.form) {

@@ -1,7 +1,9 @@
 import {inject, Injectable} from '@angular/core';
 import {BookingService} from "./booking.service";
-import {map} from "rxjs";
+import {firstValueFrom, map} from "rxjs";
 import {DateUtils} from "../../../shared/util/date-utils";
+import {SettingsService} from "../../settings/settings.service";
+import {SettingType} from "../../settings/setting.model";
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +11,12 @@ import {DateUtils} from "../../../shared/util/date-utils";
 export class BookingDateService {
 
   private readonly bookingService = inject(BookingService);
+  private readonly settingsService = inject(SettingsService);
 
   private fullyOccupiedDates: Set<string> = new Set<string>();
   private occupiedDates: Set<string> = new Set<string>();
   private reservedDates: Set<string> = new Set<string>();
+  private bookingDate!: Date;
 
   public loadDates(centerId: number) {
     this.fullyOccupiedDates = new Set<string>();
@@ -41,7 +45,12 @@ export class BookingDateService {
     return this.reservedDates.has(calendarDate) ? "reserved" : "";
   }
 
-  public getBookingDate() {  //todo: remove and replace with setting and check dates in backend
-    return new Date(2025, 8, 30, 23, 59);
+  public async getBookingDate() {
+    if (!this.bookingDate) {
+      this.bookingDate = new Date((await firstValueFrom(this.settingsService.getByName(SettingType.BOOKING_DATE))).value);
+      this.bookingDate.setHours(23);
+      this.bookingDate.setMinutes(59);
+    }
+    return this.bookingDate;
   }
 }

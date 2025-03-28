@@ -49,7 +49,7 @@ export class BookingFormCenterSelectionComponent implements OnInit {
   protected formHelper = new FormHelper();
   protected datesForm = new FormHelper();
   protected defaultDate: Date = DateUtils.dateTruncatedToHours(new Date());
-  protected maxDate: Date = this.bookingDateService.getBookingDate();
+  protected maxDate!: Date;
   protected selectedCenterInfo!: ScoutCenter;
   protected scoutCenters!: ScoutCenter[];
   protected centerLoaded = false;
@@ -60,6 +60,10 @@ export class BookingFormCenterSelectionComponent implements OnInit {
   private centerIsAlwaysExclusive: boolean = false;
 
   @Output() onInit = new EventEmitter<FormGroup>();
+
+  constructor() {
+    this.bookingDateService.getBookingDate().then(date => this.maxDate = date);
+  }
 
   ngOnInit() {
     this.scoutCenterService.getAll().subscribe(result => this.scoutCenters = result);

@@ -33,9 +33,13 @@ export class BookingInformationComponent implements OnChanges {
   @Input() information!: ScoutCenterInformation;
   @Input() color: any;
   protected minDate: Date = DateUtils.tomorrow();
-  protected maxDate: Date = this.bookingDateService.getBookingDate();
+  protected maxDate!: Date;
   protected datesLoaded = false;
   protected displayBasic = false;
+
+  constructor() {
+    this.bookingDateService.getBookingDate().then(date => this.maxDate = date);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["information"]) {

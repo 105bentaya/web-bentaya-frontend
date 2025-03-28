@@ -4,6 +4,8 @@ import {FlexCardComponent} from '../../../../shared/components/flex-card/flex-ca
 import {RouterLink} from '@angular/router';
 import {ScoutCenterService} from "../../../scout-center/scout-center.service";
 import {ScoutCenterInformation} from "../../../scout-center/scout-center.model";
+import {BookingDateService} from "../../service/booking-date.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-booking-home',
@@ -12,7 +14,8 @@ import {ScoutCenterInformation} from "../../../scout-center/scout-center.model";
   imports: [
     RouterLink,
     FlexCardComponent,
-    BookingInformationComponent
+    BookingInformationComponent,
+    DatePipe
   ]
 })
 export class BookingHomeComponent implements OnInit {
@@ -21,6 +24,11 @@ export class BookingHomeComponent implements OnInit {
   protected selectedOption = 0;
   protected colors = ["#ED5565", "#f89853", "#2ECC71", "#AC92EC"];
   protected scoutCenters!: ScoutCenterInformation[];
+  protected maxDate!: Date;
+
+  constructor() {
+    inject(BookingDateService).getBookingDate().then(date => this.maxDate = date);
+  }
 
   ngOnInit() {
     this.scoutCenterService.getAllInformation().subscribe(result => this.scoutCenters = result);

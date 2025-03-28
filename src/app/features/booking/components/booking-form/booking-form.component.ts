@@ -32,6 +32,7 @@ import {
   GeneralAButtonComponent
 } from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 import {UserRole} from "../../../users/models/role.model";
+import {BookingDateService} from "../../service/booking-date.service";
 
 @Component({
   selector: 'app-booking-form',
@@ -80,6 +81,11 @@ export class BookingFormComponent implements OnInit {
   @ViewChild('centerSelection')
   protected centerSelectionComponent!: BookingFormCenterSelectionComponent;
   protected readonly maintenanceEmail = maintenanceEmail;
+  protected maxDate!: Date;
+
+  constructor() {
+    inject(BookingDateService).getBookingDate().then(date => this.maxDate = date);
+  }
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
