@@ -6,7 +6,7 @@ import {Status} from "../../../constant/status.constant";
 import {AlertService} from "../../../../../shared/services/alert-service.service";
 import {DialogService} from "primeng/dynamicdialog";
 import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
-import {BookingStatusPipe} from "../../../pipe/scout-center-status.pipe";
+import {BookingStatusPipe} from "../../../../scout-center/scout-center-status.pipe";
 import {BookingDocument, DocumentStatus} from "../../../model/booking-document.model";
 import {saveAs} from "file-saver";
 import {ConfirmationService} from "primeng/api";
@@ -20,7 +20,7 @@ import {
 import {DialogModule} from "primeng/dialog";
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 import {FileUtils} from "../../../../../shared/util/file.utils";
-import {ScoutCenterService} from "../../../service/scout-center.service";
+import {ScoutCenterService} from "../../../../scout-center/scout-center.service";
 import {HourPipe} from "../../../../../shared/pipes/hour.pipe";
 import {Tag} from "primeng/tag";
 import {filter, Observable} from "rxjs";

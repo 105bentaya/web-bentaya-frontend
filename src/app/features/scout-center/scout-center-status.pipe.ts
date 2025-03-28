@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {bookingStatusValues, Status} from "../constant/status.constant";
+import {bookingStatusValues, Status} from "../booking/constant/status.constant";
 
 @Pipe({
   name: 'bookingStatus',

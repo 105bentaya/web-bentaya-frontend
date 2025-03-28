@@ -3,7 +3,7 @@ import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
 import {UpperCasePipe} from '@angular/common';
 import {GalleriaModule} from "primeng/galleria";
-import {ScoutCenterService} from "../booking/service/scout-center.service";
+import {ScoutCenterService} from "../scout-center/scout-center.service";
 
 @Component({
   selector: 'app-home',

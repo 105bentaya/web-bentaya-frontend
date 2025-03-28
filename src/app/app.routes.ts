@@ -308,7 +308,7 @@ const Booking: Route[] = [
   },
   {
     path: "datos",
-    loadComponent: () => import('./features/booking/components/management/scout-center-management/scout-center-management.component').then(c => c.ScoutCenterManagementComponent),
+    loadComponent: () => import('./features/scout-center/components/scout-center-management/scout-center-management.component').then(c => c.ScoutCenterManagementComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.SCOUT_CENTER_MANAGER]}
   }

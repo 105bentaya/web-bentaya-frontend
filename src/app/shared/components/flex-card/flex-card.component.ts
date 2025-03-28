@@ -1,7 +1,7 @@
 import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {NgClass} from '@angular/common';
-import {ScoutCenterInformation} from "../../../features/booking/model/scout-center.model";
-import {ScoutCenterService} from "../../../features/booking/service/scout-center.service";
+import {ScoutCenterInformation} from "../../../features/scout-center/scout-center.model";
+import {ScoutCenterService} from "../../../features/scout-center/scout-center.service";
 
 @Component({
   selector: 'app-flex-card',

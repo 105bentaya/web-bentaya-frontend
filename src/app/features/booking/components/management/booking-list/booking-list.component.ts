@@ -4,7 +4,7 @@ import {bookingStatuses} from "../../../constant/status.constant";
 import {Booking} from "../../../model/booking.model";
 import {Table, TableModule} from "primeng/table";
 import {MultiSelect} from "primeng/multiselect";
-import {BookingStatusPipe} from "../../../pipe/scout-center-status.pipe";
+import {BookingStatusPipe} from "../../../../scout-center/scout-center-status.pipe";
 import {DatePipe} from "@angular/common";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import FilterUtils from "../../../../../shared/util/filter-utils";

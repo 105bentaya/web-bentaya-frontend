@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {Params} from "@angular/router";
 import {lastValueFrom, Subject} from "rxjs";
 import {BasicScoutCenter} from "../model/booking.model";
-import {ScoutCenterService} from "./scout-center.service";
+import {ScoutCenterService} from "../../scout-center/scout-center.service";
 
 @Injectable({
   providedIn: 'root'

@@ -1,31 +1,29 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {ScoutCenterService} from "../../../service/scout-center.service";
-import {ScoutCenter, ScoutCenterFile, ScoutCenterWithFiles} from "../../../model/scout-center.model";
+import {ScoutCenterService} from "../../scout-center.service";
+import {ScoutCenter, ScoutCenterFile, ScoutCenterWithFiles} from "../../scout-center.model";
 import {TabsModule} from "primeng/tabs";
 import {CurrencyPipe, NgClass} from "@angular/common";
 import {Button} from "primeng/button";
 import {FileUpload, FileUploadHandlerEvent} from "primeng/fileupload";
-import {maxFileUploadByteSize} from "../../../../../shared/constant";
-import {docTypes, FileUtils, imageTypes} from "../../../../../shared/util/file.utils";
-import {AlertService} from "../../../../../shared/services/alert-service.service";
-import {
-  BasicLoadingInfoComponent
-} from "../../../../../shared/components/basic-loading-info/basic-loading-info.component";
+import {maxFileUploadByteSize} from "../../../../shared/constant";
+import {docTypes, FileUtils, imageTypes} from "../../../../shared/util/file.utils";
+import {AlertService} from "../../../../shared/services/alert-service.service";
+import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {finalize} from "rxjs";
 import {
   GeneralAButtonComponent
-} from "../../../../../shared/components/buttons/general-a-button/general-a-button.component";
+} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 import {FloatLabel} from "primeng/floatlabel";
 import {InputText} from "primeng/inputtext";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {FormHelper} from "../../../../../shared/util/form-helper";
+import {FormHelper} from "../../../../shared/util/form-helper";
 import {InputNumber} from "primeng/inputnumber";
 import {InputGroup} from "primeng/inputgroup";
 import {InputGroupAddon} from "primeng/inputgroupaddon";
 import {Dialog} from "primeng/dialog";
-import {FormTextAreaComponent} from "../../../../../shared/components/form-text-area/form-text-area.component";
-import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
-import {centerIsAlwaysExclusive} from "../../../model/booking.model";
+import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
+import {centerIsAlwaysExclusive} from "../../../booking/model/booking.model";
 
 @Component({
   selector: 'app-scout-center-management',

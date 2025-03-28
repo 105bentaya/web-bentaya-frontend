@@ -10,7 +10,7 @@ import {castArray, pick} from "lodash";
 import {ActivatedRoute, Router} from "@angular/router";
 import {JoinPipe} from "../../../../../shared/pipes/join.pipe";
 import {MenuItem, PrimeTemplate} from "primeng/api";
-import {BookingStatusPipe} from "../../../pipe/scout-center-status.pipe";
+import {BookingStatusPipe} from "../../../../scout-center/scout-center-status.pipe";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 

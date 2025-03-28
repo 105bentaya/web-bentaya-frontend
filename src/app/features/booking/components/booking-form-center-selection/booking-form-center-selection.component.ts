@@ -21,8 +21,8 @@ import {BookingDateAndStatus} from "../../model/booking-date-and-status.model";
 import {BookingService} from "../../service/booking.service";
 import {DatePicker} from "primeng/datepicker";
 import {Message} from "primeng/message";
-import {ScoutCenterService} from "../../service/scout-center.service";
-import {ScoutCenter} from '../../model/scout-center.model';
+import {ScoutCenterService} from "../../../scout-center/scout-center.service";
+import {ScoutCenter} from '../../../scout-center/scout-center.model';
 import {centerIsAlwaysExclusive} from "../../model/booking.model";
 
 @Component({

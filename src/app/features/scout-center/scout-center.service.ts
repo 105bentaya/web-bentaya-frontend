@@ -1,9 +1,9 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {environment} from "../../../../environments/environment";
-import {ScoutCenter, ScoutCenterFile, ScoutCenterInformation, ScoutCenterWithFiles} from "../model/scout-center.model";
+import {environment} from "../../../environments/environment";
+import {ScoutCenter, ScoutCenterFile, ScoutCenterInformation, ScoutCenterWithFiles} from "./scout-center.model";
 import {Observable} from "rxjs";
-import {FileUtils} from "../../../shared/util/file.utils";
+import {FileUtils} from "../../shared/util/file.utils";
 
 @Injectable({
   providedIn: 'root'

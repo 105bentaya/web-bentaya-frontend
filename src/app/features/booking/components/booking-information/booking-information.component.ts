@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {ScoutCenterInformation} from "../../model/scout-center.model";
+import {ScoutCenterInformation} from "../../../scout-center/scout-center.model";
 import {BookingDateService} from "../../service/booking-date.service";
 import {GalleriaModule} from 'primeng/galleria';
 import {RouterLink} from '@angular/router';
@@ -10,7 +10,7 @@ import {
   GeneralAButtonComponent
 } from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 import {Button} from "primeng/button";
-import {ScoutCenterService} from "../../service/scout-center.service";
+import {ScoutCenterService} from "../../../scout-center/scout-center.service";
 
 @Component({
   selector: 'app-booking-information',

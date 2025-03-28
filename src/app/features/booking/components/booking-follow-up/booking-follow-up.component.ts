@@ -13,7 +13,7 @@ import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ConfirmationService} from "primeng/api";
 import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";
 import {DocumentStatusPipe} from '../../pipe/document-status.pipe';
-import {BookingStatusPipe} from '../../pipe/scout-center-status.pipe';
+import {BookingStatusPipe} from '../../../scout-center/scout-center-status.pipe';
 import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
 import {FieldsetModule} from 'primeng/fieldset';
@@ -28,7 +28,7 @@ import {TabsModule} from "primeng/tabs";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {maxFileUploadByteSize} from "../../../../shared/constant";
 import {docTypes, FileUtils} from "../../../../shared/util/file.utils";
-import {ScoutCenterService} from "../../service/scout-center.service";
+import {ScoutCenterService} from "../../../scout-center/scout-center.service";
 
 @Component({
   selector: 'app-booking-follow-up',

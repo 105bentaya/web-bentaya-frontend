@@ -1,7 +1,7 @@
 import {Component, inject, Input} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {BookingStatusPipe} from "../../../pipe/scout-center-status.pipe";
+import {BookingStatusPipe} from "../../../../scout-center/scout-center-status.pipe";
 import {Booking} from "../../../model/booking.model";
 import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe} from "@angular/common";

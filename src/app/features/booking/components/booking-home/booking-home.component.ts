@@ -2,8 +2,8 @@ import {Component, inject, OnInit} from '@angular/core';
 import {BookingInformationComponent} from '../booking-information/booking-information.component';
 import {FlexCardComponent} from '../../../../shared/components/flex-card/flex-card.component';
 import {RouterLink} from '@angular/router';
-import {ScoutCenterService} from "../../service/scout-center.service";
-import {ScoutCenterInformation} from "../../model/scout-center.model";
+import {ScoutCenterService} from "../../../scout-center/scout-center.service";
+import {ScoutCenterInformation} from "../../../scout-center/scout-center.model";
 
 @Component({
   selector: 'app-booking-home',
