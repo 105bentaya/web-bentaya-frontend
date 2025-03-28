@@ -1,5 +1,3 @@
-$optionDefaultColours: #ED5565, #f89853, #2ECC71, #AC92EC;
-
 .options-container {
   display: flex;
   flex-direction: row;
@@ -31,17 +29,10 @@ $optionDefaultColours: #ED5565, #f89853, #2ECC71, #AC92EC;
       overflow: hidden;
       min-width: 60px;
       margin: 10px;
-      background: var(--optionBackground, var(--defaultBackground, #E6E9ED));
       background-size: auto 120%;
       background-position: center;
       cursor: pointer;
       transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
-
-      @for $i from 1 through length($optionDefaultColours) {
-        &:nth-child(#{$i}) {
-          --defaultBackground: #{nth($optionDefaultColours, $i)};
-        }
-      }
 
       &.active {
         flex-grow: 10000;
@@ -88,7 +79,6 @@ $optionDefaultColours: #ED5565, #f89853, #2ECC71, #AC92EC;
       }
 
       .shadow {
-        background-color: var(--defaultBackground);
         position: absolute;
         bottom: 0;
         left: 0;
@@ -114,7 +104,6 @@ $optionDefaultColours: #ED5565, #f89853, #2ECC71, #AC92EC;
           height: 40px;
           border-radius: 100%;
           background-color: white;
-          color: var(--defaultBackground);
         }
 
         .info {

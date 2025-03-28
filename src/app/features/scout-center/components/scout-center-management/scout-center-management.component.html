@@ -1,7 +1,7 @@
 <div class="container">
   <h1>Ajustes Centros Scout</h1>
   @if (!editing) {
-    <p-tabs [value]="0" scrollable>
+    <p-tabs [(value)]="selectedTab" scrollable>
       <p-tablist>
         <p-tab [value]="0">Ajustes Generales</p-tab>
         @for (center of scoutCenters; track center.scoutCenter.id) {
@@ -41,6 +41,13 @@
                       (Siempre es exclusivo)
                     }
                   </div>
+                </div>
+                <div class="col-6 col-sm-3 col-lg-2">
+                  <b>Color</b>
+                  <div>
+                    <div class="color-show" [ngStyle]="{'background-color': center.color}"></div>
+                  </div>
+
                 </div>
                 <div class="col">
                   <b>Icono</b>
@@ -349,7 +356,19 @@
             <label for="minExclusiveCapacity" class="required">Aforo mínimo para exclusividad</label>
           </p-float-label>
         </div>
-        <div class="col">
+        <div class="col col-lg-1">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              style="height: 42px;"
+              type="color"
+              id="color"
+              formControlName="color"
+            >
+            <label for="icon" class="required">Color</label>
+          </p-floatlabel>
+        </div>
+        <div class="col-12 col-lg">
           <p-floatlabel variant="on">
             <p-inputgroup>
               <input

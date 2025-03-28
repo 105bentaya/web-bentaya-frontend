@@ -1,5 +1,5 @@
 import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
-import {NgClass} from '@angular/common';
+import {NgClass, NgStyle} from '@angular/common';
 import {ScoutCenterInformation} from "../../../features/scout-center/scout-center.model";
 import {ScoutCenterService} from "../../../features/scout-center/scout-center.service";
 
@@ -7,7 +7,7 @@ import {ScoutCenterService} from "../../../features/scout-center/scout-center.se
   selector: 'app-flex-card',
   templateUrl: './flex-card.component.html',
   styleUrls: ['./flex-card.component.scss'],
-  imports: [NgClass]
+  imports: [NgClass, NgStyle]
 })
 export class FlexCardComponent {
 

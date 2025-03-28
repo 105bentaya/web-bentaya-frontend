@@ -8,6 +8,7 @@ export interface ScoutCenter { //todo repasar todos
   features: string[];
   price: number;
   icon: string;
+  color: string;
 }
 
 export interface ScoutCenterInformation {
@@ -22,6 +23,7 @@ export interface ScoutCenterInformation {
   photos: ScoutCenterFile[];
   mainPhoto?: ScoutCenterFile;
   icon: string;
+  color: string;
 }
 
 export interface ScoutCenterWithFiles {

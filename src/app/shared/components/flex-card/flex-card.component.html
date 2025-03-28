@@ -7,9 +7,9 @@
         [style.background-image]="'url(' + scoutCenterService.getPhotoUrl(option.mainPhoto?.uuid ?? '') + ')'"
         (click)="selectOption($index)"
       >
-        <div class="shadow"></div>
+        <div class="shadow" [ngStyle]="{'background-color': option.color}"></div>
         <div class="label">
-          <div class="icon">
+          <div class="icon" [ngStyle]="{'color': option.color}">
             <i [class]="option.icon"></i>
           </div>
           <div class="info">

@@ -22,7 +22,6 @@ export class BookingHomeComponent implements OnInit {
 
   private readonly scoutCenterService = inject(ScoutCenterService);
   protected selectedOption = 0;
-  protected colors = ["#ED5565", "#f89853", "#2ECC71", "#AC92EC"];
   protected scoutCenters!: ScoutCenterInformation[];
   protected maxDate!: Date;
 

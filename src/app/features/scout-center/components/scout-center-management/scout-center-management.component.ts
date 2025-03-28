@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {ScoutCenterService} from "../../scout-center.service";
 import {ScoutCenter, ScoutCenterFile, ScoutCenterWithFiles} from "../../scout-center.model";
 import {TabsModule} from "primeng/tabs";
-import {CurrencyPipe, NgClass} from "@angular/common";
+import {CurrencyPipe, NgClass, NgStyle} from "@angular/common";
 import {Button} from "primeng/button";
 import {FileUpload, FileUploadHandlerEvent} from "primeng/fileupload";
 import {maxFileUploadByteSize} from "../../../../shared/constant";
@@ -46,7 +46,8 @@ import {ScoutCenterSettingsComponent} from "../scout-center-settings/scout-cente
     FormTextAreaComponent,
     NgClass,
     SaveButtonsComponent,
-    ScoutCenterSettingsComponent
+    ScoutCenterSettingsComponent,
+    NgStyle
   ],
   templateUrl: './scout-center-management.component.html',
   styleUrl: './scout-center-management.component.scss'
@@ -68,6 +69,7 @@ export class ScoutCenterManagementComponent implements OnInit {
   protected showHelpDialog: boolean = false;
   protected editForm = new FormHelper();
   private formBuilder = inject(FormBuilder);
+  protected selectedTab = 1;
 
   ngOnInit() {
     this.scoutCenterService.getAllWithFiles().subscribe(result => this.scoutCenters = result);
@@ -156,6 +158,7 @@ export class ScoutCenterManagementComponent implements OnInit {
       maxCapacity: [center.maxCapacity, [Validators.required, Validators.min(0)]],
       minExclusiveCapacity: [center.minExclusiveCapacity, [Validators.required, Validators.min(0)]],
       icon: [center.icon, [Validators.required, Validators.maxLength(63)]],
+      color: [center.color, [Validators.required, Validators.maxLength(7)]],
       information: [center.information, [Validators.required, Validators.maxLength(1023)]],
       features: this.formBuilder.array(center.features.map(feature => ([
         feature, [Validators.required, Validators.maxLength(255)]
