@@ -22,7 +22,7 @@
                   <div>{{ center.place }}</div>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-4">
-                  <b>Precio por persona y día</b>
+                  <b>Aportación por persona y día</b>
                   <div>{{ center.price / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-4">
@@ -316,7 +316,7 @@
               formControlName="price"
               [min]="0"
             />
-            <label for="price" class="required">Precio por persona y día</label>
+            <label for="price" class="required">Aportación por persona y día</label>
           </p-float-label>
         </div>
         <div class="col-12 col-sm-6 col-lg-4">
