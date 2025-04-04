@@ -17,7 +17,6 @@ import {BookingStatusPipe} from '../../../scout-center/scout-center-status.pipe'
 import {RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
 import {FieldsetModule} from 'primeng/fieldset';
-import {BookingBetaAlertComponent} from "../booking-beta-alert/booking-beta-alert.component";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {
   TableIconButtonComponent
@@ -36,7 +35,6 @@ import {ScoutCenterService} from "../../../scout-center/scout-center.service";
   styleUrls: ['./booking-follow-up.component.scss'],
   providers: [DialogService, DynamicDialogService],
   imports: [
-    BookingBetaAlertComponent,
     DatePipe,
     FieldsetModule,
     DividerModule,

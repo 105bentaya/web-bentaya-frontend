@@ -27,7 +27,6 @@
       <a routerLink="/centros-scout/informacion">click aquí</a>. Se permiten reservas hasta el
       <b>{{ maxDate | date:"dd 'de' MMMM 'de' yyyy":undefined:'es' }}</b>, inclusive.
     </p>
-    <app-booking-beta-alert></app-booking-beta-alert>
     @if (bookingForm.form) {
       <p-steps class="steps-no-label" id="form-steps" [model]="steps" [activeIndex]="bookingForm.currentPage"></p-steps>
       <form [formGroup]="bookingForm.form" class="form-container">
