@@ -52,6 +52,11 @@ export class BookingService {
     return this.http.post<void>(`${this.bookingUrl}/document/${bookingId}`, formData);
   }
 
+  uploadBookingIncidencesFile(bookingId: number, file: File): Observable<void> {
+    const formData = new FormData();
+    formData.append("file", file);
+    return this.http.post<void>(`${this.bookingUrl}/document/incidences/${bookingId}`, formData);
+  }
 
   updateDocument(fileId: number, status: DocumentStatus): Observable<void> {
     const formData = new FormData();

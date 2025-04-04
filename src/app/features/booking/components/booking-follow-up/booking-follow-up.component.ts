@@ -98,7 +98,9 @@ export class BookingFollowUpComponent implements OnInit {
   }
 
   protected getFiles() {
-    return this.bookingService.getBookingDocuments(this.bookingId).subscribe(res => this.files = res);
+    if (this.booking.status === Status.RESERVED) {
+      this.bookingService.getBookingDocuments(this.bookingId).subscribe(res => this.files = res);
+    }
   }
 
   protected cancelReservation() {
@@ -146,6 +148,13 @@ export class BookingFollowUpComponent implements OnInit {
   }
 
   protected uploadIncidenceFile(event: FileUploadHandlerEvent) {
+    this.loading = true;
+    this.bookingService.uploadBookingIncidencesFile(this.bookingId, event.files[0])
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(() => {
+        this.alertService.sendBasicSuccessMessage("El registro de incidencias y estados se ha subido satisfactoriamente");
+        this.getBooking();
+      });
   }
 
   protected downloadRuleFile(centerId: number) {

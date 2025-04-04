@@ -178,7 +178,7 @@
         }
         @case ("OCCUPIED") {
           <p>
-            Su reserva y confirmada
+            Su reserva está totalmente confirmada
             @if (!bookingIsAlwaysExclusive(booking)) {
               <b>
                 {{ booking.exclusiveReservation ? 'sin' : 'con' }}
@@ -200,63 +200,73 @@
             contacto la puede consultar en el PDF con las normas haciendo click
             <a class="link cursor-pointer" (click)="downloadRuleFile(booking.scoutCenter.id)">aquí</a>.
           </p>
-          <p class="mb-1">
-            Una vez finalice su estancia, le pedimos que rellene y suba el
-            <b class="cursor-pointer text-decoration-underline" (click)="downloadIncidenceFile(booking.scoutCenter.id)"
-            >registro de incidencias y estados</b>.
-          </p>
-          <div class="d-flex justify-content-end mb-2">
-            <p-button
-              styleClass="border-2 py-1 px-2"
-              icon="fa-solid fa-download"
-              iconPos="right"
-              outlined
-              severity="info"
-              label="Registro de incidencias"
-              title="Descargar registro de incidencias y estados"
-              (onClick)="downloadAttendanceFile(booking.scoutCenter.id)"
-            ></p-button>
-          </div>
-          <p-fileupload
-            class="document-file-uploader"
-            [accept]="docAndPdfTypes"
-            [maxFileSize]="maxFileUploadByteSize"
-            (uploadHandler)="uploadIncidenceFile($event)"
-            [customUpload]="true"
-            invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
-            invalidFileSizeMessageDetail="el tamaño máximo es {0}."
-            invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
-            invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
-            invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
-            invalidFileLimitMessageDetail="el límite es de {0} archivos."
-            [fileLimit]="1"
-          >
-            <ng-template pTemplate="header" let-chooseCallback="chooseCallback">
-              <div class="d-flex gap-2 align-items-center w-100">
-                <div>
-                  <b>Registro de estados</b>
+          @if (booking.hasIncidencesFile) {
+            <hr>
+            <p>Ya ha subido el registro de incidencias y estados. ¡Muchas gracias!</p>
+            <p>
+              Si lo desea, puede volver a realizar una reserva desde nuestro
+              <a routerLink="/centros-scout/reserva">formulario</a>.
+            </p>
+          } @else {
+            <p class="mb-1">
+              Una vez finalice su estancia, le pedimos que rellene y suba el
+              <b class="cursor-pointer text-decoration-underline"
+                 (click)="downloadIncidenceFile(booking.scoutCenter.id)"
+              >registro de incidencias y estados</b>.
+            </p>
+            <div class="d-flex justify-content-end mb-2">
+              <p-button
+                styleClass="border-2 py-1 px-2"
+                icon="fa-solid fa-download"
+                iconPos="right"
+                outlined
+                severity="info"
+                label="Registro de incidencias"
+                title="Descargar registro de incidencias y estados"
+                (onClick)="downloadAttendanceFile(booking.scoutCenter.id)"
+              ></p-button>
+            </div>
+            <p-fileupload
+              class="document-file-uploader"
+              [accept]="docAndPdfTypes"
+              [maxFileSize]="maxFileUploadByteSize"
+              (uploadHandler)="uploadIncidenceFile($event)"
+              [customUpload]="true"
+              [auto]="true"
+              invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
+              invalidFileSizeMessageDetail="el tamaño máximo es {0}."
+              invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
+              invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
+              invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
+              invalidFileLimitMessageDetail="el límite es de {0} archivos."
+              [fileLimit]="1"
+            >
+              <ng-template pTemplate="header" let-chooseCallback="chooseCallback">
+                <div class="d-flex gap-2 align-items-center w-100">
+                  <div>
+                    <b>Registro de estados</b>
+                  </div>
+                  <p-button
+                    size="small"
+                    variant="outlined"
+                    styleClass="border-2 py-1"
+                    icon="fa-solid fa-upload"
+                    class="ms-auto"
+                    title="Subir Documento"
+                    label="Subir"
+                    (onClick)="chooseCallback()"
+                    [loading]="loading"
+                  ></p-button>
                 </div>
-                <p-button
-                  size="small"
-                  variant="outlined"
-                  styleClass="border-2 py-1"
-                  icon="fa-solid fa-upload"
-                  class="ms-auto"
-                  title="Subir Documento"
-                  label="Subir"
-                  (onClick)="chooseCallback()"
-                ></p-button>
-              </div>
-            </ng-template>
-            <ng-template pTemplate="content">
-              @if (!booking.incidencesFile) {
+              </ng-template>
+              <ng-template pTemplate="content">
                 <div class="p-2">
                   <div>Aún no ha subido el documento de incidencias y estados.</div>
                   <div>Puede subir el registro de estados usando el botón de subir, o arrastrando el archivo aquí.</div>
                 </div>
-              }
-            </ng-template>
-          </p-fileupload>
+              </ng-template>
+            </p-fileupload>
+          }
         }
         @case ("CANCELED") {
           <p>Ha cancelado la reserva por el siguiente motivo: {{ booking.statusObservations }}</p>
