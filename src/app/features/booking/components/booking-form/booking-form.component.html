@@ -94,11 +94,14 @@
                       id="cif"
                       type="text"
                       maxlength="255"
+                      pKeyFilter="alphanum"
                     >
                     <label class="required" for="cif">CIF de la entidad</label>
                   </p-floatlabel>
                   @if (bookingForm.isDirtyAndInvalid('cif')) {
-                    <small class="text-danger">Introduzca el CIF de la entidad</small>
+                    <small class="text-danger">Introduzca el CIF de la entidad (sólo letras y números)</small>
+                  } @else {
+                    <small class="opacity-75 ms-1">Emplear formato A12345678</small>
                   }
                 </div>
                 <div class="col-12">

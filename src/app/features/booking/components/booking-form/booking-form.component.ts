@@ -104,7 +104,7 @@ export class BookingFormComponent implements OnInit {
   private initializeForm(booking?: Booking) {
     this.bookingForm.createForm({
       groupName: [booking?.organizationName, Validators.required],
-      cif: [booking?.cif, Validators.required],
+      cif: [booking?.cif, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
       workDescription: [null, [Validators.required, Validators.maxLength(510)]],
       contactName: [booking?.contactName, Validators.required],
       relationship: [booking?.contactRelationship, Validators.required],
@@ -122,6 +122,7 @@ export class BookingFormComponent implements OnInit {
     ]);
     this.bookingForm.onLastPage = () => {
       this.booking = this.bookingForm.value;
+      this.booking.cif = this.booking.cif.toUpperCase();
       this.booking.startDate = this.centerSelectionComponent.startDate;
       this.booking.endDate = this.centerSelectionComponent.endDate;
       this.booking.packs = this.centerSelectionComponent.packs;
