@@ -1,0 +1,74 @@
+<form [formGroup]="helper.form" class="form-container" (ngSubmit)="submitForm()">
+  <div class="row row-cols-1 row-cols-sm-2">
+    <div class="d-flex flex-column">
+      <b>Acciones</b>
+      <div class="d-flex gap-2">
+        <p-button
+          size="small"
+          label="Descargar"
+          styleClass="border-2"
+          outlined
+          (onClick)="downloadDocument()"
+          [loading]="downloading"
+          [disabled]="deleteLoading"
+        ></p-button>
+        <p-button
+          size="small"
+          label="Ver"
+          severity="info"
+          styleClass="border-2"
+          outlined
+          (onClick)="openDocument()"
+          [disabled]="deleteLoading"
+        ></p-button>
+        <p-button
+          size="small"
+          label="Eliminar"
+          severity="danger"
+          styleClass="border-2"
+          outlined
+          (onClick)="deleteDocument()"
+          [loading]="deleteLoading"
+          [disabled]="downloading || loading"
+        ></p-button>
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <b>Estado</b>
+      <p-select-button
+        [options]="statuses"
+        formControlName="status"
+        [allowEmpty]="false"
+      ></p-select-button>
+    </div>
+    @if (acceptedSelected) {
+      <div class="d-flex flex-column">
+        <b [ngClass]="{'text-danger': helper.isDirtyAndInvalid('duration')}">Tipo de documento</b>
+        <p-select-button
+          class="w-fit"
+          [options]="durations"
+          formControlName="duration"
+          [allowEmpty]="false"
+        ></p-select-button>
+      </div>
+      @if (durationExpirable) {
+        <div class="d-flex flex-column">
+          <b [ngClass]="{'text-danger': helper.isDirtyAndInvalid('expirationDate')}">Fecha de caducidad</b>
+          <p-datePicker
+            formControlName="expirationDate"
+            appendTo="body"
+            styleClass="w-100"
+          ></p-datePicker>
+        </div>
+      }
+    }
+  </div>
+  <app-save-buttons
+    [showCancelButton]="true"
+    (onCancel)="ref.close()"
+    saveType="submit"
+    [saveLoading]="loading"
+    [cancelDisabled]="deleteLoading"
+    [saveDisabled]="deleteLoading"
+  ></app-save-buttons>
+</form>

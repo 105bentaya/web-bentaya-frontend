@@ -6,7 +6,12 @@ import {BookingForm} from "../model/booking-form.model";
 import {Booking} from "../model/booking.model";
 import {BookingDateForm} from "../model/booking-date-form.model";
 import {BookingDateAndStatus} from "../model/booking-date-and-status.model";
-import {BookingDocument, BookingDocumentType, DocumentStatus} from "../model/booking-document.model";
+import {
+  BookingDocument,
+  BookingDocumentForm,
+  BookingDocumentType,
+  DocumentStatus
+} from "../model/booking-document.model";
 import {OwnBookingForm} from "../model/own-booking-form.model";
 
 @Injectable({
@@ -30,6 +35,10 @@ export class BookingService {
   }
 
   //documents
+
+  getBookingDocumentActiveTypes(): Observable<BookingDocumentType[]> {
+    return this.http.get<BookingDocumentType[]>(`${this.bookingUrl}/document/active-types`);
+  }
 
   getBookingDocumentTypes(): Observable<BookingDocumentType[]> {
     return this.http.get<BookingDocumentType[]>(`${this.bookingUrl}/document/types`);
@@ -58,10 +67,8 @@ export class BookingService {
     return this.http.post<void>(`${this.bookingUrl}/document/incidences/${bookingId}`, formData);
   }
 
-  updateDocument(fileId: number, status: DocumentStatus): Observable<void> {
-    const formData = new FormData();
-    formData.append("status", status);
-    return this.http.put<void>(`${this.bookingUrl}/document/${fileId}`, formData);
+    updateDocument(fileId: number, status: BookingDocumentForm): Observable<BookingDocument> {
+    return this.http.put<BookingDocument>(`${this.bookingUrl}/document/${fileId}`, status);
   }
 
   deleteDocument(fileId: number): Observable<void> {

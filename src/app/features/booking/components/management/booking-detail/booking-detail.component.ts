@@ -1,30 +1,26 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
 import {Booking, bookingIsAlwaysExclusive} from "../../../model/booking.model";
-import {documents} from "../../../constant/scout-center.constant";
 import {Status} from "../../../constant/status.constant";
 import {AlertService} from "../../../../../shared/services/alert-service.service";
 import {DialogService} from "primeng/dynamicdialog";
 import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
 import {BookingStatusPipe} from "../../../../scout-center/scout-center-status.pipe";
-import {BookingDocument, DocumentStatus} from "../../../model/booking-document.model";
-import {ConfirmationService} from "primeng/api";
+import {BookingDocument, BookingDocumentType} from "../../../model/booking-document.model";
 import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {DocumentStatusPipe} from "../../../pipe/document-status.pipe";
-import {
-  TableIconButtonComponent
-} from "../../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DialogModule} from "primeng/dialog";
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 import {FileUtils} from "../../../../../shared/util/file.utils";
-import {ScoutCenterService} from "../../../../scout-center/scout-center.service";
 import {HourPipe} from "../../../../../shared/pipes/hour.pipe";
 import {Tag} from "primeng/tag";
-import {filter, Observable} from "rxjs";
+import {filter, finalize, Observable} from "rxjs";
 import {BookingStatusService} from "../../../service/booking-status.service";
 import {identity} from "lodash";
+import {TableModule} from "primeng/table";
+import {DocumentEditorComponent} from "../document-editor/document-editor.component";
 
 @Component({
   selector: 'app-booking-detail',
@@ -37,30 +33,29 @@ import {identity} from "lodash";
     BookingStatusPipe,
     DividerModule,
     DocumentStatusPipe,
-    TableIconButtonComponent,
     DialogModule,
     Button,
     HourPipe,
     Tag,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    TableModule
   ]
 })
 export class BookingDetailComponent implements OnInit {
 
   private readonly bookingService = inject(BookingService);
   private readonly bookingStatusService = inject(BookingStatusService);
-  private readonly scoutCenterService = inject(ScoutCenterService);
   private readonly alertService = inject(AlertService);
   private readonly dialogService = inject(DynamicDialogService);
-  private readonly confirmationService = inject(ConfirmationService);
 
   protected readonly bookingIsAlwaysExclusive = bookingIsAlwaysExclusive;
+  protected readonly Status = Status;
 
   @Input() public booking!: Booking;
+
+  protected types!: BookingDocumentType[];
   protected loading = false;
   protected files: BookingDocument[] = [];
-  protected readonly documents = documents;
-  protected readonly Status = Status;
   protected showDocuments = false;
   protected dialogVisible = false;
   protected showMoreData = !!localStorage.getItem("bd_show_more_data");
@@ -73,7 +68,10 @@ export class BookingDetailComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.getFiles(this.booking.id);
+    this.bookingService.getBookingDocumentTypes().subscribe(res => {
+      this.types = res;
+      this.getFiles(this.booking.id);
+    });
   }
 
   protected acceptBooking() {
@@ -144,65 +142,43 @@ export class BookingDetailComponent implements OnInit {
 
   private getFiles(id: number) {
     return this.bookingService.getBookingDocuments(id).subscribe(res => {
-      this.files = res;
+      this.files = res.sort((a, b) => a.typeId - b.typeId);
+      this.types.filter(type => type.active && !this.files.some(file => file.typeId === type.id))
+        .forEach(type => this.files.push(this.missingDocument(type.id)));
     });
+  }
+
+  private missingDocument(typeId: number): BookingDocument {
+    return {bookingId: 0, fileName: "", id: 0, status: "PENDING", typeId: typeId};
   }
 
   protected downloadFile(file: BookingDocument) {
-    // this.loading = true;
-    // this.bookingService.getPDF(file.id).subscribe(pdf => {
-    //   saveAs(pdf, file.fileName);
-    //   this.loading = false;
-    // });
-  }
-
-  protected showFile(file: BookingDocument) {
-    // this.loading = true;
-    // const newTab = window.open("", "_blank");
-    // this.bookingService.getPDF(file.id).subscribe(res => {
-    //   const url = window.URL.createObjectURL(res);
-    //   newTab?.location.assign(url);
-    //   this.loading = false;
-    // });
-  }
-
-  protected deleteFile(file: BookingDocument) {
-    this.confirmationService.confirm({
-      message: "¿Desea borrar este documento? Esta acción no se puede revertir.",
-      header: "Borrar documento",
-      accept: () => {
-        this.loading = true;
-        this.bookingService.deleteDocument(file.id).subscribe({
-          next: () => {
-            this.alertService.sendBasicSuccessMessage("Documento eliminado");
-            this.files.splice(this.files.indexOf(file), 1);
-            this.loading = false;
-          },
-          error: () => this.loading = false
-        });
-      }
-    });
-  }
-
-  protected updateFile(document: BookingDocument, status: DocumentStatus) {
     this.loading = true;
-    this.bookingService.updateDocument(document.id, status).subscribe({
-      next: () => {
-        this.alertService.sendBasicSuccessMessage("Documento actualizado");
-        document.status = status;
-        this.loading = false;
-      },
-      error: () => this.loading = false
-    });
-  }
-
-  protected downloadAttendanceFile(centerId: number) {
-    this.scoutCenterService.getAttendanceFile(centerId).subscribe(result => FileUtils.downloadFile(result));
+    const tab = FileUtils.openPdfTab();
+    this.bookingService.getPDF(file.id)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe({
+        next: pdf => FileUtils.openPdfFile(pdf, tab),
+        error: () => tab.close()
+      });
   }
 
   protected queryShowMoreData() {
     this.showMoreData = !this.showMoreData;
     if (this.showMoreData) localStorage.setItem("bd_show_more_data", "1");
     else localStorage.removeItem("bd_show_more_data");
+  }
+
+  protected getTypeName(id: number) {
+    return this.types.find(type => type.id === id)?.name;
+  }
+
+  protected openDocumentEditor(document: BookingDocument) {
+    const index = this.files.findIndex(doc => doc.id = document.id);
+    const header = `Documento - ${this.getTypeName(document.typeId)}`;
+    this.dialogService.openDialog(DocumentEditorComponent, header, "small", {document}).onClose.subscribe(result => {
+      if (result === 'deleted') this.files.splice(index, 1);
+      else if (result) this.files[index] = result;
+    });
   }
 }

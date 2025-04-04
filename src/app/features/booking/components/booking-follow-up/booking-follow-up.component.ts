@@ -86,7 +86,7 @@ export class BookingFollowUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.bookingService.getBookingDocumentTypes().subscribe(a => this.types = a);
+    this.bookingService.getBookingDocumentActiveTypes().subscribe(a => this.types = a);
     this.getBooking();
   }
 

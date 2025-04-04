@@ -164,57 +164,50 @@
       </div>
       <div class="mt-3">
         @if (showDocuments) {
-          @for (file of files; track $index) {
-            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 py-2 border-bottom">
-            <span>{{ file.fileName }} -
-              <b
-                class="rounded-1 p-1"
-                [class]="file.status | documentStatus:true"
-                [innerText]="file.status | documentStatus"
-              ></b>
-            </span>
-              <div class="d-flex gap-2">
-                <app-table-icon-button
-                  icon="pi pi-download"
-                  [disabled]="loading"
-                  (click)="downloadFile(file)"
-                  title="Descargar"
-                ></app-table-icon-button>
-                @if (file.fileName.endsWith('pdf')) {
-                  <app-table-icon-button
-                    icon="pi pi-eye"
-                    severity="info"
-                    [disabled]="loading"
-                    (click)="showFile(file)"
-                    title="Abrir"
-                  ></app-table-icon-button>
+          <p-table
+            [value]="files"
+            rowGroupMode="rowspan"
+            groupRowsBy="typeId"
+            customSort
+            class="fixed-table"
+            responsiveLayout="stack"
+            breakpoint="575px"
+          >
+            <ng-template pTemplate="body" let-document let-rowgroup="rowgroup" let-rowspan="rowspan">
+              <tr>
+                @if (rowgroup) {
+                  <td [attr.rowspan]="rowspan" class="title-row">
+                    <b>{{ getTypeName(document.typeId) }}</b>
+                  </td>
                 }
-                <app-table-icon-button
-                  icon="pi pi-trash"
-                  severity="danger"
-                  [disabled]="loading"
-                  (click)="deleteFile(file)"
-                  title="Borrar"
-                ></app-table-icon-button>
-                <app-table-icon-button
-                  icon="pi pi-check"
-                  severity="success"
-                  [disabled]="loading"
-                  (click)="updateFile(file, 'ACCEPTED')"
-                  title="Marcar como válido"
-                ></app-table-icon-button>
-                <app-table-icon-button
-                  icon="pi pi-times"
-                  severity="danger"
-                  [disabled]="loading"
-                  (click)="updateFile(file, 'REJECTED')"
-                  title="Marcar como inválido"
-                ></app-table-icon-button>
-              </div>
-            </div>
-          }
+                @if (document.id === 0) {
+                  <td colspan="3">
+                    <span>No hay documentos asociados a este concepto</span>
+                  </td>
+                } @else {
+                  <td class="border-bottom">
+                    <div class="me-auto overflow-ellipsis text-nowrap" [title]="document.fileName">
+                      <a class="cursor-pointer uncolored" (click)="downloadFile(document)">{{ document.fileName }}</a>
+                    </div>
+                    <div class="d-sm-none">
+                      <ng-container *ngTemplateOutlet="statusTag; context: {$implicit: document}"></ng-container>
+                    </div>
+                    <div class="d-sm-none ms-2">
+                      <ng-container *ngTemplateOutlet="documentButton; context: {$implicit: document}"></ng-container>
+                    </div>
+                  </td>
+                  <td class="d-none d-sm-table-cell text-center" style="width: 6rem;">
+                    <ng-container *ngTemplateOutlet="statusTag; context: {$implicit: document}"></ng-container>
+                  </td>
+                  <td class="d-none d-sm-table-cell text-end" style="width: 3rem;">
+                    <ng-container *ngTemplateOutlet="documentButton; context: {$implicit: document}"></ng-container>
+                  </td>
+                }
+              </tr>
+            </ng-template>
+          </p-table>
         } @else {
-          <p-tag severity="secondary" styleClass="rounded-3">
+          <p-tag severity="secondary" styleClass="rounded-3 mb-1">
             @if (files.length == 0) {
               No hay ningún documento asociado
             } @else if (files.length == 1) {
@@ -227,10 +220,9 @@
       </div>
     </div>
   </div>
-
 </div>
 <p-dialog
-  header="Documentos que nos tienen que entregar"
+  header="Documentación definida"
   [(visible)]="dialogVisible"
   [modal]="true"
   [draggable]="false"
@@ -238,18 +230,13 @@
   styleClass="basic-dialog"
 >
   <ul>
-    @for (document of documents; track $index) {
+    @for (document of types; track $index) {
       <li>
-        {{ document.name }}
-        @if (document.attendance) {
-          <a class="link cursor-pointer" (click)="downloadAttendanceFile(booking.scoutCenter.id)">(Puede descargarlo
-            aquí)</a>.
-        }
+        <b>{{ document.name }}</b>: {{ document.description }}
       </li>
     }
   </ul>
 </p-dialog>
-
 <ng-template #actionButton let-info>
   <p-button
     class="d-none d-sm-block"
@@ -270,5 +257,23 @@
     outlined
     [loading]="loading"
     (click)="info.action()"
+  ></p-button>
+</ng-template>
+<ng-template #statusTag let-document>
+  <p-tag
+    styleClass="rounded-3"
+    [value]="document.status | documentStatus"
+    [severity]="document.status | documentStatus:true"
+  ></p-tag>
+</ng-template>
+<ng-template #documentButton let-document>
+  <p-button
+    size="small"
+    variant="outlined"
+    styleClass="border-2 icon-button-x-small"
+    icon="fa-solid fa-bars"
+    title="Borrar"
+    [disabled]="loading"
+    (onClick)="openDocumentEditor(document)"
   ></p-button>
 </ng-template>
