@@ -6,6 +6,9 @@ import {OwnBookingFormComponent} from "../own-booking-form/own-booking-form.comp
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import {noop} from "rxjs";
+import {
+  GeneralAButtonComponent
+} from "../../../../../shared/components/buttons/general-a-button/general-a-button.component";
 
 @Component({
   selector: 'app-booking-management-menu',
@@ -15,7 +18,8 @@ import {noop} from "rxjs";
     Button,
     RouterLink,
     RouterLinkActive,
-    RouterOutlet
+    RouterOutlet,
+    GeneralAButtonComponent
   ],
   providers: [DialogService, DynamicDialogService]
 })
@@ -27,10 +31,22 @@ export class BookingManagementMenuComponent implements OnInit {
   private readonly router = inject(Router);
 
   protected readonly options = [
-    {label: "Pendientes", route: "pendientes", icon: 'pi pi-clock'},
+    {label: "Resumen", route: "pendientes", icon: 'pi pi-clock'},
     {label: "Calendario", route: "calendario", icon: 'pi pi-calendar'},
-    {label: "Lista", route: "lista", icon: 'pi pi-list'}
+    {label: "Todas", route: "lista", icon: 'pi pi-list'}
   ];
+
+  protected readonly isManager: boolean;
+  protected readonly title: string;
+
+  constructor() {
+    this.isManager = this.route.snapshot.data['isManager'];
+    this.title = this.isManager ? 'Gestor de Centros Scout' : 'Seguimiento de Reservas';
+    if (this.isManager) {
+      this.options[0].label = "Pendientes";
+      this.options[2].label = "Lista";
+    }
+  }
 
   ngOnInit(): void {
     if (this.router.url.endsWith("gestion")) this.router.navigate(["pendientes"], {

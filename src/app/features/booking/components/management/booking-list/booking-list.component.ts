@@ -1,5 +1,4 @@
 import {Component, inject, ViewChild} from '@angular/core';
-import {BookingService} from "../../../service/booking.service";
 import {bookingStatuses} from "../../../constant/status.constant";
 import {Booking} from "../../../model/booking.model";
 import {Table, TableModule} from "primeng/table";
@@ -16,6 +15,7 @@ import {castArray, pick} from "lodash";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MenuItem} from "primeng/api";
+import {BookingFetcherService} from "../../../service/booking-fetcher.service";
 
 @Component({
   selector: 'app-booking-list',
@@ -34,7 +34,7 @@ import {MenuItem} from "primeng/api";
 })
 export class BookingListComponent {
 
-  private readonly bookingService = inject(BookingService);
+  private readonly bookingService = inject(BookingFetcherService);
   private readonly bookingManagement = inject(BookingManagementService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -51,6 +51,7 @@ export class BookingListComponent {
   protected statusFilter: string[];
 
   @ViewChild("tab") private readonly table!: Table;
+  private readonly isManager: boolean;
 
   constructor() {
     const filterParams = this.route.snapshot.queryParams;
@@ -58,11 +59,13 @@ export class BookingListComponent {
     this.statusFilter = castArray(filterParams['statuses'] ?? []);
     this.bookingManagement.onUpdateBooking.pipe(takeUntilDestroyed()).subscribe(() => this.table._filter());
     this.bookingManagement.getScoutCenterDropdown().then(res => this.centers = res);
+
+    this.isManager = this.route.snapshot.parent?.data['isManager'];
   }
 
   protected loadBookingWithFilter(tableLazyLoadEvent: any) {
     const filter = FilterUtils.lazyEventToFilter(tableLazyLoadEvent, 'startDate');
-    this.bookingService.getAll(filter).subscribe({
+    this.bookingService.getAll(this.isManager, filter).subscribe({
       next: bookingPage => {
         this.bookings = bookingPage.data;
         this.totalRecords = bookingPage.count;
@@ -80,6 +83,11 @@ export class BookingListComponent {
     } else {
       this.table.filter(null, "filterDates", "custom");
     }
+  }
+
+  protected bookingRouterLink(id: number) {
+    const link = this.isManager ? 'gestion' : 'seguimiento';
+    return `/centros-scout/${link}/reserva/${id}`;
   }
 
   protected updateRoute() {

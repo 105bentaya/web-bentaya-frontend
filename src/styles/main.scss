@@ -313,3 +313,15 @@ $expand-button-diameter: 50px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.icon-button-x-small {
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+  border-radius: 0.5rem !important;
+}
+
+.document-file-uploader {
+  --p-fileupload-header-padding: 0.25rem 0.75rem;
+  --p-fileupload-content-padding: 0.25rem;
+  --p-fileupload-content-gap: 0;
+}

@@ -117,7 +117,7 @@ export class ScoutCenterManagementComponent implements OnInit {
   openRuleFile(centerId: number) {
     const tab = FileUtils.openPdfTab();
     return this.scoutCenterService.getRuleFile(centerId).subscribe(response => {
-      FileUtils.openPdfFile(response, tab!);
+      FileUtils.openPdfFile(response, tab);
     });
   }
 

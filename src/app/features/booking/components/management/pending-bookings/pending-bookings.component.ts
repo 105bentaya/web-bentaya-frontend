@@ -7,7 +7,6 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Panel} from "primeng/panel";
 import {DatePipe, LowerCasePipe, NgTemplateOutlet} from "@angular/common";
 import {TableModule} from "primeng/table";
-import {BookingService} from "../../../service/booking.service";
 import {PendingBookings} from "../../../model/pending-bookings.model";
 import {
   BasicLoadingInfoComponent
@@ -17,6 +16,7 @@ import {BookingManagementService} from "../../../service/booking-management.serv
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ContextMenu} from "primeng/contextmenu";
 import {Booking} from "../../../model/booking.model";
+import {BookingFetcherService} from "../../../service/booking-fetcher.service";
 
 @Component({
   selector: 'app-pending-bookings',
@@ -40,7 +40,7 @@ export class PendingBookingsComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly bookingService = inject(BookingService);
+  private readonly bookingService = inject(BookingFetcherService);
   private readonly bookingManagement = inject(BookingManagementService);
 
   protected centers!: MenuItem[];
@@ -59,8 +59,10 @@ export class PendingBookingsComponent implements OnInit {
     },
   ];
   protected selectedBooking: Booking | undefined;
+  private readonly isManager: boolean;
 
   constructor() {
+    this.isManager = this.route.snapshot.parent?.data['isManager'];
     this.scoutCenterFilter = castArray(this.route.snapshot.queryParams['scoutCenters'] ?? []).map(id => +id);
     this.bookingManagement.onUpdateBooking.pipe(takeUntilDestroyed()).subscribe(() => this.getBookings());
     this.bookingManagement.getScoutCenterDropdown().then(res => this.centers = res);
@@ -77,12 +79,17 @@ export class PendingBookingsComponent implements OnInit {
 
   private getBookings() {
     this.loading = true;
-    this.bookingService.getAllPending(omitBy({scoutCenters: this.scoutCenterFilter}, isNull))
+    this.bookingService.getAllPending(this.isManager, omitBy({scoutCenters: this.scoutCenterFilter}, isNull))
       .pipe(finalize(() => this.loading = false))
       .subscribe(result => this.pendingBookings = result);
   }
 
   protected updateLastRoute() {
     this.bookingManagement.updateLastRoute("pendientes", this.route.snapshot.queryParams);
+  }
+
+  protected bookingRouterLink(id: number) {
+    const link = this.isManager ? 'gestion' : 'seguimiento';
+    return `/centros-scout/${link}/reserva/${id}`;
   }
 }

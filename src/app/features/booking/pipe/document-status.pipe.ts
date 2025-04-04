@@ -6,10 +6,10 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class DocumentStatusPipe implements PipeTransform {
 
-  transform(value: string, style = false): string {
-    if (value == "PENDING") return style ? "bg-warning-subtle" : "Pendiente de revisión";
-    if (value == "ACCEPTED") return style ? "bg-success-subtle" : "Documento válido";
-    if (value == "REJECTED") return style ? "bg-danger-subtle" : "Documento inválido";
+  transform(value: string, style = false): any {
+    if (value == "PENDING") return style ? "warn" : "Pendiente";
+    if (value == "ACCEPTED") return style ? "success" : "Válido";
+    if (value == "REJECTED") return style ? "danger" : "Inválido";
     return value;
   }
 }

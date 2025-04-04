@@ -23,6 +23,7 @@ export interface Booking {
   price: number;
   minutes: number;
   billableDays: number;
+  incidencesFile?: string;
 }
 
 export interface BasicScoutCenter {

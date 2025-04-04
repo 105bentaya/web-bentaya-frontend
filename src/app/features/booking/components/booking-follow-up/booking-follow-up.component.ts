@@ -1,33 +1,36 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {BookingService} from "../../service/booking.service";
-import {Booking} from "../../model/booking.model";
-import {FileUpload, FileUploadHandlerEvent, FileUploadModule} from "primeng/fileupload";
-import {forkJoin} from "rxjs";
-import {BookingDocument} from "../../model/booking-document.model";
+import {Booking, bookingIsAlwaysExclusive} from "../../model/booking.model";
+import {FileUploadHandlerEvent, FileUploadModule} from "primeng/fileupload";
+import {BookingDocument, BookingDocumentType} from "../../model/booking-document.model";
 import {AlertService} from "../../../../shared/services/alert-service.service";
-import {saveAs} from "file-saver";
-import {documents} from "../../constant/scout-center.constant";
 import {Status} from "../../constant/status.constant";
 import {BookingStatusUpdateComponent} from "../management/booking-status-update/booking-status-update.component";
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DialogService} from "primeng/dynamicdialog";
 import {ConfirmationService} from "primeng/api";
-import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";
-import {DocumentStatusPipe} from '../../pipe/document-status.pipe';
+import {CurrencyPipe, DatePipe} from "@angular/common";
 import {BookingStatusPipe} from '../../../scout-center/scout-center-status.pipe';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
 import {FieldsetModule} from 'primeng/fieldset';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
-import {
-  TableIconButtonComponent
-} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {Button} from "primeng/button";
-import {confirmDocumentsAgainMessage, confirmDocumentsMessage} from "../../constant/confirm-messages.constants";
-import {TabsModule} from "primeng/tabs";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {maxFileUploadByteSize} from "../../../../shared/constant";
-import {docTypes, FileUtils} from "../../../../shared/util/file.utils";
+import {docAndPdfTypes, FileUtils} from "../../../../shared/util/file.utils";
 import {ScoutCenterService} from "../../../scout-center/scout-center.service";
+import {BookingFetcherService} from "../../service/booking-fetcher.service";
+import {
+  GeneralAButtonComponent
+} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
+import {BookingManagementService} from "../../service/booking-management.service";
+import {Tag} from "primeng/tag";
+import {Dialog} from "primeng/dialog";
+import {DocumentFileUploaderComponent} from "../document-file-uploader/document-file-uploader.component";
+import {cancelBookingMessage, confirmDocumentsMessage} from "../../constant/confirm-messages.constants";
+import {BookingStatusService} from "../../service/booking-status.service";
+import {filter, finalize} from "rxjs";
+import {identity} from "lodash";
 
 @Component({
   selector: 'app-booking-follow-up',
@@ -40,153 +43,130 @@ import {ScoutCenterService} from "../../../scout-center/scout-center.service";
     DividerModule,
     CurrencyPipe,
     BookingStatusPipe,
-    NgTemplateOutlet,
     FileUploadModule,
-    DocumentStatusPipe,
-    TableIconButtonComponent,
     BasicLoadingInfoComponent,
     RouterLink,
     Button,
-    TabsModule
+    GeneralAButtonComponent,
+    Tag,
+    Dialog,
+    DocumentFileUploaderComponent
   ]
 })
 export class BookingFollowUpComponent implements OnInit {
 
   private readonly bookingService = inject(BookingService);
+  private readonly bookingStatusService = inject(BookingStatusService);
+  private readonly bookingFetcherService = inject(BookingFetcherService);
+  private readonly bookingManagement = inject(BookingManagementService);
   private readonly alertService = inject(AlertService);
   private readonly dialogService = inject(DynamicDialogService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly scoutCenterService = inject(ScoutCenterService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
+  protected readonly bookingIsAlwaysExclusive = bookingIsAlwaysExclusive;
+  protected readonly Status = Status;
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
-  protected readonly docTypes = docTypes;
+  protected readonly docAndPdfTypes = docAndPdfTypes;
 
-  @ViewChild('uploader') private readonly uploader!: FileUpload;
-  @ViewChild('incidentsUploader') private readonly incidentUploader!: FileUpload;
-  protected bookings!: Booking[];
-  protected selectedBooking!: Booking;
-  protected readonly documents = documents;
-  protected readonly info: any; //todo
+  protected showMoreData = false;
+  protected showHelpDialog: boolean = false;
+
+  protected bookingId: number;
+  protected booking!: Booking;
   protected files: BookingDocument[] = [];
+  protected types: BookingDocumentType[] = [];
+
   protected loading = false;
-  private ref!: DynamicDialogRef;
+
+  constructor() {
+    this.bookingId = this.route.snapshot.params['bookingId'];
+  }
 
   ngOnInit(): void {
-    this.bookingService.getAllByCurrentUser().subscribe(data => {
-      this.bookings = data;
-      this.bookings.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
-      this.selectedBooking = this.bookings[0];
-      if (this.bookings.length > 0) this.getFiles(this.bookings[0].id);
+    this.bookingService.getBookingDocumentTypes().subscribe(a => this.types = a);
+    this.getBooking();
+  }
+
+  private getBooking(): void {
+    this.bookingFetcherService.getById(this.bookingId).subscribe(data => {
+      this.booking = data;
+      this.getFiles();
     });
   }
 
-  protected onTabChange(booking: Booking) {
-    if (this.selectedBooking.id === booking.id) return;
-    this.selectedBooking = booking;
-    this.getFiles(booking.id);
+  protected getFiles() {
+    return this.bookingService.getBookingDocuments(this.bookingId).subscribe(res => this.files = res);
   }
 
-  protected uploadFiles(event: FileUploadHandlerEvent, booking: Booking) {
-    const fileUploadPetitions = event.files.map(file => this.bookingService.uploadBookingDocument(booking.id, file));
-    forkJoin(fileUploadPetitions).subscribe({
-      complete: () => {
-        this.alertService.sendBasicSuccessMessage("Documentos subidos correctamente");
-        this.getFiles(booking.id);
-      },
-      error: () => {
-        this.getFiles(booking.id);
-      }
-    });
+  protected cancelReservation() {
+    const dialogData: any = {
+      textAreaLabel: "Motivo de la cancelación",
+      textRequired: true
+    };
+
+    if (this.booking.status == Status.OCCUPIED) {
+      dialogData["message"] = cancelBookingMessage;
+    }
+
+    this.dialogService.openDialog(BookingStatusUpdateComponent, "Cancelar reserva", "small", dialogData)
+      .onClose
+      .pipe(filter(identity))
+      .subscribe(({observations}) => this.cancelBooking(observations));
   }
 
-  private getFiles(id: number) {
-    return this.bookingService.getBookingDocuments(id).subscribe(res => {
-      this.files = res;
-      this.uploader?.clear();
-    });
-  }
-
-  protected downloadFile(file: BookingDocument) {
+  private cancelBooking(observations: string) {
     this.loading = true;
-    this.bookingService.getPDF(file.id).subscribe(pdf => {
-      saveAs(pdf, file.fileName);
-      this.loading = false;
-    });
+    this.bookingStatusService.cancelBooking(this.booking.id, {observations})
+      .subscribe({
+        next: () => this.getBooking(),
+        error: () => this.loading = false
+      });
   }
 
-  protected showFile(file: BookingDocument) {
-    this.loading = true;
-    const newTab = window.open("", "_blank");
-    this.bookingService.getPDF(file.id).subscribe(res => {
-      const url = window.URL.createObjectURL(res);
-      newTab?.location.assign(url);
-      this.loading = false;
-    });
-  }
-
-  protected deleteFile(file: BookingDocument) {
-    this.confirmationService.confirm({
-      message: "¿Desea borrar este documento? Esta acción no se puede revertir.",
-      header: "Borrar documento",
-      accept: () => {
-        this.loading = true;
-        this.bookingService.deleteDocument(file.id).subscribe({
-          next: () => {
-            this.alertService.sendBasicSuccessMessage("Documento eliminado");
-            this.files.splice(this.files.indexOf(file), 1);
-            this.loading = false;
-          },
-          error: () => this.loading = false
-        });
-      }
-    });
-  }
-
-  protected cancelReservation(booking: Booking) {
-    this.ref = this.dialogService.openDialog(BookingStatusUpdateComponent, "Cancelar reserva", "small", {
-      floatLabel: "Motivo de la cancelación",
-      required: true,
-      message: booking.status == "OCCUPIED" ?
-        "Comente el motivo de la cancelación, indicando claramente si es por una causa de fuerza mayor o está" +
-        "cancelando de forma voluntaria. Según esto valorarémos si le devolvemos el importe íntegro o solo una parte." :
-        ""
-    });
-    this.ref.onClose.subscribe(result => {
-      if (result) this.updateBookingStatus(Status.CANCELED, result.comment, booking);
-    });
-  }
-
-  private updateBookingStatus(newStatus: Status, observations: string, booking: Booking) {
-    this.loading = true;
-    // this.bookingService.updateStatusByUser({id: booking.id, newStatus, observations}).subscribe({
-    //   next: result => {
-    //     const index = this.bookings.findIndex(book => book.id === result.id);
-    //     this.bookings[index].status = result.status;
-    //     this.bookings[index].statusObservations = result.statusObservations;
-    //     this.bookings[index].userConfirmedDocuments = result.userConfirmedDocuments;
-    //     this.loading = false;
-    //     this.alertService.sendBasicSuccessMessage("Reserva actualizada con éxito");
-    //   }, error: () => this.loading = false
-    // });
-  }
-
-  protected confirmDocuments(booking: Booking) {
+  protected askFormConfirmDocuments() {
     this.confirmationService.confirm({
       header: "Confirmar",
-      message: booking.userConfirmedDocuments ? confirmDocumentsAgainMessage : confirmDocumentsMessage,
-      accept: () => this.updateBookingStatus(Status.RESERVED, "", booking)
+      message: confirmDocumentsMessage,
+      accept: () => this.confirmDocuments()
     });
   }
 
-  downloadRuleFile(centerId: number) {
+  private confirmDocuments() {
+    this.loading = true;
+    this.bookingStatusService.confirmDocuments(this.bookingId)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(() => this.alertService.sendBasicSuccessMessage("Se ha mandado el aviso correctamente"));
+  }
+
+  protected goBack() {
+    this.router.navigate([`/centros-scout/seguimiento/${this.bookingManagement.getLastRoute()}`], {queryParams: this.bookingManagement.getLastParams()});
+  }
+
+  protected uploadIncidenceFile(event: FileUploadHandlerEvent) {
+  }
+
+  protected downloadRuleFile(centerId: number) {
     this.scoutCenterService.getRuleFile(centerId).subscribe(result => FileUtils.downloadFile(result));
   }
 
-  downloadIncidencesFile(centerId: number) {
+  protected downloadIncidenceFile(centerId: number) {
     this.scoutCenterService.getIncidenceFile(centerId).subscribe(result => FileUtils.downloadFile(result));
   }
 
-  downloadAttendanceFile(centerId: number) {
+  protected downloadAttendanceFile(centerId: number) {
     this.scoutCenterService.getAttendanceFile(centerId).subscribe(result => FileUtils.downloadFile(result));
+  }
+
+  protected showBookingActions() {
+    return this.booking.status != Status.REJECTED &&
+      this.booking.status != Status.CANCELED &&
+      new Date(this.booking.startDate) > new Date();
+  }
+
+  protected getFilesByType(type: BookingDocumentType) {
+    return this.files.filter(file => file.typeId === type.id);
   }
 }

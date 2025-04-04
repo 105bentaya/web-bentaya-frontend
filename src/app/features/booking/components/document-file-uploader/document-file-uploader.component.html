@@ -1,0 +1,77 @@
+<p-fileupload
+  #uploader
+  class="document-file-uploader"
+  styleClass="h-100"
+  [multiple]="true"
+  accept=".pdf"
+  [maxFileSize]="maxFileUploadByteSize"
+  (uploadHandler)="uploadFiles($event)"
+  [customUpload]="true"
+  invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
+  invalidFileSizeMessageDetail="el tamaño máximo es {0}."
+  invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
+  invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
+  invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
+  invalidFileLimitMessageDetail="el límite es de {0} archivos."
+  [auto]="true"
+>
+  <ng-template pTemplate="header" let-chooseCallback="chooseCallback">
+    <div class="d-flex gap-2 align-items-center w-100">
+      <div>
+        <b>{{ type.name }}</b>
+        <i class="fa-regular fa-circle-question fs-5 align-middle ms-1 cursor-pointer"
+           [pTooltip]="type.description"
+           [autoHide]="false"
+           (click)="openHelpPanel.emit()"
+        ></i>
+      </div>
+      <p-button
+        size="small"
+        variant="outlined"
+        styleClass="border-2 icon-button-x-small"
+        icon="fa-solid fa-upload"
+        class="ms-auto"
+        title="Subir Documento"
+        (onClick)="chooseCallback()"
+      ></p-button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="content">
+    @if (files.length === 0) {
+      <div class="p-2">
+        <div>Aún no ha subido archivos.</div>
+        <div>Puede subir un documento usando el botón de subir, o arrastrando un archivo aquí.</div>
+      </div>
+    } @else {
+      <div class="file-list d-flex flex-column">
+        @for (file of files; track $index) {
+          <div class="file-item">
+            <div class="d-flex justify-content-end gap-2 align-items-center">
+              <div class="me-auto overflow-ellipsis text-nowrap" [title]="file.fileName">
+                <a class="cursor-pointer uncolored" (click)="downloadFile(file)">{{ file.fileName }}</a>
+              </div>
+              <p-tag
+                styleClass="rounded-3"
+                [value]="file.status | documentStatus"
+                [severity]="file.status | documentStatus:true"
+              ></p-tag>
+              @if (documentCanBeDeleted(file)) {
+                <p-button
+                  size="small"
+                  variant="outlined"
+                  styleClass="border-2 icon-button-x-small"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  title="Borrar"
+                  [disabled]="loading"
+                  (click)="deleteFile(file)"
+                ></p-button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </ng-template>
+  <ng-template #file></ng-template>
+</p-fileupload>

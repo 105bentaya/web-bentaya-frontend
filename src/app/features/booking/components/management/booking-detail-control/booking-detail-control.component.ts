@@ -4,7 +4,6 @@ import {
 } from "../../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.component";
-import {BookingService} from "../../../service/booking.service";
 import {Booking} from "../../../model/booking.model";
 import {BookingCalendarInfo} from "../../../model/booking-calendar-info.model";
 import {BookingDetailComponent} from "../booking-detail/booking-detail.component";
@@ -16,6 +15,7 @@ import {BookingManagementService} from "../../../service/booking-management.serv
 import {ToggleButton} from "primeng/togglebutton";
 import {Status} from "../../../constant/status.constant";
 import {FormsModule} from "@angular/forms";
+import {BookingFetcherService} from "../../../service/booking-fetcher.service";
 
 @Component({
   selector: 'app-booking-detail-control',
@@ -35,7 +35,7 @@ export class BookingDetailControlComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly bookingService = inject(BookingService);
+  private readonly bookingService = inject(BookingFetcherService);
   protected readonly bookingManagement = inject(BookingManagementService);
 
   protected id!: number;
@@ -59,7 +59,7 @@ export class BookingDetailControlComponent implements OnInit {
   }
 
   private getDateRanges(centerId: number) {
-    this.bookingService.getCenterBookingDates({scoutCenters: centerId}).subscribe(result => {
+    this.bookingService.getAllForCalendar({scoutCenters: centerId}).subscribe(result => {
       this.allDateRanges = result;
       this.filterDateRanges();
     });

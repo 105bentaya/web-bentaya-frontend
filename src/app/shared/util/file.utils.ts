@@ -26,7 +26,7 @@ export class FileUtils {
   }
 
   public static openPdfTab() {
-    return window.open("", "_blank");
+    return window.open("", "_blank")!;
   }
 
   public static openPdfFile(response: HttpResponse<Blob>, tab: Window) {
@@ -48,4 +48,5 @@ export class FileUtils {
 
 
 export const docTypes = ".docx,.doc,.dot,.dotx,.odt,.rtf";
+export const docAndPdfTypes = `${docTypes},.pdf`;
 export const imageTypes = ".webp,.jpg,.png,.svg";

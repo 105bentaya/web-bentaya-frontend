@@ -8,7 +8,6 @@ import {DialogService} from "primeng/dynamicdialog";
 import {BookingStatusUpdateComponent} from "../booking-status-update/booking-status-update.component";
 import {BookingStatusPipe} from "../../../../scout-center/scout-center-status.pipe";
 import {BookingDocument, DocumentStatus} from "../../../model/booking-document.model";
-import {saveAs} from "file-saver";
 import {ConfirmationService} from "primeng/api";
 import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";
@@ -150,21 +149,21 @@ export class BookingDetailComponent implements OnInit {
   }
 
   protected downloadFile(file: BookingDocument) {
-    this.loading = true;
-    this.bookingService.getPDF(file.id).subscribe(pdf => {
-      saveAs(pdf, file.fileName);
-      this.loading = false;
-    });
+    // this.loading = true;
+    // this.bookingService.getPDF(file.id).subscribe(pdf => {
+    //   saveAs(pdf, file.fileName);
+    //   this.loading = false;
+    // });
   }
 
   protected showFile(file: BookingDocument) {
-    this.loading = true;
-    const newTab = window.open("", "_blank");
-    this.bookingService.getPDF(file.id).subscribe(res => {
-      const url = window.URL.createObjectURL(res);
-      newTab?.location.assign(url);
-      this.loading = false;
-    });
+    // this.loading = true;
+    // const newTab = window.open("", "_blank");
+    // this.bookingService.getPDF(file.id).subscribe(res => {
+    //   const url = window.URL.createObjectURL(res);
+    //   newTab?.location.assign(url);
+    //   this.loading = false;
+    // });
   }
 
   protected deleteFile(file: BookingDocument) {

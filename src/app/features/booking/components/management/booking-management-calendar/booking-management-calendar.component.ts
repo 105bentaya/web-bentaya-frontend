@@ -1,5 +1,4 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {BookingService} from "../../../service/booking.service";
 import {BookingCalendarInfo} from "../../../model/booking-calendar-info.model";
 import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.component";
 import {MultiSelect} from "primeng/multiselect";
@@ -13,6 +12,7 @@ import {MenuItem, PrimeTemplate} from "primeng/api";
 import {BookingStatusPipe} from "../../../../scout-center/scout-center-status.pipe";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {BookingFetcherService} from "../../../service/booking-fetcher.service";
 
 @Component({
   selector: 'app-booking-management-calendar',
@@ -28,7 +28,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 })
 export class BookingManagementCalendarComponent implements OnInit {
 
-  private readonly bookingService = inject(BookingService);
+  private readonly bookingService = inject(BookingFetcherService);
   private readonly bookingManagement = inject(BookingManagementService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -42,6 +42,7 @@ export class BookingManagementCalendarComponent implements OnInit {
 
   protected dateRanges: BookingCalendarInfo[] = [];
   protected loading: boolean = false;
+  private readonly isManager: boolean;
 
 
   constructor() {
@@ -50,6 +51,8 @@ export class BookingManagementCalendarComponent implements OnInit {
     this.statusFilter = castArray(filterParams['statuses'] ?? []);
     this.bookingManagement.onUpdateBooking.pipe(takeUntilDestroyed()).subscribe(() => this.getBookingDates());
     this.bookingManagement.getScoutCenterDropdown().then(res => this.centers = res);
+
+    this.isManager = this.route.snapshot.parent?.data['isManager'];
   }
 
   ngOnInit() {
@@ -58,7 +61,7 @@ export class BookingManagementCalendarComponent implements OnInit {
 
   protected getBookingDates() {
     this.loading = true;
-    this.bookingService.getCenterBookingDates(this.createFilter())
+    this.bookingService.getAllForCalendar(this.createFilter(), this.isManager)
       .pipe(finalize(() => this.loading = false))
       .subscribe(result => this.dateRanges = result);
   }
@@ -73,6 +76,7 @@ export class BookingManagementCalendarComponent implements OnInit {
 
   protected navigateToDetail(id: number) {
     this.bookingManagement.updateLastRoute("calendario", this.route.snapshot.queryParams);
-    this.router.navigateByUrl(`/centros-scout/gestion/reserva/${id}`);
+    const link = this.isManager ? 'gestion' : 'seguimiento';
+    this.router.navigateByUrl(`/centros-scout/${link}/reserva/${id}`);
   }
 }

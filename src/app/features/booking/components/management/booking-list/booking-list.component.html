@@ -95,7 +95,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-booking>
-    <tr style="outline: none;" pSelectableRow routerLink="/centros-scout/gestion/reserva/{{booking.id}}" (click)="updateRoute()">
+    <tr style="outline: none;" pSelectableRow [routerLink]="bookingRouterLink(booking.id)" (click)="updateRoute()">
       <td class="text-center">
         {{ booking.id }}
       </td>

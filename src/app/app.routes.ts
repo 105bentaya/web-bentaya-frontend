@@ -271,6 +271,31 @@ const Booking: Route[] = [
   },
   {
     path: "seguimiento",
+    loadComponent: () => import('./features/booking/components/management/booking-management-menu/booking-management-menu.component').then(c => c.BookingManagementMenuComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUT_CENTER_REQUESTER], isManager: false},
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'pendientes'
+      },
+      {
+        path: 'pendientes',
+        component: PendingBookingsComponent
+      },
+      {
+        path: 'calendario',
+        component: BookingManagementCalendarComponent
+      },
+      {
+        path: 'lista',
+        component: BookingListComponent
+      }
+    ]
+  },
+  {
+    path: "seguimiento/reserva/:bookingId",
     loadComponent: () => import('./features/booking/components/booking-follow-up/booking-follow-up.component').then(c => c.BookingFollowUpComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.SCOUT_CENTER_REQUESTER]}
@@ -279,7 +304,7 @@ const Booking: Route[] = [
     path: "gestion",
     loadComponent: () => import('./features/booking/components/management/booking-management-menu/booking-management-menu.component').then(c => c.BookingManagementMenuComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SCOUT_CENTER_MANAGER]},
+    data: {roles: [UserRole.SCOUT_CENTER_MANAGER], isManager: true},
     children: [
       {
         path: '',

@@ -21,7 +21,6 @@ import {FloatLabelModule} from "primeng/floatlabel";
 import {
   CheckboxContainerComponent
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
-import {BookingBetaAlertComponent} from "../booking-beta-alert/booking-beta-alert.component";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {
   BookingFormCenterSelectionComponent
@@ -33,13 +32,13 @@ import {
 } from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 import {UserRole} from "../../../users/models/role.model";
 import {BookingDateService} from "../../service/booking-date.service";
+import {BookingFetcherService} from "../../service/booking-fetcher.service";
 
 @Component({
   selector: 'app-booking-form',
   templateUrl: './booking-form.component.html',
   styleUrls: ['./booking-form.component.scss'],
   imports: [
-    BookingBetaAlertComponent,
     RouterLink,
     StepsModule,
     ReactiveFormsModule,
@@ -60,6 +59,7 @@ import {BookingDateService} from "../../service/booking-date.service";
 export class BookingFormComponent implements OnInit {
 
   private readonly bookingService = inject(BookingService);
+  private readonly bookingFetcherService = inject(BookingFetcherService);
   private readonly alertService = inject(AlertService);
   private readonly authService = inject(AuthService);
   private readonly loggedUserData = inject(LoggedUserDataService);
@@ -92,7 +92,7 @@ export class BookingFormComponent implements OnInit {
       this.currentUser = this.loggedUserData.getUsername();
     }
     if (this.loggedUserData.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) {
-      this.bookingService.getLatestByCurrentUser().subscribe({
+      this.bookingFetcherService.getLatestByCurrentUser().subscribe({
         next: res => this.initializeForm(res),
         error: () => this.initializeForm()
       });

@@ -1,16 +1,28 @@
 <div class="container-fluid container-xl">
   <div class="d-flex align-items-start flex-wrap gap-2 mb-3">
-    <h1 class="mb-0 me-3">Gestor de Centros Scout</h1>
+    <h1 class="mb-0 me-3">{{title}}</h1>
     <div class="d-flex flex-row flex-wrap justify-content-end gap-2 ms-auto">
-      <div>
-        <p-button
-          class="float-end"
-          icon="pi pi-plus"
-          label="Añadir"
-          title="Añadir Reserva"
-          (click)="openOwnBookingDialog()"
-        ></p-button>
-      </div>
+      @if (isManager) {
+        <div>
+          <p-button
+            class="float-end"
+            icon="pi pi-plus"
+            label="Añadir"
+            title="Añadir Reserva"
+            (click)="openOwnBookingDialog()"
+          ></p-button>
+        </div>
+      } @else {
+        <div>
+          <app-general-a-button
+            routerLink="/centros-scout/reserva"
+            label="Nueva"
+            title="Realizar nueva Reserva"
+            icon="pi pi-plus"
+            variant="filled"
+          ></app-general-a-button>
+        </div>
+      }
       <div class="a-container">
         @for (opt of options; track $index) {
           <a [routerLink]="opt?.route" [title]="opt.label" routerLinkActive="active" queryParamsHandling="preserve">

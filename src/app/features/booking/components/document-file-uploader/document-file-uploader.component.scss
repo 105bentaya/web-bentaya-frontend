@@ -1,0 +1,17 @@
+.file-list {
+  .file-item {
+    border-bottom: solid 1px var(--p-surface-200);
+
+    &:nth-child(even) {
+      background-color: var(--p-surface-50);
+    }
+
+    &:last-child {
+      border: none;
+    }
+
+    > div {
+      padding: 0.5rem;
+    }
+  }
+}

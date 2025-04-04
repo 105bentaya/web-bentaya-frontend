@@ -60,7 +60,7 @@
             [pContextMenuRow]="booking"
             [pContextMenuRowIndex]="1"
             (click)="updateLastRoute()"
-            routerLink="/centros-scout/gestion/reserva/{{booking.id}}"
+            [routerLink]="bookingRouterLink(booking.id)"
           >
             <td class="text-center" style="width: 3rem; position: relative;">
               {{ booking.id }}
