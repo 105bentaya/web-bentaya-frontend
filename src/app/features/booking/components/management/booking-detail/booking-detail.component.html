@@ -165,7 +165,7 @@
       <div class="mt-3">
         @if (showDocuments) {
           <p-table
-            [value]="files"
+            [value]="tableFiles"
             rowGroupMode="rowspan"
             groupRowsBy="typeId"
             customSort
@@ -178,6 +178,11 @@
                 @if (rowgroup) {
                   <td [attr.rowspan]="rowspan" class="title-row">
                     <b>{{ getTypeName(document.typeId) }}</b>
+                    <i class="fa-regular fa-circle-question fs-5 align-middle ms-1 cursor-pointer"
+                       [pTooltip]="getTypeDescription(document.typeId)"
+                       [autoHide]="false"
+                       (click)="dialogVisible = true"
+                    ></i>
                   </td>
                 }
                 @if (document.id === 0) {
@@ -231,9 +236,12 @@
 >
   <ul>
     @for (document of types; track $index) {
-      <li>
-        <b>{{ document.name }}</b>: {{ document.description }}
-      </li>
+      @if (document.active) {
+        <li>
+          <b>{{ document.name }}</b>:
+          {{ document.description }}
+        </li>
+      }
     }
   </ul>
 </p-dialog>

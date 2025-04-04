@@ -18,9 +18,10 @@ import {HourPipe} from "../../../../../shared/pipes/hour.pipe";
 import {Tag} from "primeng/tag";
 import {filter, finalize, Observable} from "rxjs";
 import {BookingStatusService} from "../../../service/booking-status.service";
-import {identity} from "lodash";
+import {cloneDeep, identity} from "lodash";
 import {TableModule} from "primeng/table";
 import {DocumentEditorComponent} from "../document-editor/document-editor.component";
+import {Tooltip} from "primeng/tooltip";
 
 @Component({
   selector: 'app-booking-detail',
@@ -38,7 +39,8 @@ import {DocumentEditorComponent} from "../document-editor/document-editor.compon
     HourPipe,
     Tag,
     NgTemplateOutlet,
-    TableModule
+    TableModule,
+    Tooltip
   ]
 })
 export class BookingDetailComponent implements OnInit {
@@ -56,6 +58,7 @@ export class BookingDetailComponent implements OnInit {
   protected types!: BookingDocumentType[];
   protected loading = false;
   protected files: BookingDocument[] = [];
+  protected tableFiles: BookingDocument[] = [];
   protected showDocuments = false;
   protected dialogVisible = false;
   protected showMoreData = !!localStorage.getItem("bd_show_more_data");
@@ -153,9 +156,14 @@ export class BookingDetailComponent implements OnInit {
   private getFiles(id: number) {
     return this.bookingService.getBookingDocuments(id).subscribe(res => {
       this.files = res.sort((a, b) => a.typeId - b.typeId);
-      this.types.filter(type => type.active && !this.files.some(file => file.typeId === type.id))
-        .forEach(type => this.files.push(this.missingDocument(type.id)));
+      this.generateTableFiles();
     });
+  }
+
+  private generateTableFiles(): void {
+    this.tableFiles = cloneDeep(this.files);
+    this.types.filter(type => type.active && !this.tableFiles.some(file => file.typeId === type.id))
+      .forEach(type => this.tableFiles.push(this.missingDocument(type.id)));
   }
 
   private missingDocument(typeId: number): BookingDocument {
@@ -179,16 +187,26 @@ export class BookingDetailComponent implements OnInit {
     else localStorage.removeItem("bd_show_more_data");
   }
 
+  protected openDocumentEditor(document: BookingDocument) {
+    const index = this.files.findIndex(doc => doc.id === document.id);
+    const header = `Documento - ${this.getTypeName(document.typeId)}`;
+    this.dialogService.openDialog(DocumentEditorComponent, header, "small", {document}).onClose.subscribe(result => {
+      if (result === 'deleted') {
+        this.files.splice(index, 1);
+        this.generateTableFiles();
+      } else if (result) {
+        this.files[index] = result;
+        this.generateTableFiles();
+      }
+    });
+  }
+
   protected getTypeName(id: number) {
     return this.types.find(type => type.id === id)?.name;
   }
 
-  protected openDocumentEditor(document: BookingDocument) {
-    const index = this.files.findIndex(doc => doc.id = document.id);
-    const header = `Documento - ${this.getTypeName(document.typeId)}`;
-    this.dialogService.openDialog(DocumentEditorComponent, header, "small", {document}).onClose.subscribe(result => {
-      if (result === 'deleted') this.files.splice(index, 1);
-      else if (result) this.files[index] = result;
-    });
+  protected getTypeDescription(id: any) {
+    return this.types.find(type => type.id === id)?.description;
+
   }
 }

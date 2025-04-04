@@ -58,6 +58,8 @@ export class BookingStatusUpdateComponent implements OnInit {
   protected showExclusiveness: boolean | undefined;
   protected exclusivenessRequested: boolean | undefined;
   protected showSubject = false;
+  protected realDays!: string;
+  protected billableDays!: number;
 
   ngOnInit(): void {
     this.textAreaLabel = this.config.data.textAreaLabel;
@@ -101,9 +103,11 @@ export class BookingStatusUpdateComponent implements OnInit {
   private calculateRecommendedPrice() {
     const booking: Booking = this.config.data.booking;
     const priceCalculation = new CurrencyPipe('es', 'EUR').transform(booking.billableDays * booking.scoutCenter.price / 100 * booking.packs);
-    const realDays = new HourPipe().transform(booking.minutes, true);
+    const scoutCenterPrice = new CurrencyPipe('es', 'EUR').transform(booking.scoutCenter.price / 100);
+    this.realDays = new HourPipe().transform(booking.minutes, true);
+    this.billableDays = booking.billableDays;
 
-    this.recommendedPrice = `${booking.billableDays} días (${realDays}) × ${booking.packs}pax = ${priceCalculation}`;
+    this.recommendedPrice = `${booking.billableDays} días × ${booking.packs}pax × ${scoutCenterPrice} = ${priceCalculation} - Según días calculados`;
   }
 
   private observationsValidators() {
