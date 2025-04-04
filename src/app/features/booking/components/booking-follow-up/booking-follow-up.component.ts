@@ -91,7 +91,7 @@ export class BookingFollowUpComponent implements OnInit {
   }
 
   private getBooking(): void {
-    this.bookingFetcherService.getById(this.bookingId).subscribe(data => {
+    this.bookingFetcherService.getById(this.bookingId, false).subscribe(data => {
       this.booking = data;
       this.getFiles();
     });

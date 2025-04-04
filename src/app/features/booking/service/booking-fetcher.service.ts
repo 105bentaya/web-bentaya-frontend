@@ -41,7 +41,7 @@ export class BookingFetcherService {
     return this.http.get<Booking>(`${this.bookingUrl}/requester/latest`);
   }
 
-  getById(id: number): Observable<Booking> {
-    return this.http.get<Booking>(`${this.bookingUrl}/${id}`);
+  getById(id: number, isManager: boolean = true): Observable<Booking> {
+    return this.http.get<Booking>(`${this.url(isManager)}/${id}`);
   }
 }
