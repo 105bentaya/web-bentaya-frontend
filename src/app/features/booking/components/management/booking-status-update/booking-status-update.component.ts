@@ -49,6 +49,7 @@ export class BookingStatusUpdateComponent implements OnInit {
     {label: 'No', value: false}
   ];
 
+  protected confirmMessage: string = "¿Desea confirmar los datos actuales?";
   protected textAreaLabel: string = "Observaciones";
   protected textRequired: boolean = false;
   protected showPrice: boolean = false;
@@ -61,6 +62,7 @@ export class BookingStatusUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.textAreaLabel = this.config.data.textAreaLabel;
     this.textRequired = this.config.data.textRequired;
+    if (this.config.data.confirmMessage) this.confirmMessage = this.config.data.confirmMessage;
 
     this.message = this.config.data.message;
 
@@ -86,7 +88,7 @@ export class BookingStatusUpdateComponent implements OnInit {
   protected submit() {
     if (this.formHelper.validateAll()) {
       this.confirmationService.confirm({
-        message: "¿Desea confirmar los datos actuales?",
+        message: this.confirmMessage,
         accept: () => this.ref.close(this.formHelper.value)
       });
     }

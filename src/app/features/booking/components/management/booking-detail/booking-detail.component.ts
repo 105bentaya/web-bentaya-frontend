@@ -87,10 +87,9 @@ export class BookingDetailComponent implements OnInit {
   }
 
   protected confirmBooking() {
-    //todo, mensaje cuando no están todos los documentos subidos;
-    //informar que una vez confirmada la reserva ya no pueden subir documentos, así que mejor esperar
     this.openDialog("Confirmar Reserva", {
       textAreaLabel: "Alguna observación que considere",
+      confirmMessage: this.getConfirmMessage(),
       showExclusiveness: true,
       booking: this.booking
     }).onClose
@@ -100,9 +99,20 @@ export class BookingDetailComponent implements OnInit {
       ));
   }
 
+  private getConfirmMessage(): string {
+    const hasPendingDocuments = this.files.some(file => file.status !== "ACCEPTED");
+    let confirmMessage = "";
+    if (hasPendingDocuments) {
+      confirmMessage = "¡Hay documentos que no son válidos! ";
+    }
+    confirmMessage += "Una vez acepte esta reserva, la entidad solicitante no podrá editar ni subir nuevos documentos. ¿Desea continuar?";
+    return confirmMessage;
+  }
+
   protected sendWarn() {
     this.openDialog("Mandar notificación", {
       textAreaLabel: "Mensaje",
+      confirmMessage: "¿Desea mandar un mensaje con estos datos?",
       textRequired: true,
       showSubject: true,
       booking: this.booking
