@@ -6,12 +6,7 @@ import {BookingForm} from "../model/booking-form.model";
 import {Booking} from "../model/booking.model";
 import {BookingDateForm} from "../model/booking-date-form.model";
 import {BookingDateAndStatus} from "../model/booking-date-and-status.model";
-import {
-  BookingDocument,
-  BookingDocumentForm,
-  BookingDocumentType,
-  DocumentStatus
-} from "../model/booking-document.model";
+import {BookingDocument, BookingDocumentForm, BookingDocumentType} from "../model/booking-document.model";
 import {OwnBookingForm} from "../model/own-booking-form.model";
 
 @Injectable({
@@ -54,6 +49,12 @@ export class BookingService {
     );
   }
 
+  getIncidencesFile(bookingId: number): Observable<HttpResponse<Blob>> {
+    return this.http.get(`${this.bookingUrl}/document/incidences/${bookingId}`,
+      {responseType: 'blob', observe: 'response'}
+    );
+  }
+
   uploadBookingDocument(bookingId: number, file: File, typeId: number): Observable<void> {
     const formData = new FormData();
     formData.append("file", file);
@@ -67,7 +68,7 @@ export class BookingService {
     return this.http.post<void>(`${this.bookingUrl}/document/incidences/${bookingId}`, formData);
   }
 
-    updateDocument(fileId: number, status: BookingDocumentForm): Observable<BookingDocument> {
+  updateDocument(fileId: number, status: BookingDocumentForm): Observable<BookingDocument> {
     return this.http.put<BookingDocument>(`${this.bookingUrl}/document/${fileId}`, status);
   }
 

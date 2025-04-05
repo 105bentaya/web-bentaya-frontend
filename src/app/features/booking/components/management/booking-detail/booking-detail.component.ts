@@ -181,6 +181,11 @@ export class BookingDetailComponent implements OnInit {
       });
   }
 
+  protected downloadIncidencesFile() {
+    this.bookingService.getIncidencesFile(this.booking.id)
+      .subscribe(file => FileUtils.downloadFile(file));
+  }
+
   protected queryShowMoreData() {
     this.showMoreData = !this.showMoreData;
     if (this.showMoreData) localStorage.setItem("bd_show_more_data", "1");

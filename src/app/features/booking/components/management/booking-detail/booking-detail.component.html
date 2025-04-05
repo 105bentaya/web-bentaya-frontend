@@ -222,6 +222,13 @@
             }
           </p-tag>
         }
+        @if (booking.hasIncidencesFile) {
+          <div>
+            <p-tag severity="info" styleClass="rounded-3 my-1 cursor-pointer" (click)="downloadIncidencesFile()">
+              Ver Registro de Incidencias y Estados
+            </p-tag>
+          </div>
+        }
       </div>
     </div>
   </div>
