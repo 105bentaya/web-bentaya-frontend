@@ -108,7 +108,7 @@ export class BookingDetailComponent implements OnInit {
     if (hasPendingDocuments) {
       confirmMessage = "¡Hay documentos que no son válidos! ";
     }
-    confirmMessage += "Una vez acepte esta reserva, la entidad solicitante no podrá editar ni subir nuevos documentos. ¿Desea continuar?";
+    confirmMessage += "Una vez acepte esta reserva, la entidad solicitante no podrá editar ni subir nuevos documentos a esta reserva. ¿Desea continuar?";
     return confirmMessage;
   }
 
@@ -167,7 +167,7 @@ export class BookingDetailComponent implements OnInit {
   }
 
   private missingDocument(typeId: number): BookingDocument {
-    return {bookingId: 0, fileName: "", id: 0, status: "PENDING", typeId: typeId};
+    return {bookingId: 0, fileName: "", id: 0, status: "PENDING", typeId: typeId, ownedByUser: true};
   }
 
   protected downloadFile(file: BookingDocument) {

@@ -44,10 +44,18 @@ export class DocumentFileUploaderComponent {
   protected loading: boolean = false;
 
   protected downloadFile(file: BookingDocument) {
-    this.loading = true;
-    this.bookingService.getPDF(file.id)
-      .pipe(finalize(() => this.loading = false))
-      .subscribe(pdf => FileUtils.downloadFile(pdf));
+    if (!file.ownedByUser) {
+      this.alertService.sendMessage({
+        title: "Descarga no autorizada",
+        severity: "warn",
+        message: "No puede descargar este documento porque no fue subido por usted"
+      });
+    } else {
+      this.loading = true;
+      this.bookingService.getPDF(file.id)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(pdf => FileUtils.downloadFile(pdf));
+    }
   }
 
   protected deleteFile(file: BookingDocument) {

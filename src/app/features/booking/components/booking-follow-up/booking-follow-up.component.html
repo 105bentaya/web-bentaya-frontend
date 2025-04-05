@@ -192,14 +192,15 @@
               {{ booking.statusObservations }}
             </p>
           }
-          <p>
-            Para retirar las llaves del lugar, pónganse en contacto con la persona responsable la semana
-            anterior
-            a
-            su reserva y con al menos dos días de antelación respecto al inicio de la misma. La información de
-            contacto la puede consultar en el PDF con las normas haciendo click
-            <a class="link cursor-pointer" (click)="downloadRuleFile(booking.scoutCenter.id)">aquí</a>.
-          </p>
+          @if (!bookingHasEndedPastWeek()) {
+            <p>
+              Para retirar las llaves del lugar, pónganse en contacto con la persona responsable la semana anterior a su
+              reserva y con al menos dos días de antelación respecto al inicio de la misma. La información de contacto
+              la
+              puede consultar en el PDF con las normas haciendo click
+              <a class="link cursor-pointer" (click)="downloadRuleFile(booking.scoutCenter.id)">aquí</a>.
+            </p>
+          }
           @if (booking.hasIncidencesFile) {
             <hr>
             <p>Ya ha subido el registro de incidencias y estados. ¡Muchas gracias!</p>

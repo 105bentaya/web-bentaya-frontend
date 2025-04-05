@@ -178,4 +178,10 @@ export class BookingFollowUpComponent implements OnInit {
   protected getFilesByType(type: BookingDocumentType) {
     return this.files.filter(file => file.typeId === type.id);
   }
+
+  protected bookingHasEndedPastWeek() {
+    const endDate = new Date(this.booking.endDate);
+    endDate.setDate(endDate.getDate() + 7);
+    return endDate < new Date();
+  }
 }

@@ -6,6 +6,7 @@ export interface BookingDocument {
   typeId: number;
   duration?: DocumentDuration;
   expirationDate?: Date;
+  ownedByUser: boolean;
 }
 
 export interface BookingDocumentType {
