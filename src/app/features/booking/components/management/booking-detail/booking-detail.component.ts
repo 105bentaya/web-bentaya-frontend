@@ -78,11 +78,14 @@ export class BookingDetailComponent implements OnInit {
   }
 
   protected acceptBooking() {
-    this.openDialog("Aceptar Reserva", {
+    const data: any = {
       textAreaLabel: "Alguna observación que considere",
       showPrice: true,
       booking: this.booking
-    }).onClose
+    };
+    const notValidFiles = this.files.some(file => file.status !== "ACCEPTED");
+    if (notValidFiles) data["confirmMessage"] = "Para evitar confusiones a la persona solicitante, los documentos nó válidos serán eliminados de la reserva. ¿Desea continuar?";
+    this.openDialog("Aceptar Reserva", data).onClose
       .pipe(filter(identity))
       .subscribe(({price, observations}) => this.updateBookingStatus(
         this.bookingStatusService.acceptBooking(this.booking.id, {price, observations})

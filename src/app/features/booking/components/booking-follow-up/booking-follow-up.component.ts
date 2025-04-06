@@ -184,4 +184,8 @@ export class BookingFollowUpComponent implements OnInit {
     endDate.setDate(endDate.getDate() + 7);
     return endDate < new Date();
   }
+
+  validNotOwnDocuments() {
+    return this.files.some(doc => !doc.ownedByUser && doc.status === "ACCEPTED");
+  }
 }
