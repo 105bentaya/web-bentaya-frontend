@@ -3,6 +3,7 @@ import {Status} from "../constant/status.constant";
 export interface Booking {
   organizationName: string;
   cif: string;
+  groupDescription: string;
   facilityUse: string;
   contactName: string;
   contactRelationship: string;

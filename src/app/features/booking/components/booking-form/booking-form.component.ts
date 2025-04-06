@@ -105,7 +105,8 @@ export class BookingFormComponent implements OnInit {
     this.bookingForm.createForm({
       groupName: [booking?.organizationName, Validators.required],
       cif: [booking?.cif, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
-      workDescription: [null, [Validators.required, Validators.maxLength(510)]],
+      groupDescription: [booking?.groupDescription, [Validators.required, Validators.maxLength(510)]],
+      facilityUse: [null, [Validators.required, Validators.maxLength(2000)]],
       contactName: [booking?.contactName, Validators.required],
       relationship: [booking?.contactRelationship, Validators.required],
       email: [this.currentUser, [Validators.required, Validators.email]],
@@ -115,7 +116,7 @@ export class BookingFormComponent implements OnInit {
       privacy: [false, Validators.requiredTrue],
     });
     this.bookingForm.setPages([
-      ["cif", "groupName", "workDescription"],
+      ["cif", "groupName", "facilityUse", "groupDescription"],
       ["contactName", "relationship", "email", "phone"],
       ["centerSelection"],
       ["privacy", "observations"]

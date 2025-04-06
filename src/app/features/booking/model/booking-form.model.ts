@@ -1,7 +1,8 @@
 export interface BookingForm {
   groupName: string;
   cif: string;
-  workDescription: string;
+  groupDescription: string;
+  facilityUse: string;
   contactName: string;
   relationship: string;
   email: string;

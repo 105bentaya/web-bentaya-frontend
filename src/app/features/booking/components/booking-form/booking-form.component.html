@@ -104,19 +104,33 @@
                     <small class="opacity-75 ms-1">Emplear formato A12345678</small>
                   }
                 </div>
-                <div class="col-12">
-                  <label class="required" for="workDescription">
-                    Breve descripción sobre la labor de la asociación o centro, indicando con claridad el deseo
-                    del uso de nuestras instalaciones y las actividades a realizar.
+                <div class="col-12 mb-1">
+                  <label class="required" for="facilityUse">
+                    Breve descripción sobre objetivos, fines y actividades de la asociación o centro educativo.
                   </label>
                   <app-form-text-area
-                    [maxLength]="510"
-                    formControlName="workDescription"
-                    id="workDescription"
-                    [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('workDescription', 'maxlength')"
+                    [maxLength]="512"
+                    formControlName="facilityUse"
+                    id="facilityUse"
+                    [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('facilityUse', 'maxlength')"
                   ></app-form-text-area>
-                  @if (bookingForm.isDirtyAndInvalidWithError('workDescription', 'required')) {
+                  @if (bookingForm.isDirtyAndInvalidWithError('facilityUse', 'required')) {
                     <small class="text-danger">Introduzca una breve descripción</small>
+                  }
+                </div>
+                <div class="col-12">
+                  <label class="required" for="groupDescription">
+                    Memoria resumida de la actividad a desarrollar en el centro scout, destacando aspectos educativos,
+                    medioambientales y sociales.
+                  </label>
+                  <app-form-text-area
+                    [maxLength]="2000"
+                    formControlName="groupDescription"
+                    id="groupDescription"
+                    [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('groupDescription', 'maxlength')"
+                  ></app-form-text-area>
+                  @if (bookingForm.isDirtyAndInvalidWithError('groupDescription', 'required')) {
+                    <small class="text-danger">Introduzca una breve memoria</small>
                   }
                 </div>
               </div>
@@ -268,7 +282,7 @@
                   <b>CIF:</b> {{ booking.cif }}
                 </div>
                 <div class="col-12">
-                  <b>Descripción sobre el uso de las instalaciones:</b> {{ booking.workDescription }}
+                  <b>Descripción sobre el uso de las instalaciones:</b> {{ booking.facilityUse }}
                 </div>
                 <div class="col-12 col-lg-6">
                   <b>Nombre de contacto:</b> {{ booking.contactName }}
