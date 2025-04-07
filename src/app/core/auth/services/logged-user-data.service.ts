@@ -21,6 +21,13 @@ export class LoggedUserDataService {
     );
   }
 
+  getScouterDropdownGroups() {
+    let groups = [{id: 0, name: "GRUPO"}];
+    const scouterGroup = this.getGroup();
+    if (scouterGroup) groups = [{id: scouterGroup.id, name: scouterGroup.name.toUpperCase()}].concat(groups);
+    return groups;
+  }
+
   getGroup(): BasicGroupInfo | undefined {
     return this.userProfile.group;
   }

@@ -1,13 +1,13 @@
 <div class="container">
-  <h1 class="mb-0 me-3">Reservas Centros Scout</h1>
-  <div class="mb-4">
+  <h1 class="">Reservas Centros Scout</h1>
+  <div class="mb-3 d-flex gap-2">
     <p-multi-select
       [autofocusFilter]="false"
       [options]="groups"
       [showHeader]="false"
       (onChange)="onFilterChange($event)"
       (onClear)="onFilterChange()"
-      placeholder="Filtrar centros scout"
+      placeholder="Filtrar unidades"
       styleClass="fw-normal w-100"
       showClear
       [(ngModel)]="selectedGroups"
@@ -16,15 +16,14 @@
       optionLabel="name"
       optionValue="id"
     ></p-multi-select>
+    <p-button
+      label="Añadir"
+      icon="pi pi-plus"
+      (onClick)="openForm()"
+    ></p-button>
   </div>
   @if (pendingBookings) {
     <div class="d-flex flex-column gap-3">
-<!--
-      [loading]="loading"
-      [lazy]="true"
-      (onLazyLoad)="loadBookingWithFilter($event)"
-      [totalRecords]="totalRecords"
--->
       <p-table
         #tab
         showGridlines
@@ -35,6 +34,10 @@
         responsiveLayout="scroll"
         selectionMode="single"
         [sortOrder]="-1"
+        [loading]="loading"
+        [lazy]="true"
+        (onLazyLoad)="loadBookingWithFilter($event)"
+        [totalRecords]="totalRecords"
       >
         <ng-template pTemplate="header">
           <tr>

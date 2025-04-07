@@ -117,9 +117,9 @@ export class FormHelper {
     return FormHelper._validateControls(controls, this.form);
   }
 
-  async validateAllWithAsync(): Promise<void> {
+  async validateAllWithAsync(): Promise<boolean> {
     this.hasBeenValidated = true;
-    await this.validateControlsAsync(Object.keys(this.form.controls));
+    return await this.validateControlsAsync(Object.keys(this.form.controls));
   }
 
   private async validateControlsAsync(controls: string[]): Promise<boolean> {

@@ -146,9 +146,13 @@ export class BookingFormCenterSelectionComponent implements OnInit {
     this.noOverlapping = false;
   }
 
+  get selectedCenterIsNotAlwaysExclusive() {
+    return this.selectedCenterInfo && !this.centerIsAlwaysExclusive;
+  }
+
   get eligibleForExclusiveness() {
     return this.occupiedInfo.length == 0 && this.reservedInfo.length == 0 && !this.centerIsAlwaysExclusive &&
-      this.formHelper.controlValue("packs") >= this.selectedCenterInfo.minExclusiveCapacity;
+      this.formHelper.controlValue("packs") >= this.selectedCenterInfo?.minExclusiveCapacity;
   }
 
   get selectedCenterName() {

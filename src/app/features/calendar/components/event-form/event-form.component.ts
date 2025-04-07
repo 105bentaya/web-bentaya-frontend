@@ -80,9 +80,7 @@ export class EventFormComponent implements OnInit {
   private clickDate!: Date;
 
   constructor() {
-    this.groups = [{id: 0, name: "GRUPO"}];
-    const scouterGroup = this.loggedUserData.getGroup();
-    if (scouterGroup) this.groups = [{id: scouterGroup.id, name: scouterGroup.name.toUpperCase()}].concat(this.groups);
+    this.groups = this.loggedUserData.getScouterDropdownGroups();
   }
 
   ngOnInit(): void {
