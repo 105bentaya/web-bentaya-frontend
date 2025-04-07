@@ -76,6 +76,10 @@ export class BookingService {
     return this.http.delete<void>(`${this.bookingUrl}/document/${fileId}`);
   }
 
+  getOwnBookings(): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.bookingUrl}/own`);
+  }
+
   addOwnBooking(ownBooking: OwnBookingForm) {
     return this.http.post(`${this.bookingUrl}/own/new`, ownBooking);
   }

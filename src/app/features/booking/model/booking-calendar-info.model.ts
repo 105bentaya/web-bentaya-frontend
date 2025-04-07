@@ -1,4 +1,5 @@
 import {Status} from "../constant/status.constant";
+import {BasicScoutCenter} from "./booking.model";
 
 export interface BookingCalendarInfo {
   startDate: Date;
@@ -7,4 +8,5 @@ export interface BookingCalendarInfo {
   fullyOccupied?: boolean;
   id: number;
   packs: number;
+  scoutCenter?: BasicScoutCenter
 }

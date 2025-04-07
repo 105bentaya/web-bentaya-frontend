@@ -1,0 +1,149 @@
+<div class="container">
+  <h1 class="mb-0 me-3">Reservas Centros Scout</h1>
+  <div class="mb-4">
+    <p-multi-select
+      [autofocusFilter]="false"
+      [options]="groups"
+      [showHeader]="false"
+      (onChange)="onFilterChange($event)"
+      (onClear)="onFilterChange()"
+      placeholder="Filtrar centros scout"
+      styleClass="fw-normal w-100"
+      showClear
+      [(ngModel)]="selectedGroups"
+      [maxSelectedLabels]="10"
+      appendTo="body"
+      optionLabel="name"
+      optionValue="id"
+    ></p-multi-select>
+  </div>
+  @if (pendingBookings) {
+    <div class="d-flex flex-column gap-3">
+<!--
+      [loading]="loading"
+      [lazy]="true"
+      (onLazyLoad)="loadBookingWithFilter($event)"
+      [totalRecords]="totalRecords"
+-->
+      <p-table
+        #tab
+        showGridlines
+        [value]="pendingBookings"
+        [paginator]="true"
+        [rows]="25"
+        [rowsPerPageOptions]="[5,10,25,50]"
+        responsiveLayout="scroll"
+        selectionMode="single"
+        [sortOrder]="-1"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="text-center w-min" pSortableColumn="id">
+              Nº
+            </th>
+            <th>Unidad</th>
+            <th>Centro</th>
+            <th>Estado</th>
+            <th pSortableColumn="startDate">
+              Fechas
+              <p-sortIcon field="startDate"></p-sortIcon>
+            </th>
+          </tr>
+          <!--<tr>
+            <th></th>
+            <th>
+              <input
+                pInputText
+                class="w-100"
+                placeholder="Filtrar"
+                type="text"
+                (input)="tab.filter($any($event.target).value, 'organizationName', 'custom')"
+              />
+            </th>
+            <th>
+              <input
+                pInputText
+                class="w-100"
+                placeholder="Filtrar"
+                type="text"
+                (input)="tab.filter($any($event.target).value, 'cif', 'custom')"
+              />
+            </th>
+            <th>
+              <p-multiSelect
+                [autofocusFilter]="false"
+                [options]="centers"
+                (onChange)="tab.filter($event.value, 'scoutCenters', 'custom')"
+                (onClear)="tab.filter(null, 'scoutCenters', 'custom')"
+                [showHeader]="false"
+                appendTo="body"
+                scrollHeight="300px"
+                placeholder="Filtrar"
+                styleClass="w-100 fw-normal"
+                showClear
+                [ngModel]="scoutCenterFilter"
+                [maxSelectedLabels]="1"
+              ></p-multiSelect>
+            </th>
+            <th>
+              <p-multiSelect
+                [autofocusFilter]="false"
+                [options]="statusesOptions"
+                (onChange)="tab.filter($event.value, 'statuses', 'custom')"
+                (onClear)="tab.filter(null, 'statuses', 'custom')"
+                [showHeader]="false"
+                appendTo="body"
+                scrollHeight="300px"
+                placeholder="Filtrar"
+                styleClass="w-100 fw-normal"
+                showClear
+                [ngModel]="statusFilter"
+                [maxSelectedLabels]="1"
+              ></p-multiSelect>
+            </th>
+            <th>
+              <p-date-picker
+                selectionMode="range"
+                styleClass="w-100 fw-normal"
+                appendTo="body"
+                [(ngModel)]="dateRange"
+                (onClose)="filterDates();"
+                (onClear)="filterDates()"
+                readonlyInput
+                showClear
+              ></p-date-picker>
+            </th>
+          </tr>-->
+        </ng-template>
+        <ng-template pTemplate="body" let-booking>
+          <tr style="outline: none;" pSelectableRow routerLink="{{booking.id}}">
+            <td class="text-center">
+              {{ booking.id }}
+            </td>
+            <td>
+              {{ booking.group.name }}
+            </td>
+            <td>
+              {{ booking.scoutCenter.name }}
+            </td>
+            <td>
+              {{ booking.status | bookingStatus }}
+            </td>
+            <td>
+              <div class="text-center">{{ booking.startDate | date:"dd/MM/yy" }} - {{ booking.endDate | date:"dd/MM/yy" }}</div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr class="bg-white">
+            <td colspan="6">
+              No hay reservas con estos filtros :(
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>

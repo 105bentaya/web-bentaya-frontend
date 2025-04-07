@@ -115,6 +115,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: {roles: [UserRole.SCOUTER]}
   },
+  {
+    path: "unidad/centros-scout",
+    loadComponent: () => import('./features/scout-forms/components/group-ser-scout-table/group-ser-scout-table.component').then(c => c.GroupSerScoutTableComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUTER]}
+  },
   //Usuario
   {
     path: "asistencias",
@@ -268,6 +274,18 @@ const Booking: Route[] = [
   {
     path: "reserva",
     loadComponent: () => import('./features/booking/components/booking-form/booking-form.component').then(c => c.BookingFormComponent)
+  },
+  {
+    path: "grupo",
+    loadComponent: () => import('./features/booking/components/own-booking/own-booking-list/own-booking-list.component').then(c => c.OwnBookingListComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]},
+  },
+  {
+    path: "grupo/:bookingId",
+    loadComponent: () => import('./features/booking/components/own-booking/own-booking-follow-up/own-booking-follow-up.component').then(c => c.OwnBookingFollowUpComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]},
   },
   {
     path: "seguimiento",
