@@ -76,13 +76,7 @@ export class BookingService {
     return this.http.delete<void>(`${this.bookingUrl}/document/${fileId}`);
   }
 
-  //own
-
   addOwnBooking(ownBooking: OwnBookingForm) {
     return this.http.post(`${this.bookingUrl}/own/new`, ownBooking);
-  }
-
-  cancelOwnBooking(id: number, reason: string): Observable<Booking> {
-    return this.http.delete<Booking>(`${this.bookingUrl}/own/cancel/${id}`, {params: {reason}});
   }
 }

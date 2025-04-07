@@ -7,7 +7,6 @@ import {BookingCalendarComponent} from "../booking-calendar/booking-calendar.com
 import {Booking} from "../../../model/booking.model";
 import {BookingCalendarInfo} from "../../../model/booking-calendar-info.model";
 import {BookingDetailComponent} from "../booking-detail/booking-detail.component";
-import {OwnBookingDetailComponent} from "../own-booking-detail/own-booking-detail.component";
 import {
   GeneralAButtonComponent
 } from "../../../../../shared/components/buttons/general-a-button/general-a-button.component";
@@ -23,7 +22,6 @@ import {BookingFetcherService} from "../../../service/booking-fetcher.service";
     BasicLoadingInfoComponent,
     BookingCalendarComponent,
     BookingDetailComponent,
-    OwnBookingDetailComponent,
     GeneralAButtonComponent,
     ToggleButton,
     FormsModule

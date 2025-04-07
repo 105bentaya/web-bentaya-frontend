@@ -1,6 +1,5 @@
 import {Component, inject, ViewChild} from '@angular/core';
 import {bookingStatuses} from "../../../constant/status.constant";
-import {Booking} from "../../../model/booking.model";
 import {Table, TableModule} from "primeng/table";
 import {MultiSelect} from "primeng/multiselect";
 import {BookingStatusPipe} from "../../../../scout-center/scout-center-status.pipe";
@@ -16,6 +15,7 @@ import {BookingManagementService} from "../../../service/booking-management.serv
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MenuItem} from "primeng/api";
 import {BookingFetcherService} from "../../../service/booking-fetcher.service";
+import {BookingInfo} from "../../../model/booking-info.model";
 
 @Component({
   selector: 'app-booking-list',
@@ -41,7 +41,7 @@ export class BookingListComponent {
 
   protected readonly statusesOptions = bookingStatuses;
 
-  protected bookings!: Booking[];
+  protected bookings!: BookingInfo[];
   protected loading = true;
   protected totalRecords: number = 0;
 

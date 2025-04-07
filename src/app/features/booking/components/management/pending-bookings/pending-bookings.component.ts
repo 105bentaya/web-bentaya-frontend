@@ -15,8 +15,8 @@ import {finalize} from "rxjs";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ContextMenu} from "primeng/contextmenu";
-import {Booking} from "../../../model/booking.model";
 import {BookingFetcherService} from "../../../service/booking-fetcher.service";
+import {BookingInfo} from "../../../model/booking-info.model";
 
 @Component({
   selector: 'app-pending-bookings',
@@ -58,7 +58,7 @@ export class PendingBookingsComponent implements OnInit {
       command: () => this.updateLastRoute()
     },
   ];
-  protected selectedBooking: Booking | undefined;
+  protected selectedBooking: BookingInfo | undefined;
   private readonly isManager: boolean;
 
   constructor() {

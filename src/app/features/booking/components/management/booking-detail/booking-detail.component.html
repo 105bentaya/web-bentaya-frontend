@@ -1,102 +1,134 @@
 <div>
   <div class="d-flex gap-2 align-items-center mb-1">
     <h2 class="mb-0 fw-bold fs-5 text-dark">Datos</h2>
-    <p-button
-      [label]="showMoreData ? 'Mostrar menos' : 'Mostrar más'"
-      (onClick)="queryShowMoreData()"
-      styleClass="py-1"
-      outlined
-      severity="secondary"
-      size="small"
-    ></p-button>
+    @if (!booking.isOwnBooking) {
+      <p-button
+        [label]="showMoreData ? 'Mostrar menos' : 'Mostrar más'"
+        (onClick)="queryShowMoreData()"
+        styleClass="py-1"
+        outlined
+        severity="secondary"
+        size="small"
+      ></p-button>
+    }
   </div>
   <div class="d-flex flex-column gap-3">
     <div class="info-container">
       <div class="row">
-        <div class="col-12 col-sm-6 col-xl-3">
-          <b>Nombre de la asociación</b>
-          <div>{{ booking.organizationName }}</div>
-        </div>
-        <div class="col-12 col-sm-6 col-xl-3">
-          <b>CIF de la asociación</b>
-          <div>{{ booking.cif }}</div>
-        </div>
-        <div class="col-12 col-lg-6">
-          <b>Fecha de solicitud</b>
-          <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
-        </div>
-        <div class="col-12 col-sm-6 col-xl-3">
-          <b>Nombre contacto</b>
-          <div>{{ booking.contactName }}</div>
-        </div>
-        <div class="col-12 col-sm-6 col-xl-3">
-          <b>Relación</b>
-          <div>{{ booking.contactRelationship }}</div>
-        </div>
-        <div class="col-12 col-sm-6 col-xl-3">
-          <b>Correo</b>
-          <div class="overflow-ellipsis">
-            <a href="mailto:{{booking.contactMail}}">{{ booking.contactMail }}</a>
+        @if (booking.isOwnBooking) {
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Entidad</b>
+            <div>Asociación Scouts-Exploradores Bentaya</div>
           </div>
-        </div>
-        <div class="col-12 col-sm-6 col-xl-3">
-          <b>Teléfono</b>
-          <div>
-            <a href="tel:{{booking.contactPhone}}">{{ booking.contactPhone }}</a>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Número de participantes</b>
+            <div>{{ booking.packs }}</div>
           </div>
-        </div>
-        <div class="col-12 col-sm-6 col-lg-3">
-          <b>Número de participantes</b>
-          <div>{{ booking.packs }}</div>
-        </div>
-        <div class="col-12 col-sm-6 col-lg-3">
-          <b>Fecha de entrada</b>
-          <div>{{ booking.startDate | date:"dd/MM/yyyy HH:mm" }}</div>
-        </div>
-        <div class="col-12 col-sm-6 col-lg-3">
-          <b>Fecha de salida</b>
-          <div>{{ booking.endDate | date:"dd/MM/yyyy HH:mm" }}</div>
-        </div>
-        <div class="col-12 col-sm-6 col-lg-3">
-          <b>Días</b>
-          <div>{{ booking.billableDays }} ({{ booking.minutes | hour }})</div>
-        </div>
-        <div class="col-12 col-lg-6">
-          @if (booking.status === 'OCCUPIED') {
-            <b>Centro en exclusividad</b>
-          } @else {
-            <b>Solicita centro en exclusividad</b>
-          }
-          <div>
-            {{ booking.exclusiveReservation ? 'Sí' : 'No' }}
-            @if (bookingIsAlwaysExclusive(booking)) {
-              (Siempre es exclusivo)
-            }
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Fecha de entrada</b>
+            <div>{{ booking.startDate | date:"dd/MM/yyyy HH:mm" }}</div>
           </div>
-        </div>
-        @if (booking.price) {
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Fecha de salida</b>
+            <div>{{ booking.endDate | date:"dd/MM/yyyy HH:mm" }}</div>
+          </div>
           <div class="col-12 col-lg-6">
-            <b>Aportación de mantenimiento</b>
-            <div>{{ booking.price | currency:'EUR':undefined:undefined:'es' }}</div>
+            <b>Solicita centro en exclusividad</b>
+            <div>{{ booking.exclusiveReservation ? 'Sí' : 'No' }}</div>
           </div>
-        }
-        <div class="col-12">
-          <b>Observaciones</b>
-          <div>{{ booking.observations || 'Ninguna' }}</div>
-        </div>
-        @if (showMoreData) {
-          @if (booking.groupDescription) {
-            <div class="col-12">
-              <b>Descripción entidad</b>
-              <div>{{ booking.groupDescription }}</div>
+          <div class="col-12 col-lg-6">
+            <b>Fecha de solicitud</b>
+            <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
+          </div>
+          <div class="col-12">
+            <b>Detalles</b>
+            <div>{{ booking.observations }}</div>
+          </div>
+        } @else {
+          <div class="col-12 col-sm-6 col-xl-3">
+            <b>Nombre de la asociación</b>
+            <div>{{ booking.organizationName }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <b>CIF de la asociación</b>
+            <div>{{ booking.cif }}</div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <b>Fecha de solicitud</b>
+            <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <b>Nombre contacto</b>
+            <div>{{ booking.contactName }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <b>Relación</b>
+            <div>{{ booking.contactRelationship }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <b>Correo</b>
+            <div class="overflow-ellipsis">
+              <a href="mailto:{{booking.contactMail}}">{{ booking.contactMail }}</a>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <b>Teléfono</b>
+            <div>
+              <a href="tel:{{booking.contactPhone}}">{{ booking.contactPhone }}</a>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Número de participantes</b>
+            <div>{{ booking.packs }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Fecha de entrada</b>
+            <div>{{ booking.startDate | date:"dd/MM/yyyy HH:mm" }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Fecha de salida</b>
+            <div>{{ booking.endDate | date:"dd/MM/yyyy HH:mm" }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Días</b>
+            <div>{{ booking.billableDays }} ({{ booking.minutes | hour }})</div>
+          </div>
+          <div class="col-12 col-lg-6">
+            @if (booking.status === 'OCCUPIED') {
+              <b>Centro en exclusividad</b>
+            } @else {
+              <b>Solicita centro en exclusividad</b>
+            }
+            <div>
+              {{ booking.exclusiveReservation ? 'Sí' : 'No' }}
+              @if (bookingIsAlwaysExclusive(booking)) {
+                (Siempre es exclusivo)
+              }
+            </div>
+          </div>
+          @if (booking.price) {
+            <div class="col-12 col-lg-6">
+              <b>Aportación de mantenimiento</b>
+              <div>{{ booking.price | currency:'EUR':undefined:undefined:'es' }}</div>
             </div>
           }
           <div class="col-12">
-            <b>Uso de instalaciones</b>
-            <div>{{ booking.facilityUse }}</div>
+            <b>Observaciones</b>
+            <div>{{ booking.observations || 'Ninguna' }}</div>
           </div>
-        }
-      </div>
+          @if (showMoreData) {
+            @if (booking.groupDescription) {
+              <div class="col-12">
+                <b>Descripción entidad</b>
+                <div>{{ booking.groupDescription }}</div>
+              </div>
+            }
+            <div class="col-12">
+              <b>Uso de instalaciones</b>
+              <div>{{ booking.facilityUse }}</div>
+            </div>
+          }
+        }</div>
     </div>
     <div>
       <div class="d-flex flex-wrap gap-2 align-items-center">
@@ -120,13 +152,15 @@
             </div>
           }
           @case ('RESERVED') {
-            <div>
-              @if (booking.userConfirmedDocuments) {
-                La persona solicitante <b>ya ha confirmado sus documentos</b>.
-              } @else {
-                La persona solicitante <b>aún no ha confirmado sus documentos</b>.
-              }
-            </div>
+            @if (!booking.isOwnBooking) {
+              <div>
+                @if (booking.userConfirmedDocuments) {
+                  La persona solicitante <b>ya ha confirmado sus documentos</b>.
+                } @else {
+                  La persona solicitante <b>aún no ha confirmado sus documentos</b>.
+                }
+              </div>
+            }
           }
         }
       </div>
@@ -139,7 +173,9 @@
             <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: buttonsInfo['accept']}"/>
           } @else if (booking.status == Status.RESERVED) {
             <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: buttonsInfo['confirm']}"/>
-            <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: buttonsInfo['warn']}"/>
+            @if (!booking.isOwnBooking) {
+              <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: buttonsInfo['warn']}"/>
+            }
           }
           <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: buttonsInfo['reject']}"/>
         } @else {
@@ -147,96 +183,98 @@
         }
       </div>
     </div>
-    <div>
-      <div class="d-flex gap-2 align-items-center">
-        <h2 class="mb-0 fw-bold fs-5 text-dark">Documentos</h2>
-        @if (files.length > 0) {
+    @if (!booking.isOwnBooking) {
+      <div>
+        <div class="d-flex gap-2 align-items-center">
+          <h2 class="mb-0 fw-bold fs-5 text-dark">Documentos</h2>
+          @if (files.length > 0) {
+            <p-button
+              [label]="showDocuments ? 'Ocultar' : 'Mostrar'"
+              (onClick)="showDocuments = !showDocuments"
+              styleClass="py-1"
+              outlined
+              severity="secondary"
+              size="small"
+            />
+          }
           <p-button
-            [label]="showDocuments ? 'Ocultar' : 'Mostrar'"
-            (onClick)="showDocuments = !showDocuments"
-            styleClass="py-1"
             outlined
+            icon="fa-solid fa-file-circle-question"
             severity="secondary"
             size="small"
+            (click)="dialogVisible = true"
           />
-        }
-        <p-button
-          outlined
-          icon="fa-solid fa-file-circle-question"
-          severity="secondary"
-          size="small"
-          (click)="dialogVisible = true"
-        />
-      </div>
-      <div class="mt-3">
-        @if (showDocuments) {
-          <p-table
-            [value]="tableFiles"
-            rowGroupMode="rowspan"
-            groupRowsBy="typeId"
-            customSort
-            class="fixed-table"
-            responsiveLayout="stack"
-            breakpoint="575px"
-          >
-            <ng-template pTemplate="body" let-document let-rowgroup="rowgroup" let-rowspan="rowspan">
-              <tr>
-                @if (rowgroup) {
-                  <td [attr.rowspan]="rowspan" class="title-row">
-                    <b>{{ getTypeName(document.typeId) }}</b>
-                    <i class="fa-regular fa-circle-question fs-5 align-middle ms-1 cursor-pointer"
-                       [pTooltip]="getTypeDescription(document.typeId)"
-                       [autoHide]="false"
-                       (click)="dialogVisible = true"
-                    ></i>
-                  </td>
-                }
-                @if (document.id === 0) {
-                  <td colspan="3">
-                    <span>No hay documentos asociados a este concepto</span>
-                  </td>
-                } @else {
-                  <td class="border-bottom">
-                    <div class="me-auto overflow-ellipsis text-nowrap" [title]="document.fileName">
-                      <a class="cursor-pointer uncolored" (click)="downloadFile(document)">{{ document.fileName }}</a>
-                    </div>
-                    <div class="d-sm-none">
+        </div>
+        <div class="mt-3">
+          @if (showDocuments) {
+            <p-table
+              [value]="tableFiles"
+              rowGroupMode="rowspan"
+              groupRowsBy="typeId"
+              customSort
+              class="fixed-table"
+              responsiveLayout="stack"
+              breakpoint="575px"
+            >
+              <ng-template pTemplate="body" let-document let-rowgroup="rowgroup" let-rowspan="rowspan">
+                <tr>
+                  @if (rowgroup) {
+                    <td [attr.rowspan]="rowspan" class="title-row">
+                      <b>{{ getTypeName(document.typeId) }}</b>
+                      <i class="fa-regular fa-circle-question fs-5 align-middle ms-1 cursor-pointer"
+                         [pTooltip]="getTypeDescription(document.typeId)"
+                         [autoHide]="false"
+                         (click)="dialogVisible = true"
+                      ></i>
+                    </td>
+                  }
+                  @if (document.id === 0) {
+                    <td colspan="3">
+                      <span>No hay documentos asociados a este concepto</span>
+                    </td>
+                  } @else {
+                    <td class="border-bottom">
+                      <div class="me-auto overflow-ellipsis text-nowrap" [title]="document.fileName">
+                        <a class="cursor-pointer uncolored" (click)="downloadFile(document)">{{ document.fileName }}</a>
+                      </div>
+                      <div class="d-sm-none">
+                        <ng-container *ngTemplateOutlet="statusTag; context: {$implicit: document}"></ng-container>
+                      </div>
+                      <div class="d-sm-none ms-2">
+                        <ng-container *ngTemplateOutlet="documentButton; context: {$implicit: document}"></ng-container>
+                      </div>
+                    </td>
+                    <td class="d-none d-sm-table-cell text-center" style="width: 6rem;">
                       <ng-container *ngTemplateOutlet="statusTag; context: {$implicit: document}"></ng-container>
-                    </div>
-                    <div class="d-sm-none ms-2">
+                    </td>
+                    <td class="d-none d-sm-table-cell text-end" style="width: 3rem;">
                       <ng-container *ngTemplateOutlet="documentButton; context: {$implicit: document}"></ng-container>
-                    </div>
-                  </td>
-                  <td class="d-none d-sm-table-cell text-center" style="width: 6rem;">
-                    <ng-container *ngTemplateOutlet="statusTag; context: {$implicit: document}"></ng-container>
-                  </td>
-                  <td class="d-none d-sm-table-cell text-end" style="width: 3rem;">
-                    <ng-container *ngTemplateOutlet="documentButton; context: {$implicit: document}"></ng-container>
-                  </td>
-                }
-              </tr>
-            </ng-template>
-          </p-table>
-        } @else {
-          <p-tag severity="secondary" styleClass="rounded-3 mb-1">
-            @if (files.length == 0) {
-              No hay ningún documento asociado
-            } @else if (files.length == 1) {
-              Hay 1 documento asociado
-            } @else if (files.length > 1) {
-              Hay {{ files.length }} documentos asociados
-            }
-          </p-tag>
-        }
-        @if (booking.hasIncidencesFile) {
-          <div>
-            <p-tag severity="info" styleClass="rounded-3 my-1 cursor-pointer" (click)="downloadIncidencesFile()">
-              Ver Registro de Incidencias y Estados
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+            </p-table>
+          } @else {
+            <p-tag severity="secondary" styleClass="rounded-3 mb-1">
+              @if (files.length == 0) {
+                No hay ningún documento asociado
+              } @else if (files.length == 1) {
+                Hay 1 documento asociado
+              } @else if (files.length > 1) {
+                Hay {{ files.length }} documentos asociados
+              }
             </p-tag>
-          </div>
-        }
+          }
+          @if (booking.hasIncidencesFile) {
+            <div>
+              <p-tag severity="info" styleClass="rounded-3 my-1 cursor-pointer" (click)="downloadIncidencesFile()">
+                Ver Registro de Incidencias y Estados
+              </p-tag>
+            </div>
+          }
+        </div>
       </div>
-    </div>
+    }
   </div>
 </div>
 <p-dialog

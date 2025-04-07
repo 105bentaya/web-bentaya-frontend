@@ -1,6 +1,17 @@
 import {Status} from "../constant/status.constant";
+import {BasicGroupInfo} from "../../../shared/model/group.model";
 
 export interface Booking {
+  id: number;
+  status: Status;
+  scoutCenter: BasicScoutCenter;
+  packs: number;
+  startDate: Date;
+  endDate: Date;
+  observations?: string;
+  statusObservations?: string;
+  exclusiveReservation: boolean;
+  creationDate: Date;
   organizationName: string;
   cif: string;
   groupDescription: string;
@@ -9,22 +20,13 @@ export interface Booking {
   contactRelationship: string;
   contactMail: string;
   contactPhone: string;
-  packs: number;
-  scoutCenter: BasicScoutCenter;
-  startDate: Date;
-  endDate: Date;
-  creationDate: Date;
-  status: Status;
-  id: number;
-  observations: string;
-  statusObservations: string;
-  exclusiveReservation: boolean;
-  ownBooking: boolean;
   userConfirmedDocuments: boolean;
   price: number;
   minutes: number;
   billableDays: number;
   hasIncidencesFile?: boolean;
+  isOwnBooking?: boolean;
+  group?: BasicGroupInfo;
 }
 
 export interface BasicScoutCenter {

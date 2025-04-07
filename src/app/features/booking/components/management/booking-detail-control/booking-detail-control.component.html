@@ -11,11 +11,7 @@
   </div>
   <hr>
   @if (booking) {
-    @if (booking.ownBooking) {
-      <app-own-booking-detail [booking]="booking"></app-own-booking-detail>
-    } @else {
-      <app-booking-detail [booking]="booking"></app-booking-detail>
-    }
+    <app-booking-detail [booking]="booking"></app-booking-detail>
     <div class="d-flex justify-content-end mb-2">
       <p-toggle-button
         offIcon="fa-solid fa-file-circle-xmark"

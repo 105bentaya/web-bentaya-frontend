@@ -1,18 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
-import {BookingForm} from "../model/booking-form.model";
 import {Booking} from "../model/booking.model";
-import {BookingCalendarInfo} from "../model/booking-calendar-info.model";
-import {BookingDateForm} from "../model/booking-date-form.model";
-import {BookingDateAndStatus} from "../model/booking-date-and-status.model";
-import {BookingStatusUpdate} from "../model/booking-status-update.model";
-import {BookingDocument, DocumentStatus} from "../model/booking-document.model";
-import {OwnBookingForm} from "../model/own-booking-form.model";
-import {Page} from "../../../shared/model/page.model";
-import {Filter, PagedFilter} from "../../../shared/model/filter.model";
-import {PendingBookings} from "../model/pending-bookings.model";
 
 @Injectable({
   providedIn: 'root'

@@ -103,7 +103,7 @@
         {{ booking.ownBooking ? 'Asociación Scouts 105 Bentaya' : booking.organizationName }}
       </td>
       <td>
-        {{ booking.cif }}
+        {{ booking.ownBooking ? '-' : booking.cif }}
       </td>
       <td>
         {{ booking.scoutCenter.name }}

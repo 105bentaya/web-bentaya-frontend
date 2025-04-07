@@ -1,8 +1,8 @@
-import {Booking} from "./booking.model";
+import {BookingInfo} from "./booking-info.model";
 
 export interface PendingBookings {
-  newBookings: Booking[];
-  acceptedBookings: Booking[];
-  confirmedBookings: Booking[];
-  finishedBookings: Booking[];
+  newBookings: BookingInfo[];
+  acceptedBookings: BookingInfo[];
+  confirmedBookings: BookingInfo[];
+  finishedBookings: BookingInfo[];
 }
