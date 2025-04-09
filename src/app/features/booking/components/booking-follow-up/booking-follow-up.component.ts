@@ -113,8 +113,7 @@ export class BookingFollowUpComponent implements OnInit {
       dialogData["message"] = cancelBookingMessage;
     }
 
-    this.dialogService.openDialog(BookingStatusUpdateComponent, "Cancelar reserva", "small", dialogData)
-      .onClose
+    this.dialogService.openDialog(BookingStatusUpdateComponent, "Cancelar reserva", "small", dialogData).onClose
       .pipe(filter(identity))
       .subscribe(({observations}) => this.cancelBooking(observations));
   }

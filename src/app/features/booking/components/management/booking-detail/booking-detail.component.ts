@@ -101,7 +101,9 @@ export class BookingDetailComponent implements OnInit {
     }).onClose
       .pipe(filter(identity))
       .subscribe(({exclusive, observations}) => this.updateBookingStatus(
-        this.bookingStatusService.confirmBooking(this.booking.id, {exclusive, observations})
+        this.bookingStatusService.confirmBooking(this.booking.id, this.booking.isOwnBooking!, {
+          exclusive: exclusive ?? this.booking.exclusiveReservation,
+          observations})
       ));
   }
 
@@ -137,7 +139,7 @@ export class BookingDetailComponent implements OnInit {
     }).onClose
       .pipe(filter(identity))
       .subscribe(({observations}) => this.updateBookingStatus(
-        this.bookingStatusService.rejectBooking(this.booking.id, {observations})
+        this.bookingStatusService.rejectBooking(this.booking.id, this.booking.isOwnBooking!, {observations})
       ));
   }
 

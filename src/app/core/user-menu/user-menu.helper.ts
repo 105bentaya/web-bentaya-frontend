@@ -12,7 +12,7 @@ const invoiceList = {label: "Facturas", icon: "pi pi-receipt", route: "/facturas
 const generalScoutList = {label: "Educandas", icon: "pi pi-users", route: "/unidad/educandas", category: "Gestión de Grupo"};
 const groupBookings = {label: "Centros Scout", icon: "fa-solid fa-tents", route: "/centros-scout/grupo", category: "Gestión de Grupo"};
 const scoutCenterRequester = {label: "Mis Reservas", icon: "pi pi-compass", route: "/centros-scout/seguimiento"};
-const scoutCenterManager = {label: "Gestión de Reservas", icon: "pi pi-wrench", route: "/centros-scout/gestion", category: "Centros Scout"};
+const scoutCenterManager = {label: "Gestión de Reservas", icon: "fa-solid fa-tents", route: "/centros-scout/gestion", category: "Centros Scout"};
 const scoutCenterInformation = {label: "Ajustes Centros Scout", icon: "fa-solid fa-sliders", route: "/centros-scout/datos", category: "Centros Scout"};
 const donations = {label: "Donaciones", icon: "fa-solid fa-piggy-bank", route: '/donaciones/lista', category: "Gestión de Grupo"};
 const inscriptions = {label: "Preinscripciones", icon: "pi pi-folder", route: "/preinscripciones", category: "Gestión de Grupo"};
@@ -32,7 +32,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(userScoutData, userAttendanceList);
   }
   if (user.hasRequiredPermission(UserRole.SCOUTER)) {
-    menuItems.push(groupScoutList, groupAttendanceList, groupInscriptions, invoiceList, groupBookings);
+    menuItems.push(groupScoutList, groupAttendanceList, groupInscriptions, invoiceList);
   }
   if (user.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) {
     menuItems.push(scoutCenterRequester);
@@ -41,7 +41,10 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(scoutCenterManager, scoutCenterInformation);
   }
   if (user.hasRequiredPermission(UserRole.GROUP_SCOUTER)) {
-    menuItems.push(generalScoutList, invoiceList, groupBookings);
+    menuItems.push(generalScoutList, invoiceList);
+  }
+  if (user.hasRequiredPermission(UserRole.GROUP_SCOUTER, UserRole.SCOUTER) && !user.hasRequiredPermission(UserRole.SCOUT_CENTER_MANAGER)) {
+    menuItems.push(groupBookings);
   }
   if (user.hasRequiredPermission(UserRole.TRANSACTION)) {
     menuItems.push(/*transactions, */donations);

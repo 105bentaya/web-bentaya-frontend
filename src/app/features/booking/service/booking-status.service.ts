@@ -10,29 +10,32 @@ import {Booking} from "../model/booking.model";
 export class BookingStatusService {
 
   private readonly http = inject(HttpClient);
-  private readonly bookingUrl = `${environment.apiUrl}/booking-status`;
+
+  private getBookingUrl(own: boolean = false) {
+    return own ? `${environment.apiUrl}/booking/own` : `${environment.apiUrl}/booking/general`;
+  }
 
   acceptBooking(bookingId: number, dto: { price: number; observations: string }): Observable<Booking> {
-    return this.http.patch<Booking>(`${this.bookingUrl}/accept/${bookingId}`, dto);
+    return this.http.patch<Booking>(`${this.getBookingUrl()}/accept/${bookingId}`, dto);
   }
 
-  confirmBooking(bookingId: number, dto: { exclusive: boolean; observations: string }): Observable<Booking> {
-    return this.http.patch<Booking>(`${this.bookingUrl}/confirm/${bookingId}`, dto);
+  confirmBooking(bookingId: number, own: boolean, dto: { exclusive: boolean; observations: string }): Observable<Booking> {
+    return this.http.patch<Booking>(`${this.getBookingUrl(own)}/confirm/${bookingId}`, dto);
   }
 
-  rejectBooking(bookingId: number, dto: { observations: string }): Observable<Booking> {
-    return this.http.patch<Booking>(`${this.bookingUrl}/reject/${bookingId}`, dto);
+  rejectBooking(bookingId: number, own: boolean, dto: { observations: string }): Observable<Booking> {
+    return this.http.patch<Booking>(`${this.getBookingUrl(own)}/reject/${bookingId}`, dto);
   }
 
   sendBookingWarning(bookingId: number, dto: { subject: string; observations: string }): Observable<Booking> {
-    return this.http.patch<Booking>(`${this.bookingUrl}/send-warning/${bookingId}`, dto);
+    return this.http.patch<Booking>(`${this.getBookingUrl()}/send-warning/${bookingId}`, dto);
   }
 
   cancelBooking(bookingId: number, dto: { observations: string }): Observable<Booking> {
-    return this.http.patch<Booking>(`${this.bookingUrl}/cancel/${bookingId}`, dto);
+    return this.http.patch<Booking>(`${this.getBookingUrl()}/cancel/${bookingId}`, dto);
   }
 
   confirmDocuments(bookingId: number): Observable<Booking> {
-    return this.http.patch<Booking>(`${this.bookingUrl}/documents-accepted/${bookingId}`, {});
+    return this.http.patch<Booking>(`${this.getBookingUrl()}/documents-accepted/${bookingId}`, {});
   }
 }

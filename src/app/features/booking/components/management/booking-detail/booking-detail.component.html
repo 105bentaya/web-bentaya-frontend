@@ -16,9 +16,17 @@
     <div class="info-container">
       <div class="row">
         @if (booking.isOwnBooking) {
-          <div class="col-12 col-sm-6 col-lg-3">
+          <div class="col-12 col-sm-6">
             <b>Entidad</b>
             <div>Asociación Scouts-Exploradores Bentaya</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Unidad</b>
+            <div>{{ booking.group?.name }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Fecha de solicitud</b>
+            <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
           </div>
           <div class="col-12 col-sm-6 col-lg-3">
             <b>Número de participantes</b>
@@ -33,12 +41,17 @@
             <div>{{ booking.endDate | date:"dd/MM/yyyy HH:mm" }}</div>
           </div>
           <div class="col-12 col-lg-6">
-            <b>Solicita centro en exclusividad</b>
-            <div>{{ booking.exclusiveReservation ? 'Sí' : 'No' }}</div>
-          </div>
-          <div class="col-12 col-lg-6">
-            <b>Fecha de solicitud</b>
-            <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
+            @if (booking.status === 'OCCUPIED') {
+              <b>Centro en exclusividad</b>
+            } @else {
+              <b>Solicita centro en exclusividad</b>
+            }
+            <div>
+              {{ booking.exclusiveReservation ? 'Sí' : 'No' }}
+              @if (bookingIsAlwaysExclusive(booking)) {
+                (Siempre es exclusivo)
+              }
+            </div>
           </div>
           <div class="col-12">
             <b>Detalles</b>

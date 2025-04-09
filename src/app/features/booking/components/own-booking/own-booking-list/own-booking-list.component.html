@@ -1,33 +1,17 @@
 <div class="container">
-  <h1 class="">Reservas Centros Scout</h1>
-  <div class="mb-3 d-flex gap-2">
-    <p-multi-select
-      [autofocusFilter]="false"
-      [options]="groups"
-      [showHeader]="false"
-      (onChange)="onFilterChange($event)"
-      (onClear)="onFilterChange()"
-      placeholder="Filtrar unidades"
-      styleClass="fw-normal w-100"
-      showClear
-      [(ngModel)]="selectedGroups"
-      [maxSelectedLabels]="10"
-      appendTo="body"
-      optionLabel="name"
-      optionValue="id"
-    ></p-multi-select>
+  <h1>Reservas Centros Scout</h1>
+  <div class="mb-3 d-flex justify-content-end">
     <p-button
       label="Añadir"
       icon="pi pi-plus"
       (onClick)="openForm()"
     ></p-button>
   </div>
-  @if (pendingBookings) {
     <div class="d-flex flex-column gap-3">
       <p-table
         #tab
         showGridlines
-        [value]="pendingBookings"
+        [value]="bookings"
         [paginator]="true"
         [rows]="25"
         [rowsPerPageOptions]="[5,10,25,50]"
@@ -37,6 +21,7 @@
         [loading]="loading"
         [lazy]="true"
         (onLazyLoad)="loadBookingWithFilter($event)"
+        [filters]="{groupIds: {value: selectedGroups}}"
         [totalRecords]="totalRecords"
       >
         <ng-template pTemplate="header">
@@ -52,25 +37,24 @@
               <p-sortIcon field="startDate"></p-sortIcon>
             </th>
           </tr>
-          <!--<tr>
+          <tr>
             <th></th>
             <th>
-              <input
-                pInputText
-                class="w-100"
-                placeholder="Filtrar"
-                type="text"
-                (input)="tab.filter($any($event.target).value, 'organizationName', 'custom')"
-              />
-            </th>
-            <th>
-              <input
-                pInputText
-                class="w-100"
-                placeholder="Filtrar"
-                type="text"
-                (input)="tab.filter($any($event.target).value, 'cif', 'custom')"
-              />
+              <p-multi-select
+                [autofocusFilter]="false"
+                [options]="groups"
+                [showHeader]="false"
+                (onChange)="tab.filter($event.value, 'groupIds', 'custom')"
+                (onClear)="tab.filter(null, 'groupIds', 'custom')"
+                placeholder="Filtrar unidades"
+                styleClass="fw-normal w-100"
+                showClear
+                [ngModel]="selectedGroups"
+                [maxSelectedLabels]="2"
+                appendTo="body"
+                optionLabel="name"
+                optionValue="id"
+              ></p-multi-select>
             </th>
             <th>
               <p-multiSelect
@@ -84,7 +68,6 @@
                 placeholder="Filtrar"
                 styleClass="w-100 fw-normal"
                 showClear
-                [ngModel]="scoutCenterFilter"
                 [maxSelectedLabels]="1"
               ></p-multiSelect>
             </th>
@@ -100,7 +83,6 @@
                 placeholder="Filtrar"
                 styleClass="w-100 fw-normal"
                 showClear
-                [ngModel]="statusFilter"
                 [maxSelectedLabels]="1"
               ></p-multiSelect>
             </th>
@@ -116,7 +98,7 @@
                 showClear
               ></p-date-picker>
             </th>
-          </tr>-->
+          </tr>
         </ng-template>
         <ng-template pTemplate="body" let-booking>
           <tr style="outline: none;" pSelectableRow routerLink="{{booking.id}}">
@@ -132,7 +114,7 @@
             <td>
               {{ booking.status | bookingStatus }}
             </td>
-            <td>
+            <td style="width: 12rem">
               <div class="text-center">{{ booking.startDate | date:"dd/MM/yy" }} - {{ booking.endDate | date:"dd/MM/yy" }}</div>
             </td>
           </tr>
@@ -146,7 +128,4 @@
         </ng-template>
       </p-table>
     </div>
-  } @else {
-    <app-basic-loading-info></app-basic-loading-info>
-  }
 </div>

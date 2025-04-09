@@ -1,1 +1,117 @@
-<p>own-booking-follow-up works!</p>
+<div class="container">
+  <div class="d-flex justify-content-start flex-wrap gap-2 align-items-center">
+    <app-general-a-button
+      icon="pi pi-arrow-left"
+      class="fs-3 p-button-rounded"
+      variant="outlined"
+      routerLink="/centros-scout/grupo"
+      title="Atrás"
+    ></app-general-a-button>
+    <h2 class="mb-0">Reserva Nº{{ booking?.id }}</h2>
+  </div>
+  @if (booking) {
+    <div class="d-flex gap-2 align-items-center mt-2 mb-1">
+      <h2 class="mb-0 fw-bold fs-5 text-dark">Datos</h2>
+    </div>
+    <div class="d-flex flex-column gap-3">
+      <div class="info-container">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <b>Entidad</b>
+            <div>Asociación Scouts-Exploradores Bentaya</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Unidad</b>
+            <div>{{ booking.group?.name }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Fecha de solicitud</b>
+            <div>{{ booking.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Centro Scout</b>
+            <div>{{ booking.scoutCenter.name }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Número de participantes</b>
+            <div>{{ booking.packs }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Fecha de entrada</b>
+            <div>{{ booking.startDate | date:"dd/MM/yyyy HH:mm" }}</div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <b>Fecha de salida</b>
+            <div>{{ booking.endDate | date:"dd/MM/yyyy HH:mm" }}</div>
+          </div>
+          <div class="col-12 col-lg-6">
+            @if (booking.status === 'OCCUPIED') {
+              <b>Centro en exclusividad</b>
+            } @else {
+              <b>Solicita centro en exclusividad</b>
+            }
+            <div>
+              {{ booking.exclusiveReservation ? 'Sí' : 'No' }}
+              @if (bookingIsAlwaysExclusive(booking)) {
+                (Siempre es exclusivo)
+              }
+            </div>
+          </div>
+          <div class="col-12">
+            <b>Detalles</b>
+            <div>{{ booking.observations }}</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <h2 class="mb-0 fw-bold fs-5 text-dark">Estado actual</h2>
+          <p-tag
+            [value]="booking.status | bookingStatus"
+            [severity]="booking.status | bookingStatus:'severity'"
+            styleClass="fs-6 rounded-3"
+          />
+        </div>
+        <div class="d-flex flex-column gap-1 align-items-start mt-2">
+          @switch (booking.status) {
+            @case ('CANCELED') {
+              <div>Se ha cancelado la reserva por el siguiente motivo:</div>
+              <span>{{ booking.statusObservations }}</span>
+            }
+            @case ('REJECTED') {
+              <div>
+                <b>Motivo de la denegación:</b>
+                <div>{{ booking.statusObservations }}</div>
+              </div>
+            }
+            @default {
+              <p>
+                Puedes leer las normas haciendo click
+                <a class="link cursor-pointer" (click)="downloadRuleFile(booking.scoutCenter.id)">aquí</a>.
+              </p>
+            }
+          }
+        </div>
+      </div>
+      <div>
+        <div class="d-flex gap-2 align-items-center flex-wrap">
+          <h2 class="mb-0 fw-bold fs-5 text-dark">Acciones</h2>
+          @if (booking.status !== 'CANCELED' && booking.status !== 'REJECTED') {
+            <p-button
+              styleClass="py-1 px-2 gap-1 border-2"
+              severity="danger"
+              label="Cancelar Reserva"
+              [loading]="loading"
+              (click)="cancelReservation()"
+              outlined
+          ></p-button>
+          } @else {
+            <p-tag severity="secondary" value="No hay acciones disponibles" styleClass="rounded-3"/>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <app-basic-loading-info></app-basic-loading-info>
+  }
+</div>

@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {BookingForm} from "../model/booking-form.model";
 import {Booking} from "../model/booking.model";
@@ -8,6 +8,8 @@ import {BookingDateForm} from "../model/booking-date-form.model";
 import {BookingDateAndStatus} from "../model/booking-date-and-status.model";
 import {BookingDocument, BookingDocumentForm, BookingDocumentType} from "../model/booking-document.model";
 import {OwnBookingForm} from "../model/own-booking-form.model";
+import {PagedFilter} from "../../../shared/model/filter.model";
+import {Page} from "../../../shared/model/page.model";
 
 @Injectable({
   providedIn: 'root'
@@ -76,11 +78,19 @@ export class BookingService {
     return this.http.delete<void>(`${this.bookingUrl}/document/${fileId}`);
   }
 
-  getOwnBookings(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(`${this.bookingUrl}/own`);
+  getOwnById(id: number): Observable<Booking> {
+    return this.http.get<Booking>(`${this.bookingUrl}/own/${id}`);
+  }
+
+  getOwnBookings(filter?: PagedFilter): Observable<Page<Booking>> {
+    return this.http.get<Page<Booking>>(`${this.bookingUrl}/own`, {params: new HttpParams({fromObject: filter})});
   }
 
   addOwnBooking(ownBooking: OwnBookingForm) {
     return this.http.post(`${this.bookingUrl}/own/new`, ownBooking);
+  }
+
+  cancelOwnBooking(bookingId: number, dto: { observations: string }): Observable<Booking> {
+    return this.http.patch<Booking>(`${this.bookingUrl}/own/cancel/${bookingId}`, dto);
   }
 }
