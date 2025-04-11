@@ -1,0 +1,143 @@
+@if (this.editing()) {
+  <div>
+    <h3 class="text-black">Editar Datos</h3>
+    <form class="form-container" [formGroup]="helper.form">
+      <div class="row">
+        @if (!booking.isOwnBooking) {
+          <div class="col-12 col-md-6">
+            <p-floatlabel variant="on">
+              <input
+                pInputText
+                id="groupName"
+                formControlName="groupName"
+              >
+              <label class="required" for="groupName">Nombre de la asociación</label>
+            </p-floatlabel>
+          </div>
+          <div class="col-12 col-md-6">
+            <p-floatlabel variant="on">
+              <input
+                pInputText
+                id="cif"
+                formControlName="cif"
+              >
+              <label class="required" for="cif">CIF</label>
+            </p-floatlabel>
+          </div>
+        }
+        <div class="col-12 col-md-6">
+          <p-floatlabel variant="on">
+            <p-select
+              formControlName="scoutCenterId"
+              id="scoutCenterId"
+              [options]="scoutCenters"
+              (onChange)="loadCenterData()"
+              appendTo="body"
+              optionLabel="name"
+              optionValue="id"
+            ></p-select>
+            <label class="required" for="scoutCenterId">Centro Scout</label>
+          </p-floatlabel>
+          @if (helper.isDirtyAndInvalid('scoutCenterId')) {
+            <small class="text-danger">Elija un centro Scout</small>
+          } @else if (selectedCenterInfo) {
+            <small>Aforo máximo del centro: {{ selectedCenterInfo.maxCapacity }}</small>
+          }
+        </div>
+        <div class="col-12 col-md-6">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              formControlName="packs"
+              id="packs"
+              type="number"
+              pKeyFilter="pint"
+              min="1"
+              [max]="selectedCenterInfo.maxCapacity"
+            >
+            <label class="required" for="packs">Número de personas participantes</label>
+          </p-floatlabel>
+          @if (helper.isDirtyAndInvalidWithError('packs', 'required', 'min')) {
+            <small class="text-danger">Introduzca un número positivo de personas participantes</small>
+          }
+          @if (helper.isDirtyAndInvalidWithError('packs', 'max')) {
+            <small class="text-danger">El número de personas participantes no debe superar el aforo
+              máximo ({{ selectedCenterInfo.maxCapacity }})</small>
+          }
+        </div>
+        <div class="col-12 col-md-6">
+          <p-floatlabel variant="on">
+            <p-datePicker
+              id="startDate"
+              formControlName="startDate"
+              dataType="date"
+              [showTime]="true"
+              [stepMinute]="15"
+              [showClear]="true"
+              appendTo="body"
+            ></p-datePicker>
+            <label class="required" for="startDate">Fecha de entrada</label>
+          </p-floatlabel>
+          @if (helper.isDirtyAndInvalidWithError('startDate', 'required')) {
+            <small class="text-danger">Debe introducir una fecha de entrada en formato dd/mm/yyyy</small>
+          } @else if (helper.isDirtyAndInvalidWithError('startDate', 'endDateBefore')) {
+            <small class="text-danger">La fecha de entrada debe ser anterior a la de salida</small>
+          }
+        </div>
+        <div class="col-12 col-md-6">
+          <p-floatlabel variant="on">
+            <p-datePicker
+              id="endDate"
+              formControlName="endDate"
+              dataType="date"
+              [showTime]="true"
+              [stepMinute]="15"
+              [showClear]="true"
+              appendTo="body"
+            ></p-datePicker>
+            <label class="required" for="endDate">Fecha de salida</label>
+          </p-floatlabel>
+          @if (helper.isDirtyAndInvalidWithError('endDate', 'required')) {
+            <small class="text-danger">Debe introducir una fecha de salida en formato dd/mm/yyyy</small>
+          } @else if (helper.isDirtyAndInvalidWithError('endDate', 'endDateBefore')) {
+            <small class="text-danger">La fecha de salida debe ser posterior a la de entrada</small>
+          }
+        </div>
+        @if (showPrice) {
+          <div class="col-12">
+            <p-floatlabel variant="on">
+              <p-input-number
+                styleClass="w-100"
+                class="w-100"
+                id="amount"
+                currency="EUR"
+                mode="currency"
+                locale="es-ES"
+                formControlName="price"
+                [min]="0"
+              ></p-input-number>
+              <label class="required" for="amount">Aportación</label>
+            </p-floatlabel>
+          </div>
+        }
+        @if (!centerIsAlwaysExclusive(selectedCenterInfo)) {
+          <div class="col-12">
+            <app-checkbox-container label="Centro en exclusividad">
+              <p-checkbox
+                id="exclusiveReservation"
+                formControlName="exclusiveReservation"
+                [binary]="true"
+              ></p-checkbox>
+            </app-checkbox-container>
+          </div>
+        }
+      </div>
+    </form>
+    <app-save-buttons
+      [showCancelButton]="true"
+      (onCancel)="cancelEdition.emit()"
+      (onSave)="submitForm()"
+      [saveLoading]="loading"
+    ></app-save-buttons>
+  </div>
+}

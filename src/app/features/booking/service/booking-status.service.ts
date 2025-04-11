@@ -38,4 +38,8 @@ export class BookingStatusService {
   confirmDocuments(bookingId: number): Observable<Booking> {
     return this.http.patch<Booking>(`${this.getBookingUrl()}/documents-accepted/${bookingId}`, {});
   }
+
+  updateBooking(bookingId: number, own: boolean, form: any) {
+    return this.http.patch<Booking>(`${this.getBookingUrl(own)}/update/${bookingId}`, form);
+  }
 }

@@ -10,8 +10,18 @@
     <h2 class="mb-0">{{ booking?.scoutCenter!.name }} Nº{{ id }}</h2>
   </div>
   <hr>
-  @if (booking) {
-    <app-booking-detail [booking]="booking"></app-booking-detail>
+  <app-booking-editor
+    (cancelEdition)="editing = false"
+    (bookingEdited)="loadBooking()"
+    [editing]="editing"
+  ></app-booking-editor>
+  @if (!booking) {
+    <app-basic-loading-info></app-basic-loading-info>
+  } @else if (!editing) {
+    <app-booking-detail
+      [booking]="booking"
+      (startEditing)="startBookingEdition()"
+    ></app-booking-detail>
     <div class="d-flex justify-content-end mb-2">
       <p-toggle-button
         offIcon="fa-solid fa-file-circle-xmark"
@@ -30,7 +40,5 @@
       [calendarDate]="booking.startDate"
       (changeId)="reloadInfo($event)"
     ></app-booking-calendar>
-  } @else {
-    <app-basic-loading-info></app-basic-loading-info>
   }
 </div>

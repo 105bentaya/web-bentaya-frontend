@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit, output} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
 import {Booking, bookingIsAlwaysExclusive} from "../../../model/booking.model";
 import {Status} from "../../../constant/status.constant";
@@ -69,6 +69,7 @@ export class BookingDetailComponent implements OnInit {
     "warn": {label: "Notificar", icon: "pi pi-exclamation-triangle", severity: "warn", action: () => this.sendWarn()},
     "reject": {label: "Denegar", icon: "pi pi-times", severity: "danger", action: () => this.rejectBooking()},
   };
+  protected startEditing = output();
 
   ngOnInit(): void {
     this.bookingService.getBookingDocumentTypes().subscribe(res => {

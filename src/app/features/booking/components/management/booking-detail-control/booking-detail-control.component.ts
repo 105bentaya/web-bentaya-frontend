@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, viewChild} from '@angular/core';
 import {
   BasicLoadingInfoComponent
 } from "../../../../../shared/components/basic-loading-info/basic-loading-info.component";
@@ -15,6 +15,7 @@ import {ToggleButton} from "primeng/togglebutton";
 import {Status} from "../../../constant/status.constant";
 import {FormsModule} from "@angular/forms";
 import {BookingFetcherService} from "../../../service/booking-fetcher.service";
+import {BookingEditorComponent} from "../booking-editor/booking-editor.component";
 
 @Component({
   selector: 'app-booking-detail-control',
@@ -24,7 +25,8 @@ import {BookingFetcherService} from "../../../service/booking-fetcher.service";
     BookingDetailComponent,
     GeneralAButtonComponent,
     ToggleButton,
-    FormsModule
+    FormsModule,
+    BookingEditorComponent
   ],
   templateUrl: './booking-detail-control.component.html',
   styleUrl: './booking-detail-control.component.scss'
@@ -43,16 +45,14 @@ export class BookingDetailControlComponent implements OnInit {
   protected dateRanges!: BookingCalendarInfo[];
   protected showCancelled = false;
 
+  protected editing: boolean = false;
+  private bookingEditor = viewChild.required(BookingEditorComponent);
+
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.booking = undefined;
       this.id = +params['bookingId']!;
-      this.bookingService.getById(this.id).subscribe({
-        next: (result) => {
-          this.booking = result;
-          this.getDateRanges(result.scoutCenter.id);
-        }
-      });
+      this.loadBooking();
     });
   }
 
@@ -67,8 +67,18 @@ export class BookingDetailControlComponent implements OnInit {
     return dateRange.id !== this.id && (dateRange.status === Status.CANCELED || dateRange.status === Status.REJECTED);
   }
 
-  protected reloadInfo(eventId: number) {
-    this.router.navigateByUrl(`/centros-scout/gestion/reserva/${eventId}`);
+  protected reloadInfo(bookingId: number) {
+    this.router.navigateByUrl(`/centros-scout/gestion/reserva/${bookingId}`);
+  }
+
+  protected loadBooking() {
+    this.bookingService.getById(this.id).subscribe({
+      next: (result) => {
+        this.booking = result;
+        this.editing = false;
+        this.getDateRanges(result.scoutCenter.id);
+      }
+    });
   }
 
   protected goBack() {
@@ -78,6 +88,10 @@ export class BookingDetailControlComponent implements OnInit {
   protected filterDateRanges() {
     this.dateRanges = this.showCancelled ? this.allDateRanges :
       this.allDateRanges.filter(dateRange => !this.dateRangeIsCanceledOrRejected(dateRange));
+  }
 
+  protected startBookingEdition() {
+    this.editing = true;
+    this.bookingEditor().initEdition(this.booking!);
   }
 }
