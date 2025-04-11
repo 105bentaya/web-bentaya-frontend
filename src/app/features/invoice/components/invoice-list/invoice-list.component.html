@@ -5,7 +5,7 @@
       <p-button
         title="Añadir factura"
         icon="pi pi-plus"
-        (click)="openInvoiceDialog()"
+        (click)="openInvoiceFormDialog()"
       ></p-button>
     </div>
   </div>
@@ -24,6 +24,7 @@
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} facturas"
     sortField="invoiceDate"
+    selectionMode="single"
     [sortOrder]="-1"
   >
     <ng-template pTemplate="header">
@@ -44,15 +45,24 @@
         <th scope="col">
           Concepto
         </th>
-        <th scope="col">
+        <th scope="col" pSortableColumn="amount">
           Importe
-        </th>
-        <th scope="col" class="text-center w-min">
-          Editar
+          <p-sortIcon field="amount"></p-sortIcon>
         </th>
       </tr>
       <tr>
-        <th scope="col"></th>
+        <th scope="col">
+          <p-date-picker
+            selectionMode="range"
+            styleClass="w-100 fw-normal"
+            appendTo="body"
+            [(ngModel)]="dateRange"
+            (onClose)="filterDates()"
+            (onClear)="filterDates()"
+            readonlyInput
+            showClear
+          ></p-date-picker>
+        </th>
         <th scope="col">
           <p-multiSelect
             [options]="invoiceData?.payers"
@@ -104,14 +114,13 @@
           ></p-multiSelect>
         </th>
         <th scope="col"></th>
-        <th scope="col"></th>
       </tr>
     </ng-template>
     <ng-template
       pTemplate="body"
       let-invoice
     >
-      <tr>
+      <tr pSelectableRow (click)="openInvoiceDetailDialog(invoice)">
         <td>
           {{ invoice.invoiceDate | date:"dd/MM/yyyy" }}
         </td>
@@ -129,22 +138,6 @@
         </td>
         <td>
           {{ invoice.amount / 100 | currency:'EUR':undefined:undefined:'es' }}
-        </td>
-        <td>
-          <div class="d-flex flex-row gap-2 justify-content-center">
-            <app-table-icon-button
-              icon="pi pi-pencil"
-              title="Editar"
-              (click)="openInvoiceDialog(invoice)"
-            ></app-table-icon-button>
-            <app-table-icon-button
-              [disabled]="loading"
-              icon="pi pi-trash"
-              title="Eliminar"
-              severity="danger"
-              (click)="askForDeletion(invoice)"
-            ></app-table-icon-button>
-          </div>
         </td>
       </tr>
     </ng-template>

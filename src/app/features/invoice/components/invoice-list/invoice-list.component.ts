@@ -1,22 +1,22 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, viewChild} from '@angular/core';
 import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {MultiSelectModule} from "primeng/multiselect";
-import {ConfirmationService, PrimeTemplate} from "primeng/api";
-import {TableLazyLoadEvent, TableModule} from "primeng/table";
+import {PrimeTemplate} from "primeng/api";
+import {Table, TableLazyLoadEvent, TableModule} from "primeng/table";
 import {InvoiceService} from "../../invoice.service";
 import {Invoice, InvoiceData} from "../../invoice.model";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {DialogService} from "primeng/dynamicdialog";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {InvoiceDetailComponent} from "../invoice-detail/invoice-detail.component";
 import {InvoiceFormComponent} from "../invoice-form/invoice-form.component";
 import {cloneDeep} from "lodash";
-import {AlertService} from "../../../../shared/services/alert-service.service";
-import {
-  TableIconButtonComponent
-} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
-import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {noop} from "rxjs";
+import {DatePicker} from "primeng/datepicker";
+import {FormsModule} from "@angular/forms";
+import {DateUtils} from "../../../../shared/util/date-utils";
 
 
 @Component({
@@ -29,7 +29,8 @@ import {noop} from "rxjs";
     CurrencyPipe,
     Button,
     DatePipe,
-    TableIconButtonComponent
+    DatePicker,
+    FormsModule
   ],
   templateUrl: './invoice-list.component.html',
   styleUrl: './invoice-list.component.scss',
@@ -39,15 +40,15 @@ export class InvoiceListComponent implements OnInit {
 
   private readonly invoiceService = inject(InvoiceService);
   private readonly dialogService = inject(DynamicDialogService);
-  private readonly alertService = inject(AlertService);
-  private readonly confirmationService = inject(ConfirmationService);
 
   protected invoices!: Invoice[];
   protected invoiceData!: InvoiceData;
   protected totalRecords: number = 0;
   protected loading = true;
 
+  protected dateRange: Date[] | undefined;
   private lastFilter: TableLazyLoadEvent | undefined;
+  private table = viewChild.required(Table);
 
   ngOnInit() {
     this.invoiceService.getData().subscribe(invoiceData => this.invoiceData = invoiceData);
@@ -66,29 +67,33 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
-  protected openInvoiceDialog(invoice?: Invoice) {
+  protected openInvoiceFormDialog() {
     const ref = this.dialogService.openDialog(
       InvoiceFormComponent,
-      invoice ? 'Editar Factura' : 'Añadir Factura',
-      "medium",
-      {invoiceData: cloneDeep(this.invoiceData), invoice}
+      'Añadir Factura',
+      "small",
+      {invoiceData: cloneDeep(this.invoiceData), allowMultipleAdding: true}
     );
     ref.onClose.subscribe(() => this.lastFilter ? this.loadUsersWithFilter(this.lastFilter) : noop());
   }
 
-  protected askForDeletion(invoice: Invoice) {
-    this.confirmationService.confirm({
-      message: '¿Desea borrar esta factura? Esta acción no se podrá revertir.',
-      accept: () => this.deleteInvoice(invoice.id)
-    });
+  protected openInvoiceDetailDialog(invoice: Invoice) {
+    const ref = this.dialogService.openDialog(
+      InvoiceDetailComponent,
+      'Factura',
+      "small",
+      {invoice, invoiceData: cloneDeep(this.invoiceData)}
+    );
+    ref.onClose.subscribe(() => this.lastFilter ? this.loadUsersWithFilter(this.lastFilter) : noop());
   }
 
-  private deleteInvoice(id: number) {
-    this.invoiceService.delete(id).subscribe({
-      next: () => {
-        this.alertService.sendBasicSuccessMessage("Factura borrada con éxito");
-        if (this.lastFilter) this.loadUsersWithFilter(this.lastFilter);
-      }
-    });
+  protected filterDates() {
+    if (this.dateRange?.[0]) {
+      const startDate = DateUtils.toLocalDate(this.dateRange[0]);
+      const endDate = DateUtils.toLocalDate(this.dateRange?.[1] ? this.dateRange[1] : this.dateRange[0]);
+      this.table().filter([startDate, endDate], "filterDates", "custom");
+    } else {
+      this.table().filter(null, "filterDates", "custom");
+    }
   }
 }

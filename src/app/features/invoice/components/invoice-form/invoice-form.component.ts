@@ -14,12 +14,14 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
 import {CheckboxModule} from "primeng/checkbox";
 import {InvoiceService} from "../../invoice.service";
 import {SplitButtonModule} from "primeng/splitbutton";
-import {MenuItem} from "primeng/api";
+import {ConfirmationService, MenuItem} from "primeng/api";
 import {DatePicker} from "primeng/datepicker";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {
   CheckboxContainerComponent
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
+import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-invoice-form',
@@ -36,7 +38,8 @@ import {
     CheckboxModule,
     SplitButtonModule,
     DatePicker,
-    CheckboxContainerComponent
+    CheckboxContainerComponent,
+    SaveButtonsComponent
   ],
   templateUrl: './invoice-form.component.html',
   styleUrl: './invoice-form.component.scss'
@@ -47,6 +50,8 @@ export class InvoiceFormComponent implements OnInit {
   private readonly config = inject(DynamicDialogConfig);
   private readonly alertService = inject(AlertService);
   private readonly invoiceService = inject(InvoiceService);
+  readonly confirmationService = inject(ConfirmationService);
+
 
   protected readonly invoiceFormHelper = new FormHelper();
   protected expenseTypes!: InvoiceExpenseType[];
@@ -58,8 +63,11 @@ export class InvoiceFormComponent implements OnInit {
 
   private readonly saveButton: MenuItem = {label: "Guardar y cerrar", command: () => this.onSubmit()};
   private readonly saveButtonAndContinue: MenuItem = {label: "Guardar y seguir", command: () => this.onSubmit(true)};
-  protected buttons = [this.saveButtonAndContinue];
+  protected buttons: MenuItem[] | undefined;
   protected saveAndContinue: boolean = false;
+
+  protected saveLoading: boolean = false;
+  protected deleteLoading: boolean = false;
 
   ngOnInit(): void {
     if (this.config.data) {
@@ -72,6 +80,9 @@ export class InvoiceFormComponent implements OnInit {
         this.initForm(this.invoiceToUpdate);
       } else {
         this.initForm();
+      }
+      if (this.config.data.allowMultipleAdding) {
+        this.buttons = [this.saveButtonAndContinue];
       }
     } else {
       this.alertService.sendBasicErrorMessage("No se han cargado los datos necesarios para rellenar el formulario");
@@ -114,16 +125,17 @@ export class InvoiceFormComponent implements OnInit {
       invoice.amount *= 100;
       invoice.invoiceDate = DateUtils.toLocalDate(invoice.invoiceDate);
       invoice.paymentDate = DateUtils.toLocalDate(invoice.paymentDate);
-      this.saveOrUpdate(invoice).subscribe({
-        next: invoice => {
+      this.saveLoading = true;
+      this.saveOrUpdate(invoice)
+        .pipe(finalize(() => this.saveLoading = false))
+        .subscribe(invoice => {
           this.alertService.sendBasicSuccessMessage("Éxito al guardar la factura");
           if (continueAdding) {
             this.resetForm(invoice);
           } else {
-            this.ref.close();
+            this.ref.close(invoice);
           }
-        }
-      });
+        });
     }
   }
 
@@ -151,5 +163,22 @@ export class InvoiceFormComponent implements OnInit {
       this.invoiceFormHelper.get("paymentDate")?.setValue(event);
       this.invoiceFormHelper.get("invoiceDate")?.setValue(event);
     }
+  }
+
+  protected askForDeletion() {
+    this.confirmationService.confirm({
+      message: '¿Desea borrar esta factura? Esta acción no se podrá revertir.',
+      accept: () => this.deleteInvoice()
+    });
+  }
+
+  private deleteInvoice() {
+    this.deleteLoading = true;
+    this.invoiceService.delete(this.invoiceToUpdate!.id).subscribe({
+      next: () => {
+        this.alertService.sendBasicSuccessMessage("Factura borrada con éxito");
+        this.ref.close("deleted");
+      }
+    });
   }
 }

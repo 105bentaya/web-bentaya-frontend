@@ -1,0 +1,65 @@
+<div>
+  <div class="info-container">
+    <div class="position-absolute" style="height: 1.75rem; right: 1rem;">
+      <p-button styleClass="h-100 px-2" (click)="openInvoiceDialog()">Editar Factura</p-button>
+    </div>
+    <div class="mt-1">
+      <div class="row">
+        <div class="col-12">
+          <b>Emite (CIF)</b>
+          <div>{{ invoice.issuer }} ({{ invoice.nif }})</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <b>Importe</b>
+          <div>{{ invoice.amount / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <b>Fecha de Factura</b>
+          <div>{{ invoice.invoiceDate | date:"dd/MM/yyyy" }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <b>Fecha de Pago</b>
+          <div>{{ invoice.paymentDate | date:"dd/MM/yyyy" }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <b>Concepto</b>
+          <div>{{ invoice.expenseType.expenseType | titlecase }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <b>Forma de pago</b>
+          <div>{{ invoice.method | titlecase }}</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <b>Genera</b>
+          <div>{{ invoice.payer.payer }}</div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <b>Número de factura</b>
+          <div>{{ invoice.invoiceNumber }}</div>
+        </div>
+        <div class="col">
+          <b>Usada en Subvención</b>
+          <div>{{ invoice.grant?.grantName || 'Ninguna' }}</div>
+        </div>
+        <div class="col-12 mb-2">
+          <b>Observaciones</b>
+          <div>{{ invoice.observations || 'Ninguna' }}</div>
+        </div>
+        <div class="col-12 d-flex flex-row flex-wrap gap-4 align-items-end">
+          <div class="d-flex flex-column">
+            <b>Recibí</b>
+            <div>{{ invoice.receipt | boolean }}</div>
+          </div>
+          <div class="d-flex flex-column">
+            <b>Cumple</b>
+            <div>{{ invoice.complies | boolean }}</div>
+          </div>
+          <div class="d-flex flex-column">
+            <b>Liquidada</b>
+            <div>{{ invoice.liquidated | boolean }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

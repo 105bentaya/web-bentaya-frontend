@@ -128,12 +128,13 @@
         <small>Rellene todos los campos obligatorios (<b>*</b>)</small><br>
       }
     </div>
-    <p-split-button
-      class="text-center"
-      [label]="saveAndContinue ? 'Guardar y seguir' : 'Guardar'"
-      (onClick)="onSubmit(saveAndContinue)"
-      [model]="buttons"
-      appendTo="body"
-    ></p-split-button>
+    <app-save-buttons
+      [showCancelButton]="true"
+      cancelLabel="Borrar"
+      (onCancel)="askForDeletion()"
+      [saveSplitButtonModel]="buttons"
+      (onSave)="onSubmit(saveAndContinue)"
+      [saveLabel]="saveAndContinue ? 'Guardar y seguir' : 'Guardar'"
+    ></app-save-buttons>
   </form>
 </div>

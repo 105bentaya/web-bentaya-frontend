@@ -138,12 +138,10 @@
             <div>{{ booking.observations || 'Ninguna' }}</div>
           </div>
           @if (showMoreData) {
-            @if (booking.groupDescription) {
-              <div class="col-12">
-                <b>Descripción entidad</b>
-                <div>{{ booking.groupDescription }}</div>
-              </div>
-            }
+            <div class="col-12">
+              <b>Descripción entidad</b>
+              <div>{{ booking.groupDescription || '-' }}</div>
+            </div>
             <div class="col-12">
               <b>Uso de instalaciones</b>
               <div>{{ booking.facilityUse }}</div>

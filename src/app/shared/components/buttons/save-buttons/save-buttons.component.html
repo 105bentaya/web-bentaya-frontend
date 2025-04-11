@@ -6,21 +6,34 @@
         [loading]="cancelLoading"
         [label]="cancelLabel"
         severity="danger"
-        (click)="onCancel.emit()"
+        (onClick)="onCancel.emit()"
         [type]="cancelType"
       ></p-button>
     }
     @if (showSaveButton) {
-      <p-button
-        [disabled]="cancelLoading || saveDisabled"
-        [loading]="saveLoading"
-        [label]="saveLabel"
-        (click)="onSave.emit()"
-        [class]="saveClass"
-        [icon]="saveIcon"
-        [type]="saveType"
-        [severity]="saveSeverity"
-      ></p-button>
+      @if (saveSplitButtonModel) {
+        <p-split-button
+          [disabled]="cancelLoading || saveDisabled || saveLoading"
+          [label]="saveLabel"
+          (onClick)="onSave.emit()"
+          [class]="saveClass"
+          [icon]="saveLoading ? 'pi pi-spin pi-spinner' : saveIcon"
+          [severity]="saveSeverity"
+          [model]="saveSplitButtonModel"
+          appendTo="body"
+        ></p-split-button>
+      } @else {
+        <p-button
+          [disabled]="cancelLoading || saveDisabled"
+          [loading]="saveLoading"
+          [label]="saveLabel"
+          (onClick)="onSave.emit()"
+          [class]="saveClass"
+          [icon]="saveIcon"
+          [type]="saveType"
+          [severity]="saveSeverity"
+        ></p-button>
+      }
     }
   </div>
 </div>
