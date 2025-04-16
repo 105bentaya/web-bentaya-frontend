@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {Params, Router} from "@angular/router";
+import {Params, Router, RouterStateSnapshot} from "@angular/router";
 import {identity, pickBy} from "lodash";
 import {noop} from "rxjs";
 import {AuthService} from "./auth.service";
@@ -19,18 +19,26 @@ export class UserRoutesService {
   private queryParams: Params | undefined;
   private hash: string | undefined;
 
-  saveUnsuccessfulRouting(location: Location) {
-    if (location.pathname === "/login") return;
-    this.route = location.pathname;
-    this.queryParams = this.extractQueryParams(location);
-    this.hash = location.hash?.substring(1);
+  saveUnsuccessfulRouting(location: RouterStateSnapshot) {
+    if (location.url.startsWith("/login")) return;
+    this.route = location.url.split("?")[0].split('#')[0];
+    this.extractQueryParams(location);
+    this.extractHash(location);
   }
 
-  private extractQueryParams(location: Location): Params {
-    const params = new URLSearchParams(location.search);
+  private extractQueryParams(location: RouterStateSnapshot) {
     const queryParams: { [key: string]: string } = {};
-    params.forEach((value, key) => queryParams[key] = value);
-    return queryParams;
+    if (location.url.includes('?')) {
+      const params = new URLSearchParams(location.url.split("?")[1].split('#')[0]);
+      params.forEach((value, key) => queryParams[key] = value);
+    }
+    this.queryParams = queryParams;
+  }
+
+  private extractHash(location: RouterStateSnapshot) {
+    if (location.url.includes('#')) {
+      this.hash = location.url.split('#')[1].split("?")[0];
+    }
   }
 
   navigateToLastRoute() {

@@ -26,7 +26,7 @@ export function authInterceptor(request: HttpRequest<any>, next: HttpHandlerFn):
         alertService.sendBasicErrorMessage(error.error[authException]);
         authService.logout();
         if (!request.url.endsWith(AuthService.userInfoUrl)) {
-          userRoutes.saveUnsuccessfulRouting(location);
+          userRoutes.saveUnsuccessfulRouting(router.routerState.snapshot);
           router.navigate(["login"]).then(noop);
         }
       } else if (error.error?.[bentayaException]) {

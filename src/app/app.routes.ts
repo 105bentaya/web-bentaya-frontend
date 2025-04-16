@@ -19,6 +19,8 @@ import {BookingListComponent} from "./features/booking/components/management/boo
 import {
   BookingManagementCalendarComponent
 } from "./features/booking/components/management/booking-management-calendar/booking-management-calendar.component";
+import {inject} from "@angular/core";
+import {UserRoutesService} from "./core/auth/services/user-routes.service";
 
 export const routes: Routes = [
   {
@@ -241,7 +243,7 @@ export const routes: Routes = [
   //Error
   {
     path: "**",
-    redirectTo: "inicio",
+    redirectTo: () => inject(UserRoutesService).getUserHome(),
     pathMatch: "full"
   },
 ];
