@@ -3,7 +3,7 @@
     pButton
     [href]="href"
     [target]="target"
-    [class]="class"
+    [class]="buttonClass"
     [text]="variant === 'text'"
     [outlined]="variant === 'outlined'"
     [severity]="severity"
@@ -19,7 +19,7 @@
 } @else if (routerLink) {
   <a
     pButton
-    [class]="class"
+    [class]="buttonClass"
     [routerLink]="routerLink"
     [target]="target"
     [text]="variant === 'text'"
@@ -37,7 +37,7 @@
 } @else {
   <a
     pButton
-    [class]="class"
+    [class]="buttonClass"
     [text]="variant === 'text'"
     [outlined]="variant === 'outlined'"
     [severity]="severity"

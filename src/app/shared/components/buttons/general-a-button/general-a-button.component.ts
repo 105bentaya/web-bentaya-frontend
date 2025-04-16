@@ -15,7 +15,7 @@ import {RouterLink} from "@angular/router";
 })
 export class GeneralAButtonComponent {
 
-  @Input() class!: string;
+  @Input() buttonClass!: string;
   @Input() href!: string;
   @Input() routerLink!: string;
   @Input() icon!: string;
