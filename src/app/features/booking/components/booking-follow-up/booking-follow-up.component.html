@@ -139,18 +139,20 @@
             puede descargarlas haciendo click
             <a class="link cursor-pointer" (click)="downloadRuleFile(booking.scoutCenter.id)">aquí</a>.
           </p>
-          <p class="mb-1">
+          <p>
             Precisamos de los siguientes documentos (los que correspondan a su asociación o entidad) para poder
             completar la reserva. Deberá presentarlos 10 días antes del inicio de su reserva, si para dicha fecha no han
             sido correctamente presentados, corre el riesgo de perder su reserva. Para ver más información sobre cada
             tipo de documento, puede pulsar el
             <span class="text-decoration-underline cursor-pointer" (click)="showHelpDialog = true">botón de ayuda</span>.
           </p>
-          @if (validNotOwnDocuments()) {
-            <p>
-              Los documentos que ya están marcados como válidos no tiene que aportarlos.
-            </p>
-          }
+          <p class="mb-1">
+            Una vez haya subido todos los documentos, puede darle al botón de 'Confirmar Documentos' para informar a la
+            gestión que están subidos y listos para ser revisados.
+            @if (validNotOwnDocuments()) {
+              Los documentos que ya están marcados como válidos <b>no tiene que aportarlos</b>.
+            }
+          </p>
           <div class="d-flex flex-wrap-reverse justify-content-end gap-2 mb-2">
             <p-button
               styleClass="border-2 py-1 px-2"
@@ -190,7 +192,7 @@
             Su reserva está totalmente confirmada
             @if (!bookingIsAlwaysExclusive(booking)) {
               <b>
-                {{ booking.exclusiveReservation ? 'sin' : 'con' }}
+                {{ booking.exclusiveReservation ? 'con' : 'sin' }}
                 exclusividad.
               </b>
             }
@@ -337,7 +339,7 @@
       <small>
         Si desea cambiar datos de la reserva o tiene cualquier duda, envíe un correo a
         <a href="mailto:{{bookingEmail}}?subject={{booking.scoutCenter.name}} - Reserva {{bookingId}} - Dudas">
-          {{bookingEmail}}
+          {{ bookingEmail }}
         </a>
       </small>
     </div>

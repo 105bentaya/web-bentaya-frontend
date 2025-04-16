@@ -1,0 +1,11 @@
+.p-inputtext.filled {
+  background: var(--p-inputtext-filled-background);
+  color: unset;
+  cursor: pointer;
+  &:enabled:focus {
+    box-shadow: unset;
+    outline: unset;
+    outline-offset: unset;
+    border: 1px solid var(--p-inputtext-border-color);
+  }
+}

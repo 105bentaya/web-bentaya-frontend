@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit, output} from '@angular/core';
+import {Component, inject, Input, model, OnInit, output} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
 import {Booking, bookingIsAlwaysExclusive} from "../../../model/booking.model";
 import {Status} from "../../../constant/status.constant";
@@ -22,6 +22,11 @@ import {cloneDeep, identity} from "lodash";
 import {TableModule} from "primeng/table";
 import {DocumentEditorComponent} from "../document-editor/document-editor.component";
 import {Tooltip} from "primeng/tooltip";
+import {
+  confirmBookingMessage,
+  invalidDocumentsOnAccept,
+  invalidDocumentsOnConfirm
+} from "../../../constant/confirm-messages.constants";
 
 @Component({
   selector: 'app-booking-detail',
@@ -53,7 +58,7 @@ export class BookingDetailComponent implements OnInit {
   protected readonly bookingIsAlwaysExclusive = bookingIsAlwaysExclusive;
   protected readonly Status = Status;
 
-  @Input() public booking!: Booking;
+  public bookingModel = model.required<Booking>({alias: "booking"});
 
   protected types!: BookingDocumentType[];
   protected loading = false;
@@ -64,36 +69,60 @@ export class BookingDetailComponent implements OnInit {
   protected showMoreData = !!localStorage.getItem("bd_show_more_data");
 
   protected buttonsInfo = {
-    "accept": {label: "Aceptar", icon: "pi pi-check", severity: "success", action: () => this.acceptBooking()},
-    "confirm": {label: "Confirmar", icon: "pi pi-check", severity: "success", action: () => this.confirmBooking()},
-    "warn": {label: "Notificar", icon: "pi pi-exclamation-triangle", severity: "warn", action: () => this.sendWarn()},
-    "reject": {label: "Denegar", icon: "pi pi-times", severity: "danger", action: () => this.rejectBooking()},
+    "accept": {
+      label: "Aceptar",
+      icon: "pi pi-check",
+      severity: "success",
+      action: (button: Button) => this.acceptBooking(button)
+    },
+    "confirm": {
+      label: "Confirmar",
+      icon: "pi pi-check",
+      severity: "success",
+      action: (button: Button) => this.confirmBooking(button)
+    },
+    "warn": {
+      label: "Notificar",
+      icon: "pi pi-exclamation-triangle",
+      severity: "warn",
+      action: (button: Button) => this.sendWarn(button)
+    },
+    "reject": {
+      label: "Denegar",
+      icon: "pi pi-times",
+      severity: "danger",
+      action: (button: Button) => this.rejectBooking(button)
+    },
   };
   protected startEditing = output();
 
   ngOnInit(): void {
     this.bookingService.getBookingDocumentTypes().subscribe(res => {
       this.types = res;
-      this.getFiles(this.booking.id);
+      this.getFiles();
     });
   }
 
-  protected acceptBooking() {
+  protected acceptBooking(button: Button) {
     const data: any = {
       textAreaLabel: "Alguna observación que considere",
       showPrice: true,
       booking: this.booking
     };
     const notValidFiles = this.files.some(file => file.status !== "ACCEPTED");
-    if (notValidFiles) data["confirmMessage"] = "Para evitar confusiones a la persona solicitante, los documentos nó válidos serán eliminados de la reserva. ¿Desea continuar?";
+    if (notValidFiles) {
+      data["confirmMessage"] = invalidDocumentsOnAccept;
+    }
     this.openDialog("Aceptar Reserva", data).onClose
       .pipe(filter(identity))
       .subscribe(({price, observations}) => this.updateBookingStatus(
-        this.bookingStatusService.acceptBooking(this.booking.id, {price, observations})
+        this.bookingStatusService.acceptBooking(this.booking.id, {price, observations}),
+        button,
+        () => this.getFiles()
       ));
   }
 
-  protected confirmBooking() {
+  protected confirmBooking(button: Button) {
     this.openDialog("Confirmar Reserva", {
       textAreaLabel: "Alguna observación que considere",
       confirmMessage: this.getConfirmMessage(),
@@ -104,21 +133,17 @@ export class BookingDetailComponent implements OnInit {
       .subscribe(({exclusive, observations}) => this.updateBookingStatus(
         this.bookingStatusService.confirmBooking(this.booking.id, this.booking.isOwnBooking!, {
           exclusive: exclusive ?? this.booking.exclusiveReservation,
-          observations})
+          observations
+        }), button
       ));
   }
 
   private getConfirmMessage(): string {
     const hasPendingDocuments = this.files.some(file => file.status !== "ACCEPTED");
-    let confirmMessage = "";
-    if (hasPendingDocuments) {
-      confirmMessage = "¡Hay documentos que no son válidos! ";
-    }
-    confirmMessage += "Una vez acepte esta reserva, la entidad solicitante no podrá editar ni subir nuevos documentos a esta reserva. ¿Desea continuar?";
-    return confirmMessage;
+    return hasPendingDocuments ? `${invalidDocumentsOnConfirm} ${confirmBookingMessage}` : confirmBookingMessage;
   }
 
-  protected sendWarn() {
+  protected sendWarn(button: Button) {
     this.openDialog("Mandar notificación", {
       textAreaLabel: "Mensaje",
       confirmMessage: "¿Desea mandar un mensaje con estos datos?",
@@ -128,11 +153,12 @@ export class BookingDetailComponent implements OnInit {
     }).onClose
       .pipe(filter(identity))
       .subscribe(({subject, observations}) => this.updateBookingStatus(
-        this.bookingStatusService.sendBookingWarning(this.booking.id, {subject, observations})
+        this.bookingStatusService.sendBookingWarning(this.booking.id, {subject, observations}),
+        button
       ));
   }
 
-  protected rejectBooking() {
+  protected rejectBooking(button: Button) {
     this.openDialog("Denegar Reserva", {
       textAreaLabel: "Motivo de denegación",
       textRequired: true,
@@ -140,7 +166,7 @@ export class BookingDetailComponent implements OnInit {
     }).onClose
       .pipe(filter(identity))
       .subscribe(({observations}) => this.updateBookingStatus(
-        this.bookingStatusService.rejectBooking(this.booking.id, this.booking.isOwnBooking!, {observations})
+        this.bookingStatusService.rejectBooking(this.booking.id, this.booking.isOwnBooking!, {observations}), button
       ));
   }
 
@@ -148,19 +174,23 @@ export class BookingDetailComponent implements OnInit {
     return this.dialogService.openDialog(BookingStatusUpdateComponent, header, "small", data);
   }
 
-  private updateBookingStatus(request: Observable<Booking>) {
+  private updateBookingStatus(request: Observable<Booking>, button: Button, endCommand?: Function) {
     this.loading = true;
-    request.subscribe({
-      next: result => {
-        this.booking = result;
+    button.loading = true;
+    request
+      .pipe(finalize(() => {
         this.loading = false;
+        button.loading = false;
+      }))
+      .subscribe(result => {
+        this.bookingModel.set(result);
         this.alertService.sendBasicSuccessMessage("Reserva actualizada con éxito");
-      }, error: () => this.loading = false
-    });
+        endCommand?.();
+      });
   }
 
-  private getFiles(id: number) {
-    return this.bookingService.getBookingDocuments(id).subscribe(res => {
+  private getFiles() {
+    return this.bookingService.getBookingDocuments(this.booking.id).subscribe(res => {
       this.files = res.sort((a, b) => a.typeId - b.typeId);
       this.generateTableFiles();
     });
@@ -219,5 +249,9 @@ export class BookingDetailComponent implements OnInit {
   protected getTypeDescription(id: any) {
     return this.types.find(type => type.id === id)?.description;
 
+  }
+
+  protected get booking() {
+    return this.bookingModel();
   }
 }

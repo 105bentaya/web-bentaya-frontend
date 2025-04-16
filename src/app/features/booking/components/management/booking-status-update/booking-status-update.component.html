@@ -32,14 +32,24 @@
         </div>
         <div class="col-12">
           <input
-            class="w-100"
+            class="w-100 filled"
             pInputText
             readonly
-            variant="filled"
-            style="pointer-events: none"
-            [value]="recommendedPrice"
+            [value]="recommendedPriceText"
+            (click)="setPrice(recommendedPrice)"
           >
         </div>
+        @if (realPriceText) {
+          <div class="col-12">
+            <input
+              class="w-100 filled"
+              pInputText
+              readonly
+              [value]="realPriceText"
+              (click)="setPrice(realPrice)"
+            >
+          </div>
+        }
       </div>
     }
     @if (showSubject) {

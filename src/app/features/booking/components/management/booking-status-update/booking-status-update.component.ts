@@ -54,7 +54,10 @@ export class BookingStatusUpdateComponent implements OnInit {
   protected textRequired: boolean = false;
   protected showPrice: boolean = false;
   protected message: string | undefined;
-  protected recommendedPrice!: string;
+  protected recommendedPrice!: number;
+  protected recommendedPriceText!: string;
+  protected realPrice!: number;
+  protected realPriceText: string | undefined;
   protected showExclusiveness: boolean | undefined;
   protected exclusivenessRequested: boolean | undefined;
   protected showSubject = false;
@@ -102,12 +105,19 @@ export class BookingStatusUpdateComponent implements OnInit {
 
   private calculateRecommendedPrice() {
     const booking: Booking = this.config.data.booking;
-    const priceCalculation = new CurrencyPipe('es', 'EUR').transform(booking.billableDays * booking.scoutCenter.price / 100 * booking.packs);
+    this.recommendedPrice = booking.billableDays * booking.scoutCenter.price / 100 * booking.packs;
+    const priceCalculation = new CurrencyPipe('es', 'EUR').transform(this.recommendedPrice);
     const scoutCenterPrice = new CurrencyPipe('es', 'EUR').transform(booking.scoutCenter.price / 100);
     this.realDays = new HourPipe().transform(booking.minutes, true);
     this.billableDays = booking.billableDays;
+    this.recommendedPriceText = `${booking.billableDays} días × ${booking.packs}pax × ${scoutCenterPrice} = ${priceCalculation} - Según días calculados`;
 
-    this.recommendedPrice = `${booking.billableDays} días × ${booking.packs}pax × ${scoutCenterPrice} = ${priceCalculation} - Según días calculados`;
+    const realDaysAsNumbers = Math.round(booking.minutes / (60 * 24));
+    if (realDaysAsNumbers !== this.billableDays) {
+      this.realPrice = realDaysAsNumbers * booking.scoutCenter.price / 100 * booking.packs;
+      const realPriceCalculation = new CurrencyPipe('es', 'EUR').transform(this.realPrice);
+      this.realPriceText = `${realDaysAsNumbers} días × ${booking.packs}pax × ${scoutCenterPrice} = ${realPriceCalculation} - Según días reales redondeados`;
+    }
   }
 
   private observationsValidators() {
@@ -124,4 +134,8 @@ export class BookingStatusUpdateComponent implements OnInit {
   private readonly exclusivenessRejectedValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     return this.exclusivenessRejected && (!control.value || control.value.length < 1) ? {required: true} : null;
   };
+
+  protected setPrice(recommendedPrice: number) {
+    this.formHelper.get("price")?.setValue(recommendedPrice);
+  }
 }

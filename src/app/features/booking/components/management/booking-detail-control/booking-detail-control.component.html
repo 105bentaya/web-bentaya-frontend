@@ -19,7 +19,7 @@
     <app-basic-loading-info></app-basic-loading-info>
   } @else if (!editing) {
     <app-booking-detail
-      [booking]="booking"
+      [(booking)]="booking"
       (startEditing)="startBookingEdition()"
     ></app-booking-detail>
     <div class="d-flex justify-content-end mb-2">

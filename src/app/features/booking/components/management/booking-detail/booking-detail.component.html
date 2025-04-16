@@ -18,6 +18,7 @@
       outlined
       severity="secondary"
       size="small"
+      [disabled]="loading"
     ></p-button>
   </div>
   <div class="d-flex flex-column gap-3">
@@ -317,24 +318,26 @@
 </p-dialog>
 <ng-template #actionButton let-info>
   <p-button
+    #button
     class="d-none d-sm-block"
     styleClass="py-1 px-2 gap-1 border-2"
     [icon]="info.icon"
     [label]="info.label"
     [severity]="info.severity"
     outlined
-    [loading]="loading"
-    (click)="info.action()"
+    [disabled]="loading"
+    (click)="info.action(button)"
   ></p-button>
   <p-button
+    #button
     size="small"
     class="d-sm-none"
     styleClass="border-2"
     [icon]="info.icon"
     [severity]="info.severity"
     outlined
-    [loading]="loading"
-    (click)="info.action()"
+    [disabled]="loading"
+    (click)="info.action(button)"
   ></p-button>
 </ng-template>
 <ng-template #statusTag let-document>
@@ -350,7 +353,7 @@
     variant="outlined"
     styleClass="border-2 icon-button-x-small"
     icon="fa-solid fa-bars"
-    title="Borrar"
+    title="Acciones"
     [disabled]="loading"
     (onClick)="openDocumentEditor(document)"
   ></p-button>
