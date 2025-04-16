@@ -16,5 +16,6 @@ export class LargeFormButtonsComponent {
   @Input() form!: FormHelper;
   @Input() loading!: boolean;
   @Input() showPrevAtFirstPage = false;
+  @Input() showStartButton = true;
   @Output() onSubmit = new EventEmitter<void>();
 }

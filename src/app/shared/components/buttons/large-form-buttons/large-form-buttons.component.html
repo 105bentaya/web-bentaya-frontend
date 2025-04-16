@@ -28,7 +28,7 @@
       [saveLoading]="loading"
       saveSeverity="success"
     ></app-save-buttons>
-  } @else if (form.isStartPage()) {
+  } @else if (showStartButton && form.isStartPage()) {
     <p-button
       type="button"
       class="ms-auto"

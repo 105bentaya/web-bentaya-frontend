@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MenuItem} from "primeng/api";
 import {BookingService} from "../../service/booking.service";
 import {BookingForm} from "../../model/booking-form.model";
@@ -33,6 +33,9 @@ import {
 import {UserRole} from "../../../users/models/role.model";
 import {BookingDateService} from "../../service/booking-date.service";
 import {BookingFetcherService} from "../../service/booking-fetcher.service";
+import {Button} from "primeng/button";
+import {finalize} from "rxjs";
+import {Select} from "primeng/select";
 
 @Component({
   selector: 'app-booking-form',
@@ -53,7 +56,10 @@ import {BookingFetcherService} from "../../service/booking-fetcher.service";
     LargeFormButtonsComponent,
     DatePipe,
     CheckboxContainerComponent,
-    GeneralAButtonComponent
+    GeneralAButtonComponent,
+    Button,
+    Select,
+    FormsModule
   ]
 })
 export class BookingFormComponent implements OnInit {
@@ -83,6 +89,11 @@ export class BookingFormComponent implements OnInit {
   protected readonly maintenanceEmail = maintenanceEmail;
   protected maxDate!: Date;
 
+  private bookingsToSelect: Booking[] | undefined;
+  protected bookingOptions: { value: number; name: string }[] | undefined;
+  protected selectedBookingId: number = 0;
+  protected infoLoaded = false;
+
   constructor() {
     inject(BookingDateService).getBookingDate().then(date => this.maxDate = date);
   }
@@ -92,16 +103,37 @@ export class BookingFormComponent implements OnInit {
       this.currentUser = this.loggedUserData.getUsername();
     }
     if (this.loggedUserData.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) {
-      this.bookingFetcherService.getLatestByCurrentUser().subscribe({
-        next: res => this.initializeForm(res),
-        error: () => this.initializeForm()
-      });
+      this.bookingFetcherService.getLatestByCurrentUser()
+        .pipe(finalize(() => this.infoLoaded = true))
+        .subscribe(userBookings => this.loadUserBookings(userBookings));
     } else {
-      this.initializeForm();
+      this.infoLoaded = true;
+    }
+  }
+
+  private loadUserBookings(userBookings: Booking[]) {
+    this.bookingsToSelect = userBookings;
+    this.selectedBookingId = userBookings[0].id;
+    this.bookingOptions = userBookings.map(booking => ({
+      name: `${booking.organizationName} - ${booking.cif}`,
+      value: booking.id
+    }));
+    this.bookingOptions.unshift({
+      name: "Nueva Reserva",
+      value: 0
+    });
+  }
+
+  protected startForm() {
+    if (!this.bookingForm.form) {
+      this.initializeForm(this.bookingsToSelect?.find(booking => booking.id === this.selectedBookingId));
+    } else {
+      this.bookingForm.goToFirstPage();
     }
   }
 
   private initializeForm(booking?: Booking) {
+    this.bookingForm.goToFirstPage();
     this.bookingForm.createForm({
       groupName: [booking?.organizationName, Validators.required],
       cif: [booking?.cif, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],

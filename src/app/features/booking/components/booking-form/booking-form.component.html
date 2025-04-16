@@ -11,14 +11,21 @@
       </p>
       <p>En caso de tener algún problema con respecto al correo, contacte a
         <a href="mailto:{{maintenanceEmail}}?subject=PROBLEMAS RESPECTO A SOLICITUD CENTRO SCOUT">
-          {{maintenanceEmail}}
+          {{ maintenanceEmail }}
         </a>
       </p>
-      <app-general-a-button
-        label="Volver a Centros Scout"
-        routerLink="/centros-scout"
-        variant="outlined"
-      ></app-general-a-button>
+      <div class="d-flex flex-wrap gap-2 justify-content-center">
+        <app-general-a-button
+          label="Volver a Centros Scout"
+          routerLink="/centros-scout"
+          variant="outlined"
+        ></app-general-a-button>
+        <app-general-a-button
+          label="Ir a Mis Reservas"
+          routerLink="/centros-scout/seguimiento"
+          variant="outlined"
+        ></app-general-a-button>
+      </div>
     </div>
   } @else {
     <p class="my-3">
@@ -27,317 +34,352 @@
       <a routerLink="/centros-scout/informacion">click aquí</a>. Se permiten reservas hasta el
       <b>{{ maxDate | date:"dd 'de' MMMM 'de' yyyy":undefined:'es' }}</b>, inclusive.
     </p>
-    @if (bookingForm.form) {
+    @if (infoLoaded) {
       <p-steps class="steps-no-label" id="form-steps" [model]="steps" [activeIndex]="bookingForm.currentPage"></p-steps>
-      <form [formGroup]="bookingForm.form" class="form-container">
-        @if (bookingForm.currentPage >= 0) {
-          <div class="step-form-title">{{ steps[bookingForm.currentPage].label }}</div>
-        }
-        @switch (bookingForm.currentPage) {
-          @case (-1) {
-            <div class="pt-4">
-              <p>
-                Lea atentamente los campos que debe de rellenar en la solicitud para evitar errores y así poder
-                concederle el centro cuanto antes. La tramitación de la concesión del Centro Scout solicitado, se divide
-                en tres fases:
-              </p>
-              <ol>
-                <li>
-                  Rellenar este formulario de solicitud con la <b>mayor precisión</b> posible.
-                </li>
-                <li>
-                  Comprobamos que los datos enviados estén bien y <b>aceptamos</b> su reserva de forma <b> provisional</b>, en
-                  caso de que les vayamos a conceder el uso de las instalaciones solicitadas. En caso contrario, nos
-                  pondremos en contacto con usted para informarle de que ha sido denegada y por qué motivo.
-                </li>
-                <li>
-                  Para terminar de concederle el uso de las instalaciones deben de haber adjuntado <b>una serie de
-                  documentos</b> con un máximo de 10 días antes de su entrada. Entre estos documentos se encuentran el
-                  registro de asociaciones o acreditativo del centro educativo y los recibos de los seguros de
-                  responsabilidad civil y de accidentes. Los documentos, que dependen únicamente de la entidad
-                  solicitante, tendrán que estar al día. Una vez comprobados los documentos, <b>confirmamos</b> su
-                  reserva de forma definitiva.
-                </li>
-              </ol>
-              <p>
-                Si <b>ya ha solicitado</b> el uso de nuestras instalaciones con anterioridad y tiene acceso al usuario
-                con el que se hizo la solicitud, puede acceder con el mismo y realizar por ahí el trámite, para
-                <b>evitar volver a introducir</b> los datos proporcionados anteriormente. No obstante, si no tiene
-                acceso al usuario <b>no será necesario volver</b> a aportar la documentación que esté correctamente
-                entregada, ya que esta está asociada al CIF de la entidad.
-              </p>
-            </div>
+      @if (bookingForm.currentPage == -1) {
+        <div class="pt-4">
+          <p>
+            Lea atentamente los campos que debe de rellenar en la solicitud para evitar errores y así poder
+            concederle el centro cuanto antes. La tramitación de la concesión del Centro Scout solicitado, se
+            divide
+            en tres fases:
+          </p>
+          <ol>
+            <li>
+              Rellenar este formulario de solicitud con la <b>mayor precisión</b> posible.
+            </li>
+            <li>
+              Comprobamos que los datos enviados estén bien y <b>aceptamos</b> su reserva de forma <b>
+              provisional</b>, en
+              caso de que les vayamos a conceder el uso de las instalaciones solicitadas. En caso contrario, nos
+              pondremos en contacto con usted para informarle de que ha sido denegada y por qué motivo.
+            </li>
+            <li>
+              Para terminar de concederle el uso de las instalaciones deben de haber adjuntado <b>una serie de
+              documentos</b> con un máximo de 10 días antes de su entrada. Entre estos documentos se encuentran el
+              registro de asociaciones o acreditativo del centro educativo y los recibos de los seguros de
+              responsabilidad civil y de accidentes. Los documentos, que dependen únicamente de la entidad
+              solicitante, tendrán que estar al día. Una vez comprobados los documentos, <b>confirmamos</b> su
+              reserva de forma definitiva.
+            </li>
+          </ol>
+          @if (bookingOptions) {
+            <p>
+              Como ya ha solicitado nuestras instalaciones anteriormente, no es necesario que vuelva a introducir sus
+              datos. A continuación, seleccione la entidad para la que desea hacer la reserva o indique si quiere
+              realizar una nueva reserva para una entidad distinta.
+            </p>
+            <p-floatlabel variant="on">
+              <p-select
+                class="w-100 mb-3"
+                [options]="bookingOptions"
+                [(ngModel)]="selectedBookingId"
+                optionLabel="name"
+                optionValue="value"
+                placeholder="Seleccionar"
+                [disabled]="!!bookingForm.form"
+              />
+              <label>Entidad seleccionada</label>
+            </p-floatlabel>
+          } @else {
+            <p>
+              Si <b>ya ha solicitado</b> el uso de nuestras instalaciones con anterioridad y tiene acceso al usuario
+              con el que se hizo la solicitud, puede acceder con el mismo y realizar por ahí el trámite, para
+              <b>evitar volver a introducir</b> los datos proporcionados anteriormente. No obstante, si no tiene
+              acceso al usuario <b>no será necesario volver</b> a aportar la documentación que esté correctamente
+              entregada, ya que esta está asociada al CIF de la entidad.
+            </p>
           }
-          @case (0) {
-            <div>
-              <div class="row">
-                <div class="col-12 col-md-6">
-                  <p-floatlabel variant="on">
-                    <input
-                      pInputText
-                      formControlName="groupName"
-                      id="groupName"
-                      type="text"
-                      maxlength="255"
-                    >
-                    <label class="required" for="groupName">Nombre de la entidad</label>
-                  </p-floatlabel>
-                  @if (bookingForm.isDirtyAndInvalid('groupName')) {
-                    <small class="text-danger">Introduzca el nombre de la entidad</small>
-                  }
-                </div>
-                <div class="col-12 col-md-6">
-                  <p-floatlabel variant="on">
-                    <input
-                      pInputText
-                      formControlName="cif"
-                      id="cif"
-                      type="text"
-                      maxlength="255"
-                      pKeyFilter="alphanum"
-                    >
-                    <label class="required" for="cif">CIF de la entidad</label>
-                  </p-floatlabel>
-                  @if (bookingForm.isDirtyAndInvalid('cif')) {
-                    <small class="text-danger">Introduzca el CIF de la entidad (sólo letras y números)</small>
-                  } @else {
-                    <small class="opacity-75 ms-1">Emplear formato A12345678</small>
-                  }
-                </div>
-                <div class="col-12 mb-1">
-                  <label class="required" for="facilityUse">
-                    Breve descripción sobre objetivos, fines y actividades de la asociación o centro educativo.
-                  </label>
-                  <app-form-text-area
-                    [maxLength]="512"
-                    formControlName="facilityUse"
-                    id="facilityUse"
-                    [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('facilityUse', 'maxlength')"
-                  ></app-form-text-area>
-                  @if (bookingForm.isDirtyAndInvalidWithError('facilityUse', 'required')) {
-                    <small class="text-danger">Introduzca una breve descripción</small>
-                  }
-                </div>
-                <div class="col-12">
-                  <label class="required" for="groupDescription">
-                    Memoria resumida de la actividad a desarrollar en el centro scout, destacando aspectos educativos,
-                    medioambientales y sociales.
-                  </label>
-                  <app-form-text-area
-                    [maxLength]="2000"
-                    formControlName="groupDescription"
-                    id="groupDescription"
-                    [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('groupDescription', 'maxlength')"
-                  ></app-form-text-area>
-                  @if (bookingForm.isDirtyAndInvalidWithError('groupDescription', 'required')) {
-                    <small class="text-danger">Introduzca una breve memoria</small>
-                  }
-                </div>
-              </div>
-            </div>
+        </div>
+        <div class="d-flex">
+          <p-button
+            type="button"
+            class="ms-auto"
+            icon="pi pi-arrow-circle-right"
+            iconPos="right"
+            label="Comenzar"
+            (click)="startForm()"
+          ></p-button>
+        </div>
+      }
+      @if (bookingForm.form) {
+        <form [formGroup]="bookingForm.form" class="form-container">
+          @if (bookingForm.currentPage >= 0) {
+            <div class="step-form-title">{{ steps[bookingForm.currentPage].label }}</div>
           }
-          @case (1) {
-            <div>
-              <div class="row">
-                <div class="col-12 col-lg-6">
-                  <p-floatlabel variant="on">
-                    <input
-                      pInputText
-                      formControlName="contactName"
-                      id="contactName"
-                      type="text"
-                      maxlength="255"
-                    >
-                    <label class="required" for="contactName">Nombre de la persona de contacto</label>
-                  </p-floatlabel>
-                  @if (bookingForm.isDirtyAndInvalid('contactName')) {
-                    <small class="text-danger">Introduzca el nombre de la persona de contacto</small>
-                  }
-                </div>
-                <div class="col-12 col-lg-6">
-                  <p-floatlabel variant="on">
-                    <input
-                      pInputText
-                      formControlName="relationship"
-                      id="relationship"
-                      type="text"
-                      maxlength="255"
-                    >
-                    <label class="required" for="relationship">Relación con la Asociación o el Centro
-                      Educativo</label>
-                  </p-floatlabel>
-                  @if (bookingForm.isDirtyAndInvalid('relationship')) {
-                    <small class="text-danger">Introduzca la relación de la persona con la entidad
-                      solicitante</small>
-                  }
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12 col-lg-6">
-                  <p-floatlabel variant="on">
-                    <input
-                      pInputText
-                      formControlName="phone"
-                      id="phone"
-                      type="text"
-                      maxlength="255"
-                    >
-                    <label class="required" for="phone">Teléfono de contacto</label>
-                  </p-floatlabel>
-                  @if (bookingForm.isDirtyAndInvalid('phone')) {
-                    <small class="text-danger">Introduzca un teléfono de contacto</small>
-                  }
-                </div>
-                <div class="col-12 col-lg-6">
-                  <p-floatlabel variant="on">
-                    <input
-                      pInputText
-                      formControlName="email"
-                      id="email"
-                      type="text"
-                      [pKeyFilter]="noWhiteSpaceFilter"
-                      maxlength="255"
-                    >
-                    <label class="required" for="email">Correo de contacto</label>
-                  </p-floatlabel>
-
-                  @if (bookingForm.isDirtyAndInvalid('email')) {
-                    <small class="text-danger">Introduzca un correo electrónico válido</small>
-                  }
-                  @if (currentUser && !bookingForm.isDirtyAndInvalid('email') && bookingForm.controlValue('email') !== currentUser) {
-                    <small class="text-warning-emphasis">Si cambia el correo electrónico, el usuario actual
-                      ({{ currentUser }}) no tendrá acceso a la reserva, por lo que tendrá que ser gestionada desde
-                      el
-                      nuevo usuario ({{ bookingForm.controlValue('email') }})
-                    </small>
-                  }
-                </div>
-              </div>
-            </div>
-          }
-          @case (3) {
-            <div>
-              @if (centerSelectionComponent.eligibleForExclusiveness) {
+          @switch (bookingForm.currentPage) {
+            @case (0) {
+              <div>
                 <div class="row">
-                  <div class="col-12">
-                    <span class="user-select-none">Ha alcanzado el aforo necesario para poder realizar una reserva en exclusividad, ¿desea
-                      hacerlo?</span>
-                    <div class="d-flex align-items-center">
-                      <app-checkbox-container label="Solicitar centro en exclusividad">
-                        <p-checkbox
-                          id="exclusiveReservation"
-                          formControlName="exclusiveReservation"
-                          [binary]="true"
-                        ></p-checkbox>
-                      </app-checkbox-container>
-                    </div>
+                  <div class="col-12 col-md-6">
+                    <p-floatlabel variant="on">
+                      <input
+                        pInputText
+                        formControlName="groupName"
+                        id="groupName"
+                        type="text"
+                        maxlength="255"
+                      >
+                      <label class="required" for="groupName">Nombre de la entidad</label>
+                    </p-floatlabel>
+                    @if (bookingForm.isDirtyAndInvalid('groupName')) {
+                      <small class="text-danger">Introduzca el nombre de la entidad</small>
+                    }
                   </div>
-                </div>
-              }
-              <div class="row">
-                <div class="col-12 mb-0">
-                  <p-floatlabel variant="on">
-                    <label for="observations">
-                      Observaciones a tener en cuenta a la hora de estudiar su reserva
+                  <div class="col-12 col-md-6">
+                    <p-floatlabel variant="on">
+                      <input
+                        pInputText
+                        formControlName="cif"
+                        id="cif"
+                        type="text"
+                        maxlength="255"
+                        pKeyFilter="alphanum"
+                      >
+                      <label class="required" for="cif">CIF de la entidad</label>
+                    </p-floatlabel>
+                    @if (bookingForm.isDirtyAndInvalid('cif')) {
+                      <small class="text-danger">Introduzca el CIF de la entidad (sólo letras y números)</small>
+                    } @else {
+                      <small class="opacity-75 ms-1">Emplear formato A12345678</small>
+                    }
+                  </div>
+                  <div class="col-12 mb-1">
+                    <label class="required" for="groupDescription">
+                      Breve descripción sobre objetivos, fines y actividades de la asociación o centro educativo.
                     </label>
                     <app-form-text-area
-                      [maxLength]="1023"
-                      formControlName="observations"
-                      id="observations"
-                      [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('observations', 'maxlength')"
+                      [maxLength]="512"
+                      formControlName="groupDescription"
+                      id="groupDescription"
+                      [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('groupDescription', 'maxlength')"
                     ></app-form-text-area>
-                  </p-floatlabel>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <app-checkbox-container [privacy]="true">
-                    <p-checkbox
-                      id="privacy"
-                      formControlName="privacy"
-                      [binary]="true"
-                    ></p-checkbox>
-                  </app-checkbox-container>
-                  @if (bookingForm.isDirtyAndInvalid('privacy')) {
-                    <small class="text-danger">Debe leer y estar de acuerdo con los términos.</small>
-                  }
-                </div>
-              </div>
-            </div>
-          }
-          @case (4) {
-            <div>
-              <p>
-                Se mandarán los siguientes datos con los que tramitaremos su solicitud, rogamos que compruebe que
-                estén todos bien.
-              </p>
-              <div class="row confirmation-container">
-                <div class="col-12 mb-0">
-                  <b class="fs-5">Datos de la asociación o centro educativo</b>
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>Nombre:</b> {{ booking.groupName }}
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>CIF:</b> {{ booking.cif }}
-                </div>
-                <div class="col-12">
-                  <b>Descripción sobre el uso de las instalaciones:</b> {{ booking.facilityUse }}
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>Nombre de contacto:</b> {{ booking.contactName }}
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>Relación o puesto del contacto:</b> {{ booking.relationship }}
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>Correo electrónico:</b> {{ booking.email }}
-                  @if (currentUser && booking.email !== currentUser) {
-                    <small class="text-warning-emphasis">(La reserva se asignará a {{ booking.email }})</small>
-                  }
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>Teléfono:</b> {{ booking.phone }}
-                </div>
-                <div class="col-12 mb-0">
-                  <b class="fs-5">Datos de la solicitud</b>
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>Centro Scout:</b> {{ centerSelectionComponent.selectedCenterName }}
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>Número de personas:</b> {{ booking.packs }}
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>Fecha de entrada:</b> {{ booking.startDate | date:"dd/MM/yyyy HH:mm" }}
-                </div>
-                <div class="col-12 col-lg-6">
-                  <b>Fecha de salida:</b> {{ booking.endDate | date:"dd/MM/yyyy HH:mm" }}
-                </div>
-                <div class="col-12">
-                  <b>Observaciones:</b> {{ booking.observations || 'Ninguna' }}
-                </div>
-                @if (centerSelectionComponent.eligibleForExclusiveness) {
+                    @if (bookingForm.isDirtyAndInvalidWithError('groupDescription', 'required')) {
+                      <small class="text-danger">Introduzca una breve descripción</small>
+                    }
+                  </div>
                   <div class="col-12">
-                    <b>Centro en exclusividad:</b> {{ booking.exclusiveReservation ? 'Sí' : 'No' }}
+                    <label class="required" for="facilityUse">
+                      Memoria resumida de la actividad a desarrollar en el centro scout, destacando aspectos educativos,
+                      medioambientales y sociales.
+                    </label>
+                    <app-form-text-area
+                      [maxLength]="2000"
+                      formControlName="facilityUse"
+                      id="facilityUse"
+                      [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('facilityUse', 'maxlength')"
+                    ></app-form-text-area>
+                    @if (bookingForm.isDirtyAndInvalidWithError('facilityUse', 'required')) {
+                      <small class="text-danger">Introduzca una breve memoria</small>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+            @case (1) {
+              <div>
+                <div class="row">
+                  <div class="col-12 col-lg-6">
+                    <p-floatlabel variant="on">
+                      <input
+                        pInputText
+                        formControlName="contactName"
+                        id="contactName"
+                        type="text"
+                        maxlength="255"
+                      >
+                      <label class="required" for="contactName">Nombre de la persona de contacto</label>
+                    </p-floatlabel>
+                    @if (bookingForm.isDirtyAndInvalid('contactName')) {
+                      <small class="text-danger">Introduzca el nombre de la persona de contacto</small>
+                    }
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <p-floatlabel variant="on">
+                      <input
+                        pInputText
+                        formControlName="relationship"
+                        id="relationship"
+                        type="text"
+                        maxlength="255"
+                      >
+                      <label class="required" for="relationship">Relación con la Asociación o el Centro
+                        Educativo</label>
+                    </p-floatlabel>
+                    @if (bookingForm.isDirtyAndInvalid('relationship')) {
+                      <small class="text-danger">Introduzca la relación de la persona con la entidad
+                        solicitante</small>
+                    }
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-lg-6">
+                    <p-floatlabel variant="on">
+                      <input
+                        pInputText
+                        formControlName="phone"
+                        id="phone"
+                        type="text"
+                        maxlength="255"
+                      >
+                      <label class="required" for="phone">Teléfono de contacto</label>
+                    </p-floatlabel>
+                    @if (bookingForm.isDirtyAndInvalid('phone')) {
+                      <small class="text-danger">Introduzca un teléfono de contacto</small>
+                    }
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <p-floatlabel variant="on">
+                      <input
+                        pInputText
+                        formControlName="email"
+                        id="email"
+                        type="text"
+                        [pKeyFilter]="noWhiteSpaceFilter"
+                        maxlength="255"
+                      >
+                      <label class="required" for="email">Correo de contacto</label>
+                    </p-floatlabel>
+
+                    @if (bookingForm.isDirtyAndInvalid('email')) {
+                      <small class="text-danger">Introduzca un correo electrónico válido</small>
+                    }
+                    @if (currentUser && !bookingForm.isDirtyAndInvalid('email') && bookingForm.controlValue('email') !== currentUser) {
+                      <small class="text-warning-emphasis">Si cambia el correo electrónico, el usuario actual
+                        ({{ currentUser }}) no tendrá acceso a la reserva, por lo que tendrá que ser gestionada desde
+                        el
+                        nuevo usuario ({{ bookingForm.controlValue('email') }})
+                      </small>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+            @case (3) {
+              <div>
+                @if (centerSelectionComponent.eligibleForExclusiveness) {
+                  <div class="row">
+                    <div class="col-12">
+                    <span class="user-select-none">Ha alcanzado el aforo necesario para poder realizar una reserva en exclusividad, ¿desea
+                      hacerlo?</span>
+                      <div class="d-flex align-items-center">
+                        <app-checkbox-container label="Solicitar centro en exclusividad">
+                          <p-checkbox
+                            id="exclusiveReservation"
+                            formControlName="exclusiveReservation"
+                            [binary]="true"
+                          ></p-checkbox>
+                        </app-checkbox-container>
+                      </div>
+                    </div>
                   </div>
                 }
+                <div class="row">
+                  <div class="col-12 mb-0">
+                    <p-floatlabel variant="on">
+                      <label for="observations">
+                        Observaciones a tener en cuenta a la hora de estudiar su reserva
+                      </label>
+                      <app-form-text-area
+                        [maxLength]="1023"
+                        formControlName="observations"
+                        id="observations"
+                        [showErrorMessage]="bookingForm.isDirtyAndInvalidWithError('observations', 'maxlength')"
+                      ></app-form-text-area>
+                    </p-floatlabel>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <app-checkbox-container [privacy]="true">
+                      <p-checkbox
+                        id="privacy"
+                        formControlName="privacy"
+                        [binary]="true"
+                      ></p-checkbox>
+                    </app-checkbox-container>
+                    @if (bookingForm.isDirtyAndInvalid('privacy')) {
+                      <small class="text-danger">Debe leer y estar de acuerdo con los términos.</small>
+                    }
+                  </div>
+                </div>
               </div>
-            </div>
+            }
+            @case (4) {
+              <div>
+                <p>
+                  Se mandarán los siguientes datos con los que tramitaremos su solicitud, rogamos que compruebe que
+                  estén todos bien.
+                </p>
+                <div class="row confirmation-container">
+                  <div class="col-12 mb-0">
+                    <b class="fs-5">Datos de la asociación o centro educativo</b>
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>Nombre:</b> {{ booking.groupName }}
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>CIF:</b> {{ booking.cif }}
+                  </div>
+                  <div class="col-12">
+                    <b>Descripción sobre el uso de las instalaciones:</b> {{ booking.facilityUse }}
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>Nombre de contacto:</b> {{ booking.contactName }}
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>Relación o puesto del contacto:</b> {{ booking.relationship }}
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>Correo electrónico:</b> {{ booking.email }}
+                    @if (currentUser && booking.email !== currentUser) {
+                      <small class="text-warning-emphasis">(La reserva se asignará a {{ booking.email }})</small>
+                    }
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>Teléfono:</b> {{ booking.phone }}
+                  </div>
+                  <div class="col-12 mb-0">
+                    <b class="fs-5">Datos de la solicitud</b>
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>Centro Scout:</b> {{ centerSelectionComponent.selectedCenterName }}
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>Número de personas:</b> {{ booking.packs }}
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>Fecha de entrada:</b> {{ booking.startDate | date:"dd/MM/yyyy HH:mm" }}
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <b>Fecha de salida:</b> {{ booking.endDate | date:"dd/MM/yyyy HH:mm" }}
+                  </div>
+                  <div class="col-12">
+                    <b>Observaciones:</b> {{ booking.observations || 'Ninguna' }}
+                  </div>
+                  @if (centerSelectionComponent.eligibleForExclusiveness) {
+                    <div class="col-12">
+                      <b>Centro en exclusividad:</b> {{ booking.exclusiveReservation ? 'Sí' : 'No' }}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
           }
-        }
-        <app-booking-form-center-selection
-          #centerSelection
-          [ngClass]="{'d-none' : bookingForm.currentPage != 2}"
-          (onInit)="addCenterControl($event)"
-        ></app-booking-form-center-selection>
-      </form>
-      <app-large-form-buttons
-        [form]="bookingForm"
-        [loading]="loading"
-        [showPrevAtFirstPage]="true"
-        (onSubmit)="sendForm()"
-      ></app-large-form-buttons>
+          <app-booking-form-center-selection
+            #centerSelection
+            [ngClass]="{'d-none' : bookingForm.currentPage != 2}"
+            (onInit)="addCenterControl($event)"
+          ></app-booking-form-center-selection>
+        </form>
+        <app-large-form-buttons
+          [form]="bookingForm"
+          [loading]="loading"
+          [showStartButton]="false"
+          [showPrevAtFirstPage]="true"
+          (onSubmit)="sendForm()"
+        ></app-large-form-buttons>
+      }
     } @else {
       <app-basic-loading-info></app-basic-loading-info>
     }

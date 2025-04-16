@@ -33,8 +33,8 @@ export class BookingFetcherService {
     return this.http.get<BookingCalendarInfo[]>(`${this.url(isManager)}/dates`, {params: new HttpParams({fromObject: filter})});
   }
 
-  getLatestByCurrentUser(): Observable<Booking> {
-    return this.http.get<Booking>(`${this.bookingUrl}/requester/latest`);
+  getLatestByCurrentUser(): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.bookingUrl}/requester/latest`);
   }
 
   getById(id: number, isManager: boolean = true): Observable<Booking> {

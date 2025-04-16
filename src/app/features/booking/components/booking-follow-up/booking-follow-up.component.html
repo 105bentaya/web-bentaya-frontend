@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-start flex-wrap gap-2 align-items-center">
     <app-general-a-button
       icon="pi pi-arrow-left"
-      class="fs-3 p-button-rounded"
+      buttonClass="fs-3 p-button-rounded"
       variant="outlined"
       (click)="goBack()"
       title="Atrás"
@@ -305,26 +305,41 @@
         @if (showBookingActions()) {
           @if (booking.status == Status.RESERVED) {
             <p-button
+              #confirm
               styleClass="py-1 px-2 gap-1 border-2"
               severity="success"
               label="Confirmar Documentos"
-              [loading]="loading"
-              (click)="askFormConfirmDocuments()"
+              [disabled]="loading"
+              (click)="askFormConfirmDocuments(confirm)"
               outlined
             ></p-button>
           }
           <p-button
+            #cancel
             styleClass="py-1 px-2 gap-1 border-2"
             severity="danger"
             label="Cancelar Reserva"
-            [loading]="loading"
-            (click)="cancelReservation()"
+            [disabled]="loading"
+            (click)="cancelReservation(cancel)"
             outlined
           ></p-button>
         } @else {
-          <p-tag severity="secondary" value="No hay acciones disponibles" styleClass="rounded-3"/>
+          <app-general-a-button
+            buttonClass="py-1 px-2 gap-1 border-2"
+            label="Realizar otra reserva"
+            variant="outlined"
+            routerLink="/centros-scout/reserva"
+          />
         }
       </div>
+    </div>
+    <div class="mt-2">
+      <small>
+        Si desea cambiar datos de la reserva o tiene cualquier duda, envíe un correo a
+        <a href="mailto:{{bookingEmail}}?subject={{booking.scoutCenter.name}} - Reserva {{bookingId}} - Dudas">
+          {{bookingEmail}}
+        </a>
+      </small>
     </div>
   } @else {
     <app-basic-loading-info></app-basic-loading-info>

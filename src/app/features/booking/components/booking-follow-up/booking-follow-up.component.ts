@@ -16,7 +16,7 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {Button} from "primeng/button";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
-import {maxFileUploadByteSize} from "../../../../shared/constant";
+import {bookingEmail, maxFileUploadByteSize} from "../../../../shared/constant";
 import {docAndPdfTypes, FileUtils} from "../../../../shared/util/file.utils";
 import {ScoutCenterService} from "../../../scout-center/scout-center.service";
 import {BookingFetcherService} from "../../service/booking-fetcher.service";
@@ -70,6 +70,7 @@ export class BookingFollowUpComponent implements OnInit {
   protected readonly Status = Status;
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
   protected readonly docAndPdfTypes = docAndPdfTypes;
+  protected readonly bookingEmail = bookingEmail;
 
   protected showMoreData = false;
   protected showHelpDialog: boolean = false;
@@ -103,7 +104,7 @@ export class BookingFollowUpComponent implements OnInit {
     }
   }
 
-  protected cancelReservation() {
+  protected cancelReservation(cancel: Button) {
     const dialogData: any = {
       textAreaLabel: "Motivo de la cancelación",
       textRequired: true
@@ -115,30 +116,38 @@ export class BookingFollowUpComponent implements OnInit {
 
     this.dialogService.openDialog(BookingStatusUpdateComponent, "Cancelar reserva", "small", dialogData).onClose
       .pipe(filter(identity))
-      .subscribe(({observations}) => this.cancelBooking(observations));
+      .subscribe(({observations}) => this.cancelBooking(observations, cancel));
   }
 
-  private cancelBooking(observations: string) {
+  private cancelBooking(observations: string, button: Button) {
     this.loading = true;
+    button.loading = true;
     this.bookingStatusService.cancelBooking(this.booking.id, {observations})
       .subscribe({
         next: () => this.getBooking(),
-        error: () => this.loading = false
+        error: () => {
+          this.loading = false;
+          button.loading = false;
+        }
       });
   }
 
-  protected askFormConfirmDocuments() {
+  protected askFormConfirmDocuments(button: Button) {
     this.confirmationService.confirm({
       header: "Confirmar",
       message: confirmDocumentsMessage,
-      accept: () => this.confirmDocuments()
+      accept: () => this.confirmDocuments(button)
     });
   }
 
-  private confirmDocuments() {
+  private confirmDocuments(button: Button) {
     this.loading = true;
+    button.loading = true;
     this.bookingStatusService.confirmDocuments(this.bookingId)
-      .pipe(finalize(() => this.loading = false))
+      .pipe(finalize(() => {
+        this.loading = false;
+        button.loading = false;
+      }))
       .subscribe(() => this.alertService.sendBasicSuccessMessage("Se ha mandado el aviso correctamente"));
   }
 
