@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, viewChild} from '@angular/core';
 import {SelectModule} from "primeng/select";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
@@ -21,7 +21,10 @@ import {
   CheckboxContainerComponent
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
-import {finalize} from "rxjs";
+import {finalize, forkJoin} from "rxjs";
+import {FileUpload} from "primeng/fileupload";
+import {maxFileUploadByteSize} from "../../../../shared/constant";
+import {imageAndPdfTypes} from "../../../../shared/util/file.utils";
 
 @Component({
   selector: 'app-invoice-form',
@@ -39,7 +42,8 @@ import {finalize} from "rxjs";
     SplitButtonModule,
     DatePicker,
     CheckboxContainerComponent,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    FileUpload
   ],
   templateUrl: './invoice-form.component.html',
   styleUrl: './invoice-form.component.scss'
@@ -52,8 +56,13 @@ export class InvoiceFormComponent implements OnInit {
   private readonly invoiceService = inject(InvoiceService);
   readonly confirmationService = inject(ConfirmationService);
 
-
   protected readonly invoiceFormHelper = new FormHelper();
+  protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
+  protected readonly imageAndPdfTypes = imageAndPdfTypes;
+
+  private readonly saveButton: MenuItem = {label: "Guardar y cerrar", command: () => this.onSubmit()};
+  private readonly saveButtonAndContinue: MenuItem = {label: "Guardar y seguir", command: () => this.onSubmit(true)};
+
   protected expenseTypes!: InvoiceExpenseType[];
   protected grants!: InvoiceGrant[];
   protected payers!: InvoicePayer[];
@@ -61,13 +70,14 @@ export class InvoiceFormComponent implements OnInit {
   protected invoiceToUpdate: Invoice | undefined;
   private dateHasBeenSelected = false;
 
-  private readonly saveButton: MenuItem = {label: "Guardar y cerrar", command: () => this.onSubmit()};
-  private readonly saveButtonAndContinue: MenuItem = {label: "Guardar y seguir", command: () => this.onSubmit(true)};
   protected buttons: MenuItem[] | undefined;
   protected saveAndContinue: boolean = false;
 
   protected saveLoading: boolean = false;
   protected deleteLoading: boolean = false;
+  protected documentsLoading = false;
+
+  private readonly uploader = viewChild.required(FileUpload);
 
   ngOnInit(): void {
     if (this.config.data) {
@@ -129,14 +139,29 @@ export class InvoiceFormComponent implements OnInit {
       this.saveOrUpdate(invoice)
         .pipe(finalize(() => this.saveLoading = false))
         .subscribe(invoice => {
+          const finalAction = () => continueAdding ? this.resetForm(invoice) : this.ref.close("saved");
           this.alertService.sendBasicSuccessMessage("Éxito al guardar la factura");
-          if (continueAdding) {
-            this.resetForm(invoice);
+          if (this.uploader().files?.length > 0) {
+            this.uploadFiles(invoice.id, finalAction);
           } else {
-            this.ref.close(invoice);
+            finalAction();
           }
         });
     }
+  }
+
+  protected uploadFiles(invoiceId: number, action: () => void) {
+    const fileUploadPetitions = this.uploader().files.map(file => this.invoiceService.uploadFile(invoiceId, file));
+    this.documentsLoading = true;
+    forkJoin(fileUploadPetitions)
+      .pipe(finalize(() => {
+        this.uploader().clear();
+        this.documentsLoading = false;
+        action();
+      }))
+      .subscribe({
+        complete: () => this.alertService.sendBasicSuccessMessage("Documentos subidos correctamente")
+      });
   }
 
   private resetForm(invoice: Invoice) {

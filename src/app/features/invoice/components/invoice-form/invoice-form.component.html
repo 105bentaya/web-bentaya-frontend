@@ -128,6 +128,28 @@
         <small>Rellene todos los campos obligatorios (<b>*</b>)</small><br>
       }
     </div>
+    <div class="col-12 mb-2">
+      <p-fileupload
+        class="document-file-uploader"
+        mode="advanced"
+        [chooseButtonProps]="{label: invoiceToUpdate ? 'Adjuntar Nuevos Documentos' : 'Adjuntar Documentos', size: 'small', styleClass: 'py-1 my-1 border-2', outlined: true}"
+        [disabled]="documentsLoading || saveLoading"
+        styleClass="justify-content-start mt-2"
+        chooseIcon="fa-solid fa-upload"
+        [accept]="imageAndPdfTypes"
+        [maxFileSize]="maxFileUploadByteSize"
+        [customUpload]="true"
+        [multiple]="true"
+        [showUploadButton]="false"
+        [showCancelButton]="false"
+        invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
+        invalidFileSizeMessageDetail="el tamaño máximo es {0}."
+        invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
+        invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
+        invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
+        invalidFileLimitMessageDetail="el límite es de {0} archivos."
+      ></p-fileupload>
+    </div>
     <app-save-buttons
       [showCancelButton]="true"
       cancelLabel="Borrar"

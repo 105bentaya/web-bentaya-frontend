@@ -65,8 +65,8 @@ export class InvoiceDetailComponent implements OnInit {
     ref.onClose.subscribe(changes => {
       if (changes === "deleted") {
         this.ref.close();
-      } else if (changes) {
-        this.invoice = changes;
+      } else if (changes === "saved") {
+        this.reloadInvoice();
       }
     });
   }
@@ -76,7 +76,7 @@ export class InvoiceDetailComponent implements OnInit {
     this.loading = true;
     forkJoin(fileUploadPetitions)
       .pipe(finalize(() => {
-        this.invoiceService.getById(this.invoice.id).subscribe(result => this.invoice = result);
+        this.reloadInvoice();
         uploader.clear();
         this.loading = false;
       }))
@@ -120,5 +120,9 @@ export class InvoiceDetailComponent implements OnInit {
         this.alertService.sendBasicSuccessMessage("Archivo eliminado correctamente");
         this.invoice.files.splice(this.invoice.files.findIndex(doc => doc.id === fileId), 1);
       });
+  }
+
+  private reloadInvoice() {
+    this.invoiceService.getById(this.invoice.id).subscribe(result => this.invoice = result);
   }
 }
