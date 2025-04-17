@@ -110,12 +110,7 @@ export class DocumentEditorComponent implements OnInit {
   }
 
   protected openDocument() {
-    const tab = FileUtils.openPdfTab();
-    this.bookingService.getPDF(this.document.id)
-      .subscribe({
-        next: pdf => FileUtils.openPdfFile(pdf, tab),
-        error: () => tab.close()
-      });
+    FileUtils.openFile(this.bookingService.getPDF(this.document.id));
   }
 
   protected downloadDocument() {

@@ -21,15 +21,13 @@ import {DatePipe} from "@angular/common";
 export class BookingHomeComponent implements OnInit {
 
   private readonly scoutCenterService = inject(ScoutCenterService);
+  private readonly bookingDateService = inject(BookingDateService);
   protected selectedOption = 0;
   protected scoutCenters!: ScoutCenterInformation[];
   protected maxDate!: Date;
 
-  constructor() {
-    inject(BookingDateService).getBookingDate().then(date => this.maxDate = date);
-  }
-
   ngOnInit() {
+    this.bookingDateService.getBookingDate().then(date => this.maxDate = date);
     this.scoutCenterService.getAllInformation().subscribe(result => this.scoutCenters = result);
   }
 }

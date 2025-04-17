@@ -55,20 +55,20 @@ import {ScoutCenterSettingsComponent} from "../scout-center-settings/scout-cente
 export class ScoutCenterManagementComponent implements OnInit {
   protected readonly scoutCenterService = inject(ScoutCenterService);
   private readonly alertService = inject(AlertService);
+  private readonly formBuilder = inject(FormBuilder);
 
   protected readonly centerIsAlwaysExclusive = centerIsAlwaysExclusive;
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
   protected readonly docTypes = docTypes;
-  protected readonly imageTypes = imageTypes;
 
+  protected readonly imageTypes = imageTypes;
   protected scoutCenters!: ScoutCenterWithFiles[];
   protected loading = false;
-  protected loadingDelete = false;
 
+  protected loadingDelete = false;
   protected editing: boolean = false;
   protected showHelpDialog: boolean = false;
   protected editForm = new FormHelper();
-  private formBuilder = inject(FormBuilder);
   protected selectedTab = 1;
 
   ngOnInit() {
@@ -115,10 +115,7 @@ export class ScoutCenterManagementComponent implements OnInit {
   }
 
   openRuleFile(centerId: number) {
-    const tab = FileUtils.openPdfTab();
-    return this.scoutCenterService.getRuleFile(centerId).subscribe(response => {
-      FileUtils.openPdfFile(response, tab);
-    });
+    FileUtils.openFile(this.scoutCenterService.getRuleFile(centerId));
   }
 
   downloadRuleFile(centerId: number) {

@@ -14,6 +14,7 @@ export interface Invoice {
   expenseType: InvoiceExpenseType;
   grant?: InvoiceGrant;
   payer: InvoicePayer;
+  files: InvoiceFile[]
 }
 
 export interface InvoiceData {
@@ -36,4 +37,11 @@ export interface InvoicePayer {
   id: number;
   payer: string;
   group: number;
+}
+
+export interface InvoiceFile {
+  id: number;
+  uuid: string;
+  name: string;
+  mimeType: string;
 }

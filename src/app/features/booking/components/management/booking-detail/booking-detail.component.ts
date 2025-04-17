@@ -212,13 +212,7 @@ export class BookingDetailComponent implements OnInit {
 
   protected downloadFile(file: BookingDocument) {
     this.loading = true;
-    const tab = FileUtils.openPdfTab();
-    this.bookingService.getPDF(file.id)
-      .pipe(finalize(() => this.loading = false))
-      .subscribe({
-        next: pdf => FileUtils.openPdfFile(pdf, tab),
-        error: () => tab.close()
-      });
+    FileUtils.openFile(this.bookingService.getPDF(file.id).pipe(finalize(() => this.loading = false)));
   }
 
   protected downloadIncidencesFile() {
