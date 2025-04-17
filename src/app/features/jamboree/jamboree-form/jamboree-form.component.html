@@ -3,7 +3,20 @@
     <h1 class="mb-0">JAMBOREE POLONIA 2027</h1>
     <h2>Formulario de Inscripción Bentaya</h2>
   </div>
-  @if (formHelper.form) {
+  @if (successOnSubmit) {
+    <div class="text-center">
+      <p>
+        Los datos del formulario se han guardado con éxito
+      </p>
+      <p>
+        Si quiere volver a realizar una inscripción, pulse el siguiente botón
+      </p>
+      <p-button
+        label="Realizar nueva inscripción"
+        (onClick)="resetForm()"
+      />
+    </div>
+  } @else if (formHelper.form) {
     <p-steps class="steps-no-label" id="form-steps" [model]="steps" [activeIndex]="formHelper.currentPage"></p-steps>
     <form [formGroup]="formHelper.form" class="form-container">
       @if (formHelper.currentPage >= 0) {
@@ -33,6 +46,9 @@
                 Como <b> Staff (IST)</b>: mayores de edad.
               </li>
             </ul>
+            <p>
+              El formulario deberá ser enviado antes del <b>30 de abril de 2025</b>.
+            </p>
           </div>
         }
         @case (0) {
@@ -76,8 +92,9 @@
                   type="text"
                   maxlength="255"
                 >
-                <label for="feltName">Nombre sentido (si es distinto al DNI)</label>
+                <label for="feltName">Nombre identificativo</label>
               </p-floatlabel>
+              <small class="opacity-75">Nombre para la tarjeta de identificación del kit</small>
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
               <p-floatlabel variant="on">
@@ -170,7 +187,7 @@
               @if (formHelper.isDirtyAndInvalid('passportNumber')) {
                 <small class="text-danger">Introduzca el número de pasaporte o 'No tiene' si así corresponde</small>
               } @else {
-                <small class="opacity-75">'No tiene' si así corresponde</small>
+                <small class="opacity-75">'No tiene' si así corresponde (deberá sacarlo desde que pueda)</small>
               }
             </div>
             <div class="col-12 col-sm-6">
@@ -203,6 +220,38 @@
                 <small class="text-danger">Introduzca el correo electrónico de la persona participante</small>
               }
             </div>
+            <div class="col-12">
+              <div class="d-flex flex-column">
+                <label class="required" for="resident">Residente en Canarias</label>
+                <p-select-button
+                  class="w-fit"
+                  formControlName="resident"
+                  id="resident"
+                  [options]="yesNoOptions"
+                  [unselectable]="false"
+                ></p-select-button>
+                @if (formHelper.isDirtyAndInvalid('resident')) {
+                  <small class="text-danger">Introduzca si es o no residente en Canarias</small>
+                }
+              </div>
+            </div>
+            @if (formHelper.controlValue("resident")) {
+              <div class="col">
+                <p-floatlabel variant="on">
+                  <input
+                    pInputText
+                    formControlName="municipality"
+                    id="municipality"
+                    type="text"
+                    maxlength="255"
+                  >
+                  <label class="required" for="municipality">Municipio de residencia</label>
+                </p-floatlabel>
+                @if (formHelper.isDirtyAndInvalid('municipality')) {
+                  <small class="text-danger">Introduzca el municipio de residencia de la persona participante</small>
+                }
+              </div>
+            }
           </div>
         }
         @case (1) {
@@ -292,14 +341,15 @@
             </div>
             <div class="col-12">
               <div class="d-flex flex-column">
-                <label class="required" for="bloodType">Programa de vacunaciones completo</label>
+                <label class="required" for="vaccineProgram">Programa de vacunaciones completo</label>
                 <p-select-button
                   class="w-fit"
+                  id="vaccineProgram"
                   formControlName="vaccineProgram"
                   [options]="yesNoOptions"
                   [unselectable]="false"
                 ></p-select-button>
-                @if (formHelper.isDirtyAndInvalid('bloodType')) {
+                @if (formHelper.isDirtyAndInvalid('vaccineProgram')) {
                   <small class="text-danger">Introduzca si tiene el programa de vacunaciones completo</small>
                 }
               </div>
@@ -443,7 +493,7 @@
                 >
                 <label class="required" for="name">Nombre</label>
               </p-floatlabel>
-              @if (formHelper.isDirtyAndInvalid('mainContact', 'name')) {
+              @if (formHelper.isDirtyAndInvalid('secondaryContact', 'name')) {
                 <small class="text-danger">Introduzca los apellidos del contacto</small>
               }
             </div>
@@ -458,7 +508,7 @@
                 >
                 <label class="required" for="surname">Apellidos</label>
               </p-floatlabel>
-              @if (formHelper.isDirtyAndInvalid('mainContact', 'surname')) {
+              @if (formHelper.isDirtyAndInvalid('secondaryContact', 'surname')) {
                 <small class="text-danger">Introduzca los apellidos del contacto</small>
               }
             </div>
@@ -473,7 +523,7 @@
                 >
                 <label class="required" for="mobilePhone">Teléfono móvil</label>
               </p-floatlabel>
-              @if (formHelper.isDirtyAndInvalid('mainContact', 'mobilePhone')) {
+              @if (formHelper.isDirtyAndInvalid('secondaryContact', 'mobilePhone')) {
                 <small class="text-danger">Introduzca el teléfono móvil del contacto</small>
               }
             </div>
@@ -488,7 +538,7 @@
                 >
                 <label class="required" for="email">Correo electrónico</label>
               </p-floatlabel>
-              @if (formHelper.isDirtyAndInvalid('mainContact', 'email')) {
+              @if (formHelper.isDirtyAndInvalid('secondaryContact', 'email')) {
                 <small class="text-danger">Introduzca un correo electrónico válido</small>
               }
             </div>
@@ -538,7 +588,7 @@
                         >
                         <label for="language">Idioma</label>
                       </p-floatlabel>
-                      @if (formHelper.isDirtyAndInvalid('languages', String($index), 'language')) {
+                      @if (formHelper.isDirtyAndInvalid('languages', $index.toString(), 'language')) {
                         <small class="text-danger">Introduzca un idioma</small>
                       }
                     </div>
@@ -553,7 +603,7 @@
                             ></p-select>
                             <label for="level">Nivel</label>
                           </p-floatlabel>
-                          @if (formHelper.isDirtyAndInvalid('languages', String($index), 'level')) {
+                          @if (formHelper.isDirtyAndInvalid('languages', $index.toString(), 'level')) {
                             <small class="text-danger">Escoja un nivel</small>
                           }
                         </div>
@@ -629,6 +679,13 @@
             <div class="col-12 col-md-6">
               <b>Nacionalidad:</b>
               {{ jamboreeForm.nationality }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Residente:</b>
+              {{ jamboreeForm.resident | boolean }}
+              @if (jamboreeForm.resident) {
+                ({{ jamboreeForm.municipality }})
+              }
             </div>
             <div class="col-12 col-md-6">
               <b>Teléfono:</b>
@@ -748,5 +805,5 @@
       [showPrevAtFirstPage]="true"
       (onSubmit)="sendForm()"
     ></app-large-form-buttons>
-
-  }</div>
+  }
+</div>

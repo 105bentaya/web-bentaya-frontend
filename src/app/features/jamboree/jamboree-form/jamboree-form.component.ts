@@ -8,7 +8,14 @@ import {InputText} from "primeng/inputtext";
 import {
   LargeFormButtonsComponent
 } from "../../../shared/components/buttons/large-form-buttons/large-form-buttons.component";
-import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {Select} from "primeng/select";
 import {Steps} from "primeng/steps";
 import {maintenanceEmail, yesNoOptions} from "../../../shared/constant";
@@ -21,6 +28,8 @@ import {Button} from "primeng/button";
 import {BooleanPipe} from "../../../shared/pipes/boolean.pipe";
 import {DatePipe} from "@angular/common";
 import {KeyFilter} from "primeng/keyfilter";
+import {JamboreeService} from "../jamboree.service";
+import {AlertService} from "../../../shared/services/alert-service.service";
 
 @Component({
   selector: 'app-jamboree-form',
@@ -46,11 +55,15 @@ import {KeyFilter} from "primeng/keyfilter";
 })
 export class JamboreeFormComponent implements OnInit {
 
+  private readonly jamboreeService = inject(JamboreeService);
+  private readonly alertService = inject(AlertService);
+
   protected readonly maintenanceEmail = maintenanceEmail;
   protected readonly genders = ["Femenino", "Masculino", "Femenino Trans", "Masculino Trans", "No Binario", "No señala"];
   protected readonly levels = ["A1", "A2", "B1", "B2", "C1", "C2 o Nativo"];
   protected readonly participantTypes = ["Participante (14 a 17 años a 30-7-27)", "IST (>= 18 años)", "TL (scouters)"];
   protected readonly sizes: string[] = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+  protected readonly yesNoOptions = yesNoOptions;
 
   protected readonly steps: MenuItem[] = [
     {label: 'Datos Básicos'},
@@ -63,7 +76,8 @@ export class JamboreeFormComponent implements OnInit {
   protected jamboreeForm!: JamboreeForm;
   protected formHelper = new FormHelper();
   private readonly formBuilder = inject(FormBuilder);
-  loading = false;
+  protected loading = false;
+  protected successOnSubmit = false;
 
   ngOnInit() {
     this.formHelper.createForm({
@@ -78,6 +92,8 @@ export class JamboreeFormComponent implements OnInit {
       birthDate: [null, [Validators.required, Validators.maxLength(255)]],
       phoneNumber: [null, [Validators.required, Validators.maxLength(255)]],
       email: [null, [Validators.required, Validators.maxLength(255), Validators.email]],
+      resident: [null, [Validators.required]],
+      municipality: [null, [this.residentValidation, Validators.maxLength(255)]],
 
       bloodType: [null, [Validators.required, Validators.maxLength(255)]],
       medicalData: [null, [Validators.required, Validators.maxLength(2000)]],
@@ -109,14 +125,19 @@ export class JamboreeFormComponent implements OnInit {
       privacy: [false, Validators.requiredTrue]
     });
     this.formHelper.setPages([
-      ["participantType", "name", "surname", "feltName", "dni", "passportNumber", "nationality", "birthDate", "gender", "phoneNumber", "email"],
+      ["participantType", "name", "surname", "feltName", "dni", "passportNumber", "nationality", "birthDate", "gender", "phoneNumber", "email", "resident", "municipality"],
       ["bloodType", "medicalData", "medication", "allergies", "vaccineProgram", "foodIntolerances"],
       ["mainContact", "secondaryContact"],
       ["size", "dietPreference", "languages", "privacy"]
     ]);
     this.addLanguage();
     this.formHelper.onLastPage = () => this.createPreScoutForm();
+    this.formHelper.currentPage = 0;
   }
+
+  private readonly residentValidation: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    return (!control.value && this.formHelper.controlValue("resident") === true) ? {required: true} : null;
+  };
 
   protected deleteLanguage(index: number) {
     const array = this.formHelper.getFormArray("languages");
@@ -136,13 +157,20 @@ export class JamboreeFormComponent implements OnInit {
       ...this.formHelper.value
     };
     this.jamboreeForm.birthDate = DateUtils.toLocalDate(this.jamboreeForm.birthDate);
-
-    console.log(this.jamboreeForm);
+    if (!this.jamboreeForm.resident) {
+      this.jamboreeForm.municipality = undefined;
+    }
   }
 
-  sendForm() {
+  protected sendForm() {
+    this.loading = true;
+    this.jamboreeService.saveForm(this.jamboreeForm).subscribe(() => {
+      this.alertService.sendBasicSuccessMessage("Formulario guardado con éxito");
+      this.successOnSubmit = true;
+    });
   }
 
-  protected readonly yesNoOptions = yesNoOptions;
-  protected readonly String = String;
+  protected resetForm() {
+    location.reload();
+  }
 }

@@ -1,9 +1,8 @@
 export interface JamboreeForm {
   participantType: string;
-  census: string;
   surname: string;
   name: string;
-  feltName: string;
+  feltName?: string;
   dni: string;
   passportNumber: string;
   nationality: string;
@@ -11,6 +10,8 @@ export interface JamboreeForm {
   gender: string;
   phoneNumber: string;
   email: string;
+  resident: boolean;
+  municipality?: string;
   bloodType: string;
   medicalData: string;
   medication: string;
@@ -18,7 +19,7 @@ export interface JamboreeForm {
   vaccineProgram: boolean;
   size: string;
   foodIntolerances: string;
-  dietPreference: string;
+  dietPreference?: string;
   languages: {
     language: string;
     level: string;
