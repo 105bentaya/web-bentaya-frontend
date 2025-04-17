@@ -25,13 +25,13 @@ import {
 } from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 import {BookingManagementService} from "../../service/booking-management.service";
 import {Tag} from "primeng/tag";
-import {Dialog} from "primeng/dialog";
 import {DocumentFileUploaderComponent} from "../document-file-uploader/document-file-uploader.component";
 import {cancelBookingMessage, confirmDocumentsMessage} from "../../constant/confirm-messages.constants";
 import {BookingStatusService} from "../../service/booking-status.service";
 import {filter, finalize} from "rxjs";
 import {identity} from "lodash";
 import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
+import {BookingDocumentHelpComponent} from "../booking-document-help/booking-document-help.component";
 
 @Component({
   selector: 'app-booking-follow-up',
@@ -50,9 +50,9 @@ import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
     Button,
     GeneralAButtonComponent,
     Tag,
-    Dialog,
     DocumentFileUploaderComponent,
-    BooleanPipe
+    BooleanPipe,
+    BookingDocumentHelpComponent
   ]
 })
 export class BookingFollowUpComponent implements OnInit {
@@ -89,7 +89,7 @@ export class BookingFollowUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.bookingService.getBookingDocumentActiveTypes().subscribe(a => this.types = a);
+    this.bookingService.getBookingDocumentActiveTypes().subscribe(types => this.types = types);
     this.getBooking();
   }
 

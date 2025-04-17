@@ -14,6 +14,7 @@ export interface BookingDocumentType {
   name: string;
   description: string;
   active: boolean;
+  usualDuration: DocumentDuration;
 }
 
 export interface BookingDocumentForm {

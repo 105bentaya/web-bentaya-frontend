@@ -144,7 +144,7 @@
               <div>{{ booking.groupDescription || '-' }}</div>
             </div>
             <div class="col-12">
-              <b>Uso de instalaciones</b>
+              <b>Programa de actividad</b>
               <div>{{ booking.facilityUse }}</div>
             </div>
           }
@@ -297,25 +297,10 @@
     }
   </div>
 </div>
-<p-dialog
-  header="Documentación definida"
-  [(visible)]="dialogVisible"
-  [modal]="true"
-  [draggable]="false"
-  [resizable]="false"
-  styleClass="basic-dialog"
->
-  <ul>
-    @for (document of types; track $index) {
-      @if (document.active) {
-        <li>
-          <b>{{ document.name }}</b>:
-          {{ document.description }}
-        </li>
-      }
-    }
-  </ul>
-</p-dialog>
+<app-booking-document-help
+  [(show)]="dialogVisible"
+  [types]="types"
+></app-booking-document-help>
 <ng-template #actionButton let-info>
   <p-button
     #button

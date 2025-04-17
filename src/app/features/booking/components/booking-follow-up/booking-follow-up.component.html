@@ -100,7 +100,7 @@
             <div>{{ booking.groupDescription || '-' }}</div>
           </div>
           <div class="col-12">
-            <b>Uso de instalaciones</b>
+            <b>Programa de actividad</b>
             <div>{{ booking.facilityUse }}</div>
           </div>
         }
@@ -144,13 +144,17 @@
             completar la reserva. Deberá presentarlos 10 días antes del inicio de su reserva, si para dicha fecha no han
             sido correctamente presentados, corre el riesgo de perder su reserva. Para ver más información sobre cada
             tipo de documento, puede pulsar el
-            <span class="text-decoration-underline cursor-pointer" (click)="showHelpDialog = true">botón de ayuda</span>.
+            <span
+              class="text-decoration-underline cursor-pointer"
+              (click)="showHelpDialog = true"
+            >botón de información sobre los documentos</span>.
           </p>
           <p class="mb-1">
             Una vez haya subido todos los documentos, puede darle al botón de 'Confirmar Documentos' para informar a la
             gestión que están subidos y listos para ser revisados.
             @if (validNotOwnDocuments()) {
-              Los documentos que ya están marcados como válidos <b>no tiene que aportarlos</b>.
+              Los documentos que ya están marcados como válidos <b>no tiene que aportarlos</b>, a menos que hayan sido
+              modificados recientemente, en cuyo caso debe aportar la nueva versión.
             }
           </p>
           <div class="d-flex flex-wrap-reverse justify-content-end gap-2 mb-2">
@@ -170,7 +174,7 @@
               iconPos="right"
               outlined
               severity="contrast"
-              label="Ayuda"
+              label="Información documentos"
               title="Mostrar explicación de documentación"
               (onClick)="showHelpDialog = true"
             ></p-button>
@@ -278,7 +282,7 @@
               <ng-template pTemplate="content">
                 <div class="p-2">
                   <div>Aún no ha subido el documento de incidencias y estados.</div>
-                  <div>Puede subir el registro de estados usando el botón de subir, o arrastrando el archivo aquí.</div>
+                  <div>Puede subir el registro de estados usando el botón de subir o arrastrando el archivo aquí.</div>
                 </div>
               </ng-template>
             </p-fileupload>
@@ -347,22 +351,7 @@
     <app-basic-loading-info></app-basic-loading-info>
   }
 </div>
-<p-dialog
-  header="Documentos necesarios"
-  [(visible)]="showHelpDialog"
-  [modal]="true"
-  [draggable]="false"
-  [resizable]="false"
-  styleClass="basic-dialog"
->
-  <p>
-    Sólo es necesario presentar los documentos de los que disponga su entidad o asociación:
-  </p>
-  <ul>
-    @for (type of types; track type.id) {
-      <li>
-        <b>{{ type.name }}.</b> {{ type.description }}.
-      </li>
-    }
-  </ul>
-</p-dialog>
+<app-booking-document-help
+  [(show)]="showHelpDialog"
+  [types]="types"
+></app-booking-document-help>

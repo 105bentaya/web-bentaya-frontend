@@ -1,0 +1,44 @@
+<p-dialog
+  header="Documentos necesarios"
+  [(visible)]="show"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="basic-dialog"
+>
+  <p>
+    Sólo es necesario presentar los documentos de los que disponga su entidad o asociación:
+  </p>
+  @if (permanentTypes.length > 0) {
+    <p class="mb-0"><u><b>Documentos perennes</b></u> (sólo se renuevan cuando se modifiquen)</p>
+    <ul>
+      @for (type of permanentTypes; track type.id) {
+        <li>
+          <b>{{ type.name }}.</b> {{ type.description }}.
+        </li>
+      }
+    </ul>
+    <hr>
+  }
+  @if (expirableTypes.length > 0) {
+    <p class="mb-0"><u><b>Documentos periódicos</b></u> (deben renovarse a su caducidad o al menos una vez al año)</p>
+    <ul>
+      @for (type of expirableTypes; track type.id) {
+        <li>
+          <b>{{ type.name }}.</b> {{ type.description }}.
+        </li>
+      }
+    </ul>
+    <hr>
+  }
+  @if (singleUseTypes.length > 0) {
+    <p class="mb-0"><u><b>Documentos de la actividad</b></u> (vinculados a la reserva concreta)</p>
+    <ul>
+      @for (type of singleUseTypes; track type.id) {
+        <li>
+          <b>{{ type.name }}.</b> {{ type.description }}.
+        </li>
+      }
+    </ul>
+  }
+</p-dialog>

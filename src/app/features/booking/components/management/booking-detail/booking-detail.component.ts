@@ -1,4 +1,4 @@
-import {Component, inject, Input, model, OnInit, output} from '@angular/core';
+import {Component, inject, model, OnInit, output} from '@angular/core';
 import {BookingService} from "../../../service/booking.service";
 import {Booking, bookingIsAlwaysExclusive} from "../../../model/booking.model";
 import {Status} from "../../../constant/status.constant";
@@ -28,6 +28,7 @@ import {
   invalidDocumentsOnConfirm
 } from "../../../constant/confirm-messages.constants";
 import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
+import {BookingDocumentHelpComponent} from "../../booking-document-help/booking-document-help.component";
 
 @Component({
   selector: 'app-booking-detail',
@@ -47,7 +48,8 @@ import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
     NgTemplateOutlet,
     TableModule,
     Tooltip,
-    BooleanPipe
+    BooleanPipe,
+    BookingDocumentHelpComponent
   ]
 })
 export class BookingDetailComponent implements OnInit {
