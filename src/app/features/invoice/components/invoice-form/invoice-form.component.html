@@ -154,9 +154,11 @@
       [showCancelButton]="true"
       cancelLabel="Borrar"
       (onCancel)="askForDeletion()"
+      [cancelLoading]="deleteLoading"
       [saveSplitButtonModel]="buttons"
       (onSave)="onSubmit(saveAndContinue)"
       [saveLabel]="saveAndContinue ? 'Guardar y seguir' : 'Guardar'"
+      [saveLoading]="saveLoading || documentsLoading"
     ></app-save-buttons>
   </form>
 </div>
