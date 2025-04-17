@@ -3,7 +3,7 @@
     @for (option of options; track $index) {
       <div
         class="option"
-        [ngClass]="{'active': selectedIndex === $index}"
+        [ngClass]="{'active': selectedIndex() === $index}"
         [style.background-image]="'url(' + scoutCenterService.getPhotoUrl(option.mainPhoto?.uuid ?? '') + ')'"
         (click)="selectOption($index)"
       >
