@@ -52,9 +52,12 @@ export class FormHelper {
     });
   }
 
-  isDirtyAndInvalid(controlKey?: string) {
-    if (controlKey) {
-      const control = this.get(controlKey);
+  isDirtyAndInvalid(...controlKey: string[]) {
+    if (controlKey.length > 0) {
+      let control = this.get(controlKey[0]);
+      for (let i = 1; i < controlKey.length; i++) {
+        control = control?.get(controlKey[i])!;
+      }
       return control.dirty && control.invalid;
     } else {
       return this.hasBeenValidated && this.form.invalid;
@@ -94,6 +97,10 @@ export class FormHelper {
 
   getFormArray(control: string) {
     return this.form?.controls[control] as FormArray;
+  }
+
+  getFormGroupControl(group: string, control: string) {
+    return (this.form?.controls[group] as FormGroup)?.controls[control];
   }
 
   get valid() {

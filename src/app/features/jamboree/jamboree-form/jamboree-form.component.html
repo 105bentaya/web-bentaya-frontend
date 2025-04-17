@@ -1,0 +1,752 @@
+<div class="container">
+  <div class="text-center">
+    <h1 class="mb-0">JAMBOREE POLONIA 2027</h1>
+    <h2>Formulario de Inscripción Bentaya</h2>
+  </div>
+  @if (formHelper.form) {
+    <p-steps class="steps-no-label" id="form-steps" [model]="steps" [activeIndex]="formHelper.currentPage"></p-steps>
+    <form [formGroup]="formHelper.form" class="form-container">
+      @if (formHelper.currentPage >= 0) {
+        <div class="step-form-title">{{ steps[formHelper.currentPage].label }}</div>
+      }
+      @switch (formHelper.currentPage) {
+        @case (-1) {
+          <div class="pt-1 pt-md-3">
+            <p>La fecha actividad es del 30 julio al 8 de agosto de 2027. Los datos según del DNI/NIE/Pasaporte
+              deben estar vigentes desde 1 mes antes de la actividad y hasta 1 mes después de la actividad.
+            </p>
+            <p>Además de la inscripción, para asistir se debe tener asistencia y participación en actividades de unidad
+              y grupo en los dos años previos, estar al día de sus obligaciones y tener al menos su promesa scout.
+              También supone compromiso para participar y colaborar en todas las acciones y campañas financieras que se
+              decidan realizar.
+            </p>
+            <p class="mb-0">Pueden participar:</p>
+            <ul>
+              <li>
+                Como <b>participantes</b>: menores de edad que tengan cumplidos los <b>14 años</b> al inicio del
+                Jamboree (30 de julio de 2027).
+              </li>
+              <li>
+                Como <b>Team Leader (TL)</b>: scouters.
+              </li>
+              <li>
+                Como <b> Staff (IST)</b>: mayores de edad.
+              </li>
+            </ul>
+          </div>
+        }
+        @case (0) {
+          <div class="row">
+            <div class="col-12 col-lg-4">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="name"
+                  id="name"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="name">Nombre (como aparece en el DNI)</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('name')) {
+                <small class="text-danger">Introduzca un nombre</small>
+              }
+            </div>
+            <div class="col-12 col-lg-4">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="surname"
+                  id="surname"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="surname">Apellidos</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('surname')) {
+                <small class="text-danger">Introduzca los apellidos</small>
+              }
+            </div>
+            <div class="col-12 col-lg-4">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="feltName"
+                  id="feltName"
+                  type="text"
+                  maxlength="255"
+                >
+                <label for="feltName">Nombre sentido (si es distinto al DNI)</label>
+              </p-floatlabel>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-floatlabel variant="on">
+                <p-select
+                  formControlName="gender"
+                  id="gender"
+                  [options]="genders"
+                ></p-select>
+                <label class="required" for="gender">Género</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('gender')) {
+                <small class="text-danger">Debe escoger un género</small>
+              } @else {
+                <small class="opacity-75">Requerido por la organización.</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-floatlabel variant="on">
+                <p-datePicker
+                  id="birthDate"
+                  formControlName="birthDate"
+                  dataType="string"
+                  appendTo="body"
+                ></p-datePicker>
+                <label class="required" for="birthDate">Fecha de Nacimiento</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('birthDate')) {
+                <small class="text-danger">Introduzca una fecha de nacimiento con formato dd/mm/yyyy</small>
+              } @else {
+                <small class="opacity-75">Formato dd/mm/yyyy</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="nationality"
+                  id="nationality"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="nationality">Nacionalidad</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('birthDate')) {
+                <small class="text-danger">Introduzca la nacionalidad</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-floatlabel variant="on">
+                <p-select
+                  formControlName="participantType"
+                  id="participantType"
+                  [options]="participantTypes"
+                ></p-select>
+                <label class="required" for="participantType">Tipo de participación</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('participantType')) {
+                <small class="text-danger">Debe el tipo de participación</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="dni"
+                  id="dni"
+                  type="text"
+                  maxlength="255"
+                  pKeyFilter="alphanum"
+                >
+                <label class="required" for="dni">DNI o NIE</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('dni')) {
+                <small class="text-danger">Introduzca un DNI/NIE o 'No tiene' si así corresponde</small>
+              } @else {
+                <small class="opacity-75">Emplear formato (12345678N)</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="passportNumber"
+                  id="passportNumber"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="passportNumber">Pasaporte</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('passportNumber')) {
+                <small class="text-danger">Introduzca el número de pasaporte o 'No tiene' si así corresponde</small>
+              } @else {
+                <small class="opacity-75">'No tiene' si así corresponde</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="phoneNumber"
+                  id="phoneNumber"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="phoneNumber">Número de teléfono</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('phoneNumber')) {
+                <small class="text-danger">Introduzca el numero de teléfono de la persona participante</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="email"
+                  id="email"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="email">Correo electrónico</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('email')) {
+                <small class="text-danger">Introduzca el correo electrónico de la persona participante</small>
+              }
+            </div>
+          </div>
+        }
+        @case (1) {
+          <div class="row">
+            <div class="col-12">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="bloodType"
+                  id="bloodType"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="bloodType">Grupo Sanguíneo</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('bloodType')) {
+                <small class="text-danger">Introduzca el grupo sanguíneo (A, B, AB ó 0 ±)</small>
+              }
+            </div>
+            <div class="col-12">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [maxLength]="2000"
+                  formControlName="medicalData"
+                  id="medicalData"
+                  rows="2"
+                  [showErrorMessage]="formHelper.isDirtyAndInvalidWithError('medicalData', 'maxlength')"
+                ></app-form-text-area>
+                <label class="required" for="medicalData">Problemas Médicos</label>
+              </p-float-label>
+              @if (formHelper.isDirtyAndInvalidWithError('medicalData', 'required')) {
+                <small class="text-danger">Introduzca un breve comentario o 'No tiene' si así corresponde</small>
+              } @else {
+                <small class="opacity-75">Indique 'No tiene' si así corresponde</small>
+              }
+            </div>
+            <div class="col-12">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [maxLength]="2000"
+                  formControlName="medication"
+                  id="medication"
+                  rows="2"
+                  [showErrorMessage]="formHelper.isDirtyAndInvalidWithError('medication', 'maxlength')"
+                ></app-form-text-area>
+                <label class="required" for="medication">Medicación</label>
+              </p-float-label>
+              @if (formHelper.isDirtyAndInvalidWithError('medication', 'required')) {
+                <small class="text-danger">Introduzca un breve comentario o 'No tiene' si así corresponde</small>
+              } @else {
+                <small class="opacity-75">Indique 'No tiene' si así corresponde</small>
+              }
+            </div>
+            <div class="col-12">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [maxLength]="2000"
+                  formControlName="allergies"
+                  id="allergies"
+                  rows="2"
+                  [showErrorMessage]="formHelper.isDirtyAndInvalidWithError('allergies', 'maxlength')"
+                ></app-form-text-area>
+                <label class="required" for="allergies">Alergias</label>
+              </p-float-label>
+              @if (formHelper.isDirtyAndInvalidWithError('allergies', 'required')) {
+                <small class="text-danger">Introduzca un breve comentario o 'No tiene' si así corresponde</small>
+              } @else {
+                <small class="opacity-75">Indique 'No tiene' si así corresponde</small>
+              }
+            </div>
+            <div class="col-12">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [maxLength]="2000"
+                  formControlName="foodIntolerances"
+                  id="foodIntolerances"
+                  rows="2"
+                  [showErrorMessage]="formHelper.isDirtyAndInvalidWithError('foodIntolerances', 'maxlength')"
+                ></app-form-text-area>
+                <label class="required" for="foodIntolerances">Intolerancias alimenticias</label>
+              </p-float-label>
+              @if (formHelper.isDirtyAndInvalidWithError('foodIntolerances', 'required')) {
+                <small class="text-danger">Introduzca un breve comentario o 'No tiene' si así corresponde</small>
+              } @else {
+                <small class="opacity-75">Indique 'No tiene' si así corresponde</small>
+              }
+            </div>
+            <div class="col-12">
+              <div class="d-flex flex-column">
+                <label class="required" for="bloodType">Programa de vacunaciones completo</label>
+                <p-select-button
+                  class="w-fit"
+                  formControlName="vaccineProgram"
+                  [options]="yesNoOptions"
+                  [unselectable]="false"
+                ></p-select-button>
+                @if (formHelper.isDirtyAndInvalid('bloodType')) {
+                  <small class="text-danger">Introduzca si tiene el programa de vacunaciones completo</small>
+                }
+              </div>
+            </div>
+          </div>
+        }
+        @case (2) {
+          <h3 class="fs-5 text-dark mb-2">Contacto principal</h3>
+          <div class="row" formGroupName="mainContact">
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="name"
+                  id="name"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="name">Nombre</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'name')) {
+                <small class="text-danger">Introduzca los apellidos del contacto</small>
+              }
+            </div>
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="surname"
+                  id="surname"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="surname">Apellidos</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'surname')) {
+                <small class="text-danger">Introduzca los apellidos del contacto</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="mobilePhone"
+                  id="mobilePhone"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="mobilePhone">Teléfono móvil</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'mobilePhone')) {
+                <small class="text-danger">Introduzca el teléfono móvil del contacto</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="landlinePhone"
+                  id="landlinePhone"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="landlinePhone">Teléfono fijo</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'landlinePhone')) {
+                <small class="text-danger">Introduzca el teléfono fijo del contacto</small>
+              }
+            </div>
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="email"
+                  id="email"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="email">Correo electrónico</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'email')) {
+                <small class="text-danger">Introduzca un correo electrónico válido</small>
+              }
+            </div>
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="address"
+                  id="address"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="address">Dirección</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'address')) {
+                <small class="text-danger">Introduzca la dirección del domicilio</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="cp"
+                  id="cp"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="cp">Código Postal</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'cp')) {
+                <small class="text-danger">Introduzca el código postal del domicilio</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="locality"
+                  id="locality"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="locality">Localidad</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'locality')) {
+                <small class="text-danger">Introduzca la localidad del domicilio</small>
+              }
+            </div>
+          </div>
+          <h3 class="fs-5 text-dark mb-2">Contacto secundario</h3>
+          <div class="row" formGroupName="secondaryContact">
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="name"
+                  id="name"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="name">Nombre</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'name')) {
+                <small class="text-danger">Introduzca los apellidos del contacto</small>
+              }
+            </div>
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="surname"
+                  id="surname"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="surname">Apellidos</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'surname')) {
+                <small class="text-danger">Introduzca los apellidos del contacto</small>
+              }
+            </div>
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="mobilePhone"
+                  id="mobilePhone"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="mobilePhone">Teléfono móvil</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'mobilePhone')) {
+                <small class="text-danger">Introduzca el teléfono móvil del contacto</small>
+              }
+            </div>
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="email"
+                  id="email"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="email">Correo electrónico</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('mainContact', 'email')) {
+                <small class="text-danger">Introduzca un correo electrónico válido</small>
+              }
+            </div>
+          </div>
+        }
+        @case (3) {
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <p-select
+                  formControlName="size"
+                  id="size"
+                  [options]="sizes"
+                ></p-select>
+                <label class="required" for="size">Talla de camiseta</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('size')) {
+                <small class="text-danger">Introduzca una talla</small>
+              }
+            </div>
+            <div class="col-12 col-md-6">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="dietPreference"
+                  id="dietPreference"
+                  type="text"
+                  maxlength="2000"
+                >
+                <label for="dietPreference">Preferencia alimentaria (vegana o similares)</label>
+              </p-floatlabel>
+            </div>
+            <div class="col-12">
+              <h3 class="fs-5 text-dark mb-2">Idiomas</h3>
+              <div formArrayName="languages">
+                @let languageControls = formHelper.getFormArray('languages').controls;
+                @for (control of languageControls; track control) {
+                  <div [formGroupName]="$index" class="row">
+                    <div class="col-12 col-md-9">
+                      <p-floatlabel variant="on">
+                        <input
+                          pInputText
+                          formControlName="language"
+                          id="language"
+                          type="text"
+                          maxlength="2000"
+                        >
+                        <label for="language">Idioma</label>
+                      </p-floatlabel>
+                      @if (formHelper.isDirtyAndInvalid('languages', String($index), 'language')) {
+                        <small class="text-danger">Introduzca un idioma</small>
+                      }
+                    </div>
+                    <div class="col-12 col-md-3">
+                      <div class="d-flex flex-row gap-1">
+                        <div class="w-100">
+                          <p-floatlabel variant="on">
+                            <p-select
+                              formControlName="level"
+                              id="level"
+                              [options]="levels"
+                            ></p-select>
+                            <label for="level">Nivel</label>
+                          </p-floatlabel>
+                          @if (formHelper.isDirtyAndInvalid('languages', String($index), 'level')) {
+                            <small class="text-danger">Escoja un nivel</small>
+                          }
+                        </div>
+                        @if (languageControls.length > 1) {
+                          <p-button
+                            outlined
+                            severity="danger"
+                            icon="pi pi-trash"
+                            (onClick)="deleteLanguage($index)"
+                          ></p-button>
+                        }
+                        @if ($index === languageControls.length - 1) {
+                          <p-button outlined icon="pi pi-plus" (onClick)="addLanguage()"></p-button>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-12">
+              <app-checkbox-container [privacy]="true" controlName="privacy">
+                <p-checkbox
+                  id="privacy"
+                  formControlName="privacy"
+                  [binary]="true"
+                ></p-checkbox>
+              </app-checkbox-container>
+              @if (formHelper.isDirtyAndInvalid('privacy')) {
+                <small class="text-danger">Debe leer y estar de acuerdo con los términos.</small>
+              }
+            </div>
+          </div>
+        }
+        @case (4) {
+          <div class="row confirmation-container">
+            <div class="col-12 mb-0">
+              <b class="fs-5">Datos Básicos</b>
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Nombre:</b>
+              {{ jamboreeForm.name }}
+              @if (jamboreeForm.feltName) {
+                ({{ jamboreeForm.feltName }})
+              }
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Apellidos:</b>
+              {{ jamboreeForm.surname }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Género:</b>
+              {{ jamboreeForm.gender }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Tipo de participación:</b>
+              {{ jamboreeForm.participantType }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Fecha de nacimiento:</b>
+              {{ jamboreeForm.birthDate | date:"dd/MM/yyyy" }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>DNI/NIE:</b>
+              {{ jamboreeForm.dni }}
+              {{ jamboreeForm.dni?.toLowerCase() == 'no tiene' ? '- (Será necesario para la actividad)' : '' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Pasaporte:</b>
+              {{ jamboreeForm.passportNumber }}
+              {{ jamboreeForm.passportNumber?.toLowerCase() == 'no tiene' ? '- (Será necesario para la actividad)' : '' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Nacionalidad:</b>
+              {{ jamboreeForm.nationality }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Teléfono:</b>
+              {{ jamboreeForm.phoneNumber }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Correo electrónico:</b>
+              {{ jamboreeForm.email }}
+            </div>
+            <div class="col-12 mt-2 mb-0">
+              <b class="fs-5">Datos Médicos</b>
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Grupo sanguíneo:</b>
+              {{ jamboreeForm.bloodType }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Programa de vacunaciones:</b>
+              {{ jamboreeForm.vaccineProgram | boolean }}
+            </div>
+            <div class="col-12">
+              <b>Problemas médicos:</b>
+              {{ jamboreeForm.medicalData }}
+            </div>
+            <div class="col-12">
+              <b>Medicaciones:</b>
+              {{ jamboreeForm.medication }}
+            </div>
+            <div class="col-12">
+              <b>Alergias:</b>
+              {{ jamboreeForm.allergies }}
+            </div>
+            <div class="col-12">
+              <b>Intolerancias alimenticias:</b>
+              {{ jamboreeForm.foodIntolerances }}
+            </div>
+            <div class="col-12 mt-2 mb-0">
+              <b class="fs-5">Contacto principal</b>
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Nombre:</b>
+              {{ jamboreeForm.mainContact.name }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Apellidos:</b>
+              {{ jamboreeForm.mainContact.surname }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Teléfono móvil:</b>
+              {{ jamboreeForm.mainContact.mobilePhone }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Teléfono fijo:</b>
+              {{ jamboreeForm.mainContact.landlinePhone }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Correo:</b>
+              {{ jamboreeForm.mainContact.email }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Dirección:</b>
+              {{ jamboreeForm.mainContact.address }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Código postal:</b>
+              {{ jamboreeForm.mainContact.cp }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Localidad:</b>
+              {{ jamboreeForm.mainContact.locality }}
+            </div>
+            <div class="col-12 mt-2 mb-0">
+              <b class="fs-5">Contacto secundario</b>
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Nombre:</b>
+              {{ jamboreeForm.secondaryContact.name }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Apellidos:</b>
+              {{ jamboreeForm.secondaryContact.surname }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Teléfono móvil:</b>
+              {{ jamboreeForm.secondaryContact.mobilePhone }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Correo electrónico:</b>
+              {{ jamboreeForm.secondaryContact.email }}
+            </div>
+            <div class="col-12 mt-2 mb-0">
+              <b class="fs-5">Otros datos</b>
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Talla:</b>
+              {{ jamboreeForm.size }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Preferencia alimentaria:</b>
+              {{ jamboreeForm.dietPreference || 'Ninguna' }}
+            </div>
+            <div class="col-12">
+              <b>Idiomas:</b>
+              <ul>
+                @for (lang of jamboreeForm.languages; track $index) {
+                  <li>{{ lang.language }} - {{ lang.level }}</li>
+                }
+              </ul>
+            </div>
+          </div>
+        }
+      }
+    </form>
+    <app-large-form-buttons
+      [form]="formHelper"
+      [loading]="loading"
+      [showPrevAtFirstPage]="true"
+      (onSubmit)="sendForm()"
+    ></app-large-form-buttons>
+
+  }</div>

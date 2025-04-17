@@ -201,6 +201,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: {roles: [UserRole.FORM]}
   },
+  //Jamboree
+  {
+    path: "jamboree/formulario",
+    loadComponent: () => import('./features/jamboree/jamboree-form/jamboree-form.component').then(c => c.JamboreeFormComponent)
+  },
   //Asociación Bentaya
   {
     path: "asociacion/grupo",
