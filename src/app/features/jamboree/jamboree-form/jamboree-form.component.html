@@ -572,6 +572,9 @@
             </div>
             <div class="col-12">
               <h3 class="fs-5 text-dark mb-2">Idiomas</h3>
+              <p>
+                Introducir todos los idiomas que considere y el nivel aproximado (no tiene por qué estar certificado).
+              </p>
               <div formArrayName="languages">
                 @let languageControls = formHelper.getFormArray('languages').controls;
                 @for (control of languageControls; track control) {

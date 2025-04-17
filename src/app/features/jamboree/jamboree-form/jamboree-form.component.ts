@@ -135,7 +135,6 @@ export class JamboreeFormComponent implements OnInit {
     ]);
     this.addLanguage();
     this.formHelper.onLastPage = () => this.createPreScoutForm();
-    this.formHelper.currentPage = 0;
   }
 
   private readonly residentValidation: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {

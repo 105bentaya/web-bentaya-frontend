@@ -1,8 +1,15 @@
 <div class="container">
   <h1>Inscripciones Jamboree</h1>
-  <p-button
-    label="Descargar Inscripciones Jamboree"
-    icon="pi pi-file-excel"
-    (onClick)="downloadExcelFile()"
-  ></p-button>
+  <div class="d-flex flex-column gap-2">
+    <p-button
+      label="Descargar Inscripciones Jamboree"
+      icon="pi pi-file-excel"
+      (onClick)="downloadExcelFile()"
+      [loading]="loading"
+    ></p-button>
+    <app-general-a-button
+      label="Ir al formulario"
+      routerLink="/jamboree/formulario"
+      variant="outlined"
+    ></app-general-a-button>
 </div>
