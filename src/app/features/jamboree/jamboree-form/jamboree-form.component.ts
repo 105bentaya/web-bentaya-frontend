@@ -30,6 +30,7 @@ import {DatePipe} from "@angular/common";
 import {KeyFilter} from "primeng/keyfilter";
 import {JamboreeService} from "../jamboree.service";
 import {AlertService} from "../../../shared/services/alert-service.service";
+import {Message} from "primeng/message";
 
 @Component({
   selector: 'app-jamboree-form',
@@ -48,7 +49,8 @@ import {AlertService} from "../../../shared/services/alert-service.service";
     Button,
     BooleanPipe,
     DatePipe,
-    KeyFilter
+    KeyFilter,
+    Message
   ],
   templateUrl: './jamboree-form.component.html',
   styleUrl: './jamboree-form.component.scss'
@@ -122,13 +124,14 @@ export class JamboreeFormComponent implements OnInit {
       languages: this.formBuilder.array([], [Validators.required]),
       size: [null, [Validators.required, Validators.maxLength(255)]],
       dietPreference: [null, [Validators.maxLength(2000)]],
+      observations: [null, [Validators.maxLength(2000)]],
       privacy: [false, Validators.requiredTrue]
     });
     this.formHelper.setPages([
       ["participantType", "name", "surname", "feltName", "dni", "passportNumber", "nationality", "birthDate", "gender", "phoneNumber", "email", "resident", "municipality"],
       ["bloodType", "medicalData", "medication", "allergies", "vaccineProgram", "foodIntolerances"],
       ["mainContact", "secondaryContact"],
-      ["size", "dietPreference", "languages", "privacy"]
+      ["size", "dietPreference", "languages", "privacy", "observations"]
     ]);
     this.addLanguage();
     this.formHelper.onLastPage = () => this.createPreScoutForm();

@@ -116,7 +116,6 @@
                 <p-datePicker
                   id="birthDate"
                   formControlName="birthDate"
-                  dataType="string"
                   appendTo="body"
                 ></p-datePicker>
                 <label class="required" for="birthDate">Fecha de Nacimiento</label>
@@ -625,6 +624,17 @@
               </div>
             </div>
             <div class="col-12">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [maxLength]="2000"
+                  formControlName="observations"
+                  id="observations"
+                  [showErrorMessage]="formHelper.isDirtyAndInvalidWithError('observations', 'maxlength')"
+                ></app-form-text-area>
+                <label for="observations">Observaciones que considere</label>
+              </p-float-label>
+            </div>
+            <div class="col-12">
               <app-checkbox-container [privacy]="true" controlName="privacy">
                 <p-checkbox
                   id="privacy"
@@ -640,6 +650,10 @@
         }
         @case (4) {
           <div class="row confirmation-container">
+            <p-message severity="error" icon="pi pi-exclamation-triangle" class="mb-2">
+              <b>!!Revise bien todos los datos!!</b> Cualquier fallo podría imposibilitar la posibilidad de realizar los
+              viajes o participar en la actividad.
+            </p-message>
             <div class="col-12 mb-0">
               <b class="fs-5">Datos Básicos</b>
             </div>
@@ -789,11 +803,15 @@
             </div>
             <div class="col-12">
               <b>Idiomas:</b>
-              <ul>
+              <ul class="mb-0">
                 @for (lang of jamboreeForm.languages; track $index) {
                   <li>{{ lang.language }} - {{ lang.level }}</li>
                 }
               </ul>
+            </div>
+            <div class="col-12">
+              <b>Observaciones:</b>
+              {{ jamboreeForm.observations || 'Ninguna' }}
             </div>
           </div>
         }

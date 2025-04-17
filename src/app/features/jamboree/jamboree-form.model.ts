@@ -20,6 +20,7 @@ export interface JamboreeForm {
   size: string;
   foodIntolerances: string;
   dietPreference?: string;
+  observations?: string;
   languages: {
     language: string;
     level: string;

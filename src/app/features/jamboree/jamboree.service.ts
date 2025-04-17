@@ -14,4 +14,8 @@ export class JamboreeService {
   saveForm(form: JamboreeForm) {
     return this.http.post(`${this.jamboreeUrl}/public/form`, form);
   }
+
+  getExcel() {
+    return this.http.get(this.jamboreeUrl, {responseType: 'blob', observe: 'response'});
+  }
 }

@@ -16,6 +16,7 @@ const scoutCenterManager = {label: "Gestión de Reservas", icon: "fa-solid fa-te
 const scoutCenterInformation = {label: "Ajustes Centros Scout", icon: "fa-solid fa-sliders", route: "/centros-scout/datos", category: "Centros Scout"};
 const donations = {label: "Donaciones", icon: "fa-solid fa-piggy-bank", route: '/donaciones/lista', category: "Gestión de Grupo"};
 const inscriptions = {label: "Preinscripciones", icon: "pi pi-folder", route: "/preinscripciones", category: "Gestión de Grupo"};
+const jamboreeInscriptions = {label: "Jamboree", icon: "fa-solid fa-earth", route: "/jamboree/inscripciones", category: "Gestión de Grupo"};
 const volunteers = {label: "Voluntariado", icon: "pi pi-heart", route: "/voluntariado", category: "Gestión de Grupo"};
 const senior = {label: "Sección Sénior", icon: "fa-solid fa-hat-cowboy", route: "/seccion-senior/lista", category: "Gestión de Grupo"};
 const userList = {label: "Usuarios", icon: "pi pi-database", route: "/usuarios", category: "Administración"};
@@ -50,7 +51,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(/*transactions, */donations);
   }
   if (user.hasRequiredPermission(UserRole.FORM)) {
-    menuItems.push(inscriptions, volunteers, senior);
+    menuItems.push(inscriptions, volunteers, senior, jamboreeInscriptions);
   }
   if (user.hasRequiredPermission(UserRole.ADMIN)) {
     menuItems.push(userList, scoutList, settings);
