@@ -20,6 +20,7 @@ import {DialogService} from "primeng/dynamicdialog";
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 import {ScoutCenterService} from "../../../../scout-center/scout-center.service";
 import {FileUtils} from "../../../../../shared/util/file.utils";
+import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-own-booking-follow-up',
@@ -30,7 +31,8 @@ import {FileUtils} from "../../../../../shared/util/file.utils";
     TableModule,
     Tag,
     GeneralAButtonComponent,
-    BasicLoadingInfoComponent
+    BasicLoadingInfoComponent,
+    BooleanPipe
   ],
   templateUrl: './own-booking-follow-up.component.html',
   styleUrl: './own-booking-follow-up.component.scss',

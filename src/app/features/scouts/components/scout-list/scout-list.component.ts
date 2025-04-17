@@ -19,6 +19,7 @@ import {
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {GroupService} from "../../../../shared/services/group.service";
+import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-scout-list',
@@ -30,7 +31,8 @@ import {GroupService} from "../../../../shared/services/group.service";
     InputTextModule,
     MultiSelectModule,
     Button,
-    TableIconButtonComponent
+    TableIconButtonComponent,
+    BooleanPipe
   ]
 })
 

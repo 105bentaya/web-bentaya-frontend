@@ -36,6 +36,7 @@ import {BookingFetcherService} from "../../service/booking-fetcher.service";
 import {Button} from "primeng/button";
 import {finalize} from "rxjs";
 import {Select} from "primeng/select";
+import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-booking-form',
@@ -59,7 +60,8 @@ import {Select} from "primeng/select";
     GeneralAButtonComponent,
     Button,
     Select,
-    FormsModule
+    FormsModule,
+    BooleanPipe
   ]
 })
 export class BookingFormComponent implements OnInit {

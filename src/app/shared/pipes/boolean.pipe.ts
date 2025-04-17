@@ -1,11 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'boolean'
 })
 export class BooleanPipe implements PipeTransform {
-  transform(value: boolean): unknown {
-    return value ? 'Sí' : 'No';
+  transform(value: boolean | undefined, inverted = false): string {
+    const result = inverted ? !value : !!value;
+    return result ? 'Sí' : 'No';
   }
-
 }

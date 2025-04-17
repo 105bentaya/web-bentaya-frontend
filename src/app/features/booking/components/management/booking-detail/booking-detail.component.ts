@@ -27,6 +27,7 @@ import {
   invalidDocumentsOnAccept,
   invalidDocumentsOnConfirm
 } from "../../../constant/confirm-messages.constants";
+import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-booking-detail',
@@ -45,7 +46,8 @@ import {
     Tag,
     NgTemplateOutlet,
     TableModule,
-    Tooltip
+    Tooltip,
+    BooleanPipe
   ]
 })
 export class BookingDetailComponent implements OnInit {

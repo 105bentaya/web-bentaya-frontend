@@ -25,7 +25,7 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {SelectModule} from 'primeng/select';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormHelper} from "../../../../shared/util/form-helper";
-import {genders} from "../../../../shared/constant";
+import {genders, yesNoOptions} from "../../../../shared/constant";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
@@ -67,7 +67,7 @@ export class ScoutFormComponent implements OnInit {
   private readonly groupService = inject(GroupService);
 
   protected readonly genders = genders;
-  protected readonly options = [{label: 'Sí', value: true}, {label: 'No', value: false}];
+  protected readonly options = yesNoOptions;
   protected groups!: BasicGroupForm[];
   protected scoutFormHelper = new FormHelper();
   protected scoutContactList!: FormArray;

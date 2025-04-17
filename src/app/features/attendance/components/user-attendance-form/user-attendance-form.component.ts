@@ -8,6 +8,7 @@ import {SelectButtonModule} from 'primeng/selectbutton';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FloatLabel} from "primeng/floatlabel";
+import {yesNoOptions} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-user-attendance-form',
@@ -27,8 +28,8 @@ export class UserAttendanceFormComponent implements OnInit {
   private readonly config = inject(DynamicDialogConfig);
   private readonly ref = inject(DynamicDialogRef);
   private readonly confirmationService = inject(ConfirmationService);
-
-  protected options = [{label: 'Sí', value: true}, {label: 'No', value: false}];
+  
+  protected readonly options = yesNoOptions;
   protected confirmation!: Confirmation;
   protected validText: boolean = true;
   protected loading: boolean = false;

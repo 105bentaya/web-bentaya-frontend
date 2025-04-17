@@ -21,3 +21,6 @@ export const secretaryEmail = "secretaria@105bentaya.org";
 export const bookingEmail = "centroscouts@105bentaya.org";
 
 export const maxFileUploadByteSize = 100 * 1024 * 1024 - 500;
+
+
+export const yesNoOptions = [{label: 'Sí', value: true}, {label: 'No', value: false}];

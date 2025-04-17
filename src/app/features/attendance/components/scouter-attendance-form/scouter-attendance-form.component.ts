@@ -17,6 +17,8 @@ import {
   CheckboxContainerComponent
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {FloatLabel} from "primeng/floatlabel";
+import {yesNoOptions} from "../../../../shared/constant";
+import {AlertService} from "../../../../shared/services/alert-service.service";
 
 @Component({
   selector: 'app-scouter-attendance-form',
@@ -39,6 +41,7 @@ export class ScouterAttendanceFormComponent implements OnInit {
 
   private readonly config = inject(DynamicDialogConfig);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly alertService = inject(AlertService);
 
   private info!: EventAttendanceInfo[];
   protected filteredInfo!: EventAttendanceInfo[];
@@ -58,15 +61,13 @@ export class ScouterAttendanceFormComponent implements OnInit {
   protected validText: boolean = true;
   protected loading: boolean = false;
 
-  protected paymentOptions = [{label: 'Sí', value: true}, {label: 'No', value: false}];
-  protected multiplePaymentOptions = [
-    {label: 'Sí', value: true},
-    {label: 'No', value: false},
+  protected readonly paymentOptions = yesNoOptions;
+  protected readonly multiplePaymentOptions = [
+    ...yesNoOptions,
     {label: 'No Editar', value: null}
   ];
   protected attendanceOptions = [
-    {label: 'Sí', value: true},
-    {label: 'No', value: false},
+    ...yesNoOptions,
     {label: 'NS/NC', value: null, title: "Sin Confirmar"}
   ];
 
@@ -123,7 +124,9 @@ export class ScouterAttendanceFormComponent implements OnInit {
 
   protected onSingleSubmit(value: Confirmation) {
     this.loading = true;
-    this.updateConfirmation(value).pipe(finalize(() => this.loading = false)).subscribe();
+    this.updateConfirmation(value).pipe(finalize(() => this.loading = false)).subscribe(() => {
+      this.alertService.sendBasicSuccessMessage("Asistencia actualizada con éxito", 2000);
+    });
   }
 
   //todo improve to allow more dynamic selection, including checkbox with minus sign
@@ -171,7 +174,9 @@ export class ScouterAttendanceFormComponent implements OnInit {
       this.loading = false;
       this.generateGroupedInfo();
       this.onMultipleSelect();
-    })).subscribe();
+    })).subscribe(() => {
+      this.alertService.sendBasicSuccessMessage("Asistencias actualizadas con éxito", 3000);
+    });
   }
 
   private updateConfirmation(confirmation: Confirmation) {

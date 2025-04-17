@@ -12,7 +12,7 @@ import {
   Validators
 } from '@angular/forms';
 import {InputNumberModule} from 'primeng/inputnumber';
-import {CurrencyPipe, NgClass} from '@angular/common';
+import {CurrencyPipe, LowerCasePipe, NgClass} from '@angular/common';
 import {FloatLabelModule} from "primeng/floatlabel";
 import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {Booking, bookingIsAlwaysExclusive} from "../../../model/booking.model";
@@ -20,6 +20,8 @@ import {FormHelper} from "../../../../../shared/util/form-helper";
 import {InputText} from "primeng/inputtext";
 import {HourPipe} from "../../../../../shared/pipes/hour.pipe";
 import {SelectButton} from "primeng/selectbutton";
+import {yesNoOptions} from "../../../../../shared/constant";
+import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-booking-status-update',
@@ -34,7 +36,9 @@ import {SelectButton} from "primeng/selectbutton";
     SaveButtonsComponent,
     ReactiveFormsModule,
     InputText,
-    SelectButton
+    SelectButton,
+    BooleanPipe,
+    LowerCasePipe
   ]
 })
 export class BookingStatusUpdateComponent implements OnInit {
@@ -44,10 +48,7 @@ export class BookingStatusUpdateComponent implements OnInit {
   private readonly confirmationService = inject(ConfirmationService);
 
   protected readonly formHelper = new FormHelper();
-  protected readonly exclusiveOptions = [
-    {label: 'Sí', value: true},
-    {label: 'No', value: false}
-  ];
+  protected readonly exclusiveOptions = yesNoOptions;
 
   protected confirmMessage: string = "¿Desea confirmar los datos actuales?";
   protected textAreaLabel: string = "Observaciones";

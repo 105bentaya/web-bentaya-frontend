@@ -1,10 +1,12 @@
 import {Scout} from "./models/scout.model";
 import {DatePipe} from "@angular/common";
+import {BooleanPipe} from "../../shared/pipes/boolean.pipe";
 
 export default class ScoutHelper {
 
   static generateData(scoutList: Scout[], addSection = false) {
     const datePipe = new DatePipe("es");
+    const booleanPipe = new BooleanPipe();
     return scoutList.map(scout => {
       let tempScout: { [k: string]: any } = {
         id: scout.census?.toString(),
@@ -21,7 +23,7 @@ export default class ScoutHelper {
         gender: scout.gender,
         municipality: scout.municipality,
         size: scout.shirtSize,
-        image: scout.imageAuthorization ? 'Sí' : 'No',
+        image: booleanPipe.transform(scout.imageAuthorization),
         medical: scout.medicalData,
         progression: scout.progressions,
         observation: scout.observations

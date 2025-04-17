@@ -28,6 +28,7 @@ import {
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {SettingType} from "../../../settings/setting.model";
+import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-ser-scout-table',
@@ -106,13 +107,14 @@ export class SerScoutTableComponent implements OnInit {
   protected exportExcelScout() {
     const filteredPreScouts = this.filterService.filter(this.preScouts, ["inscriptionYear"], this.selectedYear, "equals");
     this.excelLoading = true;
+    const booleanPipe = new BooleanPipe();
     this.excelService.exportAsExcel(
       filteredPreScouts.map(pre => ({
         id: pre.id!.toString(), surname: pre.surname, name: pre.name, dni: pre.dni, gender: pre.gender,
         time: pre.creationDate, access: pre.priority.toString(), info: pre.priorityInfo, section: pre.section,
-        birthday: pre.birthday, age: pre.age, size: pre.size, been: pre.hasBeenInGroup ? 'SI' : 'NO',
-        beenInfo: pre.yearAndSection, cont: pre.parentsName, cont1: pre.parentsSurname, cont2: pre.relationship,
-        cont3: pre.email, cont4: pre.phone
+        birthday: pre.birthday, age: pre.age, size: pre.size,
+        been: booleanPipe.transform(pre.hasBeenInGroup).toUpperCase(), beenInfo: pre.yearAndSection,
+        cont: pre.parentsName, cont1: pre.parentsSurname, cont2: pre.relationship, cont3: pre.email, cont4: pre.phone
       })),
       ["ID", "Apellidos", "Nombre", "DNI o NIE", "Género", "Fecha y hora de inscripción", "Grupo de Acceso",
         "Información grupo de acceso", "Sección", "Fecha de Nacimiento", "Edad", "Talla", "Ha estado antes en el grupo",

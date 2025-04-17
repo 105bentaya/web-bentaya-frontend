@@ -31,6 +31,7 @@ import {cancelBookingMessage, confirmDocumentsMessage} from "../../constant/conf
 import {BookingStatusService} from "../../service/booking-status.service";
 import {filter, finalize} from "rxjs";
 import {identity} from "lodash";
+import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-booking-follow-up',
@@ -50,7 +51,8 @@ import {identity} from "lodash";
     GeneralAButtonComponent,
     Tag,
     Dialog,
-    DocumentFileUploaderComponent
+    DocumentFileUploaderComponent,
+    BooleanPipe
   ]
 })
 export class BookingFollowUpComponent implements OnInit {

@@ -111,7 +111,7 @@ export class AppComponent implements OnInit {
         severity: message!.severity,
         summary: message!.title,
         detail: message!.message,
-        life: 7200
+        life: message?.life ?? 7200
       })
     );
   }

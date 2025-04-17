@@ -359,7 +359,7 @@
                   </div>
                   @if (centerSelectionComponent.eligibleForExclusiveness) {
                     <div class="col-12">
-                      <b>Centro en exclusividad:</b> {{ booking.exclusiveReservation ? 'Sí' : 'No' }}
+                      <b>Centro en exclusividad:</b> {{ booking.exclusiveReservation | boolean }}
                     </div>
                   }
                 </div>

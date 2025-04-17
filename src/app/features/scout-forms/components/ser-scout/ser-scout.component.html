@@ -451,7 +451,7 @@
             }
             <div class="col-12 col-md-6">
               <b>Ha estado antes en el grupo:</b>
-              {{ preScout.hasBeenInGroup ? 'Sí' : 'No' }}
+              {{ preScout.hasBeenInGroup | boolean }}
             </div>
             @if (preScout.hasBeenInGroup) {
               <div class="col-12 col-md-6">

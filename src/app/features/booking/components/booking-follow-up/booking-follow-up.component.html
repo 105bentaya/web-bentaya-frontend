@@ -79,7 +79,7 @@
               <b>Solicita centro en exclusividad</b>
             }
             <div>
-              {{ booking.exclusiveReservation ? 'Sí' : 'No' }}
+              {{ booking.exclusiveReservation | boolean }}
               @if (bookingIsAlwaysExclusive(booking)) {
                 (Siempre es exclusivo)
               }

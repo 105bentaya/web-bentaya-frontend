@@ -17,19 +17,21 @@ export class AlertService {
     this.alertObservable.next(message);
   };
 
-  sendBasicErrorMessage(message: string, title = "Error") {
+  sendBasicErrorMessage(message: string, title = "Error", life?: number) {
     this.sendMessage({
       title: title,
       message: message,
-      severity: "error"
+      severity: "error",
+      life
     });
   }
 
-  sendBasicSuccessMessage(message: string) {
+  sendBasicSuccessMessage(message: string, life?: number) {
     this.sendMessage({
       title: "Éxito",
       message: message,
-      severity: "success"
+      severity: "success",
+      life
     });
   }
 }

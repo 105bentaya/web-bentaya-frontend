@@ -332,7 +332,7 @@
               </div>
               <div class="col-12 col-lg-6">
                 <b>Desea desgravar:</b>
-                {{ donationForm.deduct ? 'Sí' : 'No' }}
+                {{ donationForm.deduct | boolean }}
               </div>
               <div class="col-12 mb-1">
                 <b class="fs-5">Datos de Donación</b>

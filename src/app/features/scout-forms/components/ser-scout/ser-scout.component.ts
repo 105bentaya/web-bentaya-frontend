@@ -22,6 +22,7 @@ import {preScoutPriorities, PreScoutPriority} from "../../priority.constant";
 import {PreScoutForm} from "../../models/pre-scout-form.model";
 import {DatePicker} from "primeng/datepicker";
 import {Message} from "primeng/message";
+import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-ser-scout',
@@ -39,7 +40,8 @@ import {Message} from "primeng/message";
     CheckboxContainerComponent,
     LargeFormButtonsComponent,
     Message,
-    DatePicker
+    DatePicker,
+    BooleanPipe
   ]
 })
 export class SerScoutComponent implements OnInit {

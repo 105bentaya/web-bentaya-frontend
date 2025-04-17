@@ -95,7 +95,7 @@
         </td>
         <td class="text-center">
           <span>
-            {{ scout.enabled ? 'No' : 'Sí' }}
+            {{ scout.enabled | boolean:true }}
           </span>
         </td>
         <td>

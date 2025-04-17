@@ -28,6 +28,7 @@ import {
 import {
   RadioButtonContainerComponent
 } from "../../../../shared/components/radio-button-container/radio-button-container.component";
+import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-donation-form',
@@ -47,7 +48,8 @@ import {
     CurrencyPipe,
     LargeFormButtonsComponent,
     GeneralAButtonComponent,
-    RadioButtonContainerComponent
+    RadioButtonContainerComponent,
+    BooleanPipe
   ]
 })
 export class DonationFormComponent implements OnInit {
