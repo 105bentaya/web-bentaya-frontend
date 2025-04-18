@@ -42,6 +42,19 @@ p-datepicker.ng-invalid.ng-dirty .p-datepicker.p-inputwrapper .p-inputtext {
   border-color: var(--p-inputtext-invalid-border-color);
 }
 
+p-auto-complete.ng-invalid.ng-dirty .p-inputtext {
+
+  &:enabled:focus {
+    @extend %focus;
+  }
+
+  &:hover {
+    @extend %hover;
+  }
+
+  //fix
+  border-color: var(--p-inputtext-invalid-border-color);
+}
 
 p-password.ng-invalid.ng-dirty .p-inputtext {
   &:enabled:focus {

@@ -21,6 +21,7 @@ export interface InvoiceData {
   expenseTypes: InvoiceExpenseType[];
   grants: InvoiceGrant[];
   payers: InvoicePayer[];
+  autocompleteOptions: IssuerNif[]
 }
 
 export interface InvoiceExpenseType {
@@ -44,4 +45,9 @@ export interface InvoiceFile {
   uuid: string;
   name: string;
   mimeType: string;
+}
+
+export interface IssuerNif {
+  issuer: string;
+  nif: string;
 }

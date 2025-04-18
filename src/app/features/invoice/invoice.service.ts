@@ -13,6 +13,7 @@ export class InvoiceService {
 
   private readonly http = inject(HttpClient);
   private readonly invoiceUrl = `${environment.apiUrl}/invoice`;
+  private hasBeenUpdate = false;
 
   getAll(filter: PagedFilter): Observable<Page<Invoice>> {
     return this.http.get<Page<Invoice>>(this.invoiceUrl, {
@@ -29,14 +30,17 @@ export class InvoiceService {
   }
 
   save(invoice: Invoice): Observable<Invoice> {
+    this.hasBeenUpdate = true;
     return this.http.post<Invoice>(this.invoiceUrl, invoice);
   }
 
   update(invoice: Invoice): Observable<Invoice> {
+    this.hasBeenUpdate = true;
     return this.http.put<Invoice>(this.invoiceUrl, invoice);
   }
 
   delete(id: number): Observable<void> {
+    this.hasBeenUpdate = true;
     return this.http.delete<void>(`${this.invoiceUrl}/${id}`);
   }
 
@@ -52,5 +56,11 @@ export class InvoiceService {
 
   getFileUrl(fileId: number): Observable<HttpResponse<Blob>> {
     return this.http.get(`${this.invoiceUrl}/file/${fileId}`, {responseType: 'blob', observe: 'response'});
+  }
+
+  hasBeenAnUpdate() {
+    const hasBeenUpdate = this.hasBeenUpdate;
+    this.hasBeenUpdate = false;
+    return hasBeenUpdate;
   }
 }

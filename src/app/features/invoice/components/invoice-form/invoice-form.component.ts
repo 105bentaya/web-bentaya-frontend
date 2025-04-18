@@ -8,7 +8,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {TabViewModule} from "primeng/tabview";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {Invoice, InvoiceExpenseType, InvoiceGrant, InvoicePayer} from "../../invoice.model";
+import {Invoice, InvoiceExpenseType, InvoiceGrant, InvoicePayer, IssuerNif} from "../../invoice.model";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {CheckboxModule} from "primeng/checkbox";
@@ -25,6 +25,8 @@ import {finalize, forkJoin} from "rxjs";
 import {FileUpload} from "primeng/fileupload";
 import {maxFileUploadByteSize} from "../../../../shared/constant";
 import {imageAndPdfTypes} from "../../../../shared/util/file.utils";
+import {AutoComplete, AutoCompleteCompleteEvent, AutoCompleteSelectEvent} from "primeng/autocomplete";
+import {KeyFilter} from "primeng/keyfilter";
 
 @Component({
   selector: 'app-invoice-form',
@@ -43,7 +45,9 @@ import {imageAndPdfTypes} from "../../../../shared/util/file.utils";
     DatePicker,
     CheckboxContainerComponent,
     SaveButtonsComponent,
-    FileUpload
+    FileUpload,
+    AutoComplete,
+    KeyFilter
   ],
   templateUrl: './invoice-form.component.html',
   styleUrl: './invoice-form.component.scss'
@@ -66,6 +70,13 @@ export class InvoiceFormComponent implements OnInit {
   protected expenseTypes!: InvoiceExpenseType[];
   protected grants!: InvoiceGrant[];
   protected payers!: InvoicePayer[];
+  protected readonly paymentMethods = [
+    "EFECTIVO",
+    "TRANSFERENCIA BANCARIA",
+    "RECIBO",
+    "TARJETA BANCARIA",
+    "TARJETA CAIXA"
+  ];
 
   protected invoiceToUpdate: Invoice | undefined;
   private dateHasBeenSelected = false;
@@ -79,11 +90,17 @@ export class InvoiceFormComponent implements OnInit {
 
   private readonly uploader = viewChild.required(FileUpload);
 
+  private autoCompleteOptions!: IssuerNif[];
+  protected issuerSuggestions: IssuerNif[] = [];
+  protected nifSuggestions: IssuerNif[] = [];
+  protected nifFilter: RegExp = /[A-Za-z0-9?]/;
+
   ngOnInit(): void {
     if (this.config.data) {
       this.expenseTypes = this.config.data.invoiceData.expenseTypes.map((expense: InvoiceExpenseType) => this.transformExpenseName(expense));
       this.grants = this.config.data.invoiceData.grants;
       this.payers = this.config.data.invoiceData.payers;
+      this.autoCompleteOptions = this.config.data.invoiceData.autocompleteOptions;
       if (this.config.data.invoice) {
         this.dateHasBeenSelected = true;
         this.invoiceToUpdate = this.config.data.invoice;
@@ -98,6 +115,23 @@ export class InvoiceFormComponent implements OnInit {
       this.alertService.sendBasicErrorMessage("No se han cargado los datos necesarios para rellenar el formulario");
       this.ref.close();
     }
+  }
+
+  protected searchIssuer(event: AutoCompleteCompleteEvent) {
+    const query = event.query.toLowerCase();
+    this.issuerSuggestions = this.autoCompleteOptions
+      .filter(item => item.issuer.toLowerCase().includes(query));
+  }
+
+  protected searchNif(event: AutoCompleteCompleteEvent) {
+    const query = event.query.toLowerCase();
+    this.nifSuggestions = this.autoCompleteOptions
+      .filter(item => item.nif.toLowerCase().includes(query));
+  }
+
+  protected onAutoCompleteSelect(event: AutoCompleteSelectEvent) {
+    this.invoiceFormHelper.get("issuer")?.setValue(event.value.issuer);
+    this.invoiceFormHelper.get("nif")?.setValue(event.value.nif);
   }
 
   private transformExpenseName(expense: InvoiceExpenseType): InvoiceExpenseType {
@@ -129,12 +163,12 @@ export class InvoiceFormComponent implements OnInit {
   }
 
   protected onSubmit(continueAdding = false) {
-    this.invoiceFormHelper.validateAll();
-    if (this.invoiceFormHelper.valid) {
+    if (this.invoiceFormHelper.validateAll()) {
       const invoice: Invoice = {...this.invoiceFormHelper.value};
       invoice.amount *= 100;
       invoice.invoiceDate = DateUtils.toLocalDate(invoice.invoiceDate);
       invoice.paymentDate = DateUtils.toLocalDate(invoice.paymentDate);
+      invoice.nif = invoice.nif.toUpperCase();
       this.saveLoading = true;
       this.saveOrUpdate(invoice)
         .pipe(finalize(() => this.saveLoading = false))
@@ -165,6 +199,14 @@ export class InvoiceFormComponent implements OnInit {
   }
 
   private resetForm(invoice: Invoice) {
+    const existingSuggestion = this.autoCompleteOptions.find(suggestion => suggestion.nif === invoice.nif);
+    if (existingSuggestion) {
+      existingSuggestion.nif = invoice.nif;
+      existingSuggestion.issuer = invoice.issuer;
+    } else {
+      this.autoCompleteOptions.push({issuer: invoice.issuer, nif: invoice.nif});
+    }
+
     this.config.header = "Añadir Factura";
     this.saveAndContinue = true;
     this.dateHasBeenSelected = false;

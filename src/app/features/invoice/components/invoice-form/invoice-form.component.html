@@ -4,15 +4,34 @@
       <div class="row">
         <div class="col-12 col-sm-8">
           <p-floatlabel variant="on">
-            <input id="issuer" formControlName="issuer" maxlength="255" pInputText>
+            <p-auto-complete
+              styleClass="w-100"
+              maxlength="255"
+              formControlName="issuer"
+              [suggestions]="issuerSuggestions"
+              (completeMethod)="searchIssuer($event)"
+              (onSelect)="onAutoCompleteSelect($event)"
+              optionLabel="issuer"
+            />
             <label class="required" for="issuer">Emite</label>
           </p-floatlabel>
+          <small class="opacity-75">Al seleccionar un emisor o cif existente, se rellenarán ambos campos</small>
         </div>
         <div class="col-12 col-sm-4">
           <p-floatlabel variant="on">
-            <input id="nif" formControlName="nif" maxlength="255" pInputText>
+            <p-auto-complete
+              styleClass="w-100"
+              maxlength="255"
+              formControlName="nif"
+              [suggestions]="nifSuggestions"
+              (completeMethod)="searchNif($event)"
+              (onSelect)="onAutoCompleteSelect($event)"
+              optionLabel="nif"
+              [pKeyFilter]="nifFilter"
+            />
             <label class="required" for="nif">NIF/CIF</label>
           </p-floatlabel>
+          <small class="opacity-75">Sólo letras, números o '?'</small>
         </div>
         <div class="col-12 col-sm-8">
           <p-floatlabel variant="on">
@@ -58,7 +77,14 @@
         </div>
         <div class="col-12 col-sm-4">
           <p-floatlabel variant="on">
-            <input id="method" formControlName="method" maxlength="255" pInputText>
+            <p-select
+              id="method"
+              formControlName="method"
+              appendTo="body"
+              [options]="paymentMethods"
+              maxlength="255"
+              editable
+            ></p-select>
             <label class="required" for="method">Forma de pago</label>
           </p-floatlabel>
         </div>

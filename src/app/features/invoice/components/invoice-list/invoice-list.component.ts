@@ -8,7 +8,7 @@ import {InvoiceService} from "../../invoice.service";
 import {Invoice, InvoiceData} from "../../invoice.model";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import FilterUtils from "../../../../shared/util/filter-utils";
-import {DialogService} from "primeng/dynamicdialog";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {InvoiceDetailComponent} from "../invoice-detail/invoice-detail.component";
 import {InvoiceFormComponent} from "../invoice-form/invoice-form.component";
@@ -48,9 +48,13 @@ export class InvoiceListComponent implements OnInit {
 
   protected dateRange: Date[] | undefined;
   private lastFilter: TableLazyLoadEvent | undefined;
-  private table = viewChild.required(Table);
+  private readonly table = viewChild.required(Table);
 
   ngOnInit() {
+    this.getData();
+  }
+
+  private getData() {
     this.invoiceService.getData().subscribe(invoiceData => this.invoiceData = invoiceData);
   }
 
@@ -74,7 +78,7 @@ export class InvoiceListComponent implements OnInit {
       "small",
       {invoiceData: cloneDeep(this.invoiceData), allowMultipleAdding: true}
     );
-    ref.onClose.subscribe(() => this.lastFilter ? this.loadUsersWithFilter(this.lastFilter) : noop());
+    this.onRefClose(ref);
   }
 
   protected openInvoiceDetailDialog(invoice: Invoice) {
@@ -84,7 +88,16 @@ export class InvoiceListComponent implements OnInit {
       "small",
       {invoice, invoiceData: cloneDeep(this.invoiceData)}
     );
-    ref.onClose.subscribe(() => this.lastFilter ? this.loadUsersWithFilter(this.lastFilter) : noop());
+    this.onRefClose(ref);
+  }
+
+  protected onRefClose(ref: DynamicDialogRef) {
+    ref.onClose.subscribe(() => {
+      if (this.invoiceService.hasBeenAnUpdate()) {
+        this.lastFilter ? this.loadUsersWithFilter(this.lastFilter) : noop();
+        this.getData();
+      }
+    });
   }
 
   protected filterDates() {
