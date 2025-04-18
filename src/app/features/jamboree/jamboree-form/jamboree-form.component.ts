@@ -95,7 +95,9 @@ export class JamboreeFormComponent implements OnInit {
       phoneNumber: [null, [Validators.required, Validators.maxLength(255)]],
       email: [null, [Validators.required, Validators.maxLength(255), Validators.email]],
       resident: [null, [Validators.required]],
-      municipality: [null, [this.residentValidation, Validators.maxLength(255)]],
+      address: [null, [Validators.required, Validators.maxLength(511)]],
+      cp: [null, [Validators.required, Validators.maxLength(255)]],
+      locality: [null, [Validators.required, Validators.maxLength(255)]],
 
       bloodType: [null, [Validators.required, Validators.maxLength(255)]],
       medicalData: [null, [Validators.required, Validators.maxLength(2000)]],
@@ -109,10 +111,7 @@ export class JamboreeFormComponent implements OnInit {
         surname: [null, [Validators.required, Validators.maxLength(255)]],
         mobilePhone: [null, [Validators.required, Validators.maxLength(255)]],
         landlinePhone: [null, [Validators.required, Validators.maxLength(255)]],
-        email: [null, [Validators.required, Validators.email, Validators.maxLength(255)]],
-        address: [null, [Validators.required, Validators.maxLength(511)]],
-        cp: [null, [Validators.required, Validators.maxLength(255)]],
-        locality: [null, [Validators.required, Validators.maxLength(255)]]
+        email: [null, [Validators.required, Validators.email, Validators.maxLength(255)]]
       }),
       secondaryContact: this.formBuilder.group({
         name: [null, [Validators.maxLength(255)]],
@@ -128,7 +127,7 @@ export class JamboreeFormComponent implements OnInit {
       privacy: [false, Validators.requiredTrue]
     });
     this.formHelper.setPages([
-      ["participantType", "name", "surname", "feltName", "dni", "passportNumber", "nationality", "birthDate", "gender", "phoneNumber", "email", "resident", "municipality"],
+      ["participantType", "name", "surname", "feltName", "dni", "passportNumber", "nationality", "birthDate", "gender", "phoneNumber", "email", "resident", "locality", "address", "cp"],
       ["bloodType", "medicalData", "medication", "allergies", "vaccineProgram", "foodIntolerances"],
       ["mainContact", "secondaryContact"],
       ["size", "dietPreference", "languages", "privacy", "observations"]
@@ -136,10 +135,6 @@ export class JamboreeFormComponent implements OnInit {
     this.addLanguage();
     this.formHelper.onLastPage = () => this.createPreScoutForm();
   }
-
-  private readonly residentValidation: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    return (!control.value && this.formHelper.controlValue("resident") === true) ? {required: true} : null;
-  };
 
   protected deleteLanguage(index: number) {
     const array = this.formHelper.getFormArray("languages");
@@ -159,9 +154,6 @@ export class JamboreeFormComponent implements OnInit {
       ...this.formHelper.value
     };
     this.jamboreeForm.birthDate = DateUtils.toLocalDate(this.jamboreeForm.birthDate);
-    if (!this.jamboreeForm.resident) {
-      this.jamboreeForm.municipality = undefined;
-    }
   }
 
   protected sendForm() {

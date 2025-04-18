@@ -219,6 +219,51 @@
                 <small class="text-danger">Introduzca el correo electrónico de la persona participante</small>
               }
             </div>
+            <div class="col-12 col-sm-6 col-md-4">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="address"
+                  id="address"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="address">Dirección</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('address')) {
+                <small class="text-danger">Introduzca la dirección del domicilio</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="cp"
+                  id="cp"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="cp">Código Postal</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('cp')) {
+                <small class="text-danger">Introduzca el código postal del domicilio</small>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+              <p-floatlabel variant="on">
+                <input
+                  pInputText
+                  formControlName="locality"
+                  id="locality"
+                  type="text"
+                  maxlength="255"
+                >
+                <label class="required" for="locality">Localidad</label>
+              </p-floatlabel>
+              @if (formHelper.isDirtyAndInvalid('locality')) {
+                <small class="text-danger">Introduzca la localidad del domicilio</small>
+              }
+            </div>
             <div class="col-12">
               <div class="d-flex flex-column">
                 <label class="required" for="resident">Residente en Canarias</label>
@@ -234,23 +279,6 @@
                 }
               </div>
             </div>
-            @if (formHelper.controlValue("resident")) {
-              <div class="col">
-                <p-floatlabel variant="on">
-                  <input
-                    pInputText
-                    formControlName="municipality"
-                    id="municipality"
-                    type="text"
-                    maxlength="255"
-                  >
-                  <label class="required" for="municipality">Municipio de residencia</label>
-                </p-floatlabel>
-                @if (formHelper.isDirtyAndInvalid('municipality')) {
-                  <small class="text-danger">Introduzca el municipio de residencia de la persona participante</small>
-                }
-              </div>
-            }
           </div>
         }
         @case (1) {
@@ -436,51 +464,6 @@
                 <small class="text-danger">Introduzca un correo electrónico válido</small>
               }
             </div>
-            <div class="col-12 col-md-6">
-              <p-floatlabel variant="on">
-                <input
-                  pInputText
-                  formControlName="address"
-                  id="address"
-                  type="text"
-                  maxlength="255"
-                >
-                <label class="required" for="address">Dirección</label>
-              </p-floatlabel>
-              @if (formHelper.isDirtyAndInvalid('mainContact', 'address')) {
-                <small class="text-danger">Introduzca la dirección del domicilio</small>
-              }
-            </div>
-            <div class="col-12 col-sm-6 col-md-3">
-              <p-floatlabel variant="on">
-                <input
-                  pInputText
-                  formControlName="cp"
-                  id="cp"
-                  type="text"
-                  maxlength="255"
-                >
-                <label class="required" for="cp">Código Postal</label>
-              </p-floatlabel>
-              @if (formHelper.isDirtyAndInvalid('mainContact', 'cp')) {
-                <small class="text-danger">Introduzca el código postal del domicilio</small>
-              }
-            </div>
-            <div class="col-12 col-sm-6 col-md-3">
-              <p-floatlabel variant="on">
-                <input
-                  pInputText
-                  formControlName="locality"
-                  id="locality"
-                  type="text"
-                  maxlength="255"
-                >
-                <label class="required" for="locality">Localidad</label>
-              </p-floatlabel>
-              @if (formHelper.isDirtyAndInvalid('mainContact', 'locality')) {
-                <small class="text-danger">Introduzca la localidad del domicilio</small>
-              }
-            </div>
           </div>
           <h3 class="fs-5 text-dark mb-2">Contacto secundario</h3>
           <div class="row" formGroupName="secondaryContact">
@@ -576,7 +559,8 @@
             <div class="col-12">
               <h3 class="fs-5 text-dark mb-2">Idiomas</h3>
               <p>
-                Introducir todos los idiomas que considere (mínimo 1) y el nivel aproximado (no tiene por qué estar certificado).
+                Introducir todos los idiomas que considere (mínimo 1) y el nivel aproximado (no tiene por qué estar
+                certificado).
               </p>
               <div formArrayName="languages">
                 @let languageControls = formHelper.getFormArray('languages').controls;
@@ -701,11 +685,20 @@
               {{ jamboreeForm.nationality }}
             </div>
             <div class="col-12 col-md-6">
+              <b>Dirección:</b>
+              {{ jamboreeForm.address }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Código postal:</b>
+              {{ jamboreeForm.cp }}
+            </div>
+            <div class="col-12 col-md-6">
+              <b>Localidad:</b>
+              {{ jamboreeForm.locality }}
+            </div>
+            <div class="col-12 col-md-6">
               <b>Residente:</b>
               {{ jamboreeForm.resident | boolean }}
-              @if (jamboreeForm.resident) {
-                ({{ jamboreeForm.municipality }})
-              }
             </div>
             <div class="col-12 col-md-6">
               <b>Teléfono:</b>
@@ -764,18 +757,6 @@
             <div class="col-12 col-md-6">
               <b>Correo:</b>
               {{ jamboreeForm.mainContact.email }}
-            </div>
-            <div class="col-12 col-md-6">
-              <b>Dirección:</b>
-              {{ jamboreeForm.mainContact.address }}
-            </div>
-            <div class="col-12 col-md-6">
-              <b>Código postal:</b>
-              {{ jamboreeForm.mainContact.cp }}
-            </div>
-            <div class="col-12 col-md-6">
-              <b>Localidad:</b>
-              {{ jamboreeForm.mainContact.locality }}
             </div>
             <div class="col-12 mt-2 mb-0">
               <b class="fs-5">Contacto secundario</b>

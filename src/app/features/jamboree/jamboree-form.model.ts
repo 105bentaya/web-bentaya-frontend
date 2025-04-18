@@ -11,7 +11,6 @@ export interface JamboreeForm {
   phoneNumber: string;
   email: string;
   resident: boolean;
-  municipality?: string;
   bloodType: string;
   medicalData: string;
   medication: string;
@@ -21,6 +20,9 @@ export interface JamboreeForm {
   foodIntolerances: string;
   dietPreference?: string;
   observations?: string;
+  address: string;
+  cp: string;
+  locality: string;
   languages: {
     language: string;
     level: string;
@@ -31,9 +33,6 @@ export interface JamboreeForm {
     mobilePhone: string;
     email: string;
     landlinePhone: string;
-    address: string;
-    cp: string;
-    locality: string;
   };
   secondaryContact: {
     surname: string;
