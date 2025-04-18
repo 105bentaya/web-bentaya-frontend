@@ -82,7 +82,6 @@ export class OwnBookingListComponent implements OnInit {
     const filter = FilterUtils.lazyEventToFilter(event, 'startDate');
     this.bookingService.getOwnBookings(filter).subscribe({
       next: result => {
-        console.log(result);
         this.bookings = result.data;
         this.totalRecords = result.count;
         this.loading = false;
