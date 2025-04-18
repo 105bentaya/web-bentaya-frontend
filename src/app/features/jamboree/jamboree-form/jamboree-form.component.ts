@@ -115,10 +115,10 @@ export class JamboreeFormComponent implements OnInit {
         locality: [null, [Validators.required, Validators.maxLength(255)]]
       }),
       secondaryContact: this.formBuilder.group({
-        name: [null, [Validators.required, Validators.maxLength(255)]],
-        surname: [null, [Validators.required, Validators.maxLength(255)]],
-        mobilePhone: [null, [Validators.required, Validators.maxLength(255)]],
-        email: [null, [Validators.required, Validators.email, Validators.maxLength(255)]],
+        name: [null, [Validators.maxLength(255)]],
+        surname: [null, [Validators.maxLength(255)]],
+        mobilePhone: [null, [Validators.maxLength(255)]],
+        email: [null, [Validators.email, Validators.maxLength(255)]],
       }),
 
       languages: this.formBuilder.array([], [Validators.required]),
@@ -166,9 +166,12 @@ export class JamboreeFormComponent implements OnInit {
 
   protected sendForm() {
     this.loading = true;
-    this.jamboreeService.saveForm(this.jamboreeForm).subscribe(() => {
-      this.alertService.sendBasicSuccessMessage("Formulario guardado con éxito");
-      this.successOnSubmit = true;
+    this.jamboreeService.saveForm(this.jamboreeForm).subscribe({
+      next: () => {
+        this.alertService.sendBasicSuccessMessage("Formulario guardado con éxito");
+        this.successOnSubmit = true;
+      },
+      error: () => this.loading = false
     });
   }
 

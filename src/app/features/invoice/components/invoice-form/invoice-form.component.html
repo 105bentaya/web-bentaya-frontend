@@ -15,7 +15,7 @@
             />
             <label class="required" for="issuer">Emite</label>
           </p-floatlabel>
-          <small class="opacity-75">Al seleccionar un emisor o cif existente, se rellenarán ambos campos</small>
+          <small class="opacity-75">Al seleccionar un <u>cif</u> o emisor existente, se rellenarán ambos campos</small>
         </div>
         <div class="col-12 col-sm-4">
           <p-floatlabel variant="on">
@@ -95,6 +95,7 @@
               formControlName="invoiceDate"
               appendTo="body"
               (onSelect)="onDateSelect($event)"
+              [defaultDate]="defaultDate"
               [showClear]="true"
             ></p-datePicker>
             <label class="required" for="invoiceDate">Fecha de Factura</label>
@@ -107,6 +108,7 @@
               formControlName="paymentDate"
               appendTo="body"
               (onSelect)="onDateSelect($event)"
+              [defaultDate]="defaultDate"
               [showClear]="true"
             ></p-datePicker>
             <label class="required" for="paymentDate">Fecha de Pago</label>

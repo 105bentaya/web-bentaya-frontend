@@ -4,6 +4,7 @@ import {JamboreeService} from "../jamboree.service";
 import {FileUtils} from "../../../shared/util/file.utils";
 import {RouterLink} from "@angular/router";
 import {GeneralAButtonComponent} from "../../../shared/components/buttons/general-a-button/general-a-button.component";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-jamboree-inscription-list',
@@ -22,9 +23,8 @@ export class JamboreeInscriptionListComponent {
 
   protected downloadExcelFile() {
     this.loading = true;
-    this.jamboreeService.getExcel().subscribe(res => {
-      FileUtils.downloadFile(res);
-      this.loading = false;
-    });
+    this.jamboreeService.getExcel()
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(res => FileUtils.downloadFile(res));
   }
 }

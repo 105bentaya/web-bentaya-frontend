@@ -87,6 +87,7 @@ export class InvoiceFormComponent implements OnInit {
   protected saveLoading: boolean = false;
   protected deleteLoading: boolean = false;
   protected documentsLoading = false;
+  protected defaultDate = new Date();
 
   private readonly uploader = viewChild.required(FileUpload);
 
@@ -206,6 +207,8 @@ export class InvoiceFormComponent implements OnInit {
     } else {
       this.autoCompleteOptions.push({issuer: invoice.issuer, nif: invoice.nif});
     }
+
+    this.defaultDate = new Date(invoice.invoiceDate);
 
     this.config.header = "Añadir Factura";
     this.saveAndContinue = true;
