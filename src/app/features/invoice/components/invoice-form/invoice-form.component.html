@@ -151,11 +151,6 @@
         </div>
       </div>
     </div>
-    <div class="text-center text-danger mb-2">
-      @if (invoiceFormHelper.isDirtyAndInvalid()) {
-        <small>Rellene todos los campos obligatorios (<b>*</b>)</small><br>
-      }
-    </div>
     <div class="col-12 mb-2">
       <p-fileupload
         class="document-file-uploader"
@@ -177,6 +172,11 @@
         invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
         invalidFileLimitMessageDetail="el límite es de {0} archivos."
       ></p-fileupload>
+    </div>
+    <div class="text-center text-danger mb-2">
+      @if (invoiceFormHelper.isDirtyAndInvalid()) {
+        <small>Rellene todos los campos obligatorios (<b>*</b>)</small><br>
+      }
     </div>
     <app-save-buttons
       [showCancelButton]="true"

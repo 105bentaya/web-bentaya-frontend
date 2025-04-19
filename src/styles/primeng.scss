@@ -160,24 +160,13 @@ p-toggle-button.no-label {
 }
 
 //fixes
-.p-datepicker-input:has(~ timesicon) {
-  padding-right: 40px;
-  ~ timesicon {
-    margin-left: -29px;
-    margin-right: 13px;
-    cursor: pointer;
-    color: var(--p-form-field-icon-color);
-  }
-}
 
-.p-inputnumber-stacked .p-inputnumber-increment-button {
-  border-start-end-radius: calc(var(--p-inputnumber-button-border-radius) - 1px);
-}
-
+//en el datepicker, no están alineados los días de la semana con los días del mes
 .p-datepicker-weekday-cell {
   text-align: center;
 }
 
+//en las tablas, cuando están en vista de stack, se pega mucho el valor al nombre de la columna
 .p-column-title {
   margin-right: 0.5rem;
 }
@@ -188,24 +177,13 @@ p-toggle-button.no-label {
   border-bottom-right-radius: var(--p-inputtext-border-radius);
 }
 
-.p-inputgroupaddon .p-button-icon-only {
-  width: 2.75rem;
-}
+//p-inputgroup con un p-button-icon-only no coge el espacio disponible para el botón
+.p-inputgroupaddon {
+  .p-button-icon-only {
+    width: 2.75rem;
+  }
 
-.p-inputgroupaddon p-button {
-  height: 100%;
+  p-button {
+    height: 100%;
+  }
 }
-
-/*
- blue inputnumber button
-.p-inputnumber-button {
-  --p-inputnumber-button-background: var(--p-button-primary-background);
-  --p-inputnumber-button-color: var(--p-button-primary-color);
-  --p-inputnumber-button-hover-background: var(--p-button-primary-hover-background);
-  --p-inputnumber-button-hover-color: var(--p-button-primary-hover-color);
-  --p-inputnumber-button-active-background: var(--p-button-primary-active-background);
-  --p-inputnumber-button-active-color: var(--p-button-primary-active-color);
-  --p-inputnumber-button-border-color: var(--p-button-primary-border-color);
-  border: 1px solid var(--p-button-primary-border-color) !important;
-}
-*/

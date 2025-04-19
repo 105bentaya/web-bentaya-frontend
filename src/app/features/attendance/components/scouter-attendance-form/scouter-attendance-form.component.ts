@@ -189,4 +189,8 @@ export class ScouterAttendanceFormComponent implements OnInit {
       }
     ));
   }
+
+  protected labelFunction(item: EventAttendanceInfo): string {
+    return `${item.name}, ${item.surname}`;
+  }
 }

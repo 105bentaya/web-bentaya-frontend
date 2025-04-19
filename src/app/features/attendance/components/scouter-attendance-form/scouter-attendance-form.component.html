@@ -30,7 +30,7 @@
         <hr>
       </div>
     </ng-template>
-      <ng-template let-scout #item>
+      <ng-template pTemplate="item" let-scout>
         <div style="overflow: hidden; text-overflow: ellipsis;">
           {{ scout.name }}, {{ scout.surname }}
         </div>
@@ -42,7 +42,7 @@
       </ng-template>
     </p-multiSelect>
   } @else {
-    <p-autoComplete
+    <p-auto-complete
       panelStyleClass="opacity: 1"
       placeholder="Elegir persona educanda"
       [suggestions]="filteredInfo"
@@ -53,7 +53,7 @@
       [inputStyle]="{'border-color': '#b9c1c8'}"
       [dropdown]="true"
       [forceSelection]="true"
-      optionLabel="name"
+      [optionLabel]="labelFunction"
       [showClear]="true"
       (onSelect)="onAutoCompleteSelect($event.value)"
       (onClear)="this.selectedConfirmation = undefined"
@@ -64,7 +64,7 @@
           ({{ scout.attending == null ? 'NS/NC' : scout.attending ? 'Asiste' : 'No asiste' }})
         </div>
       </ng-template>
-    </p-autoComplete>
+    </p-auto-complete>
   }
   @if (!multiple && selectedConfirmation) {
     <div class="d-flex flex-column gap-3 mt-2">
@@ -93,8 +93,9 @@
         }
       </div>
       <p-floatlabel variant="on">
-        <label>Observaciones:</label>
+        <label for="observations">Observaciones:</label>
         <app-form-text-area
+          id="observations"
           [maxLength]="1024"
           [(ngModel)]="selectedConfirmation.text"
           (isValid)="validText = $event"
@@ -103,7 +104,7 @@
       <app-save-buttons
         [saveLoading]="loading"
         [saveDisabled]="!validText"
-        (onSave)="onSingleSubmit(selectedConfirmation)"
+        (onSave)="onSingleSubmit(selectedConfirmation!)"
       ></app-save-buttons>
     </div>
   } @else if (multiple && selectedInfo && selectedInfo.length > 0) {
@@ -208,8 +209,9 @@
       </div>
       @if (!multiple) {
         <p-floatlabel>
-          <label>Observaciones</label>
+          <label for="disabledObservations">Observaciones</label>
           <app-form-text-area
+            id="disabledObservations"
             [maxLength]="1024"
             [disabled]="true"
           ></app-form-text-area>
