@@ -95,6 +95,7 @@ export class JamboreeFormComponent implements OnInit {
       phoneNumber: [null, [Validators.required, Validators.maxLength(255)]],
       email: [null, [Validators.required, Validators.maxLength(255), Validators.email]],
       resident: [null, [Validators.required]],
+      municipality: [null, [this.residentValidation, Validators.maxLength(255)]],
       address: [null, [Validators.required, Validators.maxLength(511)]],
       cp: [null, [Validators.required, Validators.maxLength(255)]],
       locality: [null, [Validators.required, Validators.maxLength(255)]],
@@ -127,7 +128,7 @@ export class JamboreeFormComponent implements OnInit {
       privacy: [false, Validators.requiredTrue]
     });
     this.formHelper.setPages([
-      ["participantType", "name", "surname", "feltName", "dni", "passportNumber", "nationality", "birthDate", "gender", "phoneNumber", "email", "resident", "locality", "address", "cp"],
+      ["participantType", "name", "surname", "feltName", "dni", "passportNumber", "nationality", "birthDate", "gender", "phoneNumber", "email", "resident", "municipality", "locality", "address", "cp"],
       ["bloodType", "medicalData", "medication", "allergies", "vaccineProgram", "foodIntolerances"],
       ["mainContact", "secondaryContact"],
       ["size", "dietPreference", "languages", "privacy", "observations"]
@@ -135,6 +136,10 @@ export class JamboreeFormComponent implements OnInit {
     this.addLanguage();
     this.formHelper.onLastPage = () => this.createPreScoutForm();
   }
+
+  private readonly residentValidation: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    return (!control.value && this.formHelper.controlValue("resident") === true) ? {required: true} : null;
+  };
 
   protected deleteLanguage(index: number) {
     const array = this.formHelper.getFormArray("languages");
@@ -153,6 +158,9 @@ export class JamboreeFormComponent implements OnInit {
     this.jamboreeForm = {
       ...this.formHelper.value
     };
+    if (!this.jamboreeForm.resident) {
+      this.jamboreeForm.municipality = undefined;
+    }
     this.jamboreeForm.birthDate = DateUtils.toLocalDate(this.jamboreeForm.birthDate);
   }
 

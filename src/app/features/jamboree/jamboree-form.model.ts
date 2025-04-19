@@ -11,6 +11,7 @@ export interface JamboreeForm {
   phoneNumber: string;
   email: string;
   resident: boolean;
+  municipality?: string;
   bloodType: string;
   medicalData: string;
   medication: string;

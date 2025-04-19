@@ -279,6 +279,23 @@
                 }
               </div>
             </div>
+            @if (formHelper.controlValue("resident")) {
+              <div class="col">
+                <p-floatlabel variant="on">
+                  <input
+                    pInputText
+                    formControlName="municipality"
+                    id="municipality"
+                    type="text"
+                    maxlength="255"
+                  >
+                  <label class="required" for="municipality">Municipio de residencia</label>
+                </p-floatlabel>
+                @if (formHelper.isDirtyAndInvalid('municipality')) {
+                  <small class="text-danger">Introduzca el municipio de residencia de la persona participante</small>
+                }
+              </div>
+            }
           </div>
         }
         @case (1) {
@@ -699,6 +716,9 @@
             <div class="col-12 col-md-6">
               <b>Residente:</b>
               {{ jamboreeForm.resident | boolean }}
+              @if (jamboreeForm.resident) {
+                ({{ jamboreeForm.municipality }})
+              }
             </div>
             <div class="col-12 col-md-6">
               <b>Teléfono:</b>
