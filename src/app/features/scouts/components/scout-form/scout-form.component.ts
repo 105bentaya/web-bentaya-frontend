@@ -35,6 +35,7 @@ import {DatePicker} from "primeng/datepicker";
 import {Textarea} from "primeng/textarea";
 import {TabsModule} from "primeng/tabs";
 import {GroupService} from "../../../../shared/services/group.service";
+import {DateUtils} from "../../../../shared/util/date-utils";
 
 @Component({
   selector: 'app-scout-form',
@@ -170,6 +171,7 @@ export class ScoutFormComponent implements OnInit {
       this.loading = true;
       const scout: Scout = {...this.scoutFormHelper.value};
       scout.group = {id: this.scoutFormHelper.controlValue("groupId")};
+      scout.birthday = DateUtils.toLocalDate(scout.birthday);
       const users = this.userTable.getUsernames();
       if (this.isNew) {
         if (!users || users.length == 0) {

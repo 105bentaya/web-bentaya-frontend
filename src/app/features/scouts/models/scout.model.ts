@@ -6,7 +6,7 @@ export interface Scout {
   name: string;
   surname: string;
   dni?: string;
-  birthday: Date;
+  birthday: Date | string; //create scout form dto
   group: BasicGroupInfo | BasicGroupForm; //todo maybe create different form object
   medicalData: string;
   contactList: Contact[];
