@@ -25,6 +25,7 @@ import {
 import {Dialog} from "primeng/dialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {SettingType} from "../../../settings/setting.model";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-group-scout-list',
@@ -41,7 +42,8 @@ import {SettingType} from "../../../settings/setting.model";
     ScoutYearPipe,
     Button,
     TableIconButtonComponent,
-    Dialog
+    Dialog,
+    RouterLink
   ]
 })
 export class GroupScoutListComponent implements OnInit {

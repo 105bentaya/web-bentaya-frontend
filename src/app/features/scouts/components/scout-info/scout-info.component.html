@@ -1,85 +1,71 @@
-<p-tabs [value]="0">
-  <p-tablist>
-    <p-tab [value]="0">Datos</p-tab>
-    <p-tab [value]="1">Contactos</p-tab>
-  </p-tablist>
-  <p-tabpanels>
-    <p-tabpanel [value]="0">
-      <div class="mb-1">
-        <div>
-          <b>Apellidos, Nombre: </b>
-          <span>{{ scout.surname }}, {{ scout.name }}</span>
+<div class="container-fluid container-xxl">
+  @if (scout) {
+    <div class="d-flex justify-content-between gap-2 overflow-hidden">
+      <div class="d-flex flex-column flex-grow-1 justify-content-start">
+        <div class="mb-2">
+          <span class="fs-4" style="font-family: Trueno-Black, sans-serif;">
+            {{ scout.name }} {{ scout.surname }} ({{ scout.name }})
+          </span>
+          <p-button class="float-end" styleClass="px-2" [style]="{'height': '1.75rem'}">Editar</p-button>
         </div>
-        <div>
-          <b>DNI o NIE: </b>
-          <span>{{ scout.dni || "No especificado" }}</span>
-        </div>
-        <div>
-          <b>Género: </b>
-          <span>{{ scout.gender }}</span>
-        </div>
-        <div>
-          <b>Fecha de Nacimiento: </b>
-          <span>{{ scout.birthday | date:"dd/MM/yyyy" }}</span>
-        </div>
-        <div>
-          <b>Talla: </b>
-          <span>{{ scout.shirtSize || "No especificada" }}</span>
-        </div>
-        <div>
-          <b>Municipio de residencia: </b>
-          <span>{{ scout.municipality || "No especificado" }}</span>
-        </div>
-        <div>
-          <b>Autorización de imagen: </b>
-          <span>{{ scout.imageAuthorization ? "Sí" : "No" }}</span>
-        </div>
-        <div>
-          <b>Datos Médicos: </b>
-          <span>{{ scout.medicalData || "Ninguno" }}</span>
-        </div>
-        <div>
-          <b>Unidad: </b>
-          <span>{{ scout.group.name }}</span>
-        </div>
-          <div>
-            <b>Observaciones: </b>
-            <span>{{ scout.observations || "-" }}</span>
+        <div class="d-none d-sm-flex row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
+          <div class="d-flex flex-row flex-sm-column flex-wrap gap-2 justify-content-between overflow-ellipsis">
+            <div class="text-nowrap overflow-ellipsis mw-100">
+              <b>DNI:</b> {{ scout.dni || '-' }}
+            </div>
+            <div class="text-nowrap overflow-ellipsis mw-100" [title]="scout.census || '-'">
+              <b>CENSO:</b> {{ scout.census || '-' }}
+              <!--usar el censo general u otro en caso de no tener ese-->
+            </div>
           </div>
-          <div>
-            <b>Progresiones: </b>
-            <span>{{ scout.progressions || "-" }}</span>
+          <div class="d-none d-md-flex flex-column justify-content-between">
+            <div class="text-nowrap overflow-ellipsis mw-100">
+              <b>RAMA:</b> {{ scout.group.name || '-' }}
+            </div>
+            <div class="text-nowrap overflow-ellipsis mw-100">
+              <b>UNIDAD:</b> {{ scout.group.name || '-' }}
+            </div>
           </div>
-          <div>
-            <b>Censo: </b>
-            <span>{{ scout.census || "-" }}</span>
+          <div class="d-none d-sm-flex flex-column justify-content-between">
+            <div class="text-nowrap overflow-ellipsis mw-100">
+              <b>GÉNERO:</b> {{ scout.gender }}
+            </div>
+            <div class="text-nowrap overflow-ellipsis mw-100">
+              <b>EDAD:</b> 11 años
+            </div>
           </div>
+          <div class="d-none d-xl-flex flex-column gap-2 align-items-start flex-shrink-1 justify-content-between">
+            <div>
+              <p-tag [value]="scout.enabled ? 'ALTA' : 'BAJA'" [severity]="scout.enabled ? 'success' : 'danger'"/>
+            </div>
+            <div>
+              <p-tag
+                [value]="scout.enabled ? 'FEDERADO' : 'NO FEDERADO'"
+                [severity]="scout.enabled ? 'info' : 'warn'"
+              />
+            </div>
+          </div>
+        </div>
       </div>
-    </p-tabpanel>
-    <p-tabpanel [value]="1">
-      @for (contact of scout.contactList; track contact.id) {
-        <div>
-          <b>Nombre: </b>
-          <span>{{ contact.name }}</span>
+      <div class="d-none d-sm-block ms-3">
+        <div class="border p-1 h-100" style="min-width: 120px; min-height: 120px; max-height: 150px;">
+          <div class="w-100 h-100"
+               style="background: url('/assets/home/actividades.png') center center / cover no-repeat;"></div>
         </div>
-        <div>
-          <b>Parentesco: </b>
-          <span>{{ contact.relationship || "No especificado" }}</span>
-        </div>
-        @if (contact.phone) {
-          <div>
-            <b>Teléfono: </b>
-            <a class="uncolored text-decoration-none" href="tel:{{contact.phone}}">{{ contact.phone }}</a>
-          </div>
-        }
-        @if (contact.email) {
-          <div>
-            <b>Correo: </b>
-            <a class="uncolored text-decoration-none" href="mailto:{{contact.email}}">{{ contact.email }}</a>
-          </div>
-        }
-        <hr>
-      }
-    </p-tabpanel>
-  </p-tabpanels>
-</p-tabs>
+      </div>
+    </div>
+    <p-tabs scrollable [value]="0" class="mt-2">
+      <p-tablist>
+        <p-tab [value]="0">Datos Personales</p-tab>
+        <p-tab [value]="1">Datos de Salud</p-tab>
+        <p-tab [value]="2">Datos Familiares</p-tab>
+        <p-tab [value]="3">Datos Formativos</p-tab>
+        <p-tab [value]="4">Datos Asociativos</p-tab>
+        <p-tab [value]="5">Historial Scout</p-tab>
+        <p-tab [value]="6">Datos económicos</p-tab>
+        <p-tab [value]="7">Otros Datos</p-tab>
+      </p-tablist>
+    </p-tabs>
+  } @else {
+    <app-basic-loading-info/>
+  }</div>

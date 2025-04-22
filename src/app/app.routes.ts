@@ -106,6 +106,12 @@ export const routes: Routes = [
     data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
   },
   {
+    path: "unidad/educandas/:id",
+    loadComponent: () => import('./features/scouts/components/scout-info/scout-info.component').then(c => c.ScoutInfoComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+  },
+  {
     path: "unidad/asistencias",
     loadComponent: () => import('./features/attendance/components/scouter-attendance-list/scouter-attendance-list.component').then(c => c.ScouterAttendanceListComponent),
     canActivate: [authGuard],

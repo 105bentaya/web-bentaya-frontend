@@ -67,4 +67,8 @@ export class ScoutService {
   delete(scout: Scout) {
     return this.http.delete(`${this.scoutUrl}/delete/${scout.id}`);
   }
+
+  getById(id: any) {
+    return this.http.get<Scout>(`${this.scoutUrl}/${id}`);
+  }
 }

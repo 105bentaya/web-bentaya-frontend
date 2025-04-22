@@ -25,6 +25,7 @@
     responsiveLayout="scroll"
     sortField="surname"
     [loading]="showAll ? loading: !groupScouts"
+    selectionMode="single"
   >
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center">
@@ -70,9 +71,6 @@
           DNI
           <p-sortIcon field="dni"></p-sortIcon>
         </th>
-        <th class="text-center w-min">
-          Acciones
-        </th>
       </tr>
       <tr>
         <th>
@@ -86,11 +84,10 @@
         <th class="hide-900"></th>
         <th class="hide-700"></th>
         <th class="hide-1100"></th>
-        <th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-scout>
-      <tr [ngClass]="{'no-user': !scout.userAssigned}">
+      <tr [ngClass]="{'no-user': !scout.userAssigned}" pSelectableRow [routerLink]="scout.id">
         <td>
           {{ scout.surname }}, {{ scout.name }}
         </td>
@@ -109,25 +106,6 @@
           <span>
             {{ scout.dni || "No tiene" }}
           </span>
-        </td>
-        <td>
-          <div class="d-flex flex-row gap-2 justify-content-center">
-            <app-table-icon-button
-              type="button"
-              icon="pi pi-eye"
-              title="Ver Información"
-              (click)="viewScout(scout)"
-            ></app-table-icon-button>
-            @if (!showAll) {
-              <app-table-icon-button
-                type="button"
-                icon="pi pi-user-edit"
-                severity="info"
-                title="Editar"
-                (click)="openEditDialog(scout)"
-              ></app-table-icon-button>
-            }
-          </div>
         </td>
       </tr>
     </ng-template>
