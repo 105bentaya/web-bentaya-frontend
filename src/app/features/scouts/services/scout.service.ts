@@ -4,6 +4,8 @@ import {Observable} from "rxjs";
 import {Scout} from "../models/scout.model";
 import {environment} from "../../../../environments/environment";
 import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
+import {Member, MemberFile} from "../models/member.model";
+import {FileUtils} from "../../../shared/util/file.utils";
 
 @Injectable({
   providedIn: 'root'
@@ -68,7 +70,21 @@ export class ScoutService {
     return this.http.delete(`${this.scoutUrl}/delete/${scout.id}`);
   }
 
+  //new
+
   getById(id: any) {
-    return this.http.get<Scout>(`${this.scoutUrl}/${id}`);
+    return this.http.get<Member>(`${this.scoutUrl}/${id}`);
+  }
+
+  updatePersonalData(id: number, personalDataForm: any) {
+    return this.http.patch<Member>(`${this.scoutUrl}/personal/${id}`, personalDataForm);
+  }
+
+  uploadPersonalDataDocs(id: number, file: File) {
+    return this.http.post<MemberFile>(`${this.scoutUrl}/personal/docs/${id}`, FileUtils.fileToFormData(file));
+  }
+
+  deletePersonalDataDocs(id: number, fileId: number) {
+    return this.http.delete<void>(`${this.scoutUrl}/personal/docs/${id}/${fileId}`);
   }
 }

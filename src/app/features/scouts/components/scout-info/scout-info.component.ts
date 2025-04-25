@@ -1,15 +1,14 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {Scout} from "../../models/scout.model";
-import {Location} from "@angular/common";
 import {TabsModule} from "primeng/tabs";
 import {ActivatedRoute} from "@angular/router";
 import {ScoutService} from "../../services/scout.service";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {Tag} from "primeng/tag";
-import {
-  GeneralAButtonComponent
-} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 import {Button} from "primeng/button";
+import {Member, RealPersonalData} from "../../models/member.model";
+import {PersonalDataComponent} from "../personal-data/personal-data.component";
+import {PersonalDataFormComponent} from "../personal-data-form/personal-data-form.component";
+import {AlertService} from "../../../../shared/services/alert-service.service";
 
 @Component({
   selector: 'app-scout-info',
@@ -19,16 +18,18 @@ import {Button} from "primeng/button";
     TabsModule,
     BasicLoadingInfoComponent,
     Tag,
-    GeneralAButtonComponent,
-    Button
+    Button,
+    PersonalDataComponent,
+    PersonalDataFormComponent
   ]
 })
 export class ScoutInfoComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly scoutService = inject(ScoutService);
-  private readonly location = inject(Location);
+  private readonly alertService = inject(AlertService);
 
-  protected scout!: Scout;
+  protected scout!: Member;
+  protected editing: boolean = false;
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
@@ -36,7 +37,15 @@ export class ScoutInfoComponent implements OnInit {
     this.scoutService.getById(id).subscribe(scout => this.scout = scout);
   }
 
-  goBack() {
-    this.location.back();
+  get scoutPersonalData() {
+    return this.scout.personalData as RealPersonalData;
+  }
+
+  onEditionStop(updatedMember: void | Member) {
+    if (updatedMember) {
+      this.alertService.sendBasicSuccessMessage("Scout actualizado con éxito");
+      this.scout = updatedMember;
+    }
+    this.editing = false;
   }
 }

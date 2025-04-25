@@ -4,31 +4,38 @@
       <div class="d-flex flex-column flex-grow-1 justify-content-start">
         <div class="mb-2">
           <span class="fs-4" style="font-family: Trueno-Black, sans-serif;">
-            {{ scout.name }} {{ scout.surname }} ({{ scout.name }})
+            {{ scoutPersonalData.name }} {{ scoutPersonalData.surname }}
+            @if (scoutPersonalData.feltName) {
+              ({{ scoutPersonalData.feltName }})
+            }
           </span>
           <p-button class="float-end" styleClass="px-2" [style]="{'height': '1.75rem'}">Editar</p-button>
         </div>
         <div class="d-none d-sm-flex row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
           <div class="d-flex flex-row flex-sm-column flex-wrap gap-2 justify-content-between overflow-ellipsis">
             <div class="text-nowrap overflow-ellipsis mw-100">
-              <b>DNI:</b> {{ scout.dni || '-' }}
+              @if (scoutPersonalData.idDocument) {
+                <b>{{scoutPersonalData.idDocument.idType}}:</b> {{ scoutPersonalData.idDocument.number || '-' }}
+              } @else {
+                <b>DNI:</b> -
+              }
             </div>
-            <div class="text-nowrap overflow-ellipsis mw-100" [title]="scout.census || '-'">
-              <b>CENSO:</b> {{ scout.census || '-' }}
+            <div class="text-nowrap overflow-ellipsis mw-100" [title]="scout.scoutInfo?.census || '-'">
+              <b>CENSO:</b> {{ scout.scoutInfo?.census || '-' }}
               <!--usar el censo general u otro en caso de no tener ese-->
             </div>
           </div>
           <div class="d-none d-md-flex flex-column justify-content-between">
             <div class="text-nowrap overflow-ellipsis mw-100">
-              <b>RAMA:</b> {{ scout.group.name || '-' }}
+              <b>RAMA:</b> {{ scout.scoutInfo?.group?.name || '-' }}
             </div>
             <div class="text-nowrap overflow-ellipsis mw-100">
-              <b>UNIDAD:</b> {{ scout.group.name || '-' }}
+              <b>UNIDAD:</b> {{ scout.scoutInfo?.group?.name || '-' }}
             </div>
           </div>
           <div class="d-none d-sm-flex flex-column justify-content-between">
             <div class="text-nowrap overflow-ellipsis mw-100">
-              <b>GÉNERO:</b> {{ scout.gender }}
+              <b>GÉNERO:</b> {{ scoutPersonalData.gender }}
             </div>
             <div class="text-nowrap overflow-ellipsis mw-100">
               <b>EDAD:</b> 11 años
@@ -36,12 +43,12 @@
           </div>
           <div class="d-none d-xl-flex flex-column gap-2 align-items-start flex-shrink-1 justify-content-between">
             <div>
-              <p-tag [value]="scout.enabled ? 'ALTA' : 'BAJA'" [severity]="scout.enabled ? 'success' : 'danger'"/>
+              <p-tag [value]="scout.scoutInfo?.active ? 'ALTA' : 'BAJA'" [severity]="scout.scoutInfo?.active ? 'success' : 'danger'"/>
             </div>
             <div>
               <p-tag
-                [value]="scout.enabled ? 'FEDERADO' : 'NO FEDERADO'"
-                [severity]="scout.enabled ? 'info' : 'warn'"
+                [value]="scout.scoutInfo?.federated ? 'FEDERADO' : 'NO FEDERADO'"
+                [severity]="scout.scoutInfo?.federated ? 'info' : 'warn'"
               />
             </div>
           </div>
@@ -54,7 +61,7 @@
         </div>
       </div>
     </div>
-    <p-tabs scrollable [value]="0" class="mt-2">
+    <p-tabs scrollable [value]="0" class="main-info-panel">
       <p-tablist>
         <p-tab [value]="0">Datos Personales</p-tab>
         <p-tab [value]="1">Datos de Salud</p-tab>
@@ -65,6 +72,31 @@
         <p-tab [value]="6">Datos económicos</p-tab>
         <p-tab [value]="7">Otros Datos</p-tab>
       </p-tablist>
+      <p-tabpanels>
+        <div class="position-relative">
+          @if (!editing) {
+            <p-button
+              [icon]="editing ? 'pi pi-times' : 'pi pi-pencil'"
+              [severity]="editing ? 'danger' : 'primary'"
+              rounded
+              outlined
+              class="position-absolute end-0"
+              size="small"
+              (onClick)="editing = !editing"
+            ></p-button>
+          }
+          <p-tabpanel [value]="0">
+            @if (editing) {
+              <app-personal-data-form
+                [initialData]="scout"
+                (onEditionStop)="onEditionStop($event)"
+              />
+            } @else {
+              <app-personal-data [member]="scout"/>
+            }
+          </p-tabpanel>
+        </div>
+      </p-tabpanels>
     </p-tabs>
   } @else {
     <app-basic-loading-info/>

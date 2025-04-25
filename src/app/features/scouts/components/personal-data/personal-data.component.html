@@ -1,0 +1,51 @@
+<div class="row">
+  @if (isRealPerson) {
+    <div class="col-12 col-sm-6">
+      <b class="fs-5 title-font">Datos de la asociada</b>
+      <div class="d-flex flex-column">
+        <app-basic-info label="Nombre" [value]="realPersonalData.name"/>
+        <app-basic-info label="Apellidos" [value]="realPersonalData.surname"/>
+        <app-basic-info label="Nombre Sentido" [value]="realPersonalData.feltName" [hideIfNull]="true"/>
+        <app-basic-info label="Género" [value]="realPersonalData.gender"/>
+        <app-basic-info
+          label="Fecha de Nacimiento"
+          [title]="realPersonalData.birthday | date:'dd\' de \'MMMM\' de \'yyyy':undefined:'es'"
+          [value]="realPersonalData.birthday | date:'dd/MM/yyyy'"
+        />
+        <app-basic-info label="Edad" [value]="realPersonalData.birthday | age"/>
+        <app-basic-info [label]="realPersonalData.idDocument | idDocumentType"
+                        [value]="realPersonalData.idDocument | idDocument"></app-basic-info>
+        <app-basic-info label="Teléfono" [value]="realPersonalData.phone"/>
+        <app-basic-info label="Fijo" [value]="realPersonalData.landline"/>
+        <app-basic-info label="Correo electrónico" [value]="realPersonalData.email"/>
+        <app-basic-info label="Talla de camiseta" [value]="realPersonalData.shirtSize"/>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <b class="fs-5 title-font">Datos de dirección</b>
+      <app-basic-info label="Lugar de nacimiento" [value]="realPersonalData.birthplace"/>
+      <app-basic-info label="Provincia de nacimiento" [value]="realPersonalData.birthProvince"/>
+      <app-basic-info label="Nacionalidad" [value]="realPersonalData.nationality"/>
+      <app-basic-info label="Dirección Postal" [value]="realPersonalData.address"/>
+      <app-basic-info label="Ciudad" [value]="realPersonalData.city"/>
+      <app-basic-info label="Provincia" [value]="realPersonalData.province"/>
+      <app-basic-info label="Municipio de Residencia" [value]="realPersonalData.residenceMunicipality"/>
+    </div>
+  } @else {
+    <!--todo finish-->
+  }
+  @if (member().personalData.observations) {
+    <div class="col-12">
+      <b class="fs-5 title-font">Observaciones</b>
+      <div>{{ member().personalData.observations }}</div>
+    </div>
+  }
+  <div class="col-12 mt-1">
+    <app-document-list
+      [documents]="member().personalData.documents"
+      (onUpload)="uploadPersonalDocs($event)"
+      [filePetition]="filePetition"
+      [deletePetition]="deletePetition"
+    />
+  </div>
+</div>
