@@ -9,7 +9,7 @@ import {
   ValidatorFn,
   Validators
 } from "@angular/forms";
-import {JuridicalPersonalData, Member, MemberType, RealPersonalData} from "../../models/member.model";
+import {JuridicalPersonalData, Member, PersonType, RealPersonalData} from "../../models/member.model";
 import ScoutHelper from "../../scout.util";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FloatLabel} from "primeng/floatlabel";
@@ -17,7 +17,7 @@ import {InputText} from "primeng/inputtext";
 import {SelectButton} from "primeng/selectbutton";
 import {DatePicker} from "primeng/datepicker";
 import {Select} from "primeng/select";
-import {genders, idTypes, shirtSizes} from "../../../../shared/constant";
+import {genders, idTypes, personTypes, shirtSizes} from "../../../../shared/constant";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {ScoutService} from "../../services/scout.service";
 import {finalize} from "rxjs";
@@ -49,11 +49,7 @@ export class PersonalDataFormComponent implements OnInit {
   protected readonly genders = genders;
   protected readonly shirtSizes = shirtSizes;
   protected readonly idTypes = idTypes;
-
-  protected readonly options: ({ label: string; value: MemberType })[] = [
-    {label: "Real", value: "REAL"},
-    {label: "Jurídica", value: "JURIDICAL"}
-  ];
+  protected readonly personTypes = personTypes;
 
   public initialData = input<Member>();
   protected onEditionStop = output<void | Member>();
@@ -155,7 +151,7 @@ export class PersonalDataFormComponent implements OnInit {
   }
 
   private readonly dataValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const type: MemberType | undefined = control.get('type')?.value;
+    const type: PersonType | undefined = control.get('type')?.value;
 
     if (!type) return null;
     if (type == "REAL" && !control.get("realData")?.value) return {dataRequired: true};

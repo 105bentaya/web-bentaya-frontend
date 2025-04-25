@@ -1,7 +1,7 @@
-import {IdentificationDocument, MemberType} from "./member.model";
+import {IdentificationDocument, PersonType} from "./member.model";
 
 export interface PersonalDataForm {
-  type: MemberType;
+  type: PersonType;
   idDocument?: IdentificationDocument;
   observations?: string;
   realData?: {
@@ -30,4 +30,20 @@ export interface PersonalDataForm {
     landline?: string;
     idDocument?: IdentificationDocument
   };
+}
+
+export interface ScoutContactForm {
+  id?: number;
+  personType: string;
+  companyName?: string;
+  name: string;
+  surname?: string;
+  relationship?: string;
+  phone?: string;
+  email?: string;
+  studies?: string;
+  profession?: string;
+  observations?: string;
+  idDocument?: IdentificationDocument;
+  donor: boolean;
 }

@@ -1,0 +1,39 @@
+@if (contactList().length < 1) {
+  <p-tag value="No hay contactos asociados" severity="secondary"/>
+} @else {
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
+    @for (contact of contactList(); track contact.id) {
+      <div class="col">
+        <b class="fs-5 title-font">Contacto {{ $index + 1 }}</b>
+        <div class="d-flex flex-column">
+          @if (contact.personType === 'REAL') {
+            <app-basic-info label="Nombre" [value]="contact.name"/>
+            <app-basic-info label="Apellidos" [value]="contact.surname"/>
+            <app-basic-info label="Parentesco" [value]="contact.relationship"/>
+            <app-basic-info label="Teléfono" [value]="contact.phone"/>
+            <app-basic-info label="Correo" [value]="contact.email"/>
+            <app-basic-info label="Estudios" [value]="contact.studies" [hideIfNull]="true"/>
+            <app-basic-info label="Profesión" [value]="contact.profession" [hideIfNull]="true"/>
+          } @else {
+            <app-basic-info label="Razón Social" [value]="contact.companyName"/>
+            <app-basic-info label="Nombre del representante" [value]="contact.name"/>
+            <app-basic-info label="Apellidos del representante" [value]="contact.surname"/>
+            <app-basic-info label="Teléfono" [value]="contact.phone"/>
+            <app-basic-info label="Correo" [value]="contact.email"/>
+
+          }
+          <app-basic-info
+            [label]="contact.idDocument | idDocumentType"
+            [value]="contact.idDocument | idDocument"
+            [hideIfNull]="true"
+          ></app-basic-info>
+          <app-basic-info
+            label="Donante"
+            [value]="contact.donor | boolean"
+          ></app-basic-info>
+          <app-basic-info label="Observaciones" [value]="contact.observations" [hideIfNull]="true"/>
+        </div>
+      </div>
+    }
+  </div>
+}

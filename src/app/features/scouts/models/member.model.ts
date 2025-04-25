@@ -2,7 +2,7 @@ import {BasicGroupInfo} from "../../../shared/model/group.model";
 
 export interface Member {
   id: number;
-  type: MemberType;
+  type: PersonType;
   roleInfos: MemberRoleInfo[];
   observations?: string;
   extraFiles: MemberFile[];
@@ -20,6 +20,23 @@ export interface ScoutInfo {
   imageAuthorization: boolean;
   group?: BasicGroupInfo;
   photo?: MemberFile;
+  contactList: ScoutContact[];
+}
+
+export interface ScoutContact {
+  id: number;
+  personType: PersonType;
+  companyName?: string;
+  name: string;
+  surname?: string;
+  relationship?: string;
+  donor: boolean;
+  idDocument?: IdentificationDocument;
+  phone?: string;
+  email?: string;
+  studies?: string;
+  profession?: string;
+  observations?: string;
 }
 
 export interface MemberRoleInfo {
@@ -91,7 +108,7 @@ export interface IdentificationDocument {
   number: string;
 }
 
-export type MemberType = "REAL" | "JURIDICAL";
+export type PersonType = "REAL" | "JURIDICAL";
 export type MemberRole = "FOUNDER" | "HONOUR" | "RECOGNIZED" | "PROTECTOR";
 export type IdType = "DNI" | "NIE" | "CIF" | "PAS" | "OTR";
 export type ScoutType = "PARTICIPANT" | "SCOUT" | "COMMITTEE";

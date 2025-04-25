@@ -1,4 +1,4 @@
-import {IdType} from "../features/scouts/models/member.model";
+import {IdType, PersonType} from "../features/scouts/models/member.model";
 
 export const socialMediaButtons = [
   {icon: 'pi pi-instagram ', link: 'https://www.instagram.com/scouts105bentaya'},
@@ -20,6 +20,10 @@ export const idTypes: { value: IdType, label: string }[] = [
   {value: "NIE", label: "NIE"},
   {value: "PAS", label: "Pasaporte"},
   {value: "OTR", label: "Otro"}
+];
+export const personTypes: ({ label: string; value: PersonType })[] = [
+  {label: "Real", value: "REAL"},
+  {label: "Jurídica", value: "JURIDICAL"}
 ];
 
 export const maintenanceEmail = "informatica@105bentaya.org";

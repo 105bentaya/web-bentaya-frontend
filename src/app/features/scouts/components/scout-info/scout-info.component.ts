@@ -9,6 +9,8 @@ import {Member, RealPersonalData} from "../../models/member.model";
 import {PersonalDataComponent} from "../personal-data/personal-data.component";
 import {PersonalDataFormComponent} from "../personal-data-form/personal-data-form.component";
 import {AlertService} from "../../../../shared/services/alert-service.service";
+import {ContactDataComponent} from "../contact-data/contact-data.component";
+import {ContactDataFormComponent} from "../contact-data-form/contact-data-form.component";
 
 @Component({
   selector: 'app-scout-info',
@@ -20,7 +22,9 @@ import {AlertService} from "../../../../shared/services/alert-service.service";
     Tag,
     Button,
     PersonalDataComponent,
-    PersonalDataFormComponent
+    PersonalDataFormComponent,
+    ContactDataComponent,
+    ContactDataFormComponent
   ]
 })
 export class ScoutInfoComponent implements OnInit {
@@ -33,7 +37,6 @@ export class ScoutInfoComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
-
     this.scoutService.getById(id).subscribe(scout => this.scout = scout);
   }
 

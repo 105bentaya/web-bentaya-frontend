@@ -9,13 +9,12 @@
               ({{ scoutPersonalData.feltName }})
             }
           </span>
-          <p-button class="float-end" styleClass="px-2" [style]="{'height': '1.75rem'}">Editar</p-button>
         </div>
         <div class="d-none d-sm-flex row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
           <div class="d-flex flex-row flex-sm-column flex-wrap gap-2 justify-content-between overflow-ellipsis">
             <div class="text-nowrap overflow-ellipsis mw-100">
               @if (scoutPersonalData.idDocument) {
-                <b>{{scoutPersonalData.idDocument.idType}}:</b> {{ scoutPersonalData.idDocument.number || '-' }}
+                <b>{{ scoutPersonalData.idDocument.idType }}:</b> {{ scoutPersonalData.idDocument.number || '-' }}
               } @else {
                 <b>DNI:</b> -
               }
@@ -43,7 +42,10 @@
           </div>
           <div class="d-none d-xl-flex flex-column gap-2 align-items-start flex-shrink-1 justify-content-between">
             <div>
-              <p-tag [value]="scout.scoutInfo?.active ? 'ALTA' : 'BAJA'" [severity]="scout.scoutInfo?.active ? 'success' : 'danger'"/>
+              <p-tag
+                [value]="scout.scoutInfo?.active ? 'ALTA' : 'BAJA'"
+                [severity]="scout.scoutInfo?.active ? 'success' : 'danger'"
+              />
             </div>
             <div>
               <p-tag
@@ -61,11 +63,13 @@
         </div>
       </div>
     </div>
-    <p-tabs scrollable [value]="0" class="main-info-panel">
+    <p-tabs scrollable [value]="2" class="main-info-panel">
       <p-tablist>
         <p-tab [value]="0">Datos Personales</p-tab>
         <p-tab [value]="1">Datos de Salud</p-tab>
-        <p-tab [value]="2">Datos Familiares</p-tab>
+        @if (scout.scoutInfo) {
+          <p-tab [value]="2">Datos Familiares</p-tab>
+        }
         <p-tab [value]="3">Datos Formativos</p-tab>
         <p-tab [value]="4">Datos Asociativos</p-tab>
         <p-tab [value]="5">Historial Scout</p-tab>
@@ -95,6 +99,19 @@
               <app-personal-data [member]="scout"/>
             }
           </p-tabpanel>
+          @if (scout.scoutInfo) {
+            <p-tabpanel [value]="2">
+              @if (editing) {
+                <app-contact-data-form
+                  [initialData]="scout.scoutInfo.contactList"
+                  [memberId]="scout.id"
+                  (onEditionStop)="onEditionStop($event)"
+                />
+              } @else {
+                <app-contact-data [contactList]="scout.scoutInfo.contactList"/>
+              }
+            </p-tabpanel>
+          }
         </div>
       </p-tabpanels>
     </p-tabs>

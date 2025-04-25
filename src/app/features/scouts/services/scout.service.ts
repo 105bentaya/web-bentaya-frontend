@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {Scout} from "../models/scout.model";
 import {environment} from "../../../../environments/environment";
 import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
-import {Member, MemberFile} from "../models/member.model";
+import {Member, MemberFile, ScoutContact} from "../models/member.model";
 import {FileUtils} from "../../../shared/util/file.utils";
 
 @Injectable({
@@ -76,6 +76,10 @@ export class ScoutService {
     return this.http.get<Member>(`${this.scoutUrl}/${id}`);
   }
 
+  getMemberFile(id: number) {
+    return this.http.get(`${this.scoutUrl}/document/${id}`, {responseType: 'blob', observe: 'response'});
+  }
+
   updatePersonalData(id: number, personalDataForm: any) {
     return this.http.patch<Member>(`${this.scoutUrl}/personal/${id}`, personalDataForm);
   }
@@ -88,7 +92,7 @@ export class ScoutService {
     return this.http.delete<void>(`${this.scoutUrl}/personal/docs/${id}/${fileId}`);
   }
 
-  getMemberFile(id: number) {
-    return this.http.get(`${this.scoutUrl}/document/${id}`, {responseType: 'blob', observe: 'response'});
+  updateScoutContacts(id: number, contactList: ScoutContact[]) {
+    return this.http.patch<Member>(`${this.scoutUrl}/contact/${id}`, {contactList});
   }
 }

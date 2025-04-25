@@ -1,0 +1,188 @@
+@if (formHelper.form) {
+  <form class="form-container" (ngSubmit)="submit()" [formGroup]="formHelper.form">
+    <div formArrayName="contactList">
+      @let array = formHelper.getFormArray('contactList').controls;
+      @for (control of array; track control) {
+        <div class="row" [formGroupName]="$index">
+          <div class="d-flex align-items-center gap-2">
+            <b class="fs-5 title-font mt-1" id="title-{{$index}}">Contacto {{ $index + 1 }}</b>
+            <p-button
+              label="Borrar"
+              size="small"
+              severity="danger"
+              styleClass="py-1"
+              (onClick)="deleteContact($index)"
+              [disabled]="loading"
+            ></p-button>
+            @if ($index === array.length - 1 && array.length < 3) {
+              <p-button
+                label="Añadir"
+                size="small"
+                styleClass="py-1"
+                (onClick)="addContact()"
+                [disabled]="loading"
+              ></p-button>
+            }
+          </div>
+          <div class="col-12 d-flex gap-2">
+            <div class="d-flex flex-column">
+              <label class="required" for="type">Tipo de persona</label>
+              <p-select-button
+                id="type"
+                class="w-fit"
+                [options]="personTypes"
+                [allowEmpty]="false"
+                formControlName="personType"
+              ></p-select-button>
+            </div>
+            <div class="d-flex flex-column">
+              <label class="required" for="donor">Donante</label>
+              <p-select-button
+                id="donor"
+                class="w-fit"
+                [options]="yesNoOptions"
+                [allowEmpty]="false"
+                formControlName="donor"
+              ></p-select-button>
+            </div>
+          </div>
+          @if (!contactIsReal(control)) {
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="companyName"
+                  id="companyName"
+                />
+                <label class="required" for="companyName">Razón social</label>
+              </p-float-label>
+            </div>
+          }
+          <div class="col-12 col-sm-6 col-lg-4">
+            <p-float-label variant="on">
+              <input
+                pInputText
+                formControlName="name"
+                id="name"
+              />
+              <label class="required"
+                     for="name">{{ contactIsReal(control) ? 'Nombre' : 'Nombre del representante' }}</label>
+            </p-float-label>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <p-float-label variant="on">
+              <input
+                pInputText
+                formControlName="surname"
+                id="surname"
+              />
+              <label for="surname">{{ contactIsReal(control) ? 'Apellidos' : 'Apellidos del representante' }}</label>
+            </p-float-label>
+          </div>
+          @if (contactIsReal(control)) {
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-float-label variant="on">
+                <p-select
+                  formControlName="relationship"
+                  id="relationship"
+                  [options]="relationshipOptions"
+                  editable
+                />
+                <label for="relationship">Parentesco</label>
+              </p-float-label>
+            </div>
+          }
+          <div class="col-12 col-sm-6 col-lg-4">
+            <p-float-label variant="on">
+              <input
+                pInputText
+                formControlName="phone"
+                id="phone"
+              />
+              <label for="phone">Teléfono</label>
+            </p-float-label>
+          </div>
+          <div class="col">
+            <p-float-label variant="on">
+              <input
+                pInputText
+                formControlName="email"
+                id="email"
+              />
+              <label for="email">Correo</label>
+            </p-float-label>
+          </div>
+          @if (contactIsReal(control)) {
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="studies"
+                  id="studies"
+                />
+                <label for="studies">Estudios</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="profession"
+                  id="profession"
+                />
+                <label for="profession">Profesión</label>
+              </p-float-label>
+            </div>
+          }
+          <div class="col-12 col-sm-6 col-lg-4">
+            <p-float-label variant="on">
+              <p-select
+                [options]="idTypes"
+                [formControl]="getIdDocumentControl(control, 'idType')"
+                id="idType"
+                (onChange)="onIdTypeChange(control)"
+                showClear
+                (onClear)="onIdTypeClear(control)"
+              />
+              <label for="idType" class="semi-required">Tipo de Identificación</label>
+            </p-float-label>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <p-float-label variant="on">
+              <input
+                pInputText
+                [formControl]="getIdDocumentControl(control, 'number')"
+                id="number"
+              />
+              <label for="number" class="required">Número de Identificación</label>
+            </p-float-label>
+            @if (formHelper.isDirtyAndInvalidWithError(['idDocument', 'number'], 'formatInvalid')) {
+              <small class="text-danger">El formato del documento de identidad es inválido</small>
+            }
+          </div>
+          <div class="col-12">
+            <p-float-label variant="on">
+              <app-form-text-area
+                formControlName="observations"
+                [maxLength]="65535"
+              />
+              <label for="observations">Observaciones</label>
+            </p-float-label>
+          </div>
+        </div>
+      }
+      <div class="text-center text-danger">
+        @if (formHelper.isDirtyAndInvalid()) {
+          <small>Hay campos sin rellenar o incorrectos</small><br>
+        }
+      </div>
+      <app-save-buttons
+        saveType="submit"
+        class="mt-3"
+        [showCancelButton]="true"
+        (onCancel)="onEditionStop.emit()"
+        [saveLoading]="loading"
+      ></app-save-buttons>
+    </div>
+  </form>
+}
