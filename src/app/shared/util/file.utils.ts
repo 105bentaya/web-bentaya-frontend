@@ -1,7 +1,6 @@
 import {HttpResponse} from "@angular/common/http";
 import {saveAs} from "file-saver";
 import {Observable} from "rxjs";
-import {MemberFile} from "../../features/scouts/models/member.model";
 
 export class FileUtils {
   public static fileToFormData(file: File, paramName = "file"): FormData {
@@ -44,11 +43,43 @@ export class FileUtils {
     return "file";
   }
 
-  public static canOpenInNewTab(doc: MemberFile) {
-    return doc.mimeType === "application/pdf";
+  public static canOpenInNewTab(mimeType: string) {
+    mimeType = mimeType?.toLowerCase();
+    return mimeType === pdfMimeType || imageMimeTypes.includes(mimeType);
+  }
+
+  // File icons created by Roman Káčerek - Flaticon - https://www.flaticon.com/free-icons/xls
+  public static getFileIcon(mimeType: string) {
+    mimeType = mimeType?.toLowerCase();
+    if (mimeType === pdfMimeType) {
+      return "assets/file-icons/pdf.png";
+    }
+    if (docMimeTypes.includes(mimeType)) {
+      return "assets/file-icons/word.png";
+    }
+    if (imageMimeTypes.includes(mimeType)) {
+      return "assets/file-icons/image.png";
+    }
+    return "assets/file-icons/text.png";
   }
 }
 
+const pdfMimeType = "application/pdf";
+const docMimeTypes = [
+  "application/msword",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+  "application/vnd.oasis.opendocument.text",
+  "application/rtf"
+];
+
+const imageMimeTypes = [
+  "image/webp",
+  "image/jpeg",
+  "image/png",
+  "image/svg+xml"
+];
 
 export const docTypes = ".docx,.doc,.dot,.dotx,.odt,.rtf";
 export const docAndPdfTypes = `${docTypes},.pdf`;

@@ -87,4 +87,8 @@ export class ScoutService {
   deletePersonalDataDocs(id: number, fileId: number) {
     return this.http.delete<void>(`${this.scoutUrl}/personal/docs/${id}/${fileId}`);
   }
+
+  getMemberFile(id: number) {
+    return this.http.get(`${this.scoutUrl}/document/${id}`, {responseType: 'blob', observe: 'response'});
+  }
 }

@@ -39,7 +39,7 @@
         <div class="d-flex align-items-center gap-2">
           <div>
             <div>
-              <img [src]="getFileIcon(doc)" width="36" height="36" alt="doc">
+              <img [ngSrc]="getFileIcon(doc)" width="36" height="36" alt="doc">
             </div>
           </div>
           <div>
@@ -49,16 +49,27 @@
                   {{ doc.customName ?? doc.name }}
                 </div>
                 <div class="d-flex gap-1">
-                  @if (FileUtils.canOpenInNewTab(doc)) {
-                    <p-tag class="inverted main" value="Abrir" [ngClass]="{'disabled': loading}"/>
+                  @if (FileUtils.canOpenInNewTab(doc.mimeType)) {
+                    <p-tag
+                      class="inverted main"
+                      value="Abrir"
+                      [ngClass]="{'disabled': loading}"
+                      (click)="openFile(doc.id)"
+                    />
                   }
-                  <p-tag class="inverted secondary" value="Descargar" [ngClass]="{'disabled': loading}"/>
+                  <p-tag
+                    class="inverted secondary"
+                    value="Descargar"
+                    [ngClass]="{'disabled': loading}"
+                    (click)="downloadFile(doc.id)"
+                  />
                   @if (canEditDocuments) {
                     <p-tag
                       class="inverted red"
                       value="Borrar"
                       [ngClass]="{'disabled': loading}"
-                      (click)="deleteFile(doc, $index)"/>
+                      (click)="deleteFile(doc, $index)"
+                    />
                   }
                 </div>
               </div>
