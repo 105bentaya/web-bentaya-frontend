@@ -1,6 +1,7 @@
 import {HttpResponse} from "@angular/common/http";
 import {saveAs} from "file-saver";
 import {Observable} from "rxjs";
+import {MemberFile} from "../../features/scouts/models/member.model";
 
 export class FileUtils {
   public static fileToFormData(file: File, paramName = "file"): FormData {
@@ -41,6 +42,10 @@ export class FileUtils {
       return matches?.[1] ?? "file";
     }
     return "file";
+  }
+
+  public static canOpenInNewTab(doc: MemberFile) {
+    return doc.mimeType === "application/pdf";
   }
 }
 

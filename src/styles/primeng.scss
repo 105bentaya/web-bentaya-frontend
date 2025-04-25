@@ -72,6 +72,34 @@
   }
 }
 
+p-tag.inverted {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  cursor: pointer;
+  user-select: none;
+
+  &.main {
+    background: var(--p-emerald-200);
+    color: var(--p-emerald-700);
+  }
+  &.secondary {
+    background: var(--p-sky-200);
+    color: var(--p-sky-700);
+  }
+  &.gray {
+    background: var(--p-stone-200);
+    color: var(--p-stone-700);
+  }
+  &.red {
+    background: var(--p-red-200);
+    color: var(--p-red-700);
+  }
+  &.disabled {
+    opacity: 50%;
+    cursor: default !important;
+  }
+}
+
 .html-container {
   &:has(.space-holder.big) {
     .p-progressspinner-spin {
@@ -101,6 +129,7 @@
 
 .p-button.p-button-icon-only.p-button-sm {
   width: 2rem;
+  height: unset;
 }
 
 .p-button.p-dialog-close-button {

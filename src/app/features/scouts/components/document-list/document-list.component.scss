@@ -1,0 +1,16 @@
+.file-list {
+  > div {
+    padding-bottom: 0.4rem;
+    padding-top: 0.4rem;
+    border-bottom: var(--p-surface-300) solid 1px;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+      border: 0;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import {AbstractControlOptions, FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {AbstractControlOptions, FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {inject} from "@angular/core";
 import {lastValueFrom, skip, take} from "rxjs";
 
@@ -73,7 +73,7 @@ export class FormHelper {
     return !!this.form.errors?.[error];
   }
 
-  isDirtyAndInvalidWithError(controlKey: string, ...errors: string[]) {
+  isDirtyAndInvalidWithError(controlKey: string | string[], ...errors: string[]) {
     const control = this.get(controlKey);
     if (control?.dirty && control?.invalid) {
       return errors.some(error => control.errors![error]);
@@ -91,16 +91,28 @@ export class FormHelper {
     return this.get(control)?.value;
   }
 
-  get(control: string) {
-    return this.form?.controls[control];
+  get(controls: string | string[]) {
+    if (typeof controls === "string") {
+      return this.form?.controls[controls];
+    }
+
+    let control = this.form?.controls[controls[0]];
+    for (let i = 1; i < controls.length; i++) {
+      control = control?.get(controls[i])!;
+    }
+    return control;
   }
 
   getFormArray(control: string) {
     return this.form?.controls[control] as FormArray;
   }
 
+  getFormGroup(group: string) {
+    return this.form?.controls[group] as FormGroup;
+  }
+
   getFormGroupControl(group: string, control: string) {
-    return (this.form?.controls[group] as FormGroup)?.controls[control];
+    return this.getFormGroup(group)?.controls[control] as FormControl;
   }
 
   get valid() {
@@ -142,7 +154,7 @@ export class FormHelper {
       }
       if (typeof control.value === 'string') control.setValue(control.value.trim());
       control.updateValueAndValidity();
-      if (control.invalid || !control.valid) {
+      if ((control.invalid || !control.valid) && control.enabled) {
         valid = false;
         control.markAsDirty();
       }

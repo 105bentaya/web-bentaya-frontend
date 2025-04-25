@@ -44,6 +44,16 @@ hr {
   width: 100%;
 }
 
+.form-container-basic {
+  .p-inputtext, p-inputnumber.p-element, .p-inputnumber, .p-select, .p-datepicker, .p-password {
+    width: 100%;
+  }
+
+  label:has(+ .ng-invalid.ng-dirty), label:has(+ div .ng-invalid.ng-dirty) {
+    color: var(--p-floatlabel-invalid-color);
+  }
+}
+
 .form-container {
   margin-left: calc(.75rem - $row-padding);
   margin-right: calc(.75rem - $row-padding);
@@ -115,14 +125,14 @@ label, span, th {
   &.required:after {
     content: "*";
     font-weight: bold;
-    color: red;
+    color: var(--p-red-500);
     margin-left: 2px;
   }
 
   &.semi-required:after {
     content: "*";
     font-weight: bold;
-    color: cadetblue;
+    color: var(--p-indigo-500);
     margin-left: 2px;
   }
 }
@@ -130,7 +140,7 @@ label, span, th {
 .required > label:after {
   content: "*";
   font-weight: bold;
-  color: red;
+  color: var(--p-red-500);
   margin-left: 4px;
 }
 
@@ -166,6 +176,10 @@ label, span, th {
 
 .zoom-animation:hover {
   transform: scale(1.04);
+}
+
+.title-font {
+  font-family: Trueno-Black, sans-serif;
 }
 
 h1, h2, h3 {
@@ -324,4 +338,13 @@ $expand-button-diameter: 50px;
   --p-fileupload-header-padding: 0.25rem 0.75rem;
   --p-fileupload-content-padding: 0.25rem;
   --p-fileupload-content-gap: 0;
+}
+
+p-fileupload.small-uploader {
+  .p-fileupload-basic {
+    justify-content: start;
+  }
+  .p-fileupload-choose-button {
+    display: none;
+  }
 }

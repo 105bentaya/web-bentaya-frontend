@@ -14,7 +14,7 @@ import {FloatLabelModule} from "primeng/floatlabel";
 import {
   CheckboxContainerComponent
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
-import {genders, maintenanceEmail} from "../../../../shared/constant";
+import {genders, maintenanceEmail, shirtSizes} from "../../../../shared/constant";
 import {
   LargeFormButtonsComponent
 } from "../../../../shared/components/buttons/large-form-buttons/large-form-buttons.component";
@@ -59,7 +59,7 @@ export class SerScoutComponent implements OnInit {
   protected readonly genders = genders;
   protected readonly priorities = preScoutPriorities;
   protected readonly maintenanceEmail = maintenanceEmail;
-  protected readonly sizes: string[] = ["5/6", "7/8", "9/10", "11/12", "XS", "S", "M", "L", "XL", "2XL"];
+  protected readonly sizes = shirtSizes;
   protected preScout!: PreScoutForm;
   protected preScoutForm = new FormHelper();
   protected minDate: Date = new Date(2000, 0, 1);
