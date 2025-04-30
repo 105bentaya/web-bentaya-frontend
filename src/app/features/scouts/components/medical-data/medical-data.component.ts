@@ -26,20 +26,20 @@ export class MedicalDataComponent {
 
   private readonly scoutService = inject(ScoutService);
 
-  member = input.required<Scout>();
+  scout = input.required<Scout>();
 
   protected showSocialHolder = false;
   protected showPrivateHolder = false;
 
   get medicalData(): ScoutMedicalData {
-    return this.member().scoutInfo!.medicalData;
+    return this.scout().scoutInfo.medicalData;
   }
 
   get filePetition(): (file: File) => Observable<ScoutFile> {
-    return (file: File) => this.scoutService.uploadMedicalDocs(this.member().id, file);
+    return (file: File) => this.scoutService.uploadMedicalDocs(this.scout().id, file);
   }
 
   get deletePetition(): (fileId: number) => Observable<void> {
-    return (fileId: number) => this.scoutService.deleteMedicalDocs(this.member().id, fileId);
+    return (fileId: number) => this.scoutService.deleteMedicalDocs(this.scout().id, fileId);
   }
 }

@@ -65,13 +65,11 @@
         </div>
       </div>
     </div>
-    <p-tabs scrollable [value]="0" class="main-info-panel">
+    <p-tabs scrollable [value]="4" class="main-info-panel">
       <p-tablist>
         <p-tab [value]="0" [disabled]="editing">Datos Personales</p-tab>
-        @if (scout.scoutInfo) {
-          <p-tab [value]="1" [disabled]="editing">Datos de Salud</p-tab>
-          <p-tab [value]="2" [disabled]="editing">Datos Familiares</p-tab>
-        }
+        <p-tab [value]="1" [disabled]="editing">Datos de Salud</p-tab>
+        <p-tab [value]="2" [disabled]="editing">Datos Familiares</p-tab>
         <p-tab [value]="3" [disabled]="editing">Datos Formativos</p-tab>
         <p-tab [value]="4" [disabled]="editing">Datos Asociativos</p-tab>
         <p-tab [value]="5" [disabled]="editing">Historial Scout</p-tab>
@@ -101,28 +99,36 @@
               <app-personal-data [member]="scout"/>
             }
           </p-tabpanel>
-          @if (scout.scoutInfo) {
-            <p-tabpanel [value]="1">
-              @if (editing) {
-                <app-medical-data-form
-                  [initialData]="scout"
-                  (onEditionStop)="onEditionStop($event)"
-                />
-              } @else {
-                <app-medical-data [member]="scout"/>
-              }
-            </p-tabpanel>
-            <p-tabpanel [value]="2">
-              @if (editing) {
-                <app-contact-data-form
-                  [initialData]="scout"
-                  (onEditionStop)="onEditionStop($event)"
-                />
-              } @else {
-                <app-contact-data [contactList]="scout.scoutInfo.contactList"/>
-              }
-            </p-tabpanel>
-          }
+          <p-tabpanel [value]="1">
+            @if (editing) {
+              <app-medical-data-form
+                [initialData]="scout"
+                (onEditionStop)="onEditionStop($event)"
+              />
+            } @else {
+              <app-medical-data [scout]="scout"/>
+            }
+          </p-tabpanel>
+          <p-tabpanel [value]="2">
+            @if (editing) {
+              <app-contact-data-form
+                [initialData]="scout"
+                (onEditionStop)="onEditionStop($event)"
+              />
+            } @else {
+              <app-contact-data [contactList]="scout.scoutInfo.contactList"/>
+            }
+          </p-tabpanel>
+          <p-tabpanel [value]="4">
+            @if (editing) {
+              <app-group-data-form
+                [initialData]="scout"
+                (onEditionStop)="onEditionStop($event)"
+              />
+            } @else {
+              <app-group-data [scout]="scout"/>
+            }
+          </p-tabpanel>
         </div>
       </p-tabpanels>
     </p-tabs>

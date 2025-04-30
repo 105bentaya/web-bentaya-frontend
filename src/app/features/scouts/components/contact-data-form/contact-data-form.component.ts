@@ -116,6 +116,8 @@ export class ContactDataFormComponent implements OnInit {
         this.scoutService.updateScoutContacts(this.initialData()!.id, form)
           .pipe(finalize(() => this.loading = false))
           .subscribe(result => this.onEditionStop.emit(result));
+      } else {
+        //todo add
       }
     }
   }

@@ -13,6 +13,8 @@ import {ContactDataComponent} from "../contact-data/contact-data.component";
 import {ContactDataFormComponent} from "../contact-data-form/contact-data-form.component";
 import {MedicalDataComponent} from "../medical-data/medical-data.component";
 import {MedicalDataFormComponent} from "../medical-data-form/medical-data-form.component";
+import {GroupDataFormComponent} from "../group-data-form/group-data-form.component";
+import {GroupDataComponent} from "../group-data/group-data.component";
 
 @Component({
   selector: 'app-scout-info',
@@ -28,7 +30,9 @@ import {MedicalDataFormComponent} from "../medical-data-form/medical-data-form.c
     ContactDataComponent,
     ContactDataFormComponent,
     MedicalDataComponent,
-    MedicalDataFormComponent
+    MedicalDataFormComponent,
+    GroupDataFormComponent,
+    GroupDataComponent
   ]
 })
 export class ScoutInfoComponent implements OnInit {

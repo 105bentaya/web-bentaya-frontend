@@ -2,6 +2,7 @@ export interface BasicGroupInfo {
   id: number;
   name: string;
   order: number;
+  section?: Section;
 }
 
 export interface BasicGroupForm {
@@ -9,3 +10,5 @@ export interface BasicGroupForm {
   name?: string;
   order?: number;
 }
+
+export type Section = "CASTORES" | "LOBATOS" | "SCOUTS" | "ESCULTAS" | "ROVERS";
