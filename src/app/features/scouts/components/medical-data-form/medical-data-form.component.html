@@ -1,0 +1,421 @@
+@if (formHelper.form) {
+  <form [formGroup]="formHelper.form" class="form-container" (ngSubmit)="onSubmit()">
+    <p-accordion class="reduced" collapseIcon="pi pi-chevron-up" expandIcon="pi pi-chevron-down" value="0">
+      <p-accordion-panel value="0">
+        <p-accordion-header>
+          Datos alimentarios
+        </p-accordion-header>
+        <p-accordion-content>
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="foodIntolerances"
+                  [maxLength]="65535"
+                  formControlName="foodIntolerances"
+                />
+                <label for="foodIntolerances">Intolerancias</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="foodAllergies"
+                  [maxLength]="65535"
+                  formControlName="foodAllergies"
+                />
+                <label for="foodAllergies">Alergias alimentarias</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="foodProblems"
+                  [maxLength]="65535"
+                  formControlName="foodProblems"
+                />
+                <label for="foodProblems">Trastornos alimentarios</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="foodDiet"
+                  [maxLength]="65535"
+                  formControlName="foodDiet"
+                />
+                <label for="foodDiet">Dietas prescritas</label>
+              </p-float-label>
+            </div>
+            <div class="col">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="foodMedication"
+                  [maxLength]="65535"
+                  formControlName="foodMedication"
+                />
+                <label for="foodMedication">Medicación prescrita</label>
+              </p-float-label>
+            </div>
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="1">
+        <p-accordion-header>
+          Datos Médicos
+        </p-accordion-header>
+        <p-accordion-content>
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="medicalIntolerances"
+                  [maxLength]="65535"
+                  formControlName="medicalIntolerances"
+                />
+                <label for="medicalIntolerances">Intolerancias médicas</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="medicalAllergies"
+                  [maxLength]="65535"
+                  formControlName="medicalAllergies"
+                />
+                <label for="medicalAllergies">Alergias médicas</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="medicalDiagnoses"
+                  [maxLength]="65535"
+                  formControlName="medicalDiagnoses"
+                />
+                <label for="medicalDiagnoses">Diagnósticos médicos</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="medicalPrecautions"
+                  [maxLength]="65535"
+                  formControlName="medicalPrecautions"
+                />
+                <label for="medicalPrecautions">Precauciones médicas</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="medicalMedications"
+                  [maxLength]="65535"
+                  formControlName="medicalMedications"
+                />
+                <label for="medicalMedications">Medicación prescrita</label>
+              </p-float-label>
+            </div>
+            <div class="col">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="medicalEmergencies"
+                  [maxLength]="65535"
+                  formControlName="medicalEmergencies"
+                />
+                <label for="medicalEmergencies">Emergencias médicas</label>
+              </p-float-label>
+            </div>
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="2">
+        <p-accordion-header>
+          A Salvo de Riesgos
+        </p-accordion-header>
+        <p-accordion-content>
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="addictions"
+                  [maxLength]="65535"
+                  formControlName="addictions"
+                />
+                <label for="addictions">Adicciones</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="tendencies"
+                  [maxLength]="65535"
+                  formControlName="tendencies"
+                />
+                <label for="tendencies">Tendencias</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="records"
+                  [maxLength]="65535"
+                  formControlName="records"
+                />
+                <label for="records">Antecedentes</label>
+              </p-float-label>
+            </div>
+            <div class="col">
+              <p-float-label variant="on">
+                <app-form-text-area
+                  [showTag]=false
+                  id="bullyingProtocol"
+                  [maxLength]="65535"
+                  formControlName="bullyingProtocol"
+                />
+                <label for="bullyingProtocol">Protocolo de acoso</label>
+              </p-float-label>
+            </div>
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="3">
+        <p-accordion-header>
+          Datos Generales
+        </p-accordion-header>
+        <p-accordion-content>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 d-flex flex-column gap-3">
+              <p-input-group>
+                <p-float-label variant="on">
+                  <input
+                    pInputText
+                    formControlName="socialSecurityNumber"
+                    id="socialSecurityNumber"
+                  >
+                  <label for="socialSecurityNumber">Número Seguridad Social</label>
+                </p-float-label>
+                @if (formHelper.controlValue("socialSecurityNumber")) {
+                  <p-inputgroup-addon>
+                    <p-button
+                      icon="pi pi-times"
+                      severity="secondary"
+                      (onClick)="clearSocialSecurity()"
+                    ></p-button>
+                  </p-inputgroup-addon>
+                }
+              </p-input-group>
+              @if (formHelper.controlValue("socialSecurityNumber")) {
+                <p-float-label variant="on">
+                  <p-select
+                    [options]="contactOptions"
+                    appendTo="body"
+                    formControlName="socialSecurityHolder"
+                    id="socialSecurityHolder"
+                  />
+                  <label class="required" for="socialSecurityHolder">Titular</label>
+                </p-float-label>
+              }
+              @if (formHelper.controlValue("socialSecurityHolder") === "OTHER") {
+                <div formGroupName="socialSecurityHolderData" class="d-flex flex-column gap-3">
+                  <p-float-label variant="on">
+                    <input
+                      pInputText
+                      formControlName="name"
+                      id="name"
+                    >
+                    <label class="required" for="name">Nombre del titular</label>
+                  </p-float-label>
+                  <p-float-label variant="on">
+                    <input
+                      pInputText
+                      formControlName="surname"
+                      id="surname"
+                    >
+                    <label class="required" for="surname">Apellidos del titular</label>
+                  </p-float-label>
+                  <p-float-label variant="on">
+                    <input
+                      pInputText
+                      formControlName="email"
+                      id="email"
+                    >
+                    <label for="email">Correo electrónico</label>
+                  </p-float-label>
+                  <p-float-label variant="on">
+                    <input
+                      pInputText
+                      formControlName="phone"
+                      id="phone"
+                    >
+                    <label for="phone">Teléfono</label>
+                  </p-float-label>
+                  <div formGroupName="idDocument">
+                    <p-float-label variant="on">
+                      <p-select
+                        [options]="idTypes"
+                        formControlName="idType"
+                        id="idType"
+                        (onChange)="onIdTypeChange('socialSecurityHolderData')"
+                        showClear
+                        (onClear)="onIdTypeClear('socialSecurityHolderData')"
+                      />
+                      <label for="idType">Tipo de Identificación</label>
+                    </p-float-label>
+                  </div>
+                  <div formGroupName="idDocument">
+                    <p-float-label variant="on">
+                      <input
+                        pInputText
+                        formControlName="number"
+                        id="number"
+                      />
+                      <label for="number" class="required">Número de Identificación</label>
+                    </p-float-label>
+                    @if (formHelper.isDirtyAndInvalidWithError(['socialSecurityHolderData', 'idDocument', 'number'], 'formatInvalid')) {
+                      <small class="text-danger">El formato del documento de identidad es inválido</small>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 d-flex flex-column gap-3">
+              <p-input-group>
+                <p-float-label variant="on">
+                  <input
+                    pInputText
+                    formControlName="privateInsuranceNumber"
+                    id="privateInsuranceNumber"
+                  >
+                  <label for="privateInsuranceNumber">Número Seguro Privado</label>
+                </p-float-label>
+                @if (formHelper.controlValue("privateInsuranceNumber")) {
+                  <p-inputgroup-addon>
+                    <p-button
+                      icon="pi pi-times"
+                      severity="secondary"
+                      (onClick)="clearPrivateInsurance()"
+                    ></p-button>
+                  </p-inputgroup-addon>
+                }
+              </p-input-group>
+              @if (formHelper.controlValue("privateInsuranceNumber")) {
+                <p-float-label variant="on">
+                  <input
+                    pInputText
+                    formControlName="privateInsuranceEntity"
+                    id="privateInsuranceEntity"
+                  >
+                  <label for="privateInsuranceEntity" class="required">Entidad Seguro Privado</label>
+                </p-float-label>
+                <p-float-label variant="on">
+                  <p-select
+                    [options]="contactOptions"
+                    appendTo="body"
+                    formControlName="privateInsuranceHolder"
+                    id="privateInsuranceHolder"
+                  />
+                  <label class="required" for="privateInsuranceHolder">Titular</label>
+                </p-float-label>
+              }
+              @if (formHelper.controlValue("privateInsuranceHolder") === "OTHER") {
+                <div formGroupName="privateInsuranceHolderData" class="d-flex flex-column gap-3">
+                  <p-float-label variant="on">
+                    <input
+                      pInputText
+                      formControlName="name"
+                      id="name"
+                    >
+                    <label class="required" for="name">Nombre del titular</label>
+                  </p-float-label>
+                  <p-float-label variant="on">
+                    <input
+                      pInputText
+                      formControlName="surname"
+                      id="surname"
+                    >
+                    <label class="required" for="surname">Apellidos del titular</label>
+                  </p-float-label>
+                  <p-float-label variant="on">
+                    <input
+                      pInputText
+                      formControlName="email"
+                      id="email"
+                    >
+                    <label for="email">Correo electrónico</label>
+                  </p-float-label>
+                  <p-float-label variant="on">
+                    <input
+                      pInputText
+                      formControlName="phone"
+                      id="phone"
+                    >
+                    <label for="phone">Teléfono</label>
+                  </p-float-label>
+                  <div formGroupName="idDocument">
+                    <p-float-label variant="on">
+                      <p-select
+                        [options]="idTypes"
+                        formControlName="idType"
+                        id="idType"
+                        (onChange)="onIdTypeChange('privateInsuranceHolderData')"
+                        showClear
+                        (onClear)="onIdTypeClear('privateInsuranceHolderData')"
+                      />
+                      <label for="idType">Tipo de Identificación</label>
+                    </p-float-label>
+                  </div>
+                  <div formGroupName="idDocument">
+                    <p-float-label variant="on">
+                      <input
+                        pInputText
+                        formControlName="number"
+                        id="number"
+                      />
+                      <label for="number" class="required">Número de Identificación</label>
+                    </p-float-label>
+                    @if (formHelper.isDirtyAndInvalidWithError(['privateInsuranceHolderData', 'idDocument', 'number'], 'formatInvalid')) {
+                      <small class="text-danger">El formato del documento de identidad es inválido</small>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="col">
+              <p-float-label variant="on">
+                <p-select
+                  [options]="bloodTypeOptions"
+                  formControlName="bloodType"
+                  id="bloodType"
+                  appendTo="body"
+                ></p-select>
+                <label for="bloodType" class="required">Grupo Sanguíneo</label>
+              </p-float-label>
+            </div>
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+    <app-save-buttons
+      class="mt-3"
+      [showCancelButton]="true"
+      (onCancel)="onEditionStop.emit()"
+      saveType="submit"
+      [saveLoading]="loading"
+    />
+  </form>
+}

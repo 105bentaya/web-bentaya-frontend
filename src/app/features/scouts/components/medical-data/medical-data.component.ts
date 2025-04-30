@@ -1,0 +1,45 @@
+import {Component, inject, input} from '@angular/core';
+import {Member, MemberFile, ScoutMedicalData} from "../../models/member.model";
+import {BasicInfoComponent} from "../basic-info/basic-info.component";
+import {IdDocumentPipe} from "../../id-document.pipe";
+import {IdDocumentTypePipe} from "../../id-document-type.pipe";
+import {DocumentListComponent} from "../document-list/document-list.component";
+import {Observable} from "rxjs";
+import {ScoutService} from "../../services/scout.service";
+import {BloodTypePipe} from "../../blood-type.pipe";
+import {NgClass} from "@angular/common";
+
+@Component({
+  selector: 'app-medical-data',
+  imports: [
+    BasicInfoComponent,
+    IdDocumentPipe,
+    IdDocumentTypePipe,
+    DocumentListComponent,
+    BloodTypePipe,
+    NgClass
+  ],
+  templateUrl: './medical-data.component.html',
+  styleUrl: './medical-data.component.scss'
+})
+export class MedicalDataComponent {
+
+  private readonly scoutService = inject(ScoutService);
+
+  member = input.required<Member>();
+
+  protected showSocialHolder = false;
+  protected showPrivateHolder = false;
+
+  get medicalData(): ScoutMedicalData {
+    return this.member().scoutInfo!.medicalData;
+  }
+
+  get filePetition(): (file: File) => Observable<MemberFile> {
+    return (file: File) => this.scoutService.uploadMedicalDocs(this.member().id, file);
+  }
+
+  get deletePetition(): (fileId: number) => Observable<void> {
+    return (fileId: number) => this.scoutService.deleteMedicalDocs(this.member().id, fileId);
+  }
+}

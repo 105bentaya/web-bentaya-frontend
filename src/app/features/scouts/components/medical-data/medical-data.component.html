@@ -1,0 +1,110 @@
+<div class="row">
+  <div class="col-12 col-sm-6 col-lg-4 mb-3">
+    <b class="fs-5 title-font">Datos Alimentarios</b>
+    <div class="d-flex flex-column">
+      <app-basic-info label="Intoleracias" [value]="medicalData.foodIntolerances" nullLabel="No tiene"/>
+      <app-basic-info label="Alergias alimentarias" [value]="medicalData.foodAllergies" nullLabel="No tiene"/>
+      <app-basic-info label="Trastornos alimentarios" [value]="medicalData.foodProblems" nullLabel="No tiene"/>
+      <app-basic-info label="Dietas prescritas" [value]="medicalData.foodDiet" nullLabel="No tiene"/>
+      <app-basic-info label="Medicación prescrita" [value]="medicalData.foodIntolerances" nullLabel="No tiene"/>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-lg-4 mb-3">
+    <b class="fs-5 title-font">Datos Médicos</b>
+    <app-basic-info label="Intoleracias médicas" [value]="medicalData.medicalIntolerances" nullLabel="No tiene"/>
+    <app-basic-info label="Alergias médicas" [value]="medicalData.medicalAllergies" nullLabel="No tiene"/>
+    <app-basic-info label="Diagnósticos médicos" [value]="medicalData.medicalDiagnoses" nullLabel="No tiene"/>
+    <app-basic-info label="Precauciones médicas" [value]="medicalData.medicalPrecautions" nullLabel="No tiene"/>
+    <app-basic-info label="Medicación prescrita" [value]="medicalData.medicalMedications" nullLabel="No tiene"/>
+    <app-basic-info label="Emergencias médicas" [value]="medicalData.medicalEmergencies" nullLabel="No tiene"/>
+  </div>
+  <div class="col-12 col-sm-6 col-lg-4 mb-3">
+    <b class="fs-5 title-font">A Salvo de Riesgos</b>
+    <app-basic-info label="Adicciones" [value]="medicalData.addictions"/>
+    <app-basic-info label="Tendencias" [value]="medicalData.tendencies"/>
+    <app-basic-info label="Antecedentes" [value]="medicalData.records"/>
+    <app-basic-info label="Protocolo de acoso" [value]="medicalData.bullyingProtocol"/>
+  </div>
+  <div class="col mb-3">
+    <b class="fs-5 title-font">Datos Generales</b>
+    <div class="d-flex flex-column">
+      <app-basic-info label="Grupo Sanguíeno" [value]="medicalData.bloodType | bloodType"/>
+      <app-basic-info label="Seguridad Social" [value]="medicalData.socialSecurityNumber"/>
+      @if (medicalData.socialSecurityHolder) {
+        <div>
+          <b>Titular Seguridad Social</b>
+          <i
+            class="fa-solid ms-1 cursor-pointer"
+            [ngClass]="{'fa-circle-plus': !showSocialHolder, 'fa-circle-minus': showSocialHolder}"
+            (click)="showSocialHolder = !showSocialHolder"
+          ></i>
+        </div>
+        @if (showSocialHolder) {
+          @let socialSecurityHolder = medicalData.socialSecurityHolder;
+          @let socialSecurityHolderContact = socialSecurityHolder.contact;
+          <div class="ms-2">
+            <app-basic-info label="Nombre" [value]="socialSecurityHolderContact?.name ?? socialSecurityHolder.name"/>
+            <app-basic-info
+              label="Apellidos"
+              [value]="socialSecurityHolderContact?.surname ?? socialSecurityHolder.surname"
+            />
+            <app-basic-info
+              [label]="(socialSecurityHolderContact?.idDocument ?? socialSecurityHolder.idDocument) | idDocumentType"
+              [value]="(socialSecurityHolderContact?.idDocument ?? socialSecurityHolder.idDocument) | idDocument"
+            />
+            <app-basic-info
+              label="Teléfono"
+              [value]="socialSecurityHolderContact?.phone ?? socialSecurityHolder.phone"
+            />
+            <app-basic-info
+              label="Correo"
+              [value]="socialSecurityHolderContact?.email ?? socialSecurityHolder.email"
+            />
+          </div>
+        }
+      }
+      <app-basic-info label="Seguro privado" [value]="medicalData.privateInsuranceNumber"/>
+      <app-basic-info label="Entidad seguro privado" [value]="medicalData.privateInsuranceEntity" [hideIfNull]="true"/>
+      @if (medicalData.privateInsuranceHolder) {
+        <div>
+          <b>Titular Seguro Privado</b>
+          <i
+            class="fa-solid ms-1 cursor-pointer"
+            [ngClass]="{'fa-circle-plus': !showPrivateHolder, 'fa-circle-minus': showPrivateHolder}"
+            (click)="showPrivateHolder = !showPrivateHolder"
+          ></i>
+        </div>
+        @if (showPrivateHolder) {
+          @let privateHolder = medicalData.privateInsuranceHolder;
+          @let privateHolderContact = privateHolder.contact;
+          <div class="ms-2">
+            <app-basic-info label="Nombre" [value]="privateHolderContact?.name ?? privateHolder.name"/>
+            <app-basic-info
+              label="Apellidos"
+              [value]="privateHolderContact?.surname ?? privateHolder.surname"
+            />
+            <app-basic-info
+              [label]="(privateHolderContact?.idDocument ?? privateHolder.idDocument) | idDocumentType"
+              [value]="(privateHolderContact?.idDocument ?? privateHolder.idDocument) | idDocument"
+            />
+            <app-basic-info
+              label="Teléfono"
+              [value]="privateHolderContact?.phone ?? privateHolder.phone"
+            />
+            <app-basic-info
+              label="Correo"
+              [value]="privateHolderContact?.email ?? privateHolder.email"
+            />
+          </div>
+        }
+      }
+    </div>
+  </div>
+  <div class="col-12 col-lg-8">
+    <app-document-list
+      [(documents)]="medicalData.documents"
+      [filePetition]="filePetition"
+      [deletePetition]="deletePetition"
+    />
+  </div>
+</div>
