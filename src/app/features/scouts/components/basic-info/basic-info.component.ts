@@ -10,4 +10,5 @@ export class BasicInfoComponent {
   label = input.required<string>();
   value = input.required<string | undefined | null>();
   hideIfNull = input<boolean>(false);
+  nullLabel = input<string>("Sin especificar");
 }

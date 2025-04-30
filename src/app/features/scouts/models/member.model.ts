@@ -21,6 +21,41 @@ export interface ScoutInfo {
   group?: BasicGroupInfo;
   photo?: MemberFile;
   contactList: ScoutContact[];
+  medicalData: ScoutMedicalData;
+}
+
+export interface ScoutMedicalData {
+  bloodType: BloodType;
+  socialSecurityNumber?: string;
+  socialSecurityHolder?: InsuranceHolder;
+  privateInsuranceNumber?: string;
+  privateInsuranceEntity?: string;
+  privateInsuranceHolder?: InsuranceHolder;
+  foodIntolerances?: string;
+  foodAllergies?: string;
+  foodProblems?: string;
+  foodDiet?: string;
+  foodMedication?: string;
+  medicalIntolerances?: string;
+  medicalAllergies?: string;
+  medicalDiagnoses?: string;
+  medicalPrecautions?: string;
+  medicalMedications?: string;
+  medicalEmergencies?: string;
+  addictions?: string;
+  tendencies?: string;
+  records?: string;
+  bullyingProtocol?: string;
+  documents: MemberFile[];
+}
+
+export interface InsuranceHolder {
+  contact?: ScoutContact;
+  name?: string;
+  surname?: string;
+  idDocument?: IdentificationDocument;
+  phone?: string;
+  email?: string;
 }
 
 export interface ScoutContact {
@@ -112,3 +147,14 @@ export type PersonType = "REAL" | "JURIDICAL";
 export type MemberRole = "FOUNDER" | "HONOUR" | "RECOGNIZED" | "PROTECTOR";
 export type IdType = "DNI" | "NIE" | "CIF" | "PAS" | "OTR";
 export type ScoutType = "PARTICIPANT" | "SCOUT" | "COMMITTEE";
+export type BloodType =
+  "O_POSITIVE"
+  | "O_NEGATIVE"
+  | "A_POSITIVE"
+  | "A_NEGATIVE"
+  | "B_POSITIVE"
+  | "B_NEGATIVE"
+  | "AB_POSITIVE"
+  | "AB_NEGATIVE"
+  | "NA";
+

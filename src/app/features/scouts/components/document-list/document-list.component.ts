@@ -1,4 +1,4 @@
-import {Component, inject, input, output, viewChild} from '@angular/core';
+import {Component, inject, input, model, viewChild} from '@angular/core';
 import {MemberFile} from "../../models/member.model";
 import {TableModule} from "primeng/table";
 import {DatePipe, NgClass, NgOptimizedImage} from "@angular/common";
@@ -33,11 +33,11 @@ export class DocumentListComponent {
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
   protected readonly FileUtils = FileUtils;
 
-  documents = input.required<MemberFile[]>();
+  documents = model.required<MemberFile[]>();
   filePetition = input<(file: File) => Observable<MemberFile>>();
   deletePetition = input<(fileId: number) => Observable<void>>();
   canEdit = input<boolean>(true);
-  protected onUpload = output<MemberFile[]>();
+  titleSize = input<string>("big"); //todo necessary?
 
   private readonly uploader = viewChild.required(FileUpload);
 
@@ -47,8 +47,12 @@ export class DocumentListComponent {
     return FileUtils.getFileIcon(file.mimeType);
   }
 
-  get canEditDocuments() {
+  get canAddDocuments() {
     return this.canEdit() && !!this.filePetition();
+  }
+
+  get canDeleteDocuments() {
+    return this.canEdit() && !!this.deletePetition();
   }
 
   protected uploadFiles(event: FileUploadHandlerEvent) {
@@ -62,7 +66,7 @@ export class DocumentListComponent {
           this.loading = false;
         }))
         .subscribe({
-          next: result => this.onUpload.emit(result),
+          next: result => this.documents.set(this.documents().concat(result)),
           complete: () => this.alertService.sendBasicSuccessMessage("Documentos subidos correctamente")
         });
     } else {

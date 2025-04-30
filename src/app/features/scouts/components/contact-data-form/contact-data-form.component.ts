@@ -22,6 +22,7 @@ import {FormTextAreaComponent} from "../../../../shared/components/form-text-are
 import {Button} from "primeng/button";
 import {finalize} from "rxjs";
 import {ScoutService} from "../../services/scout.service";
+import {ScoutContactForm} from "../../models/member-form.model";
 
 @Component({
   selector: 'app-contact-data-form',
@@ -94,7 +95,7 @@ export class ContactDataFormComponent implements OnInit {
 
   protected submit() {
     if (this.formHelper.validateAll()) {
-      const form: ScoutContact[] = [...this.formHelper.value.contactList];
+      const form: ScoutContactForm[] = [...this.formHelper.value.contactList];
       form.forEach(contact => {
         if (contact.personType === "REAL") {
           delete contact.companyName;

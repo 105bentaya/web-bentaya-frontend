@@ -1,5 +1,5 @@
 @if (!(hideIfNull() && (value() === null || value() === undefined))) {
   <div class="mb-1">
-    <b>{{ label() }}:</b> {{ value() ?? 'Sin especificar' }}
+    <b>{{ label() }}:</b> {{ value() ?? nullLabel() }}
   </div>
 }

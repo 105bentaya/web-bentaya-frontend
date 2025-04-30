@@ -43,12 +43,14 @@
           <div class="d-none d-xl-flex flex-column gap-2 align-items-start flex-shrink-1 justify-content-between">
             <div>
               <p-tag
+                styleClass="py-0 px-1"
                 [value]="scout.scoutInfo?.active ? 'ALTA' : 'BAJA'"
                 [severity]="scout.scoutInfo?.active ? 'success' : 'danger'"
               />
             </div>
             <div>
               <p-tag
+                styleClass="py-0 px-1"
                 [value]="scout.scoutInfo?.federated ? 'FEDERADO' : 'NO FEDERADO'"
                 [severity]="scout.scoutInfo?.federated ? 'info' : 'warn'"
               />
@@ -63,18 +65,18 @@
         </div>
       </div>
     </div>
-    <p-tabs scrollable [value]="2" class="main-info-panel">
+    <p-tabs scrollable [value]="0" class="main-info-panel">
       <p-tablist>
-        <p-tab [value]="0">Datos Personales</p-tab>
-        <p-tab [value]="1">Datos de Salud</p-tab>
+        <p-tab [value]="0" [disabled]="editing">Datos Personales</p-tab>
         @if (scout.scoutInfo) {
-          <p-tab [value]="2">Datos Familiares</p-tab>
+          <p-tab [value]="1" [disabled]="editing">Datos de Salud</p-tab>
+          <p-tab [value]="2" [disabled]="editing">Datos Familiares</p-tab>
         }
-        <p-tab [value]="3">Datos Formativos</p-tab>
-        <p-tab [value]="4">Datos Asociativos</p-tab>
-        <p-tab [value]="5">Historial Scout</p-tab>
-        <p-tab [value]="6">Datos económicos</p-tab>
-        <p-tab [value]="7">Otros Datos</p-tab>
+        <p-tab [value]="3" [disabled]="editing">Datos Formativos</p-tab>
+        <p-tab [value]="4" [disabled]="editing">Datos Asociativos</p-tab>
+        <p-tab [value]="5" [disabled]="editing">Historial Scout</p-tab>
+        <p-tab [value]="6" [disabled]="editing">Datos económicos</p-tab>
+        <p-tab [value]="7" [disabled]="editing">Otros Datos</p-tab>
       </p-tablist>
       <p-tabpanels>
         <div class="position-relative">
@@ -100,6 +102,16 @@
             }
           </p-tabpanel>
           @if (scout.scoutInfo) {
+            <p-tabpanel [value]="1">
+              @if (editing) {
+                <app-medical-data-form
+                  [initialData]="scout"
+                  (onEditionStop)="onEditionStop($event)"
+                />
+              } @else {
+                <app-medical-data [member]="scout"/>
+              }
+            </p-tabpanel>
             <p-tabpanel [value]="2">
               @if (editing) {
                 <app-contact-data-form

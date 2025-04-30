@@ -11,6 +11,8 @@ import {PersonalDataFormComponent} from "../personal-data-form/personal-data-for
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {ContactDataComponent} from "../contact-data/contact-data.component";
 import {ContactDataFormComponent} from "../contact-data-form/contact-data-form.component";
+import {MedicalDataComponent} from "../medical-data/medical-data.component";
+import {MedicalDataFormComponent} from "../medical-data-form/medical-data-form.component";
 
 @Component({
   selector: 'app-scout-info',
@@ -24,7 +26,9 @@ import {ContactDataFormComponent} from "../contact-data-form/contact-data-form.c
     PersonalDataComponent,
     PersonalDataFormComponent,
     ContactDataComponent,
-    ContactDataFormComponent
+    ContactDataFormComponent,
+    MedicalDataComponent,
+    MedicalDataFormComponent
   ]
 })
 export class ScoutInfoComponent implements OnInit {

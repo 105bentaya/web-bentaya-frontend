@@ -51,24 +51,20 @@ export class PersonalDataFormComponent implements OnInit {
   protected readonly idTypes = idTypes;
   protected readonly personTypes = personTypes;
 
-  public initialData = input<Member>();
+  public initialData = input.required<Member>();
   protected onEditionStop = output<void | Member>();
 
   protected loading: boolean = false;
 
   ngOnInit() {
-    if (this.initialData()) {
-      this.createEditForm();
-    } else {
-      this.createNewForm();
-    }
+    this.createEditForm();
   }
 
   private createEditForm() {
-    const member = this.initialData()!;
+    const member = this.initialData();
 
     if (member.type == "REAL") {
-      const memberData = this.initialData()!.personalData as RealPersonalData;
+      const memberData = member.personalData as RealPersonalData;
       this.formHelper.createForm({
         type: [member.type, Validators.required],
         idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder, memberData.idDocument),
@@ -93,7 +89,8 @@ export class PersonalDataFormComponent implements OnInit {
         })
       });
     } else {
-      const memberData = this.initialData()!.personalData as JuridicalPersonalData;
+      //todo check
+      const memberData = member.personalData as JuridicalPersonalData;
       this.formHelper.createForm({
         type: [member.type, Validators.required],
         idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder, memberData.idDocument),
@@ -115,51 +112,6 @@ export class PersonalDataFormComponent implements OnInit {
     }
   }
 
-  private createNewForm() {
-    this.formHelper.createForm({
-      type: [null, Validators.required],
-      idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder),
-      observations: [null, Validators.maxLength(65535)],
-      realData: this.formBuilder.group({
-        surname: [null, [Validators.required, Validators.maxLength(255)]],
-        name: [null, [Validators.required, Validators.maxLength(255)]],
-        feltName: [null, Validators.maxLength(255)],
-        birthday: [null, Validators.required],
-        birthplace: [null, [Validators.required, Validators.maxLength(255)]],
-        birthProvince: [null, Validators.maxLength(255)],
-        nationality: [null, Validators.maxLength(255)],
-        address: [null, Validators.maxLength(255)],
-        city: [null, Validators.maxLength(255)],
-        province: [null, Validators.maxLength(255)],
-        phone: [null, Validators.maxLength(255)],
-        landline: [null, Validators.maxLength(255)],
-        email: [null, [Validators.maxLength(255), Validators.email]],
-        shirtSize: [null, Validators.maxLength(255)],
-        residenceMunicipality: [null, Validators.maxLength(255)],
-        gender: [null, [Validators.required, Validators.maxLength(255)]],
-      }),
-      juridicalData: this.formBuilder.group({
-        companyName: [null, [Validators.required, Validators.maxLength(255)]],
-        name: [null, [Validators.required, Validators.maxLength(255)]],
-        surname: [null, [Validators.required, Validators.maxLength(255)]],
-        email: [null, Validators.maxLength(255)],
-        phone: [null, Validators.required],
-        landline: [null, [Validators.required, Validators.maxLength(255)]],
-        idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder)
-      })
-    }, {validators: this.dataValidator});
-  }
-
-  private readonly dataValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const type: PersonType | undefined = control.get('type')?.value;
-
-    if (!type) return null;
-    if (type == "REAL" && !control.get("realData")?.value) return {dataRequired: true};
-    if (type == "JURIDICAL" && !control.get("juridicalData")?.value) return {dataRequired: true};
-
-    return null;
-  };
-
   protected submit() {
     if (this.formHelper.validateAll()) {
       const form: PersonalDataForm = {...this.formHelper.value};
@@ -176,7 +128,7 @@ export class PersonalDataFormComponent implements OnInit {
 
       this.loading = true;
       if (this.initialData()) {
-        this.scoutService.updatePersonalData(this.initialData()!.id, form)
+        this.scoutService.updatePersonalData(this.initialData().id, form)
           .pipe(finalize(() => this.loading = false))
           .subscribe(result => this.onEditionStop.emit(result));
       }

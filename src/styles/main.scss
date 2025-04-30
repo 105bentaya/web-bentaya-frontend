@@ -14,9 +14,11 @@ html {
 body {
   position: relative;
   min-height: 100%;
+
   &:has(.hide-overflow-x) {
     overflow-x: hidden;
   }
+
   &:has(.block-scroll) {
     overflow: hidden;
   }
@@ -118,7 +120,15 @@ hr {
     margin-bottom: .75rem;
     color: var(--p-steps-item-label-active-color);
     margin-left: -$row-padding;
+  }
 }
+
+.p-inputtext:disabled + {
+  label, span, th {
+    &.required:after {
+      color: var(--p-slate-400) !important;
+    }
+  }
 }
 
 label, span, th {
@@ -246,10 +256,12 @@ h1, h2, h3 {
   .p-panelmenu-panel {
     border-style: none;
   }
+
   .p-panelmenu-item-content, .p-panelmenu-header-content {
     border-radius: var(--p-button-border-radius);
   }
-  .bg-select > .p-panelmenu-item-content, .bg-select > .p-panelmenu-header-content  {
+
+  .bg-select > .p-panelmenu-item-content, .bg-select > .p-panelmenu-header-content {
     background-color: var(--menu-select-color);
   }
 }
@@ -312,6 +324,7 @@ $expand-button-diameter: 50px;
 
 .divider-menu {
   margin: .75rem 0 0 0;
+
   .p-divider-content {
     background-color: var(--bentaya-main-color);
     color: white;
@@ -344,6 +357,7 @@ p-fileupload.small-uploader {
   .p-fileupload-basic {
     justify-content: start;
   }
+
   .p-fileupload-choose-button {
     display: none;
   }

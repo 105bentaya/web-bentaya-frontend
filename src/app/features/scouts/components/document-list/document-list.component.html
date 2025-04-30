@@ -1,7 +1,7 @@
 <div class="overflow-hidden">
   <div class="d-flex align-items-center gap-1">
-    <b class="fs-5 title-font">Documentos</b>
-    @if (canEditDocuments) {
+    <b class="title-font" [class]="{'fs-6': titleSize() === 'small', 'fs-5': titleSize() === 'big'}">Documentos</b>
+    @if (canAddDocuments) {
       <p-tag
         class="inverted gray"
         value="Subir"
@@ -63,7 +63,7 @@
                     [ngClass]="{'disabled': loading}"
                     (click)="downloadFile(doc.id)"
                   />
-                  @if (canEditDocuments) {
+                  @if (canDeleteDocuments) {
                     <p-tag
                       class="inverted red"
                       value="Borrar"

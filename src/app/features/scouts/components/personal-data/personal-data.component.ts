@@ -46,8 +46,4 @@ export class PersonalDataComponent {
   get deletePetition(): (fileId: number) => Observable<void> {
     return (fileId: number) => this.scoutService.deletePersonalDataDocs(this.member().id, fileId);
   }
-
-  protected uploadPersonalDocs(files: MemberFile[]) {
-    this.member().personalData.documents = this.member().personalData.documents.concat(files);
-  }
 }

@@ -4,8 +4,9 @@ import {Observable} from "rxjs";
 import {Scout} from "../models/scout.model";
 import {environment} from "../../../../environments/environment";
 import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
-import {Member, MemberFile, ScoutContact} from "../models/member.model";
+import {Member, MemberFile} from "../models/member.model";
 import {FileUtils} from "../../../shared/util/file.utils";
+import {PersonalDataForm, ScoutContactForm, ScoutMedicalForm} from "../models/member-form.model";
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class ScoutService {
   }
 
   getScoutUsernamesUpdateInfo(newUsernames: string[], scoutId?: number): Observable<ScoutUsernamesUpdate> {
-    let params: any = {};
+    const params: any = {};
     if (scoutId) params.scoutId = scoutId;
     if (newUsernames) params.usernames = newUsernames.map(user => user.toLowerCase());
     return this.http.get<ScoutUsernamesUpdate>(`${this.scoutUrl}/scout-form-usernames`, {params});
@@ -80,7 +81,7 @@ export class ScoutService {
     return this.http.get(`${this.scoutUrl}/document/${id}`, {responseType: 'blob', observe: 'response'});
   }
 
-  updatePersonalData(id: number, personalDataForm: any) {
+  updatePersonalData(id: number, personalDataForm: PersonalDataForm) {
     return this.http.patch<Member>(`${this.scoutUrl}/personal/${id}`, personalDataForm);
   }
 
@@ -92,7 +93,19 @@ export class ScoutService {
     return this.http.delete<void>(`${this.scoutUrl}/personal/docs/${id}/${fileId}`);
   }
 
-  updateScoutContacts(id: number, contactList: ScoutContact[]) {
+  updateScoutContacts(id: number, contactList: ScoutContactForm[]) {
     return this.http.patch<Member>(`${this.scoutUrl}/contact/${id}`, {contactList});
+  }
+
+  updateMedicalData(id: number, medicalDataForm: ScoutMedicalForm) {
+    return this.http.patch<Member>(`${this.scoutUrl}/medical/${id}`, medicalDataForm);
+  }
+
+  uploadMedicalDocs(id: number, file: File) {
+    return this.http.post<MemberFile>(`${this.scoutUrl}/medical/docs/${id}`, FileUtils.fileToFormData(file));
+  }
+
+  deleteMedicalDocs(id: number, fileId: number) {
+    return this.http.delete<void>(`${this.scoutUrl}/medical/docs/${id}/${fileId}`);
   }
 }

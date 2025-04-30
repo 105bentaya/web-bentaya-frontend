@@ -28,6 +28,7 @@ export class FormTextAreaComponent implements OnInit, ControlValueAccessor {
   protected valueLength = 0;
   protected textIsUnderLimit = true;
 
+  @Input() showTag: boolean = true;
   @Input() maxLength: number = 256;
   @Input() formControlName!: string;
   @Input() showErrorMessage = false;
@@ -44,6 +45,7 @@ export class FormTextAreaComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit(): void {
+    this.showErrorMessage = this.showErrorMessage || !this.showTag;
     this.isValid.emit(true);
   }
 
