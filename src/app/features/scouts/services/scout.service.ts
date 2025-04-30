@@ -1,10 +1,10 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Scout} from "../models/scout.model";
+import {OldScout} from "../models/scout.model";
 import {environment} from "../../../../environments/environment";
 import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
-import {Member, MemberFile} from "../models/member.model";
+import {Scout, ScoutFile} from "../models/member.model";
 import {FileUtils} from "../../../shared/util/file.utils";
 import {PersonalDataForm, ScoutContactForm, ScoutMedicalForm} from "../models/member-form.model";
 
@@ -16,24 +16,24 @@ export class ScoutService {
   private readonly http = inject(HttpClient);
   private readonly scoutUrl = `${environment.apiUrl}/scout`;
 
-  getAll(): Observable<Scout[]> {
-    return this.http.get<Scout[]>(this.scoutUrl);
+  getAll(): Observable<OldScout[]> {
+    return this.http.get<OldScout[]>(this.scoutUrl);
   }
 
-  getAllAndDisabled(): Observable<Scout[]> {
-    return this.http.get<Scout[]>(`${this.scoutUrl}/all`);
+  getAllAndDisabled(): Observable<OldScout[]> {
+    return this.http.get<OldScout[]>(`${this.scoutUrl}/all`);
   }
 
-  getAllWithoutImageAuthorization(): Observable<Scout[]> {
-    return this.http.get<Scout[]>(`${this.scoutUrl}/image`);
+  getAllWithoutImageAuthorization(): Observable<OldScout[]> {
+    return this.http.get<OldScout[]>(`${this.scoutUrl}/image`);
   }
 
-  getAllByCurrentGroup(): Observable<Scout[]> {
-    return this.http.get<Scout[]>(`${this.scoutUrl}/group`);
+  getAllByCurrentGroup(): Observable<OldScout[]> {
+    return this.http.get<OldScout[]>(`${this.scoutUrl}/group`);
   }
 
-  getAllByCurrentUser(): Observable<Scout[]> {
-    return this.http.get<Scout[]>(`${this.scoutUrl}/user`);
+  getAllByCurrentUser(): Observable<OldScout[]> {
+    return this.http.get<OldScout[]>(`${this.scoutUrl}/user`);
   }
 
   getScoutUsernames(scoutId: number): Observable<string[]> {
@@ -51,30 +51,30 @@ export class ScoutService {
     return this.http.get<ScoutUsernamesUpdate>(`${this.scoutUrl}/scout-form-usernames`, {params});
   }
 
-  save(scout: Scout): Observable<Scout> {
-    return this.http.post<Scout>(this.scoutUrl, scout);
+  save(scout: OldScout): Observable<OldScout> {
+    return this.http.post<OldScout>(this.scoutUrl, scout);
   }
 
-  saveFromPreScout(scout: Scout, id: number): Observable<Scout> {
-    return this.http.post<Scout>(`${this.scoutUrl}/${id}`, scout);
+  saveFromPreScout(scout: OldScout, id: number): Observable<OldScout> {
+    return this.http.post<OldScout>(`${this.scoutUrl}/${id}`, scout);
   }
 
-  update(scout: Scout): Observable<Scout> {
-    return this.http.put<Scout>(this.scoutUrl, scout);
+  update(scout: OldScout): Observable<OldScout> {
+    return this.http.put<OldScout>(this.scoutUrl, scout);
   }
 
-  disable(scout: Scout) {
+  disable(scout: OldScout) {
     return this.http.delete(`${this.scoutUrl}/disable/${scout.id}`);
   }
 
-  delete(scout: Scout) {
+  delete(scout: OldScout) {
     return this.http.delete(`${this.scoutUrl}/delete/${scout.id}`);
   }
 
   //new
 
   getById(id: any) {
-    return this.http.get<Member>(`${this.scoutUrl}/${id}`);
+    return this.http.get<Scout>(`${this.scoutUrl}/${id}`);
   }
 
   getMemberFile(id: number) {
@@ -82,11 +82,11 @@ export class ScoutService {
   }
 
   updatePersonalData(id: number, personalDataForm: PersonalDataForm) {
-    return this.http.patch<Member>(`${this.scoutUrl}/personal/${id}`, personalDataForm);
+    return this.http.patch<Scout>(`${this.scoutUrl}/personal/${id}`, personalDataForm);
   }
 
   uploadPersonalDataDocs(id: number, file: File) {
-    return this.http.post<MemberFile>(`${this.scoutUrl}/personal/docs/${id}`, FileUtils.fileToFormData(file));
+    return this.http.post<ScoutFile>(`${this.scoutUrl}/personal/docs/${id}`, FileUtils.fileToFormData(file));
   }
 
   deletePersonalDataDocs(id: number, fileId: number) {
@@ -94,15 +94,15 @@ export class ScoutService {
   }
 
   updateScoutContacts(id: number, contactList: ScoutContactForm[]) {
-    return this.http.patch<Member>(`${this.scoutUrl}/contact/${id}`, {contactList});
+    return this.http.patch<Scout>(`${this.scoutUrl}/contact/${id}`, {contactList});
   }
 
   updateMedicalData(id: number, medicalDataForm: ScoutMedicalForm) {
-    return this.http.patch<Member>(`${this.scoutUrl}/medical/${id}`, medicalDataForm);
+    return this.http.patch<Scout>(`${this.scoutUrl}/medical/${id}`, medicalDataForm);
   }
 
   uploadMedicalDocs(id: number, file: File) {
-    return this.http.post<MemberFile>(`${this.scoutUrl}/medical/docs/${id}`, FileUtils.fileToFormData(file));
+    return this.http.post<ScoutFile>(`${this.scoutUrl}/medical/docs/${id}`, FileUtils.fileToFormData(file));
   }
 
   deleteMedicalDocs(id: number, fileId: number) {

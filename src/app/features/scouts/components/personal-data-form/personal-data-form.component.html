@@ -1,18 +1,7 @@
 @if (formHelper.form) {
   <form class="form-container-basic" (ngSubmit)="submit()" [formGroup]="formHelper.form">
     <div class="row gy-4">
-      @if (!initialData()) {
-        <div class="col-12 d-flex flex-column">
-          <label class="required" for="type">Tipo</label>
-          <p-select-button
-            id="type"
-            [options]="personTypes"
-            [allowEmpty]="false"
-            formControlName="type"
-          ></p-select-button>
-        </div>
-      }
-      <div class="col-12 col-xl-6 row gy-3 gx-2" formGroupName="realData">
+      <div class="col-12 col-xl-6 row gy-3 gx-2">
         <b class="fs-5 title-font mt-1">Datos de la asociada</b>
         <div class="col-12 col-sm-6">
           <p-float-label variant="on">
@@ -131,7 +120,7 @@
           </p-float-label>
         </div>
       </div>
-      <div class="col row gy-3 gx-2 h-100" formGroupName="realData">
+      <div class="col row gy-3 gx-2 h-100">
         <b class="fs-5 title-font mt-1">Datos de dirección</b>
         <div class="col-12 col-sm-6">
           <p-float-label variant="on">

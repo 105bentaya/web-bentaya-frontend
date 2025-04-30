@@ -5,7 +5,7 @@ import {ScoutService} from "../../services/scout.service";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {Tag} from "primeng/tag";
 import {Button} from "primeng/button";
-import {Member, RealPersonalData} from "../../models/member.model";
+import {Scout} from "../../models/member.model";
 import {PersonalDataComponent} from "../personal-data/personal-data.component";
 import {PersonalDataFormComponent} from "../personal-data-form/personal-data-form.component";
 import {AlertService} from "../../../../shared/services/alert-service.service";
@@ -36,7 +36,7 @@ export class ScoutInfoComponent implements OnInit {
   private readonly scoutService = inject(ScoutService);
   private readonly alertService = inject(AlertService);
 
-  protected scout!: Member;
+  protected scout!: Scout;
   protected editing: boolean = false;
 
   ngOnInit(): void {
@@ -45,10 +45,10 @@ export class ScoutInfoComponent implements OnInit {
   }
 
   get scoutPersonalData() {
-    return this.scout.personalData as RealPersonalData;
+    return this.scout.personalData;
   }
 
-  onEditionStop(updatedMember: void | Member) {
+  onEditionStop(updatedMember: void | Scout) {
     if (updatedMember) {
       this.alertService.sendBasicSuccessMessage("Scout actualizado con éxito");
       this.scout = updatedMember;

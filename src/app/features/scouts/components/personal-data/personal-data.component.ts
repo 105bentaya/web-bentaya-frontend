@@ -1,5 +1,5 @@
 import {Component, inject, input} from '@angular/core';
-import {JuridicalPersonalData, Member, MemberFile, RealPersonalData} from '../../models/member.model';
+import {PersonalData, Scout, ScoutFile} from '../../models/member.model';
 import {BasicInfoComponent} from "../basic-info/basic-info.component";
 import {DatePipe} from "@angular/common";
 import {IdDocumentPipe} from "../../id-document.pipe";
@@ -24,22 +24,14 @@ import {Observable} from "rxjs";
   styleUrl: './personal-data.component.scss'
 })
 export class PersonalDataComponent {
-  member = input.required<Member>();
+  member = input.required<Scout>();
   readonly scoutService = inject(ScoutService);
 
-  get isRealPerson(): boolean {
-    return this.member().type === "REAL";
+  get personalData(): PersonalData {
+    return this.member().personalData;
   }
 
-  get realPersonalData(): RealPersonalData {
-    return this.member().personalData as RealPersonalData;
-  }
-
-  get juridicalPersonalData(): JuridicalPersonalData {
-    return this.member().personalData as JuridicalPersonalData;
-  }
-
-  get filePetition(): (file: File) => Observable<MemberFile> {
+  get filePetition(): (file: File) => Observable<ScoutFile> {
     return (file: File) => this.scoutService.uploadPersonalDataDocs(this.member().id, file);
   }
 

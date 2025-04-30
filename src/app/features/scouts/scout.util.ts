@@ -1,4 +1,4 @@
-import {Scout} from "./models/scout.model";
+import {OldScout} from "./models/scout.model";
 import {DatePipe} from "@angular/common";
 import {BooleanPipe} from "../../shared/pipes/boolean.pipe";
 import {AbstractControl, FormBuilder, ValidationErrors, ValidatorFn} from "@angular/forms";
@@ -6,7 +6,7 @@ import {IdentificationDocument, IdType} from "./models/member.model";
 
 export default class ScoutHelper {
 
-  static generateData(scoutList: Scout[], addSection = false) {
+  static generateData(scoutList: OldScout[], addSection = false) {
     const datePipe = new DatePipe("es");
     const booleanPipe = new BooleanPipe();
     return scoutList.map(scout => {
@@ -40,7 +40,7 @@ export default class ScoutHelper {
     });
   }
 
-  static generateExcelColumns(scoutList: Scout[], addSection = false) {
+  static generateExcelColumns(scoutList: OldScout[], addSection = false) {
     const result = ["Censo", "Apellidos", "Nombre"];
     if (addSection) {
       result.push("Unidad");

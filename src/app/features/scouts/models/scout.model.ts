@@ -1,7 +1,7 @@
 import {Contact} from "./contact.model";
 import {BasicGroupForm, BasicGroupInfo} from "../../../shared/model/group.model";
 
-export interface Scout {
+export interface OldScout {
   id?: number;
   name: string;
   surname: string;

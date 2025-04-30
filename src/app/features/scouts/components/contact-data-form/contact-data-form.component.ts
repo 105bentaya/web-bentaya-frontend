@@ -11,7 +11,7 @@ import {
 } from "@angular/forms";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormHelper} from "../../../../shared/util/form-helper";
-import {Member, ScoutContact} from "../../models/member.model";
+import {Scout, ScoutContact} from "../../models/member.model";
 import {idTypes, personTypes, yesNoOptions} from "../../../../shared/constant";
 import ScoutHelper from "../../scout.util";
 import {SelectButton} from "primeng/selectbutton";
@@ -52,7 +52,7 @@ export class ContactDataFormComponent implements OnInit {
 
   memberId = input<number>();
   initialData = input<ScoutContact[]>();
-  protected onEditionStop = output<void | Member>();
+  protected onEditionStop = output<void | Scout>();
 
   protected loading: boolean = false;
 

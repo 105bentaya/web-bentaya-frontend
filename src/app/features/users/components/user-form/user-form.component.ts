@@ -6,7 +6,7 @@ import {map, Observable} from 'rxjs';
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {UserService} from '../../services/user.service';
 import {BasicGroupInfo} from "../../../../shared/model/group.model";
-import {Scout} from "../../../scouts/models/scout.model";
+import {OldScout} from "../../../scouts/models/scout.model";
 import {ScoutService} from "../../../scouts/services/scout.service";
 import {roles} from "../../models/role.model";
 import {SelectModule} from 'primeng/select';
@@ -53,7 +53,7 @@ export class UserFormComponent implements OnInit {
 
   protected readonly roles = roles;
   protected userForm = new FormHelper();
-  protected scouts!: Scout[];
+  protected scouts!: OldScout[];
   protected groups!: BasicGroupInfo[];
   protected user!: UserForm;
   protected loading = false;

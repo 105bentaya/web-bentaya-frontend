@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {Scout} from "../../models/scout.model";
+import {OldScout} from "../../models/scout.model";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ScoutService} from "../../services/scout.service";
 import {FilterService, SelectItem} from "primeng/api";
@@ -19,9 +19,6 @@ import {FormsModule} from '@angular/forms';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {DatePipe, NgClass} from '@angular/common';
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
-import {
-  TableIconButtonComponent
-} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {Dialog} from "primeng/dialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {SettingType} from "../../../settings/setting.model";
@@ -41,7 +38,6 @@ import {RouterLink} from "@angular/router";
     DatePipe,
     ScoutYearPipe,
     Button,
-    TableIconButtonComponent,
     Dialog,
     RouterLink
   ]
@@ -54,9 +50,9 @@ export class GroupScoutListComponent implements OnInit {
   private readonly settingService = inject(SettingsService);
   private readonly excelService = inject(ExcelService);
 
-  protected scouts: Scout[] | undefined;
+  protected scouts: OldScout[] | undefined;
   protected loading = false;
-  protected groupScouts!: Scout[];
+  protected groupScouts!: OldScout[];
   protected userGroup: BasicGroupInfo | undefined = inject(LoggedUserDataService).getGroup();
   private readonly name: string = "";
   private ref!: DynamicDialogRef;
@@ -66,7 +62,7 @@ export class GroupScoutListComponent implements OnInit {
   protected options: SelectItem[] = [];
 
   protected showDialog: boolean = false;
-  protected noImageScouts!: Scout[];
+  protected noImageScouts!: OldScout[];
 
   constructor() {
     if (this.userGroup) {
@@ -110,11 +106,11 @@ export class GroupScoutListComponent implements OnInit {
     });
   }
 
-  protected viewScout(scout: Scout) {
+  protected viewScout(scout: OldScout) {
     this.ref = this.dialogService.openDialog(ScoutInfoComponent, `Datos de ${scout.name}`, "small", scout);
   }
 
-  protected openEditDialog(scout: Scout) {
+  protected openEditDialog(scout: OldScout) {
     this.ref = this.dialogService.openDialog(ScoutFormComponent, "Editar Educanda", "medium", {scout});
     this.ref.onClose.subscribe(saved => saved ? this.getGroupScouts() : noop());
   }

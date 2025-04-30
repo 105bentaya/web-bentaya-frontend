@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {Scout} from "../../models/scout.model";
+import {OldScout} from "../../models/scout.model";
 import {ScoutService} from "../../services/scout.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ScoutFormComponent} from "../scout-form/scout-form.component";
@@ -45,7 +45,7 @@ export class ScoutListComponent implements OnInit {
   private readonly excelService = inject(ExcelService);
   protected readonly groupService = inject(GroupService);
 
-  protected scouts!: Scout[];
+  protected scouts!: OldScout[];
   protected loading = false;
   private ref!: DynamicDialogRef;
   protected groups!: BasicGroupInfo[];
@@ -70,12 +70,12 @@ export class ScoutListComponent implements OnInit {
     this.ref.onClose.subscribe(saved => saved ? this.getScouts() : noop());
   }
 
-  protected openEditDialog(scout: Scout) {
+  protected openEditDialog(scout: OldScout) {
     this.ref = this.dialogService.openDialog(ScoutFormComponent, 'Editar Persona Educanda', 'medium', {scout});
     this.ref.onClose.subscribe(saved => saved ? this.getScouts() : noop());
   }
 
-  protected deleteScout(scout: Scout) {
+  protected deleteScout(scout: OldScout) {
     this.confirmationService.confirm({
       message: "¿Desea borrar esta persona educanda? Esta acción no se podrá deshacer.",
       header: "Eliminar",

@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {DatePipe} from "@angular/common";
-import {Scout} from "../../models/scout.model";
+import {OldScout} from "../../models/scout.model";
 import {ScoutService} from "../../services/scout.service";
 import {TabsModule} from "primeng/tabs";
 
@@ -18,7 +18,7 @@ import {TabsModule} from "primeng/tabs";
 export class UserScoutInfoComponent implements OnInit {
 
   private readonly scoutService = inject(ScoutService);
-  protected scouts!: Scout[];
+  protected scouts!: OldScout[];
   protected currentIndex = 0;
 
   ngOnInit(): void {

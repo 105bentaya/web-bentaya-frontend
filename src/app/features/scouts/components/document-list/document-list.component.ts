@@ -1,5 +1,5 @@
 import {Component, inject, input, model, viewChild} from '@angular/core';
-import {MemberFile} from "../../models/member.model";
+import {ScoutFile} from "../../models/member.model";
 import {TableModule} from "primeng/table";
 import {DatePipe, NgClass, NgOptimizedImage} from "@angular/common";
 import {FileUtils} from "../../../../shared/util/file.utils";
@@ -33,8 +33,8 @@ export class DocumentListComponent {
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
   protected readonly FileUtils = FileUtils;
 
-  documents = model.required<MemberFile[]>();
-  filePetition = input<(file: File) => Observable<MemberFile>>();
+  documents = model.required<ScoutFile[]>();
+  filePetition = input<(file: File) => Observable<ScoutFile>>();
   deletePetition = input<(fileId: number) => Observable<void>>();
   canEdit = input<boolean>(true);
   titleSize = input<string>("big"); //todo necessary?
@@ -43,7 +43,7 @@ export class DocumentListComponent {
 
   protected loading: boolean = false;
 
-  protected getFileIcon(file: MemberFile): string {
+  protected getFileIcon(file: ScoutFile): string {
     return FileUtils.getFileIcon(file.mimeType);
   }
 
@@ -74,7 +74,7 @@ export class DocumentListComponent {
     }
   }
 
-  protected deleteFile(fileToDelete: MemberFile, index: number) {
+  protected deleteFile(fileToDelete: ScoutFile, index: number) {
     if (this.loading) return;
     this.confirmationService.confirm({
       message: "¿Desea borrar este archivo? Esta acción no se podrá deshacer",

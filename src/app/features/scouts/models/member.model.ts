@@ -1,14 +1,13 @@
 import {BasicGroupInfo} from "../../../shared/model/group.model";
 
-export interface Member {
+export interface Scout {
   id: number;
-  type: PersonType;
-  roleInfos: MemberRoleInfo[];
+  roleInfos: SpecialMember[];
   observations?: string;
-  extraFiles: MemberFile[];
-  images: MemberFile[];
-  personalData: RealPersonalData | JuridicalPersonalData;
-  scoutInfo?: ScoutInfo;
+  extraFiles: ScoutFile[];
+  images: ScoutFile[];
+  personalData: PersonalData;
+  scoutInfo: ScoutInfo;
 }
 
 export interface ScoutInfo {
@@ -16,10 +15,10 @@ export interface ScoutInfo {
   registrationDates: { registrationDate: Date; unregistrationDate?: Date }[];
   active: boolean;
   federated: boolean;
-  census: number;
+  census?: number;
   imageAuthorization: boolean;
   group?: BasicGroupInfo;
-  photo?: MemberFile;
+  photo?: ScoutFile;
   contactList: ScoutContact[];
   medicalData: ScoutMedicalData;
 }
@@ -46,7 +45,7 @@ export interface ScoutMedicalData {
   tendencies?: string;
   records?: string;
   bullyingProtocol?: string;
-  documents: MemberFile[];
+  documents: ScoutFile[];
 }
 
 export interface InsuranceHolder {
@@ -74,7 +73,7 @@ export interface ScoutContact {
   observations?: string;
 }
 
-export interface MemberRoleInfo {
+export interface SpecialMember {
   id: number;
   role: MemberRole;
   date: Date;
@@ -83,7 +82,7 @@ export interface MemberRoleInfo {
   observations?: string;
 }
 
-export interface MemberFile {
+export interface ScoutFile {
   id: number;
   uuid: string;
   name: string;
@@ -92,7 +91,7 @@ export interface MemberFile {
   uploadDate: Date;
 }
 
-export interface RealPersonalData {
+export interface PersonalData {
   name: string;
   surname: string;
   feltName?: string;
@@ -117,25 +116,7 @@ export interface RealPersonalData {
 
 
   observations: string;
-  documents: MemberFile[];
-}
-
-export interface JuridicalPersonalData {
-  idDocument: IdentificationDocument;
-  representative: JuridicalRepresentative;
-  companyName: string;
-  observations: string;
-  documents: MemberFile[];
-}
-
-export interface JuridicalRepresentative {
-  id: number;
-  idDocument: IdentificationDocument;
-  name: string;
-  surname: string;
-  email: string;
-  phone: string;
-  landline: string;
+  documents: ScoutFile[];
 }
 
 export interface IdentificationDocument {
@@ -146,7 +127,7 @@ export interface IdentificationDocument {
 export type PersonType = "REAL" | "JURIDICAL";
 export type MemberRole = "FOUNDER" | "HONOUR" | "RECOGNIZED" | "PROTECTOR";
 export type IdType = "DNI" | "NIE" | "CIF" | "PAS" | "OTR";
-export type ScoutType = "PARTICIPANT" | "SCOUT" | "COMMITTEE";
+export type ScoutType = "PARTICIPANT" | "SCOUT" | "COMMITTEE" | "MANAGER" | "INACTIVE";
 export type BloodType =
   "O_POSITIVE"
   | "O_NEGATIVE"

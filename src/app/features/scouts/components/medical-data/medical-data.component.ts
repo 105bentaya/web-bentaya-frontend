@@ -1,5 +1,5 @@
 import {Component, inject, input} from '@angular/core';
-import {Member, MemberFile, ScoutMedicalData} from "../../models/member.model";
+import {Scout, ScoutFile, ScoutMedicalData} from "../../models/member.model";
 import {BasicInfoComponent} from "../basic-info/basic-info.component";
 import {IdDocumentPipe} from "../../id-document.pipe";
 import {IdDocumentTypePipe} from "../../id-document-type.pipe";
@@ -26,7 +26,7 @@ export class MedicalDataComponent {
 
   private readonly scoutService = inject(ScoutService);
 
-  member = input.required<Member>();
+  member = input.required<Scout>();
 
   protected showSocialHolder = false;
   protected showPrivateHolder = false;
@@ -35,7 +35,7 @@ export class MedicalDataComponent {
     return this.member().scoutInfo!.medicalData;
   }
 
-  get filePetition(): (file: File) => Observable<MemberFile> {
+  get filePetition(): (file: File) => Observable<ScoutFile> {
     return (file: File) => this.scoutService.uploadMedicalDocs(this.member().id, file);
   }
 

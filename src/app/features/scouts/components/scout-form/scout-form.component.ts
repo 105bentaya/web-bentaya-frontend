@@ -10,7 +10,7 @@ import {
   ValidatorFn,
   Validators
 } from "@angular/forms";
-import {Scout} from "../../models/scout.model";
+import {OldScout} from "../../models/scout.model";
 import {ScoutService} from "../../services/scout.service";
 import {BasicGroupForm} from "../../../../shared/model/group.model";
 import {ConfirmationService} from "primeng/api";
@@ -72,7 +72,7 @@ export class ScoutFormComponent implements OnInit {
   protected groups!: BasicGroupForm[];
   protected scoutFormHelper = new FormHelper();
   protected scoutContactList!: FormArray;
-  protected scout: Scout | undefined;
+  protected scout: OldScout | undefined;
   protected loading = false;
   protected disableLoading = false;
   protected isNew = false;
@@ -98,7 +98,7 @@ export class ScoutFormComponent implements OnInit {
     }
   }
 
-  private initForm(scout?: Scout) {
+  private initForm(scout?: OldScout) {
     this.scoutFormHelper.createForm({
       name: [scout?.name, Validators.required],
       surname: [scout?.surname, Validators.required],
@@ -121,7 +121,7 @@ export class ScoutFormComponent implements OnInit {
 
   private initNewPreScoutForm(preScout: PreScout) {
     const pipe = new TitleCasePipe();
-    const scout: Scout = {
+    const scout: OldScout = {
       name: pipe.transform(preScout.name),
       surname: pipe.transform(preScout.surname),
       dni: preScout.dni == "NO TIENE" ? undefined : preScout.dni,
@@ -169,7 +169,7 @@ export class ScoutFormComponent implements OnInit {
   protected onSubmit() {
     if (this.formIsValid()) {
       this.loading = true;
-      const scout: Scout = {...this.scoutFormHelper.value};
+      const scout: OldScout = {...this.scoutFormHelper.value};
       scout.group = {id: this.scoutFormHelper.controlValue("groupId")};
       scout.birthday = DateUtils.toLocalDate(scout.birthday);
       const users = this.userTable.getUsernames();
@@ -204,7 +204,7 @@ export class ScoutFormComponent implements OnInit {
     }
   }
 
-  private checkGroupAndUpdateScout(scout: Scout, users?: string[]) {
+  private checkGroupAndUpdateScout(scout: OldScout, users?: string[]) {
     if (this.scout?.group.id != scout.group.id) {
       this.confirmationService.confirm({
         message: 'Esta acción eliminará a la persona educanda de su la lista de unidad y se eliminarán todas sus' +
@@ -217,7 +217,7 @@ export class ScoutFormComponent implements OnInit {
     }
   }
 
-  private addScout(scout: Scout, users?: string[]) {
+  private addScout(scout: OldScout, users?: string[]) {
     this.loading = true;
     this.saveScout(scout).subscribe({
       next: (savedScout) => {
@@ -229,13 +229,13 @@ export class ScoutFormComponent implements OnInit {
     });
   }
 
-  private saveScout(scout: Scout): Observable<Scout> {
+  private saveScout(scout: OldScout): Observable<OldScout> {
     return this.preScoutId ?
       this.scoutService.saveFromPreScout(scout, this.preScoutId) :
       this.scoutService.save(scout);
   }
 
-  private updateScout(scout: Scout, users?: string[]) {
+  private updateScout(scout: OldScout, users?: string[]) {
     this.loading = true;
     this.scoutService.update(scout).subscribe({
       next: () => {

@@ -1,5 +1,5 @@
 import {Component, inject, input, OnInit, output} from '@angular/core';
-import {BloodType, InsuranceHolder, Member} from "../../models/member.model";
+import {BloodType, InsuranceHolder, Scout} from "../../models/member.model";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {FormHelper} from "../../../../shared/util/form-helper";
@@ -65,8 +65,8 @@ export class MedicalDataFormComponent implements OnInit {
   ];
   protected contactOptions!: { label: string, value: "SELF" | "OTHER" | number }[];
 
-  initialData = input.required<Member>();
-  protected onEditionStop = output<void | Member>();
+  initialData = input.required<Scout>();
+  protected onEditionStop = output<void | Scout>();
   protected loading: boolean = false;
 
   ngOnInit() {
