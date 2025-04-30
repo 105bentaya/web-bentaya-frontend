@@ -3,6 +3,7 @@ import {
   AbstractControl,
   FormBuilder,
   FormControl,
+  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   ValidationErrors,
@@ -23,6 +24,7 @@ import {Button} from "primeng/button";
 import {finalize} from "rxjs";
 import {ScoutService} from "../../services/scout.service";
 import {ScoutContactForm} from "../../models/member-form.model";
+import {AlertService} from "../../../../shared/services/alert-service.service";
 
 @Component({
   selector: 'app-contact-data-form',
@@ -43,6 +45,7 @@ import {ScoutContactForm} from "../../models/member-form.model";
 export class ContactDataFormComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly scoutService = inject(ScoutService);
+  private readonly alertService = inject(AlertService);
   protected readonly formHelper = new FormHelper();
 
   protected readonly personTypes = personTypes;
@@ -50,8 +53,7 @@ export class ContactDataFormComponent implements OnInit {
   protected readonly idTypes = idTypes;
   protected readonly yesNoOptions = yesNoOptions;
 
-  memberId = input<number>();
-  initialData = input<ScoutContact[]>();
+  initialData = input<Scout>();
   protected onEditionStop = output<void | Scout>();
 
   protected loading: boolean = false;
@@ -59,7 +61,7 @@ export class ContactDataFormComponent implements OnInit {
   ngOnInit() {
     this.formHelper.createForm({
       contactList: this.formBuilder.array(
-        this.initialData() ? this.initialData()!.map(data => this.createContact(data)) : [this.createContact()],
+        this.initialData() ? this.initialData()!.scoutInfo.contactList.map(data => this.createContact(data)) : [this.createContact()],
         [Validators.minLength(1), Validators.maxLength(3)]
       )
     });
@@ -110,8 +112,8 @@ export class ContactDataFormComponent implements OnInit {
       });
 
       this.loading = true;
-      if (this.memberId()) {
-        this.scoutService.updateScoutContacts(this.memberId()!, form)
+      if (this.initialData()?.id) {
+        this.scoutService.updateScoutContacts(this.initialData()!.id, form)
           .pipe(finalize(() => this.loading = false))
           .subscribe(result => this.onEditionStop.emit(result));
       }
@@ -140,8 +142,30 @@ export class ContactDataFormComponent implements OnInit {
 
   protected deleteContact(index: number) {
     const array = this.formHelper.getFormArray("contactList");
-    array.removeAt(index);
-    if (array.length < 1) this.addContact();
+    const contact = array.at(index) as FormGroup;
+    if (this.contactCanBeDeleted(contact)) {
+      array.removeAt(index);
+      if (array.length < 1) this.addContact();
+    }
+  }
+
+  private contactCanBeDeleted(control: FormGroup) {
+    const id = control.get("id")?.value;
+    if (this.initialData() && id) {
+      const privateInsurance = this.initialData()!.scoutInfo.medicalData.privateInsuranceHolder?.contact?.id;
+      const socialSecurity = this.initialData()!.scoutInfo.medicalData.socialSecurityHolder?.contact?.id;
+
+      if (privateInsurance === id || socialSecurity === id) {
+        this.alertService.sendMessage({
+          message: "No se puede eliminar a este familiar porque está asociado a un seguro de los 'Datos de Salud'. Cambie al titular del seguro para poder eliminarlo.",
+          severity: "warn",
+          title: "Conflicto",
+          life: 10000
+        });
+        return false;
+      }
+    }
+    return true;
   }
 
   protected addContact() {

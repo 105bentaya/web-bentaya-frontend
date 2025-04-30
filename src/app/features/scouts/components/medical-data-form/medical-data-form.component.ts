@@ -71,7 +71,7 @@ export class MedicalDataFormComponent implements OnInit {
 
   ngOnInit() {
     this.contactOptions = this.initialData().scoutInfo!.contactList.map((contact, index) => ({
-      label: `${contact.relationship ?? 'Contacto ' + String(index + 1)}  - ${contact.name}`,
+      label: `${contact.relationship ?? 'Familiar ' + String(index + 1)}  - ${contact.name}`,
       value: contact.id
     }));
     this.contactOptions.unshift({label: 'Persona Asociada', value: "SELF"});

@@ -1,10 +1,10 @@
 @if (contactList().length < 1) {
-  <p-tag value="No hay contactos asociados" severity="secondary"/>
+  <p-tag value="No hay familiares asociados" severity="secondary"/>
 } @else {
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
     @for (contact of contactList(); track contact.id) {
       <div class="col">
-        <b class="fs-5 title-font">Contacto {{ $index + 1 }}</b>
+        <b class="fs-5 title-font">Familiar {{ $index + 1 }}</b>
         <div class="d-flex flex-column">
           @if (contact.personType === 'REAL') {
             <app-basic-info label="Nombre" [value]="contact.name"/>

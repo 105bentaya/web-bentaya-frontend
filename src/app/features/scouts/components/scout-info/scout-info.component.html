@@ -115,8 +115,7 @@
             <p-tabpanel [value]="2">
               @if (editing) {
                 <app-contact-data-form
-                  [initialData]="scout.scoutInfo.contactList"
-                  [memberId]="scout.id"
+                  [initialData]="scout"
                   (onEditionStop)="onEditionStop($event)"
                 />
               } @else {
