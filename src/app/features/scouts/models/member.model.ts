@@ -10,17 +10,33 @@ export interface Scout {
   scoutInfo: ScoutInfo;
 }
 
+export interface ScoutRecord {
+  id: number;
+  recordType: string;
+  startDate: Date;
+  endDate: Date;
+  observations: string;
+  files: ScoutFile[];
+}
+
 export interface ScoutInfo {
   scoutType: ScoutType;
-  registrationDates: { registrationDate: Date; unregistrationDate?: Date }[];
+  registrationDates: RegistrationDate[];
   active: boolean;
   federated: boolean;
   census?: number;
+  section: string;
   imageAuthorization: boolean;
   group?: BasicGroupInfo;
-  photo?: ScoutFile;
   contactList: ScoutContact[];
   medicalData: ScoutMedicalData;
+  recordList: ScoutRecord[]
+}
+
+export interface RegistrationDate {
+  id?: number;
+  registrationDate: Date;
+  unregistrationDate?: Date;
 }
 
 export interface ScoutMedicalData {
@@ -98,8 +114,6 @@ export interface PersonalData {
   gender: string;
   birthday: Date;
   idDocument?: IdentificationDocument;
-
-
   birthplace: string;
   birthProvince: string;
   nationality: string;
@@ -107,14 +121,10 @@ export interface PersonalData {
   city: string;
   province: string;
   residenceMunicipality: string;
-
-
   phone: string;
   landline: string;
   email: string;
   shirtSize: string;
-
-
   observations: string;
   documents: ScoutFile[];
 }
@@ -127,7 +137,7 @@ export interface IdentificationDocument {
 export type PersonType = "REAL" | "JURIDICAL";
 export type MemberRole = "FOUNDER" | "HONOUR" | "RECOGNIZED" | "PROTECTOR";
 export type IdType = "DNI" | "NIE" | "CIF" | "PAS" | "OTR";
-export type ScoutType = "PARTICIPANT" | "SCOUT" | "COMMITTEE" | "MANAGER" | "INACTIVE";
+export type ScoutType = "SCOUT" | "SCOUTER" | "COMMITTEE" | "MANAGER" | "INACTIVE";
 export type BloodType =
   "O_POSITIVE"
   | "O_NEGATIVE"

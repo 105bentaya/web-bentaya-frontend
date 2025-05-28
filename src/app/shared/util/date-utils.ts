@@ -1,4 +1,11 @@
 export class DateUtils {
+
+  public static dateOrUndefined(registrationDate: Date | undefined): Date | undefined {
+      if (registrationDate) {
+        return new Date(registrationDate);
+      }
+      return undefined;
+  }
   public static dateTruncatedToDay(date: Date | string, hours = 0, minutes = 0, seconds = 0, millis = 0) {
     const result = DateUtils.dateTruncatedToHours(date, minutes, seconds, millis);
     result.setHours(hours);

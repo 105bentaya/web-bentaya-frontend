@@ -7,6 +7,25 @@
   border-color: var(--p-red-500);
 }
 
+%invalid {
+  border-color: var(--p-inputtext-invalid-border-color);
+}
+
+.border-invalid {
+  @extend %invalid;
+  input {
+    @extend %invalid
+  }
+  +label {
+    color: var(--p-floatlabel-invalid-color);
+  }
+}
+
+//fix
+p-date-picker.ng-invalid.ng-dirty .p-datepicker.p-inputwrapper .p-inputtext {
+  border-color: var(--p-inputtext-invalid-border-color);
+}
+
 p-datepicker.ng-invalid.ng-dirty .p-datepicker.p-inputwrapper .p-inputtext {
   &:enabled:focus {
     @extend %focus;

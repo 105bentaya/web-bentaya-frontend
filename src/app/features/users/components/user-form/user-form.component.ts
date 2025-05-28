@@ -59,7 +59,7 @@ export class UserFormComponent implements OnInit {
   protected loading = false;
 
   ngOnInit(): void {
-    this.groupService.getAllUppercase().subscribe(groups => this.groups = groups);
+    this.groupService.getBasicGroups({uppercase: true}).subscribe(groups => this.groups = groups);
     const userId = this.route.snapshot.params['userId'];
     if (userId === "new") this.newForm();
     else this.getUserById(userId);

@@ -31,14 +31,7 @@
       <app-basic-info label="Grupo Sanguíeno" [value]="medicalData.bloodType | bloodType"/>
       <app-basic-info label="Seguridad Social" [value]="medicalData.socialSecurityNumber"/>
       @if (medicalData.socialSecurityHolder) {
-        <div>
-          <b>Titular Seguridad Social</b>
-          <i
-            class="fa-solid ms-1 cursor-pointer"
-            [ngClass]="{'fa-circle-plus': !showSocialHolder, 'fa-circle-minus': showSocialHolder}"
-            (click)="showSocialHolder = !showSocialHolder"
-          ></i>
-        </div>
+        <app-basic-info-show label="Titular Seguridad Social" [(show)]="showSocialHolder"/>
         @if (showSocialHolder) {
           @let socialSecurityHolder = medicalData.socialSecurityHolder;
           @let socialSecurityHolderContact = socialSecurityHolder.contact;
@@ -66,14 +59,7 @@
       <app-basic-info label="Seguro privado" [value]="medicalData.privateInsuranceNumber"/>
       <app-basic-info label="Entidad seguro privado" [value]="medicalData.privateInsuranceEntity" [hideIfNull]="true"/>
       @if (medicalData.privateInsuranceHolder) {
-        <div>
-          <b>Titular Seguro Privado</b>
-          <i
-            class="fa-solid ms-1 cursor-pointer"
-            [ngClass]="{'fa-circle-plus': !showPrivateHolder, 'fa-circle-minus': showPrivateHolder}"
-            (click)="showPrivateHolder = !showPrivateHolder"
-          ></i>
-        </div>
+        <app-basic-info-show label="Titular Seguro Privado" [(show)]="showPrivateHolder"/>
         @if (showPrivateHolder) {
           @let privateHolder = medicalData.privateInsuranceHolder;
           @let privateHolderContact = privateHolder.contact;
@@ -103,7 +89,7 @@
   <div class="col-12 col-lg-8">
     <app-document-list
       [(documents)]="medicalData.documents"
-      [filePetition]="filePetition"
+      [uploadPetition]="filePetition"
       [deletePetition]="deletePetition"
     />
   </div>

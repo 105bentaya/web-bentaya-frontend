@@ -69,7 +69,10 @@ export class FormHelper {
     return !!control.errors?.[error];
   }
 
-  hasFormError(error: string): boolean {
+  hasFormError(error: string, ...controls: string[]): boolean {
+    if (controls.length > 0) {
+      return !!this.get(controls).errors?.[error];
+    }
     return !!this.form.errors?.[error];
   }
 

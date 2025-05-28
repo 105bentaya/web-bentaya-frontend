@@ -66,10 +66,7 @@ export class OwnBookingListComponent implements OnInit {
 
   ngOnInit() {
     this.bookingManagement.getScoutCenterDropdown().then(res => this.centers = res);
-    this.groupService.getAll().subscribe(groups => {
-      this.groups = groups;
-      this.groups.unshift({id: 0, name: "Grupo", order: 0});
-    });
+    this.groupService.getBasicGroups({generalGroup: true}).subscribe(groups => this.groups = groups);
   }
 
   protected openForm() {

@@ -1,4 +1,4 @@
-import {BloodType, IdentificationDocument} from "./member.model";
+import {BloodType, IdentificationDocument, ScoutType} from "./member.model";
 
 export interface PersonalDataForm {
   idDocument?: IdentificationDocument;
@@ -68,6 +68,20 @@ export interface InsuranceHolderForm {
   idDocument?: IdentificationDocument;
   phone?: string;
   email?: string;
+}
+
+export interface ScoutInfoForm {
+  scoutType: ScoutType;
+  groupId?: number;
+  registrationDates: RegistrationDateForm[];
+  federated: boolean;
+  census?: number;
+}
+
+export interface RegistrationDateForm {
+  id?: number;
+  registrationDate: Date | string;
+  unregistrationDate?: Date | string;
 }
 
 

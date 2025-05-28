@@ -1,0 +1,8 @@
+<div>
+  <b>{{ label() }}</b>
+  <i
+    class="fa-solid ms-1 cursor-pointer"
+    [ngClass]="{'fa-circle-plus': !show(), 'fa-circle-minus': show()}"
+    (click)="show.set(!show())"
+  ></i>
+</div>

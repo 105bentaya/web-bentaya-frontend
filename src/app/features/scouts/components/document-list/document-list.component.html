@@ -1,6 +1,6 @@
 <div class="overflow-hidden">
   <div class="d-flex align-items-center gap-1">
-    <b class="title-font" [class]="{'fs-6': titleSize() === 'small', 'fs-5': titleSize() === 'big'}">Documentos</b>
+    <b [ngClass]="{'fs-6': titleSize() === 'small', 'fs-5 title-font': titleSize() === 'big'}">{{ titleName() }}</b>
     @if (canAddDocuments) {
       <p-tag
         class="inverted gray"

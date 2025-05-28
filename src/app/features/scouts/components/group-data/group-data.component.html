@@ -1,5 +1,82 @@
-<div>
-  <b class="fs-5 title-font">Datos básicos</b>
-  <app-basic-info label="Unidad" [value]="group"></app-basic-info>
-  <app-basic-info label="Sección" [value]="section"></app-basic-info>
+<div class="row">
+  <div class="col-6 d-flex flex-column">
+    <b class="fs-5 title-font">Datos básicos</b>
+    <app-basic-info label="Rama" [value]="section | titlecase"/>
+    <app-basic-info label="Unidad" [value]="group" [hideIfNull]="true"/>
+    <app-basic-info label="Sección" [value]="scoutInfo.section"/>
+    <app-basic-info label="Censo" [value]="scoutInfo.census | census"/>
+    <app-basic-info label="Estado asociativo" [value]="scoutInfo.active ? 'Alta' : 'Baja'"/>
+    <app-basic-info label="Federada" [value]="scoutInfo.federated | boolean"/>
+    @if (scoutInfo.registrationDates.length < 1) {
+      <app-basic-info label="Fechas de alta y baja" value="Sin registrar"/>
+    } @else if (scoutInfo.registrationDates.length === 1) {
+      @let registrationDate = scoutInfo.registrationDates[0];
+      <app-basic-info label="Fecha de alta" [value]="registrationDate.registrationDate | date:'dd/MM/yyyy'"/>
+      <app-basic-info
+        label="Fecha de baja"
+        [value]="registrationDate.unregistrationDate | date:'dd/MM/yyyy'"
+        [hideIfNull]="true"
+      />
+    } @else {
+      <app-basic-info-show label="Fechas de alta y baja" [(show)]="showDates"/>
+      <div class="ms-2">
+        @if (showDates) {
+          @for (registrationDate of scoutInfo.registrationDates; track $index) {
+            <app-basic-info
+              [label]="'Fecha de alta ' +  ($index + 1)"
+              [value]="registrationDate.registrationDate | date:'dd/MM/yyyy'"
+            />
+            <app-basic-info
+              [label]="'Fecha de baja ' +  ($index + 1)"
+              [value]="registrationDate.unregistrationDate | date:'dd/MM/yyyy'"
+              [hideIfNull]="$index === scoutInfo.registrationDates.length - 1"
+            />
+          }
+        } @else {
+          @let registrationDate = scoutInfo.registrationDates[scoutInfo.registrationDates.length - 1];
+          @if (scoutInfo.active || !registrationDate.unregistrationDate) {
+            <app-basic-info
+              label="Última fecha de alta"
+              [value]="registrationDate.registrationDate | date:'dd/MM/yyyy'"
+            />
+          } @else {
+            <app-basic-info
+              label="Última fecha de baja"
+              [value]="registrationDate.unregistrationDate | date:'dd/MM/yyyy'"
+            />
+          }
+        }
+      </div>
+    }
+  </div>
+  <div class="col-6 d-flex flex-column">
+    <div class="d-flex gap-1 align-items-center">
+      <b class="fs-5 title-font">Expedientes</b>
+      <p-tag
+        class="inverted gray"
+        value="Añadir"
+        (click)="openRecordForm()"
+      />
+    </div>
+    <div class="mt-2">
+      @if (scoutInfo.recordList.length < 1) {
+        <p-tag value="No hay expedientes" severity="secondary"></p-tag>
+      } @else {
+        <p-table
+          [value]="scoutInfo.recordList"
+          class="fixed-table"
+          stripedRows
+          selectionMode="single"
+        >
+          <ng-template pTemplate="body" let-record let-ri="rowIndex">
+            <tr pSelectableRow (click)="openRecordInfo(record, ri)">
+              <td>
+                Expediente {{ record.recordType }} - {{ record.startDate | date:'dd/MM/yyyy' }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </div>
+  </div>
 </div>

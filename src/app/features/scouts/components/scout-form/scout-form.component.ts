@@ -82,7 +82,7 @@ export class ScoutFormComponent implements OnInit {
   @ViewChild("userList") private readonly userTable!: ScoutUserFormListComponent;
 
   ngOnInit(): void {
-    this.groupService.getAllUppercase().subscribe(groups => this.groups = groups);
+    this.groupService.getBasicGroups({uppercase: true}).subscribe(groups => this.groups = groups);
     if (this.config.data?.scout) {
       this.scout = this.config.data.scout;
       this.initForm(this.scout);

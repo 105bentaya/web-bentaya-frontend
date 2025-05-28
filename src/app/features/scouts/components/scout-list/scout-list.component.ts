@@ -52,7 +52,7 @@ export class ScoutListComponent implements OnInit {
   protected excelLoading = false;
 
   ngOnInit() {
-    this.groupService.getAllUppercase().subscribe(groups => this.groups = groups);
+    this.groupService.getBasicGroups({uppercase: true}).subscribe(groups => this.groups = groups);
     this.getScouts();
   }
 

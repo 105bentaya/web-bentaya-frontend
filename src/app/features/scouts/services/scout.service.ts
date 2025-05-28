@@ -4,9 +4,9 @@ import {Observable} from "rxjs";
 import {OldScout} from "../models/scout.model";
 import {environment} from "../../../../environments/environment";
 import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
-import {Scout, ScoutFile} from "../models/member.model";
+import {Scout, ScoutFile, ScoutRecord} from "../models/member.model";
 import {FileUtils} from "../../../shared/util/file.utils";
-import {PersonalDataForm, ScoutContactForm, ScoutMedicalForm} from "../models/member-form.model";
+import {PersonalDataForm, ScoutContactForm, ScoutInfoForm, ScoutMedicalForm} from "../models/member-form.model";
 
 @Injectable({
   providedIn: 'root'
@@ -107,5 +107,29 @@ export class ScoutService {
 
   deleteMedicalDocs(id: number, fileId: number) {
     return this.http.delete<void>(`${this.scoutUrl}/medical/docs/${id}/${fileId}`);
+  }
+
+  updateScoutInfo(id: number, scoutInfoForm: ScoutInfoForm) {
+    return this.http.patch<Scout>(`${this.scoutUrl}/scout-info/${id}`, scoutInfoForm);
+  }
+
+  uploadRecordDocs(id: number, file: File) {
+    return this.http.post<ScoutFile>(`${this.scoutUrl}/scout-info/record-documents/${id}`, FileUtils.fileToFormData(file));
+  }
+
+  deleteRecordDocs(id: number, fileId: number) {
+    return this.http.delete<void>(`${this.scoutUrl}/scout-info/record-documents/${id}/${fileId}`);
+  }
+
+  addScoutRecord(scoutId: number, record: ScoutRecord) {
+    return this.http.post<ScoutRecord>(`${this.scoutUrl}/scout-info/record/${scoutId}`, record);
+  }
+
+  updateScoutRecord(scoutId: number, recordId: number, record: ScoutRecord) {
+    return this.http.put<ScoutRecord>(`${this.scoutUrl}/scout-info/record/${scoutId}/${recordId}`, record);
+  }
+
+  deleteScoutRecord(scoutId: number, recordId: number) {
+    return this.http.delete<void>(`${this.scoutUrl}/scout-info/record/${scoutId}/${recordId}`);
   }
 }

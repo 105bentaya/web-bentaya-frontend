@@ -8,6 +8,7 @@ import {Observable} from "rxjs";
 import {ScoutService} from "../../services/scout.service";
 import {BloodTypePipe} from "../../blood-type.pipe";
 import {NgClass} from "@angular/common";
+import {BasicInfoShowComponent} from "../basic-info-show/basic-info-show.component";
 
 @Component({
   selector: 'app-medical-data',
@@ -17,7 +18,8 @@ import {NgClass} from "@angular/common";
     IdDocumentTypePipe,
     DocumentListComponent,
     BloodTypePipe,
-    NgClass
+    NgClass,
+    BasicInfoShowComponent
   ],
   templateUrl: './medical-data.component.html',
   styleUrl: './medical-data.component.scss'

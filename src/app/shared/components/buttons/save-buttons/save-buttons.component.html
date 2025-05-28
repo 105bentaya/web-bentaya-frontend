@@ -1,4 +1,9 @@
 <div [class]="class">
+  @if (showErrorMessage) {
+    <div class="w-100 text-center mb-1">
+      <small class="text-danger">Rellene todos los campos correctamente</small>
+    </div>
+  }
   <div class="d-flex justify-content-center gap-2 align-items-center w-100">
     @if (showCancelButton) {
       <p-button

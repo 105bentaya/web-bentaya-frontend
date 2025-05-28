@@ -1,0 +1,59 @@
+<div class="form-container mt-1">
+  <form [formGroup]="formHelper.form" (ngSubmit)="submit()">
+    <div class="row">
+      <div class="col-12 col-sm-4">
+        <p-floatlabel variant="on">
+          <p-select
+            id="recordType"
+            formControlName="recordType"
+            appendTo="body"
+            [options]="types"
+            maxlength="255"
+          ></p-select>
+          <label class="required" for="recordType">Tipo</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-4">
+        <p-floatlabel variant="on">
+          <p-datePicker
+            id="startDate"
+            formControlName="startDate"
+            appendTo="body"
+            [showClear]="true"
+          ></p-datePicker>
+          <label class="required" for="startDate">Inicio de expediente</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-4">
+        <p-floatlabel variant="on">
+          <p-datePicker
+            id="endDate"
+            formControlName="endDate"
+            appendTo="body"
+            [showClear]="true"
+          ></p-datePicker>
+          <label for="endDate">Fin de expediente</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 mb-2">
+        <p-floatlabel variant="on">
+          <app-form-text-area
+            id="observations"
+            formControlName="observations"
+            [showTag]="false"
+            [maxLength]="65535"
+          ></app-form-text-area>
+          <label for="observations" class="required">Observaciones</label>
+        </p-floatlabel>
+      </div>
+    </div>
+    <app-save-buttons
+      saveType="submit"
+      [cancelLabel]="recordId ? 'Borrar' : 'Cancelar'"
+      [showCancelButton]="true"
+      (onCancel)="cancelOrDelete()"
+      [saveLoading]="loading"
+      [cancelLoading]="deleteLoading"
+    />
+  </form>
+</div>

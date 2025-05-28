@@ -41,7 +41,7 @@ export class AssignPreScoutFormComponent implements OnInit {
   private preScout!: PreScout;
 
   ngOnInit(): void {
-    this.groupService.getAllUppercase().subscribe(groups => this.groups = groups);
+    this.groupService.getBasicGroups({uppercase: true}).subscribe(groups => this.groups = groups);
     if (this.config.data.preScout) {
       this.preScout = this.config.data.preScout;
       this.groupId = this.preScout.assignation?.group?.id;

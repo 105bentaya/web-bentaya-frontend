@@ -37,6 +37,7 @@ export class SaveButtonsComponent {
   @Input() saveType: "button"|"reset"|"submit" = "button";
 
   @Input() blockOverlay = false;
+  @Input() showErrorMessage = false;
 
   @Output() onCancel = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<void>();
