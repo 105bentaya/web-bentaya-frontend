@@ -98,6 +98,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: {roles: [UserRole.ADMIN]}
   },
+  {
+    path: "registros",
+    loadComponent: () => import('./features/scouts/components/special-member-list/special-member-list.component').then(c => c.SpecialMemberListComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.ADMIN]}
+  },
   //Unidad
   {
     path: "unidad/educandas",

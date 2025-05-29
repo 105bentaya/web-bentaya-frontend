@@ -21,6 +21,7 @@ const volunteers = {label: "Voluntariado", icon: "pi pi-heart", route: "/volunta
 const senior = {label: "Sección Sénior", icon: "fa-solid fa-hat-cowboy", route: "/seccion-senior/lista", category: "Gestión de Grupo"};
 const userList = {label: "Usuarios", icon: "pi pi-database", route: "/usuarios", category: "Administración"};
 const scoutList = {label: "Educandas", icon: "pi pi-server", route: "/educandas", category: "Administración"};
+const specialMemberList = {label: "Registros", icon: "fa fa-award", route: "/registros", category: "Administración"};
 const settings = {label: "Ajustes", icon: "pi pi-cog", route: "/ajustes", category: "Administración"};
 
 export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
@@ -54,7 +55,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(inscriptions, volunteers, senior, jamboreeInscriptions);
   }
   if (user.hasRequiredPermission(UserRole.ADMIN)) {
-    menuItems.push(userList, scoutList, settings);
+    menuItems.push(userList, scoutList, specialMemberList, settings);
   }
 
   return filter([...new Set(menuItems)]);
