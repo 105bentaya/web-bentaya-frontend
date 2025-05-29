@@ -126,6 +126,73 @@
           [ngClass]="{'ng-invalid ng-dirty': settingsForm[SettingType.TREASURY_MAIL].invalid}"
         >
       </p-floatlabel>
+      <h2>Ajustes de censo</h2>
+      <p-floatlabel variant="on">
+        <p-inputNumber
+          id="scout-census"
+          class="w-100"
+          [(ngModel)]="settingsForm[SettingType.LAST_CENSUS_SCOUT].currentValue"
+          mode="decimal"
+          [useGrouping]="false"
+          [allowEmpty]="false"
+        ></p-inputNumber>
+        <label for="scout-census">Último censo de asociada</label>
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <p-inputNumber
+          id="honour-census"
+          class="w-100"
+          [(ngModel)]="settingsForm[SettingType.LAST_CENSUS_HONOURED].currentValue"
+          mode="decimal"
+          [useGrouping]="false"
+          [allowEmpty]="false"
+        ></p-inputNumber>
+        <label for="honour-census">Último censo de asociada de honor</label>
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <p-inputNumber
+          id="protector-census"
+          class="w-100"
+          [(ngModel)]="settingsForm[SettingType.LAST_CENSUS_PROTECTOR].currentValue"
+          mode="decimal"
+          [useGrouping]="false"
+          [allowEmpty]="false"
+        ></p-inputNumber>
+        <label for="protector-census">Último censo de asociada protectora</label>
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <p-inputNumber
+          id="founder-census"
+          class="w-100"
+          [(ngModel)]="settingsForm[SettingType.LAST_CENSUS_FOUNDER].currentValue"
+          mode="decimal"
+          [useGrouping]="false"
+          [allowEmpty]="false"
+        ></p-inputNumber>
+        <label for="founder-census">Último censo de asociada fundadora</label>
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <p-inputNumber
+          id="acknowledged-census"
+          class="w-100"
+          [(ngModel)]="settingsForm[SettingType.LAST_CENSUS_ACKNOWLEDGED].currentValue"
+          mode="decimal"
+          [useGrouping]="false"
+          [allowEmpty]="false"
+        ></p-inputNumber>
+        <label for="acknowledged-census">Último censo de reconocimiento</label>
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <p-inputNumber
+          id="donor-census"
+          class="w-100"
+          [(ngModel)]="settingsForm[SettingType.LAST_CENSUS_DONOR].currentValue"
+          mode="decimal"
+          [useGrouping]="false"
+          [allowEmpty]="false"
+        ></p-inputNumber>
+        <label for="donor-census">Último censo de donante</label>
+      </p-floatlabel>
       <app-save-buttons
         class="mt-2"
         [saveDisabled]="saveButtonDisabled()"

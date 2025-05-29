@@ -114,7 +114,7 @@ export class FormHelper {
     return this.form?.controls[group] as FormGroup;
   }
 
-  getFormGroupControl(group: string, control: string) {
+  getFormGroupControl(group: string, control: string) { //todo remove and use get instead
     return this.getFormGroup(group)?.controls[control] as FormControl;
   }
 

@@ -1,0 +1,225 @@
+<div class="form-container">
+  <form [formGroup]="formHelper.form" (ngSubmit)="submit()">
+    <div class="row">
+      <div class="col">
+        <p-float-label variant="on">
+          <p-select
+            id="role"
+            [options]="specialMemberOptions"
+            formControlName="role"
+            (onChange)="onRoleSelect($event.value)"
+          />
+          <label for="role" class="required">Tipo de Registro</label>
+        </p-float-label>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <p-float-label variant="on">
+          <p-date-picker
+            id="agreementDate"
+            formControlName="agreementDate"
+            showClear
+          />
+          <label for="agreementDate">Fecha de acuerdo</label>
+        </p-float-label>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <p-float-label variant="on">
+          <p-date-picker
+            id="awardDate"
+            formControlName="awardDate"
+            showClear
+          />
+          <label for="awardDate">Fecha de entrega</label>
+        </p-float-label>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <p-float-label variant="on">
+          <p-inputNumber
+            id="roleCensus"
+            formControlName="roleCensus"
+            [prefix]="getPrefix()"
+          />
+          <label for="roleCensus" class="required">Censo</label>
+        </p-float-label>
+      </div>
+      <div class="col">
+        <p-float-label variant="on">
+          <input
+            pInputText
+            maxlength="255"
+            id="details"
+            formControlName="details"
+          />
+          <label for="details">{{ getDetailLabel() }}</label>
+        </p-float-label>
+      </div>
+      <div class="col-12">
+        <p-float-label variant="on">
+          <app-form-text-area
+            id="observations"
+            formControlName="observations"
+            [showTag]="false"
+            [maxLength]="65535"
+          />
+          <label for="observations">Observaciones</label>
+        </p-float-label>
+      </div>
+      @if (!existingForm()) {
+        <div class="col-12 d-flex flex-column gap-1">
+          <app-radio-button-container label="Asignar a censo existente">
+            <p-radioButton formControlName="relation" value="SCOUT"/>
+          </app-radio-button-container>
+          <app-radio-button-container label="Asignar a registro existente">
+            <p-radioButton formControlName="relation" value="EXISTING"/>
+          </app-radio-button-container>
+          <app-radio-button-container label="Crear nueva persona">
+            <p-radioButton formControlName="relation" value="NEW"/>
+          </app-radio-button-container>
+        </div>
+      }
+      @if (relation === 'SCOUT') {
+        <div class="col-12 d-flex gap-2 align-items-center">
+          <div class="flex-fill">
+            <p-float-label variant="on">
+              <p-auto-complete
+                id="scoutId"
+                formControlName="scoutId"
+                [suggestions]="scoutItems"
+                (completeMethod)="onScoutSearch($event)"
+                [minLength]="3"
+                forceSelection
+              ></p-auto-complete>
+              <label for="scoutId" class="required">Censo existente</label>
+            </p-float-label>
+          </div>
+          <i
+            class="pi pi-question-circle fs-5"
+            pTooltip="Introduce tres caracteres para buscar por nombre, censo o DNI"
+            tooltipPosition="left"
+          ></i>
+        </div>
+      } @else if (relation === 'EXISTING') {
+        <div class="col-12 d-flex gap-2 align-items-center">
+          <div class="flex-fill">
+            <p-float-label variant="on">
+              <p-auto-complete
+                formControlName="personId"
+                id="personId"
+                [suggestions]="specialMemberItems"
+                (completeMethod)="onSpecialMemberSearch($event)"
+                [minLength]="3"
+                forceSelection
+              ></p-auto-complete>
+              <label for="personId" class="required">Registro existente</label>
+            </p-float-label>
+          </div>
+          <i
+            class="pi pi-question-circle fs-5"
+            pTooltip="Introduce tres caracteres para buscar por nombre, razón social o DNI"
+            tooltipPosition="left"
+          ></i>
+        </div>
+      } @else if (relation === 'NEW') {
+        <div formGroupName="person" class="row">
+          <div class="col-12 d-flex gap-2">
+            <div class="d-flex flex-column">
+              <label class="required" for="type">Tipo de persona</label>
+              <p-select-button
+                id="type"
+                class="w-fit"
+                [options]="personTypes"
+                [allowEmpty]="false"
+                formControlName="type"
+              ></p-select-button>
+            </div>
+          </div>
+          @if (formHelper.get(["person", "type"])?.value === 'JURIDICAL') {
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="name"
+                  id="name"
+                />
+                <label class="required" for="name">Razón social</label>
+              </p-float-label>
+            </div>
+          } @else {
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="name"
+                  id="name"
+                />
+                <label class="required" for="name">Nombre</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="surname"
+                  id="surname"
+                />
+                <label for="surname">Apellidos</label>
+              </p-float-label>
+            </div>
+          }
+          <div class="col-12 col-sm-6 col-lg-4">
+            <p-float-label variant="on">
+              <input
+                pInputText
+                formControlName="phone"
+                id="phone"
+              />
+              <label for="phone">Teléfono</label>
+            </p-float-label>
+          </div>
+          <div class="col">
+            <p-float-label variant="on">
+              <input
+                pInputText
+                formControlName="email"
+                id="email"
+              />
+              <label for="email">Correo</label>
+            </p-float-label>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <p-float-label variant="on">
+              <p-select
+                [options]="idTypes"
+                [formControl]="idDocumentType"
+                id="idType"
+                (onChange)="onIdTypeChange()"
+                showClear
+                (onClear)="onIdTypeClear()"
+              />
+              <label for="idType" class="required">Tipo de Identificación</label>
+            </p-float-label>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <p-float-label variant="on">
+              <input
+                pInputText
+                id="number"
+                [formControl]="idDocumentNumber"
+              />
+              <label for="number" class="required">Número de Identificación</label>
+            </p-float-label>
+            @if (formHelper.isDirtyAndInvalidWithError(['person', 'idDocument', 'number'], 'formatInvalid')) {
+              <small class="text-danger">El formato del documento de identidad es inválido</small>
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <app-save-buttons
+      saveType="submit"
+      [saveLoading]="loading()"
+      [showCancelButton]="true"
+      (onCancel)="onCancel.emit()"
+    />
+  </form>
+</div>

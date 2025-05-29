@@ -60,7 +60,7 @@ hr {
   margin-left: calc(.75rem - $row-padding);
   margin-right: calc(.75rem - $row-padding);
 
-  .p-inputtext, p-inputnumber.p-element, .p-inputnumber, .p-select, .p-datepicker, .p-password {
+  .p-inputtext, p-inputnumber.p-element, .p-inputnumber, .p-select, .p-datepicker, .p-password, .p-autocomplete {
     width: 100%;
   }
 

@@ -83,5 +83,3 @@ export interface RegistrationDateForm {
   registrationDate: Date | string;
   unregistrationDate?: Date | string;
 }
-
-

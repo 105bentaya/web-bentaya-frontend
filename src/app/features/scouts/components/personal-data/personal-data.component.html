@@ -12,8 +12,10 @@
         [value]="personalData.birthday | date:'dd/MM/yyyy'"
       />
       <app-basic-info label="Edad" [value]="personalData.birthday | age"/>
-      <app-basic-info [label]="personalData.idDocument | idDocumentType"
-                      [value]="personalData.idDocument | idDocument"></app-basic-info>
+      <app-basic-info
+        [label]="personalData.idDocument | idDocumentType"
+        [value]="personalData.idDocument | idDocument"
+      ></app-basic-info>
       <app-basic-info label="Teléfono" [value]="personalData.phone"/>
       <app-basic-info label="Fijo" [value]="personalData.landline"/>
       <app-basic-info label="Correo electrónico" [value]="personalData.email"/>

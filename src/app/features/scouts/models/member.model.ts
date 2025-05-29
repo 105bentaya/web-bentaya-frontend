@@ -1,4 +1,5 @@
 import {BasicGroupInfo} from "../../../shared/model/group.model";
+import {SpecialMember} from "../../special-member/models/special-member.model";
 
 export interface Scout {
   id: number;
@@ -89,15 +90,6 @@ export interface ScoutContact {
   observations?: string;
 }
 
-export interface SpecialMember {
-  id: number;
-  role: MemberRole;
-  date: Date;
-  roleCensus: number;
-  reason?: string;
-  observations?: string;
-}
-
 export interface ScoutFile {
   id: number;
   uuid: string;
@@ -135,7 +127,6 @@ export interface IdentificationDocument {
 }
 
 export type PersonType = "REAL" | "JURIDICAL";
-export type MemberRole = "FOUNDER" | "HONOUR" | "RECOGNIZED" | "PROTECTOR";
 export type IdType = "DNI" | "NIE" | "CIF" | "PAS" | "OTR";
 export type ScoutType = "SCOUT" | "SCOUTER" | "COMMITTEE" | "MANAGER" | "INACTIVE";
 export type BloodType =

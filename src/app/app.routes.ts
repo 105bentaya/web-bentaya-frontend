@@ -100,7 +100,19 @@ export const routes: Routes = [
   },
   {
     path: "registros",
-    loadComponent: () => import('./features/scouts/components/special-member-list/special-member-list.component').then(c => c.SpecialMemberListComponent),
+    loadComponent: () => import('./features/special-member/components/special-member-list/special-member-list.component').then(c => c.SpecialMemberListComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.ADMIN]}
+  },
+  {
+    path: "registros/nuevo",
+    loadComponent: () => import('./features/special-member/components/special-member-new-form/special-member-new-form.component').then(c => c.SpecialMemberNewFormComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.ADMIN]}
+  },
+  {
+    path: "registros/:id",
+    loadComponent: () => import('./features/special-member/components/special-member-detail/special-member-detail.component').then(c => c.SpecialMemberDetailComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.ADMIN]}
   },

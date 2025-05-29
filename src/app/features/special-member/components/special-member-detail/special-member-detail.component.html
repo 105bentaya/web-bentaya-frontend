@@ -1,0 +1,108 @@
+<div class="container-fluid container-xxl">
+  @if (specialMemberDetail) {
+    @let person = specialMemberDetail.person;
+    <div class="d-flex justify-content-between gap-2 overflow-hidden">
+      <div class="d-flex flex-column flex-grow-1 justify-content-start">
+        <div class="mb-2">
+          <span class="fs-4" style="font-family: Trueno-Black, sans-serif;">
+            @if (personIsReal) {
+              {{ person.name }} {{ person.surname }}
+            } @else {
+              {{ person.companyName }}
+            }
+          </span>
+        </div>
+        <div class="d-none d-sm-flex row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
+          <div class="text-nowrap overflow-ellipsis mw-100">
+            @if (person.idDocument) {
+              <b>{{ person.idDocument.idType }}:</b> {{ person.idDocument.number || '-' }}
+            } @else {
+              <b>DNI:</b> -
+            }
+          </div>
+          @for (record of specialMemberDetail.records; track record.id) {
+            <div class="text-nowrap overflow-ellipsis mw-100">
+              <b>{{ record.role | specialRole }}:</b> {{ record.roleCensus | census:record.role }}
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <p-tabs scrollable [(value)]="selectedRole" class="main-info-panel">
+      <p-tablist>
+        <p-tab *ngIf="showTab('HONOUR')" [value]="'HONOUR'" [disabled]="editing">Registro Honor</p-tab>
+        <p-tab *ngIf="showTab('PROTECTOR')" [value]="'PROTECTOR'" [disabled]="editing">
+          Registro Protectoras
+        </p-tab>
+        <p-tab *ngIf="showTab('FOUNDER')" [value]="'FOUNDER'" [disabled]="editing">Registro Fundadoras</p-tab>
+        <p-tab *ngIf="showTab('ACKNOWLEDGEMENT')" [value]="'ACKNOWLEDGEMENT'" [disabled]="editing">
+          Reconocimientos
+        </p-tab>
+        <p-tab *ngIf="showTab('DONOR')" [value]="'DONOR'" [disabled]="editing">Registro Donantes</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <div class="position-relative px-3">
+          @if (!editing) {
+            <p-button
+              [icon]="editing ? 'pi pi-times' : 'pi pi-pencil'"
+              [severity]="editing ? 'danger' : 'primary'"
+              rounded
+              outlined
+              class="position-absolute end-0"
+              size="small"
+              (onClick)="editing = !editing"
+            ></p-button>
+          }
+          @for (record of specialMemberDetail.records; track record.id) {
+            <p-tabpanel [value]="record.role">
+              @if (!editing) {
+                <div class="row">
+                  <div class="col-12 col-sm-6">
+                    <app-basic-info
+                      [label]="'Nº ' + (record.role | specialRole)"
+                      [value]="record.roleCensus | census:record.role"
+                    />
+                    <app-basic-info label="Fecha de acuerdo" [value]="record.agreementDate | date:'dd/MM/yy'"/>
+                    <app-basic-info label="Fecha de entrega" [value]="record.awardDate | date:'dd/MM/yy'"/>
+                    <app-basic-info [label]="record.role === 'FOUNDER' ? 'Familia' : 'Lugar'" [value]="record.details"/>
+                    <app-basic-info label="Observaciones" [value]="record.observations"/>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    @if (personIsReal) {
+                      <app-basic-info label="Nombre" [value]="person.name"/>
+                      <app-basic-info label="Apellidos" [value]="person.surname"/>
+                    } @else {
+                      <app-basic-info label="Razón Social" [value]="person.companyName"/>
+                    }
+                    <app-basic-info label="Correo" [value]="person.email"/>
+                    <app-basic-info label="Teléfono" [value]="person.phone"/>
+                    <app-basic-info
+                      [label]="person.idDocument | idDocumentType"
+                      [value]="person.idDocument | idDocument"
+                    />
+                    @if (person.scoutId) {
+                      <p-tag
+                        class="inverted gray"
+                        value="Ir a ficha de asociada"
+                        routerLink="/unidad/educandas/{{person.scoutId}}"
+                      />
+                    }
+                  </div>
+                </div>
+              }
+            </p-tabpanel>
+          }
+          @if (editing) {
+            <app-special-member-form
+              [existingForm]="selectedMemberForm"
+              [(loading)]="loading"
+              (onCancel)="editing = false"
+              (onSave)="update($event)"
+            />
+          }
+        </div>
+      </p-tabpanels>
+    </p-tabs>
+  } @else {
+    <app-basic-loading-info/>
+  }</div>
