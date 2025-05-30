@@ -28,7 +28,7 @@ export class SpecialMemberNewFormComponent {
       .pipe(finalize(() => this.loading = false))
       .subscribe(res => {
         this.alertService.sendBasicSuccessMessage("Registro guardado");
-        this.router.navigateByUrl(`/registros/${res.id}`);
+        this.router.navigateByUrl(`/registros/${res.id}`, {replaceUrl: true});
       });
   }
 }

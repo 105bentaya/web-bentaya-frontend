@@ -5,10 +5,12 @@ import {
   SpecialMemberDetail,
   SpecialMemberRole
 } from "./models/special-member.model";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
 import {SpecialMemberForm} from "./models/special-member-form.model";
+import {PagedFilter} from "../../shared/model/filter.model";
+import {Page} from "../../shared/model/page.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +23,8 @@ export class SpecialMemberService {
   constructor() {
   }
 
-  getSpecialMembers() {
-    return this.http.get<SpecialMemberBasicData[]>(this.specialMemberUrl);
+  getSpecialMembers(filter: PagedFilter): Observable<Page<SpecialMemberBasicData>> {
+    return this.http.get<Page<SpecialMemberBasicData>>(this.specialMemberUrl, {params: new HttpParams({fromObject: filter})});
   }
 
   getById(id: number) {

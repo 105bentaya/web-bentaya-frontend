@@ -15,6 +15,7 @@ import {MedicalDataComponent} from "../medical-data/medical-data.component";
 import {MedicalDataFormComponent} from "../medical-data-form/medical-data-form.component";
 import {GroupDataFormComponent} from "../group-data-form/group-data-form.component";
 import {GroupDataComponent} from "../group-data/group-data.component";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-scout-info',
@@ -39,6 +40,7 @@ export class ScoutInfoComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly scoutService = inject(ScoutService);
   private readonly alertService = inject(AlertService);
+  protected readonly location = inject(Location);
 
   protected scout!: Scout;
   protected editing: boolean = false;

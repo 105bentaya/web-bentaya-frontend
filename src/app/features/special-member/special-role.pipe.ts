@@ -6,16 +6,16 @@ import {SpecialMemberRole} from "./models/special-member.model";
 })
 export class SpecialRolePipe implements PipeTransform {
 
-  transform(value: SpecialMemberRole): unknown {
+  transform(value: SpecialMemberRole, complete = false): string {
     switch (value) {
       case "FOUNDER":
-        return "Fundadora";
+        return complete ? "Asociada Fundadora" : "Fundadora";
       case "HONOUR":
-        return "Honor";
+        return complete ? "Asociada de Honor" : "Honor";
       case "ACKNOWLEDGEMENT":
         return "Reconocimiento";
       case "PROTECTOR":
-        return "Protectora";
+        return complete ? "Asociada Protectora" : "Protectora";
       case "DONOR":
         return "Donante";
     }

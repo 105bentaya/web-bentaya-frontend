@@ -10,7 +10,7 @@ import {
   SpecialMemberDetailDetail,
   SpecialMemberRole
 } from "../../models/special-member.model";
-import {DatePipe, NgIf} from "@angular/common";
+import {DatePipe, Location, NgIf} from "@angular/common";
 import {BasicInfoComponent} from "../../../scouts/components/basic-info/basic-info.component";
 import {CensusPipe} from "../../../scouts/census.pipe";
 import {IdDocumentPipe} from "../../../scouts/id-document.pipe";
@@ -46,6 +46,7 @@ export class SpecialMemberDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly specialMemberService = inject(SpecialMemberService);
   private readonly alertService = inject(AlertService);
+  protected readonly location = inject(Location);
 
   protected specialMemberDetail: SpecialMemberDetail | undefined;
   protected editing: boolean = false;

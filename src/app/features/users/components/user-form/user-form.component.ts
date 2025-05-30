@@ -85,13 +85,7 @@ export class UserFormComponent implements OnInit {
 
   private saveOrUpdateUser(): Observable<UserForm> {
     const userToUpdate: UserForm = {...this.userForm.value};
-    if (this.user) {
-      userToUpdate.enabled = this.user.enabled;
-      return this.userService.update(userToUpdate, this.user.id!);
-    } else {
-      userToUpdate.enabled = true;
-      return this.userService.save(userToUpdate).pipe();
-    }
+    return this.user ? this.userService.update(userToUpdate, this.user.id!) : this.userService.save(userToUpdate);
   }
 
   protected onSubmit() {
