@@ -1,0 +1,92 @@
+<div class="form-container mt-1">
+  <form [formGroup]="formHelper.form" (ngSubmit)="submit()">
+    <div class="row">
+      <div class="col-12 col-sm-4">
+        <p-floatlabel variant="on">
+          <p-select
+            id="type"
+            formControlName="type"
+            appendTo="body"
+            [options]="types"
+            maxlength="255"
+          ></p-select>
+          <label class="required" for="type">Tipo</label>
+        </p-floatlabel>
+      </div>
+      <div class="col">
+        <p-floatlabel variant="on">
+          <p-datePicker
+            id="date"
+            formControlName="date"
+            appendTo="body"
+            showClear
+          ></p-datePicker>
+          <label class="required" for="date">Fecha</label>
+        </p-floatlabel>
+      </div>
+      @if (donationType === 'ECONOMIC') {
+        <div class="col-12 col-sm-4">
+          <p-floatlabel variant="on">
+            <p-inputNumber
+              id="amount"
+              formControlName="amount"
+              mode="currency"
+              locale="es-ES"
+              currency="EUR"
+              [min]="0"
+            ></p-inputNumber>
+            <label class="required" for="amount">Cantidad</label>
+          </p-floatlabel>
+        </div>
+        <div class="col-12 col-sm-6">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="paymentType"
+              formControlName="paymentType"
+            >
+            <label class="required" for="paymentType">Forma de pago</label>
+          </p-floatlabel>
+        </div>
+        <div class="col-12 col-sm-6">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="bankAccount"
+              formControlName="bankAccount"
+            > <label class="required" for="bankAccount">Cuenta bancaria</label>
+          </p-floatlabel>
+        </div>
+      } @else if (donationType === 'IN_KIND') {
+        <div class="col-12 col-sm-4">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="inKindDonationType"
+              formControlName="inKindDonationType"
+            > <label class="required" for="amount">Tipo de especies</label>
+          </p-floatlabel>
+        </div>
+      }
+      <div class="col-12 mb-2">
+        <p-floatlabel variant="on">
+          <app-form-text-area
+            id="notes"
+            formControlName="notes"
+            [maxLength]="511"
+            [showErrorMessage]="formHelper.isDirtyAndInvalid('notes')"
+          ></app-form-text-area>
+          <label for="notes">Notas</label>
+        </p-floatlabel>
+      </div>
+    </div>
+    <app-save-buttons
+      saveType="submit"
+      [cancelLabel]="donationId ? 'Borrar' : 'Cancelar'"
+      [showCancelButton]="true"
+      (onCancel)="cancelOrDelete()"
+      [saveLoading]="loading"
+      [cancelLoading]="deleteLoading"
+    />
+  </form>
+</div>

@@ -75,6 +75,7 @@ export class RecordFormComponent implements OnInit {
         this.scoutService.addScoutRecord(this.scoutId, form);
       sub.pipe(finalize(() => this.loading = false))
         .subscribe(result => {
+          this.alertService.sendBasicSuccessMessage("Expediente guardado");
           this.ref.close(result);
         });
     }

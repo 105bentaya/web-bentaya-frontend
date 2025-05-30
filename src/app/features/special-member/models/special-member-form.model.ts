@@ -1,4 +1,4 @@
-import {SpecialMemberRole} from "./special-member.model";
+import {DonationType, SpecialMemberRole} from "./special-member.model";
 import {IdentificationDocument, PersonType} from "../../scouts/models/member.model";
 
 export interface SpecialMemberForm {
@@ -22,3 +22,14 @@ export interface SpecialMemberPersonForm {
   phone?: string;
   email?: string;
 }
+
+export interface SpecialMemberDonationForm {
+  date: Date | string;
+  type: DonationType;
+  inKindDonationType?: string;
+  amount?: number;
+  paymentType?: string;
+  bankAccount?: string;
+  notes?: string;
+}
+

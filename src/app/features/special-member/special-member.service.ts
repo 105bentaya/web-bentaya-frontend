@@ -2,13 +2,13 @@ import {inject, Injectable} from '@angular/core';
 import {
   FilterResult,
   SpecialMemberBasicData,
-  SpecialMemberDetail,
+  SpecialMemberDetail, SpecialMemberDonation,
   SpecialMemberRole
 } from "./models/special-member.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
-import {SpecialMemberForm} from "./models/special-member-form.model";
+import {SpecialMemberDonationForm, SpecialMemberForm} from "./models/special-member-form.model";
 import {PagedFilter} from "../../shared/model/filter.model";
 import {Page} from "../../shared/model/page.model";
 
@@ -49,5 +49,17 @@ export class SpecialMemberService {
 
   updateSpecialMember(form: SpecialMemberForm, id: number) {
     return this.http.put<SpecialMemberDetail>(`${this.specialMemberUrl}/${id}`, form);
+  }
+
+  addDonation(memberId: number, form: SpecialMemberDonationForm): Observable<SpecialMemberDonation> {
+    return this.http.post<SpecialMemberDonation>(`${this.specialMemberUrl}/donation/${memberId}`, form);
+  }
+
+  updateDonation(memberId: number, donationId: number, form: SpecialMemberDonationForm): Observable<SpecialMemberDonation> {
+    return this.http.put<SpecialMemberDonation>(`${this.specialMemberUrl}/donation/${memberId}/${donationId}`, form);
+  }
+
+  deleteDonation(memberId: number, donationId: number): Observable<void> {
+    return this.http.delete<void>(`${this.specialMemberUrl}/donation/${memberId}/${donationId}`);
   }
 }

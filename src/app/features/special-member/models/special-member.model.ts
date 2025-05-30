@@ -9,6 +9,7 @@ export interface SpecialMember {
   details?: string;
   observations?: string;
   person: SpecialMemberPerson;
+  donations: SpecialMemberDonation[];
 }
 
 export interface SpecialMemberBasicData {
@@ -20,10 +21,10 @@ export interface SpecialMemberBasicData {
 
 export interface SpecialMemberDetail {
   person: SpecialMemberPerson;
-  records: SpecialMemberDetailDetail[]
+  records: SpecialMemberDetailRecord[]
 }
 
-export interface SpecialMemberDetailDetail {
+export interface SpecialMemberDetailRecord {
   id: number;
   role: SpecialMemberRole;
   roleCensus: number;
@@ -31,6 +32,7 @@ export interface SpecialMemberDetailDetail {
   agreementDate?: Date;
   details?: string;
   observations?: string;
+  donations: SpecialMemberDonation[];
 }
 
 export interface SpecialMemberPerson {
@@ -45,12 +47,24 @@ export interface SpecialMemberPerson {
   email?: string;
 }
 
+export interface SpecialMemberDonation {
+  id: number;
+  date: Date;
+  type: DonationType;
+  inKindDonationType?: string;
+  amount?: number;
+  paymentType?: string;
+  bankAccount?: string;
+  notes?: string;
+}
+
 export interface FilterResult {
   label: string;
   id: number;
 }
 
 export type SpecialMemberRole = "FOUNDER" | "HONOUR" | "ACKNOWLEDGEMENT" | "PROTECTOR" | "DONOR";
+export type DonationType = "ECONOMIC" | "IN_KIND";
 
 export const specialMemberOptions: { label: string; value: SpecialMemberRole }[] = [
   {label: 'Asociada de Honor', value: 'HONOUR'},
