@@ -1,0 +1,106 @@
+<div class="form-container mt-1">
+  <form [formGroup]="formHelper.form" (ngSubmit)="submit()">
+    <div class="row">
+      <div class="col-12 col-sm-4">
+        <p-floatlabel variant="on">
+          <p-datePicker
+            id="date"
+            formControlName="date"
+            appendTo="body"
+            showClear
+          ></p-datePicker>
+          <label class="required" for="date">Fecha</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-4">
+        <p-floatlabel variant="on">
+          <p-inputNumber
+            id="amount"
+            formControlName="amount"
+            mode="currency"
+            locale="es-ES"
+            currency="EUR"
+            [min]="0"
+          ></p-inputNumber>
+          <label class="required" for="amount">Cantidad</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-4">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="type"
+            formControlName="type"
+            maxlength="255"
+          >
+          <label class="required" for="type">Concepto Económico</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="account"
+            formControlName="account"
+            maxlength="255"
+          >
+          <label class="required" for="account">Cuenta</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="description"
+            formControlName="description"
+            maxlength="255"
+          >
+          <label class="required" for="description">Concepto</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="income"
+            formControlName="income"
+            maxlength="255"
+            (input)="onIncomeSelect()"
+          >
+          <label class="required" for="income">Ingreso</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="spending"
+            formControlName="spending"
+            maxlength="255"
+            (input)="onSpendingSelect()"
+          >
+          <label class="required" for="spending">Gasto</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 mb-2">
+        <p-floatlabel variant="on">
+          <app-form-text-area
+            id="observations"
+            formControlName="observations"
+            [maxLength]="511"
+            [showErrorMessage]="formHelper.isDirtyAndInvalid('observations')"
+          ></app-form-text-area>
+          <label for="observations">Observaciones</label>
+        </p-floatlabel>
+      </div>
+    </div>
+    <app-save-buttons
+      saveType="submit"
+      [cancelLabel]="entryId ? 'Borrar' : 'Cancelar'"
+      [showCancelButton]="true"
+      (onCancel)="cancelOrDelete()"
+      [saveLoading]="loading"
+      [cancelLoading]="deleteLoading"
+    />
+  </form>
+</div>

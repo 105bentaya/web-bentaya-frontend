@@ -84,6 +84,17 @@ export interface EconomicDataForm {
   donorId?: number;
 }
 
+export interface EconomicEntryForm {
+  date: Date | string;
+  description: string;
+  amount: number;
+  income?: string;
+  spending?: string;
+  account?: string;
+  type: string;
+  observations?: string;
+}
+
 export interface RegistrationDateForm {
   id?: number;
   registrationDate: Date | string;

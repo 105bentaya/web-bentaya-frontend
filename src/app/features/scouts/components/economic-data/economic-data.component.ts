@@ -1,6 +1,6 @@
 import {Component, inject, input} from '@angular/core';
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
-import {PersonalData, Scout, ScoutContact, ScoutFile, ScoutInfo} from "../../models/member.model";
+import {EconomicEntry, PersonalData, Scout, ScoutContact, ScoutFile, ScoutInfo} from "../../models/member.model";
 import {DialogService} from "primeng/dynamicdialog";
 import {BasicInfoComponent} from "../basic-info/basic-info.component";
 import {CensusPipe} from "../../census.pipe";
@@ -9,8 +9,10 @@ import {Tag} from "primeng/tag";
 import {IdDocumentPipe} from "../../id-document.pipe";
 import {IdDocumentTypePipe} from "../../id-document-type.pipe";
 import {DocumentListComponent} from "../document-list/document-list.component";
-import {Observable} from "rxjs";
+import {noop, Observable} from "rxjs";
 import {ScoutService} from "../../services/scout.service";
+import {EconomicEntryFormComponent} from "../economic-entry-form/economic-entry-form.component";
+import {EconomicEntryInfoComponent} from "../economic-entry-info/economic-entry-info.component";
 
 @Component({
   selector: 'app-economic-data',
@@ -54,6 +56,25 @@ export class EconomicDataComponent {
     return (fileId: number) => this.scoutService.deleteEconomicDocs(this.scout().id, fileId);
   }
 
-  protected openDonationForm() {
+  protected openEntryForm() {
+    const ref = this.dialogService.openDialog(EconomicEntryFormComponent, "Añadir Apunte", "small", {scoutId: this.scout().id});
+    ref.onClose.subscribe(result => {
+      if (result) {
+        const list = this.scoutInfo.economicData.entries;
+        list.push(result);
+        this.openEntryInfo(result, list.length - 1);
+      }
+    });
   }
+
+  protected openEntryInfo(entry: EconomicEntry, index: number) {
+    const ref = this.dialogService.openDialog(
+      EconomicEntryInfoComponent,
+      "Expediente",
+      "small",
+      {entry, scoutId: this.scout().id}
+    );
+    ref.onClose.subscribe(deleted => deleted ? this.scoutInfo.economicData.entries.splice(index, 1) : noop());
+  }
+
 }

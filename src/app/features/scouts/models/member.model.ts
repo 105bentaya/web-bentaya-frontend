@@ -39,6 +39,19 @@ export interface EconomicData {
   iban: string;
   bank: string;
   documents: ScoutFile[];
+  entries: EconomicEntry[];
+}
+
+export interface EconomicEntry {
+  id: number;
+  date: Date;
+  description: string;
+  amount: number;
+  income: string;
+  spending: string;
+  account: string;
+  type: string;
+  observations: string;
 }
 
 export interface RegistrationDate {

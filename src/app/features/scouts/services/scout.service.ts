@@ -4,10 +4,11 @@ import {Observable} from "rxjs";
 import {OldScout} from "../models/scout.model";
 import {environment} from "../../../../environments/environment";
 import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
-import {Scout, ScoutFile, ScoutRecord} from "../models/member.model";
+import {EconomicEntry, Scout, ScoutFile, ScoutRecord} from "../models/member.model";
 import {FileUtils} from "../../../shared/util/file.utils";
 import {
   EconomicDataForm,
+  EconomicEntryForm,
   PersonalDataForm,
   ScoutContactForm,
   ScoutInfoForm,
@@ -149,5 +150,17 @@ export class ScoutService {
 
   deleteEconomicDocs(id: number, fileId: number) {
     return this.http.delete<void>(`${this.scoutUrl}/economic/docs/${id}/${fileId}`);
+  }
+
+  addEntry(scoutId: number, form: EconomicEntryForm): Observable<EconomicEntry> {
+    return this.http.post<EconomicEntry>(`${this.scoutUrl}/economic/entry/${scoutId}`, form);
+  }
+
+  updateEntry(scoutId: number, entryId: number, form: EconomicEntryForm): Observable<EconomicEntry> {
+    return this.http.put<EconomicEntry>(`${this.scoutUrl}/economic/entry/${scoutId}/${entryId}`, form);
+  }
+
+  deleteEntry(scoutId: number, entryId: number): Observable<void> {
+    return this.http.delete<void>(`${this.scoutUrl}/economic/entry/${scoutId}/${entryId}`);
   }
 }

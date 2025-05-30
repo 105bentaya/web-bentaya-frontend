@@ -14,12 +14,32 @@
   </div>
   <div class="col-12 col-sm-6 d-flex flex-column">
     <div class="d-flex gap-1 align-items-center">
-      <b class="fs-5 title-font">Donaciones</b>
+      <b class="fs-5 title-font">Apuntes</b>
       <p-tag
         class="inverted gray"
         value="Añadir"
-        (click)="openDonationForm()"
+        (click)="openEntryForm()"
       />
+    </div>
+    <div class="mt-2">
+      @if (scoutInfo.economicData.entries.length < 1) {
+        <p-tag value="No hay expedientes" severity="secondary"></p-tag>
+      } @else {
+        <p-table
+          [value]="scoutInfo.economicData.entries"
+          class="fixed-table first-border"
+          stripedRows
+          selectionMode="single"
+        >
+          <ng-template pTemplate="body" let-entry let-ri="rowIndex">
+            <tr pSelectableRow (click)="openEntryInfo(entry, ri)">
+              <td>
+                {{ entry.type }} - {{ entry.description }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
     </div>
   </div>
   <div class="col-12 col-lg-8">
