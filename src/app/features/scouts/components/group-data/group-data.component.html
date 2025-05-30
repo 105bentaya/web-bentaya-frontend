@@ -79,4 +79,22 @@
       }
     </div>
   </div>
+  @if (scout().roleInfos.length > 0) {
+    <div class="col-12 d-flex flex-column mt-1">
+      <b class="fs-5 title-font">Registros</b>
+      @for (specialRole of scout().roleInfos; track specialRole.id) {
+        <div class="d-flex align-items-center gap-1">
+          <app-basic-info
+            [label]="specialRole.role | specialRole:true"
+            [value]="specialRole.roleCensus | census:specialRole.role"
+          />
+          <i
+            class="fa-solid fa-circle-plus mb-1 cursor-pointer"
+            routerLink="/registros/{{specialRole.id}}"
+            title="Ir a ficha"
+          ></i>
+        </div>
+      }
+    </div>
+  }
 </div>

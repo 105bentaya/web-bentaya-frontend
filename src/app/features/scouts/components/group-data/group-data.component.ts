@@ -12,6 +12,8 @@ import {RecordFormComponent} from "../record-form/record-form.component";
 import {TableModule} from "primeng/table";
 import {RecordInfoComponent} from "../record-info/record-info.component";
 import {noop} from "rxjs";
+import {SpecialRolePipe} from "../../../special-member/special-role.pipe";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-group-data',
@@ -23,7 +25,9 @@ import {noop} from "rxjs";
     DatePipe,
     BasicInfoShowComponent,
     Tag,
-    TableModule
+    TableModule,
+    SpecialRolePipe,
+    RouterLink
   ],
   templateUrl: './group-data.component.html',
   styleUrl: './group-data.component.scss',

@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <p-tabs scrollable [(value)]="selectedRole" class="main-info-panel">
+    <p-tabs scrollable [(value)]="selectedRole" class="main-info-panel mt-2">
       <p-tablist>
         <p-tab *ngIf="showTab('HONOUR')" [value]="'HONOUR'" [disabled]="editing">Registro Honor</p-tab>
         <p-tab *ngIf="showTab('PROTECTOR')" [value]="'PROTECTOR'" [disabled]="editing">
