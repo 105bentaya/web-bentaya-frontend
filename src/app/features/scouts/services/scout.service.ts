@@ -6,7 +6,13 @@ import {environment} from "../../../../environments/environment";
 import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
 import {Scout, ScoutFile, ScoutRecord} from "../models/member.model";
 import {FileUtils} from "../../../shared/util/file.utils";
-import {PersonalDataForm, ScoutContactForm, ScoutInfoForm, ScoutMedicalForm} from "../models/member-form.model";
+import {
+  EconomicDataForm,
+  PersonalDataForm,
+  ScoutContactForm,
+  ScoutInfoForm,
+  ScoutMedicalForm
+} from "../models/member-form.model";
 
 @Injectable({
   providedIn: 'root'
@@ -131,5 +137,17 @@ export class ScoutService {
 
   deleteScoutRecord(scoutId: number, recordId: number) {
     return this.http.delete<void>(`${this.scoutUrl}/scout-info/record/${scoutId}/${recordId}`);
+  }
+
+  updateScoutEconomicData(scoutId: number, scoutInfoForm: EconomicDataForm) {
+    return this.http.patch<Scout>(`${this.scoutUrl}/economic/${scoutId}`, scoutInfoForm);
+  }
+
+  uploadEconomicDocs(id: number, file: File) {
+    return this.http.post<ScoutFile>(`${this.scoutUrl}/economic/docs/${id}`, FileUtils.fileToFormData(file));
+  }
+
+  deleteEconomicDocs(id: number, fileId: number) {
+    return this.http.delete<void>(`${this.scoutUrl}/economic/docs/${id}/${fileId}`);
   }
 }

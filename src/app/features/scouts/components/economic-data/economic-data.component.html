@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-12 col-sm-6 d-flex flex-column">
+    <b class="fs-5 title-font">Datos Donante</b>
+    <app-basic-info label="Código" [value]="(scoutInfo.census | census) + ' D'"/>
+    @if (donorCompanyName) {
+      <app-basic-info label="Razón Social" [value]="donorCompanyName"/>
+    } @else {
+      <app-basic-info label="Apellidos" [value]="donor.surname" [hideIfNull]="true"/>
+      <app-basic-info label="Nombre" [value]="donor.name"/>
+    }
+    <app-basic-info [label]="donor.idDocument | idDocumentType" [value]="donor.idDocument | idDocument"/>
+    <app-basic-info label="Cuenta" [value]="scoutInfo.economicData.iban"/>
+    <app-basic-info label="Banco" [value]="scoutInfo.economicData.bank"/>
+  </div>
+  <div class="col-12 col-sm-6 d-flex flex-column">
+    <div class="d-flex gap-1 align-items-center">
+      <b class="fs-5 title-font">Donaciones</b>
+      <p-tag
+        class="inverted gray"
+        value="Añadir"
+        (click)="openDonationForm()"
+      />
+    </div>
+  </div>
+  <div class="col-12 col-lg-8">
+    <app-document-list
+      [(documents)]="scoutInfo.economicData.documents"
+      [uploadPetition]="filePetition"
+      [deletePetition]="deletePetition"
+    />
+  </div>
+</div>

@@ -44,6 +44,7 @@
               pInputText
               id="paymentType"
               formControlName="paymentType"
+              maxlength="255"
             >
             <label class="required" for="paymentType">Forma de pago</label>
           </p-floatlabel>
@@ -54,7 +55,8 @@
               pInputText
               id="bankAccount"
               formControlName="bankAccount"
-            > <label class="required" for="bankAccount">Cuenta bancaria</label>
+              maxlength="255"
+            ><label class="required" for="bankAccount">Cuenta bancaria</label>
           </p-floatlabel>
         </div>
       } @else if (donationType === 'IN_KIND') {

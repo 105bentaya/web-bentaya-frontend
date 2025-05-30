@@ -78,6 +78,12 @@ export interface ScoutInfoForm {
   census?: number;
 }
 
+export interface EconomicDataForm {
+  iban: string;
+  bank: string;
+  donorId?: number;
+}
+
 export interface RegistrationDateForm {
   id?: number;
   registrationDate: Date | string;

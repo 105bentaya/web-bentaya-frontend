@@ -16,6 +16,8 @@ import {MedicalDataFormComponent} from "../medical-data-form/medical-data-form.c
 import {GroupDataFormComponent} from "../group-data-form/group-data-form.component";
 import {GroupDataComponent} from "../group-data/group-data.component";
 import {Location} from "@angular/common";
+import {EconomicDataComponent} from "../economic-data/economic-data.component";
+import {EconomicDataFormComponent} from "../economic-data-form/economic-data-form.component";
 
 @Component({
   selector: 'app-scout-info',
@@ -33,7 +35,9 @@ import {Location} from "@angular/common";
     MedicalDataComponent,
     MedicalDataFormComponent,
     GroupDataFormComponent,
-    GroupDataComponent
+    GroupDataComponent,
+    EconomicDataComponent,
+    EconomicDataFormComponent
   ]
 })
 export class ScoutInfoComponent implements OnInit {

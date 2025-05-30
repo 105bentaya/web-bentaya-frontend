@@ -31,7 +31,14 @@ export interface ScoutInfo {
   group?: BasicGroupInfo;
   contactList: ScoutContact[];
   medicalData: ScoutMedicalData;
+  economicData: EconomicData;
   recordList: ScoutRecord[]
+}
+
+export interface EconomicData {
+  iban: string;
+  bank: string;
+  documents: ScoutFile[];
 }
 
 export interface RegistrationDate {
