@@ -32,10 +32,10 @@ export class PersonalDataComponent {
   }
 
   get filePetition(): (file: File) => Observable<ScoutFile> {
-    return (file: File) => this.scoutService.uploadPersonalDataDocs(this.member().id, file);
+    return (file: File) => this.scoutService.uploadDocument(this.member().id, file, "PERSONAL");
   }
 
   get deletePetition(): (fileId: number) => Observable<void> {
-    return (fileId: number) => this.scoutService.deletePersonalDataDocs(this.member().id, fileId);
+    return (fileId: number) => this.scoutService.deleteDocument(this.member().id, fileId, "PERSONAL");
   }
 }

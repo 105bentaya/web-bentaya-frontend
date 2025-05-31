@@ -57,10 +57,10 @@ export class RecordInfoComponent implements OnInit {
   }
 
   protected readonly deletePetition = (fileId: number) => {
-    return this.scoutService.deleteRecordDocs(this.record.id, fileId);
+    return this.scoutService.deleteDocument(this.record.id, fileId, "RECORD");
   };
 
   protected readonly uploadPetition = (file: File): Observable<ScoutFile> => {
-    return this.scoutService.uploadRecordDocs(this.record.id, file);
+    return this.scoutService.uploadDocument(this.record.id, file, "RECORD");
   };
 }

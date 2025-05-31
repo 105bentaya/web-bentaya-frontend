@@ -114,12 +114,12 @@ export class DocumentListComponent implements OnInit {
 
   protected downloadFile(fileId: number) {
     this.loading = true;
-    this.scoutService.getMemberFile(fileId)
+    this.scoutService.downloadDocument(fileId)
       .pipe(finalize(() => this.loading = false))
       .subscribe(res => FileUtils.downloadFile(res));
   }
 
   protected openFile(fileId: number) {
-    FileUtils.openFile(this.scoutService.getMemberFile(fileId));
+    FileUtils.openFile(this.scoutService.downloadDocument(fileId));
   }
 }

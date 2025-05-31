@@ -49,11 +49,11 @@ export class EconomicDataComponent {
   }
 
   get filePetition(): (file: File) => Observable<ScoutFile> {
-    return (file: File) => this.scoutService.uploadEconomicDocs(this.scout().id, file);
+    return (file: File) => this.scoutService.uploadDocument(this.scout().id, file, "ECONOMIC");
   }
 
   get deletePetition(): (fileId: number) => Observable<void> {
-    return (fileId: number) => this.scoutService.deleteEconomicDocs(this.scout().id, fileId);
+    return (fileId: number) => this.scoutService.deleteDocument(this.scout().id, fileId, "ECONOMIC");
   }
 
   protected openEntryForm() {

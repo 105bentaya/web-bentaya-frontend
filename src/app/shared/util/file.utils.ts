@@ -2,6 +2,8 @@ import {HttpResponse} from "@angular/common/http";
 import {saveAs} from "file-saver";
 import {Observable} from "rxjs";
 
+export type FileType = "MEDICAL" | "PERSONAL" | "ECONOMIC" | "RECORD";
+
 export class FileUtils {
   public static fileToFormData(file: File, paramName = "file"): FormData {
     const form = new FormData();

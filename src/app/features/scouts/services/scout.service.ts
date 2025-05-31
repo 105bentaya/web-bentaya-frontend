@@ -5,7 +5,7 @@ import {OldScout} from "../models/scout.model";
 import {environment} from "../../../../environments/environment";
 import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
 import {EconomicEntry, Scout, ScoutFile, ScoutRecord} from "../models/member.model";
-import {FileUtils} from "../../../shared/util/file.utils";
+import {FileType, FileUtils} from "../../../shared/util/file.utils";
 import {
   EconomicDataForm,
   EconomicEntryForm,
@@ -84,20 +84,20 @@ export class ScoutService {
     return this.http.get<Scout>(`${this.scoutUrl}/${id}`);
   }
 
-  getMemberFile(id: number) {
+  downloadDocument(id: number) {
     return this.http.get(`${this.scoutUrl}/document/${id}`, {responseType: 'blob', observe: 'response'});
+  }
+
+  uploadDocument(id: number, file: File, fileType: FileType) {
+    return this.http.post<ScoutFile>(`${this.scoutUrl}/document/${id}/${fileType}`, FileUtils.fileToFormData(file));
+  }
+
+  deleteDocument(id: number, fileId: number, fileType: FileType) {
+    return this.http.delete<void>(`${this.scoutUrl}/document/${id}/${fileId}/${fileType}`);
   }
 
   updatePersonalData(id: number, personalDataForm: PersonalDataForm) {
     return this.http.patch<Scout>(`${this.scoutUrl}/personal/${id}`, personalDataForm);
-  }
-
-  uploadPersonalDataDocs(id: number, file: File) {
-    return this.http.post<ScoutFile>(`${this.scoutUrl}/personal/docs/${id}`, FileUtils.fileToFormData(file));
-  }
-
-  deletePersonalDataDocs(id: number, fileId: number) {
-    return this.http.delete<void>(`${this.scoutUrl}/personal/docs/${id}/${fileId}`);
   }
 
   updateScoutContacts(id: number, contactList: ScoutContactForm[]) {
@@ -108,24 +108,8 @@ export class ScoutService {
     return this.http.patch<Scout>(`${this.scoutUrl}/medical/${id}`, medicalDataForm);
   }
 
-  uploadMedicalDocs(id: number, file: File) {
-    return this.http.post<ScoutFile>(`${this.scoutUrl}/medical/docs/${id}`, FileUtils.fileToFormData(file));
-  }
-
-  deleteMedicalDocs(id: number, fileId: number) {
-    return this.http.delete<void>(`${this.scoutUrl}/medical/docs/${id}/${fileId}`);
-  }
-
   updateScoutInfo(id: number, scoutInfoForm: ScoutInfoForm) {
     return this.http.patch<Scout>(`${this.scoutUrl}/scout-info/${id}`, scoutInfoForm);
-  }
-
-  uploadRecordDocs(id: number, file: File) {
-    return this.http.post<ScoutFile>(`${this.scoutUrl}/scout-info/record-documents/${id}`, FileUtils.fileToFormData(file));
-  }
-
-  deleteRecordDocs(id: number, fileId: number) {
-    return this.http.delete<void>(`${this.scoutUrl}/scout-info/record-documents/${id}/${fileId}`);
   }
 
   addScoutRecord(scoutId: number, record: ScoutRecord) {
@@ -142,14 +126,6 @@ export class ScoutService {
 
   updateScoutEconomicData(scoutId: number, scoutInfoForm: EconomicDataForm) {
     return this.http.patch<Scout>(`${this.scoutUrl}/economic/${scoutId}`, scoutInfoForm);
-  }
-
-  uploadEconomicDocs(id: number, file: File) {
-    return this.http.post<ScoutFile>(`${this.scoutUrl}/economic/docs/${id}`, FileUtils.fileToFormData(file));
-  }
-
-  deleteEconomicDocs(id: number, fileId: number) {
-    return this.http.delete<void>(`${this.scoutUrl}/economic/docs/${id}/${fileId}`);
   }
 
   addEntry(scoutId: number, form: EconomicEntryForm): Observable<EconomicEntry> {

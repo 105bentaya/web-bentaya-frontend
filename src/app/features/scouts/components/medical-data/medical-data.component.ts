@@ -38,10 +38,10 @@ export class MedicalDataComponent {
   }
 
   get filePetition(): (file: File) => Observable<ScoutFile> {
-    return (file: File) => this.scoutService.uploadMedicalDocs(this.scout().id, file);
+    return (file: File) => this.scoutService.uploadDocument(this.scout().id, file, "MEDICAL");
   }
 
   get deletePetition(): (fileId: number) => Observable<void> {
-    return (fileId: number) => this.scoutService.deleteMedicalDocs(this.scout().id, fileId);
+    return (fileId: number) => this.scoutService.deleteDocument(this.scout().id, fileId, "MEDICAL");
   }
 }
