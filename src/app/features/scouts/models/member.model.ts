@@ -7,8 +7,17 @@ export interface Scout {
   observations?: string;
   extraFiles: ScoutFile[];
   images: ScoutFile[];
-  personalData: PersonalData;
+  personalData: ScoutPersonalData;
+  contactList: ScoutContact[];
+  medicalData: ScoutMedicalData;
+  economicData: ScoutEconomicData;
+  scoutHistory: ScoutHistory;
   scoutInfo: ScoutInfo;
+}
+
+export interface ScoutHistory {
+  observations: string;
+  progressions: string;
 }
 
 export interface ScoutRecord {
@@ -26,16 +35,12 @@ export interface ScoutInfo {
   active: boolean;
   federated: boolean;
   census?: number;
-  section: string;
-  imageAuthorization: boolean;
   group?: BasicGroupInfo;
-  contactList: ScoutContact[];
-  medicalData: ScoutMedicalData;
-  economicData: EconomicData;
-  recordList: ScoutRecord[]
+  section: string;
+  recordList: ScoutRecord[];
 }
 
-export interface EconomicData {
+export interface ScoutEconomicData {
   iban: string;
   bank: string;
   documents: ScoutFile[];
@@ -119,7 +124,7 @@ export interface ScoutFile {
   uploadDate: Date;
 }
 
-export interface PersonalData {
+export interface ScoutPersonalData {
   name: string;
   surname: string;
   feltName?: string;
@@ -139,6 +144,7 @@ export interface PersonalData {
   shirtSize: string;
   observations: string;
   documents: ScoutFile[];
+  imageAuthorization: boolean;
 }
 
 export interface IdentificationDocument {

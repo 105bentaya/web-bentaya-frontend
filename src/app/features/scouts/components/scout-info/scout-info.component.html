@@ -97,7 +97,7 @@
                 (onEditionStop)="onEditionStop($event)"
               />
             } @else {
-              <app-personal-data [member]="scout"/>
+              <app-personal-data [scout]="scout"/>
             }
           </p-tabpanel>
           <p-tabpanel [value]="1">
@@ -117,7 +117,7 @@
                 (onEditionStop)="onEditionStop($event)"
               />
             } @else {
-              <app-contact-data [contactList]="scout.scoutInfo.contactList"/>
+              <app-contact-data [contactList]="scout.contactList"/>
             }
           </p-tabpanel>
           <p-tabpanel [value]="4">

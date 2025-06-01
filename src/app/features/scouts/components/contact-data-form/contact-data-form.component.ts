@@ -53,7 +53,7 @@ export class ContactDataFormComponent implements OnInit {
   protected readonly idTypes = idTypes;
   protected readonly yesNoOptions = yesNoOptions;
 
-  initialData = input<Scout>();
+  initialData = input.required<Scout>();
   protected onEditionStop = output<void | Scout>();
 
   protected loading: boolean = false;
@@ -61,7 +61,7 @@ export class ContactDataFormComponent implements OnInit {
   ngOnInit() {
     this.formHelper.createForm({
       contactList: this.formBuilder.array(
-        this.initialData() ? this.initialData()!.scoutInfo.contactList.map(data => this.createContact(data)) : [this.createContact()],
+        this.initialData() ? this.initialData().contactList.map(data => this.createContact(data)) : [this.createContact()],
         [Validators.minLength(1), Validators.maxLength(3)]
       )
     });
@@ -112,13 +112,9 @@ export class ContactDataFormComponent implements OnInit {
       });
 
       this.loading = true;
-      if (this.initialData()?.id) {
-        this.scoutService.updateScoutContacts(this.initialData()!.id, form)
-          .pipe(finalize(() => this.loading = false))
-          .subscribe(result => this.onEditionStop.emit(result));
-      } else {
-        //todo add
-      }
+      this.scoutService.updateScoutContacts(this.initialData().id, form)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(result => this.onEditionStop.emit(result));
     }
   }
 
@@ -154,8 +150,8 @@ export class ContactDataFormComponent implements OnInit {
   private contactCanBeDeleted(control: FormGroup) {
     const id = control.get("id")?.value;
     if (this.initialData() && id) {
-      const privateInsurance = this.initialData()!.scoutInfo.medicalData.privateInsuranceHolder?.contact?.id;
-      const socialSecurity = this.initialData()!.scoutInfo.medicalData.socialSecurityHolder?.contact?.id;
+      const privateInsurance = this.initialData().medicalData.privateInsuranceHolder?.contact?.id;
+      const socialSecurity = this.initialData().medicalData.socialSecurityHolder?.contact?.id;
 
       if (privateInsurance === id || socialSecurity === id) {
         this.alertService.sendMessage({

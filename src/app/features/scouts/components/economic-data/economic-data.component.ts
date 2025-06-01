@@ -1,6 +1,6 @@
 import {Component, inject, input} from '@angular/core';
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
-import {EconomicEntry, PersonalData, Scout, ScoutContact, ScoutFile, ScoutInfo} from "../../models/member.model";
+import {ScoutEconomicData, EconomicEntry, ScoutPersonalData, Scout, ScoutContact, ScoutFile} from "../../models/member.model";
 import {DialogService} from "primeng/dynamicdialog";
 import {BasicInfoComponent} from "../basic-info/basic-info.component";
 import {CensusPipe} from "../../census.pipe";
@@ -35,12 +35,12 @@ export class EconomicDataComponent {
 
   public scout = input.required<Scout>();
 
-  protected get scoutInfo(): ScoutInfo {
-    return this.scout().scoutInfo;
+  protected get economicData(): ScoutEconomicData {
+    return this.scout().economicData;
   }
 
-  protected get donor(): ScoutContact | PersonalData {
-    return this.scoutInfo.contactList.find(contact => contact.donor) ?? this.scout().personalData;
+  protected get donor(): ScoutContact | ScoutPersonalData {
+    return this.scout().contactList.find(contact => contact.donor) ?? this.scout().personalData;
   }
 
   protected get donorCompanyName(): string | undefined {
@@ -60,7 +60,7 @@ export class EconomicDataComponent {
     const ref = this.dialogService.openDialog(EconomicEntryFormComponent, "Añadir Apunte", "small", {scoutId: this.scout().id});
     ref.onClose.subscribe(result => {
       if (result) {
-        const list = this.scoutInfo.economicData.entries;
+        const list = this.economicData.entries;
         list.push(result);
         this.openEntryInfo(result, list.length - 1);
       }
@@ -74,7 +74,7 @@ export class EconomicDataComponent {
       "small",
       {entry, scoutId: this.scout().id}
     );
-    ref.onClose.subscribe(deleted => deleted ? this.scoutInfo.economicData.entries.splice(index, 1) : noop());
+    ref.onClose.subscribe(deleted => deleted ? this.economicData.entries.splice(index, 1) : noop());
   }
 
 }

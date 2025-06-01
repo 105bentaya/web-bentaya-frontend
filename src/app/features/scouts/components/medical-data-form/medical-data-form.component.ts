@@ -70,7 +70,7 @@ export class MedicalDataFormComponent implements OnInit {
   protected loading: boolean = false;
 
   ngOnInit() {
-    this.contactOptions = this.initialData().scoutInfo.contactList.map((contact, index) => ({
+    this.contactOptions = this.initialData().contactList.map((contact, index) => ({
       label: `${contact.relationship ?? 'Familiar ' + String(index + 1)}  - ${contact.name}`,
       value: contact.id
     }));
@@ -218,6 +218,6 @@ export class MedicalDataFormComponent implements OnInit {
   }
 
   get medicalData() {
-    return this.initialData().scoutInfo.medicalData;
+    return this.initialData().medicalData;
   }
 }

@@ -32,15 +32,15 @@
     <app-basic-info label="Provincia" [value]="personalData.province"/>
     <app-basic-info label="Municipio de Residencia" [value]="personalData.residenceMunicipality"/>
   </div>
-  @if (member().personalData.observations) {
+  @if (personalData.observations) {
     <div class="col-12 mt-1">
       <b class="fs-5 title-font">Observaciones</b>
-      <div>{{ member().personalData.observations }}</div>
+      <div>{{ personalData.observations }}</div>
     </div>
   }
   <div class="col-12 mt-3">
     <app-document-list
-      [(documents)]="member().personalData.documents"
+      [(documents)]="personalData.documents"
       [uploadPetition]="filePetition"
       [deletePetition]="deletePetition"
     />

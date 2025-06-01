@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-12 col-sm-6 d-flex flex-column">
     <b class="fs-5 title-font">Datos Donante</b>
-    <app-basic-info label="Código" [value]="(scoutInfo.census | census) + ' D'"/>
+    <app-basic-info label="Código" [value]="(scout().scoutInfo.census | census) + ' D'"/>
     @if (donorCompanyName) {
       <app-basic-info label="Razón Social" [value]="donorCompanyName"/>
     } @else {
@@ -9,8 +9,8 @@
       <app-basic-info label="Nombre" [value]="donor.name"/>
     }
     <app-basic-info [label]="donor.idDocument | idDocumentType" [value]="donor.idDocument | idDocument"/>
-    <app-basic-info label="Cuenta" [value]="scoutInfo.economicData.iban"/>
-    <app-basic-info label="Banco" [value]="scoutInfo.economicData.bank"/>
+    <app-basic-info label="Cuenta" [value]="economicData.iban"/>
+    <app-basic-info label="Banco" [value]="economicData.bank"/>
   </div>
   <div class="col-12 col-sm-6 d-flex flex-column">
     <div class="d-flex gap-1 align-items-center">
@@ -22,11 +22,11 @@
       />
     </div>
     <div class="mt-2">
-      @if (scoutInfo.economicData.entries.length < 1) {
+      @if (economicData.entries.length < 1) {
         <p-tag value="No hay expedientes" severity="secondary"></p-tag>
       } @else {
         <p-table
-          [value]="scoutInfo.economicData.entries"
+          [value]="economicData.entries"
           class="fixed-table first-border"
           stripedRows
           selectionMode="single"
@@ -44,7 +44,7 @@
   </div>
   <div class="col-12 col-lg-8">
     <app-document-list
-      [(documents)]="scoutInfo.economicData.documents"
+      [(documents)]="economicData.documents"
       [uploadPetition]="filePetition"
       [deletePetition]="deletePetition"
     />

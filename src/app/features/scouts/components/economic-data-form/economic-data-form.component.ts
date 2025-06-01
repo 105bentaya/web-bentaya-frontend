@@ -42,17 +42,17 @@ export class EconomicDataFormComponent implements OnInit {
   protected donors: { label: string; value: "SCOUT" | number }[] = [];
 
   ngOnInit() {
-    const scoutInfo = this.initialData().scoutInfo;
-    this.donors = scoutInfo.contactList.map(contact => ({
+    const scout = this.initialData();
+    this.donors = scout.contactList.map(contact => ({
       value: contact.id,
       label: this.contactToLabel(contact)
     }));
     this.donors.push({value: "SCOUT", label: "Persona Asociada"});
 
     this.formHelper.createForm({
-      donorId: [scoutInfo.contactList.find(contact => contact.donor)?.id ?? "SCOUT", Validators.required],
-      iban: [scoutInfo.economicData.iban, [Validators.required, this.ibanValidator]],
-      bank: [scoutInfo.economicData.bank, [Validators.required, Validators.maxLength(255)]],
+      donorId: [scout.contactList.find(contact => contact.donor)?.id ?? "SCOUT", Validators.required],
+      iban: [scout.economicData.iban, [Validators.required, this.ibanValidator]],
+      bank: [scout.economicData.bank, [Validators.required, Validators.maxLength(255)]],
     });
   }
 

@@ -34,7 +34,7 @@ export class MedicalDataComponent {
   protected showPrivateHolder = false;
 
   get medicalData(): ScoutMedicalData {
-    return this.scout().scoutInfo.medicalData;
+    return this.scout().medicalData;
   }
 
   get filePetition(): (file: File) => Observable<ScoutFile> {

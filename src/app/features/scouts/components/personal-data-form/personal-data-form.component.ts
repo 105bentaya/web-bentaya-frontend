@@ -50,28 +50,27 @@ export class PersonalDataFormComponent implements OnInit {
   }
 
   private createEditForm() {
-    const member = this.initialData();
+    const personalData = this.initialData().personalData;
 
-    const memberData = member.personalData;
     this.formHelper.createForm({
-      idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder, memberData.idDocument),
-      observations: [member.personalData.observations, Validators.maxLength(65535)],
-      surname: [memberData.surname, [Validators.required, Validators.maxLength(255)]],
-      name: [memberData.name, [Validators.required, Validators.maxLength(255)]],
-      feltName: [memberData.feltName, Validators.maxLength(255)],
-      birthday: [memberData.birthday ? new Date(memberData.birthday) : null, Validators.required],
-      birthplace: [memberData.birthplace, Validators.maxLength(255)],
-      birthProvince: [memberData.birthProvince, Validators.maxLength(255)],
-      nationality: [memberData.nationality, Validators.maxLength(255)],
-      address: [memberData.address, Validators.maxLength(255)],
-      city: [memberData.city, Validators.maxLength(255)],
-      province: [memberData.province, Validators.maxLength(255)],
-      phone: [memberData.phone, Validators.maxLength(255)],
-      landline: [memberData.landline, Validators.maxLength(255)],
-      email: [memberData.email, [Validators.maxLength(255), Validators.email]],
-      shirtSize: [memberData.shirtSize, Validators.maxLength(255)],
-      residenceMunicipality: [memberData.residenceMunicipality, Validators.maxLength(255)],
-      gender: [memberData.gender, [Validators.required, Validators.maxLength(255)]]
+      idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder, personalData.idDocument),
+      observations: [personalData.observations, Validators.maxLength(65535)],
+      surname: [personalData.surname, [Validators.required, Validators.maxLength(255)]],
+      name: [personalData.name, [Validators.required, Validators.maxLength(255)]],
+      feltName: [personalData.feltName, Validators.maxLength(255)],
+      birthday: [personalData.birthday ? new Date(personalData.birthday) : null, Validators.required],
+      birthplace: [personalData.birthplace, Validators.maxLength(255)],
+      birthProvince: [personalData.birthProvince, Validators.maxLength(255)],
+      nationality: [personalData.nationality, Validators.maxLength(255)],
+      address: [personalData.address, Validators.maxLength(255)],
+      city: [personalData.city, Validators.maxLength(255)],
+      province: [personalData.province, Validators.maxLength(255)],
+      phone: [personalData.phone, Validators.maxLength(255)],
+      landline: [personalData.landline, Validators.maxLength(255)],
+      email: [personalData.email, [Validators.maxLength(255), Validators.email]],
+      shirtSize: [personalData.shirtSize, Validators.maxLength(255)],
+      residenceMunicipality: [personalData.residenceMunicipality, Validators.maxLength(255)],
+      gender: [personalData.gender, [Validators.required, Validators.maxLength(255)]]
     });
 
     if (!this.formHelper.getFormGroupControl('idDocument', 'idType').value) {
