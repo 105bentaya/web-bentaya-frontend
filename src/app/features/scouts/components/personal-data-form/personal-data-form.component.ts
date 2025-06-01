@@ -1,7 +1,7 @@
 import {Component, inject, input, OnInit, output} from '@angular/core';
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Scout} from "../../models/member.model";
+import {Scout} from "../../models/scout.model";
 import ScoutHelper from "../../scout.util";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FloatLabel} from "primeng/floatlabel";
@@ -13,7 +13,7 @@ import {FormTextAreaComponent} from "../../../../shared/components/form-text-are
 import {ScoutService} from "../../services/scout.service";
 import {finalize} from "rxjs";
 import {DateUtils} from "../../../../shared/util/date-utils";
-import {PersonalDataForm} from "../../models/member-form.model";
+import {PersonalDataForm} from "../../models/scout-form.model";
 
 @Component({
   selector: 'app-personal-data-form',

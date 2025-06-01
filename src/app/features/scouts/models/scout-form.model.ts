@@ -1,4 +1,4 @@
-import {BloodType, IdentificationDocument, ScoutType} from "./member.model";
+import {BloodType, IdentificationDocument, ScoutType} from "./scout.model";
 
 export interface PersonalDataForm {
   idDocument?: IdentificationDocument;

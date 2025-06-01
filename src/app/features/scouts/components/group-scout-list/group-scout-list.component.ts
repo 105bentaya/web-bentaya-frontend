@@ -1,15 +1,10 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {OldScout} from "../../models/scout.model";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ScoutService} from "../../services/scout.service";
 import {FilterService, SelectItem} from "primeng/api";
-import {ScoutFormComponent} from "../scout-form/scout-form.component";
-import {noop} from "rxjs";
 import {BasicGroupInfo} from "../../../../shared/model/group.model";
-import {ScoutInfoComponent} from "../scout-info/scout-info.component";
 import {SettingsService} from "../../../settings/settings.service";
 import {ExcelService} from "../../../../shared/services/excel.service";
-import ScoutHelper from "../../scout.util";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {ScoutYearPipe} from '../../../../shared/pipes/scout-year.pipe';
 import {InputTextModule} from 'primeng/inputtext';
@@ -19,10 +14,9 @@ import {FormsModule} from '@angular/forms';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {DatePipe, NgClass} from '@angular/common';
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
-import {Dialog} from "primeng/dialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
-import {SettingType} from "../../../settings/setting.model";
 import {RouterLink} from "@angular/router";
+import {Scout} from "../../models/scout.model";
 
 @Component({
   selector: 'app-group-scout-list',
@@ -38,7 +32,6 @@ import {RouterLink} from "@angular/router";
     DatePipe,
     ScoutYearPipe,
     Button,
-    Dialog,
     RouterLink
   ]
 })
@@ -50,9 +43,8 @@ export class GroupScoutListComponent implements OnInit {
   private readonly settingService = inject(SettingsService);
   private readonly excelService = inject(ExcelService);
 
-  protected scouts: OldScout[] | undefined;
+  protected scouts: Scout[] | undefined;
   protected loading = false;
-  protected groupScouts!: OldScout[];
   protected userGroup: BasicGroupInfo | undefined = inject(LoggedUserDataService).getGroup();
   private readonly name: string = "";
   private ref!: DynamicDialogRef;
@@ -62,7 +54,6 @@ export class GroupScoutListComponent implements OnInit {
   protected options: SelectItem[] = [];
 
   protected showDialog: boolean = false;
-  protected noImageScouts!: OldScout[];
 
   constructor() {
     if (this.userGroup) {
@@ -74,18 +65,8 @@ export class GroupScoutListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userGroup ? this.getGroupScouts() : this.getScouts();
-  }
-
-  private getGroupScouts() {
-    this.settingService.getByName(SettingType.CURRENT_YEAR).subscribe(data => this.currentYear = +data.value);
-    this.scouts = undefined;
-    this.scoutService.getAllByCurrentGroup().subscribe({
-      next: scouts => {
-        this.groupScouts = scouts;
-        this.filterService.register("name-surname-filter", FilterUtils.nameSurnameFilter(this.groupScouts));
-      }
-    });
+    this.getScouts();
+    // this.userGroup ? this.getGroupScouts() : this.getScouts();
   }
 
   protected selectButtonChange() {
@@ -106,42 +87,14 @@ export class GroupScoutListComponent implements OnInit {
     });
   }
 
-  protected viewScout(scout: OldScout) {
-    this.ref = this.dialogService.openDialog(ScoutInfoComponent, `Datos de ${scout.name}`, "small", scout);
-  }
-
-  protected openEditDialog(scout: OldScout) {
-    this.ref = this.dialogService.openDialog(ScoutFormComponent, "Editar Educanda", "medium", {scout});
-    this.ref.onClose.subscribe(saved => saved ? this.getGroupScouts() : noop());
-  }
-
   protected exportExcelScout() {
-    this.excelLoading = true;
     if (this.showAll) {
-      this.excelService.exportAsExcel(
-        ScoutHelper.generateData(this.scouts!, true),
-        ScoutHelper.generateExcelColumns(this.scouts!, true),
-        "educandas"
-      );
-    } else {
-      this.excelService.exportAsExcel(
-        ScoutHelper.generateData(this.groupScouts),
-        ScoutHelper.generateExcelColumns(this.groupScouts),
-        "educandas-" + this.name.toLowerCase()
-      );
+      // todo excel this.excelService.exportAsExcel(
+      //   ScoutHelper.generateData(this.scouts!, true),
+      //   ScoutHelper.generateExcelColumns(this.scouts!, true),
+      //   "educandas"
+      // );
     }
-    this.excelLoading = false;
-  }
-
-  protected openImageAuthDialog() {
-    this.scoutService.getAllWithoutImageAuthorization().subscribe({
-      next: scouts => {
-        this.noImageScouts = scouts.sort((a, b) =>
-          (a.group.order! - b.group.order!) || (a.surname.localeCompare(b.surname))
-        );
-        this.showDialog = true;
-      }
-    });
   }
 }
 

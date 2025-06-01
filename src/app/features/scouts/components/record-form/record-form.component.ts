@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {FormHelper} from "../../../../shared/util/form-helper";
-import {ScoutRecord} from "../../models/member.model";
+import {ScoutRecord} from "../../models/scout.model";
 import {ReactiveFormsModule, Validators} from "@angular/forms";
 import {Select} from "primeng/select";
 import {FloatLabel} from "primeng/floatlabel";

@@ -1,4 +1,4 @@
-import {IdType, PersonType} from "../features/scouts/models/member.model";
+import {IdType, PersonType} from "../features/scouts/models/scout.model";
 
 export const socialMediaButtons = [
   {icon: 'pi pi-instagram ', link: 'https://www.instagram.com/scouts105bentaya'},

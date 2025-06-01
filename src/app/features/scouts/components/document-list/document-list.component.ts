@@ -1,5 +1,5 @@
 import {Component, inject, input, model, OnInit, viewChild} from '@angular/core';
-import {ScoutFile} from "../../models/member.model";
+import {ScoutFile} from "../../models/scout.model";
 import {TableModule} from "primeng/table";
 import {DatePipe, NgClass, NgOptimizedImage} from "@angular/common";
 import {FileUtils} from "../../../../shared/util/file.utils";

@@ -82,7 +82,7 @@
                   [loading]="!scouts"
                 >
                   <ng-template let-scout pTemplate="item">
-                    {{ scout.surname }}, {{ scout.name }} - <small>{{ scout.birthday | date: "d/MM/y" }}</small>
+                    {{ scout.personalData.surname }}, {{ scout.personalData.name }} - <small>{{ scout.personalData.birthday | date: "d/MM/y" }}</small>
                   </ng-template>
                   <ng-template let-value pTemplate="selectedItems">
                     @if (value) {

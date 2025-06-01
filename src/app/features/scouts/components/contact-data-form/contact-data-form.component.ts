@@ -12,7 +12,7 @@ import {
 } from "@angular/forms";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormHelper} from "../../../../shared/util/form-helper";
-import {Scout, ScoutContact} from "../../models/member.model";
+import {Scout, ScoutContact} from "../../models/scout.model";
 import {idTypes, personTypes, yesNoOptions} from "../../../../shared/constant";
 import ScoutHelper from "../../scout.util";
 import {SelectButton} from "primeng/selectbutton";
@@ -23,7 +23,7 @@ import {FormTextAreaComponent} from "../../../../shared/components/form-text-are
 import {Button} from "primeng/button";
 import {finalize} from "rxjs";
 import {ScoutService} from "../../services/scout.service";
-import {ScoutContactForm} from "../../models/member-form.model";
+import {ScoutContactForm} from "../../models/scout-form.model";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 
 @Component({

@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {ScoutContact} from "../../models/member.model";
+import {ScoutContact} from "../../models/scout.model";
 import {BasicInfoComponent} from "../basic-info/basic-info.component";
 import {IdDocumentPipe} from "../../id-document.pipe";
 import {IdDocumentTypePipe} from "../../id-document-type.pipe";

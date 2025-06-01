@@ -10,7 +10,7 @@ import {
   Validators
 } from "@angular/forms";
 import {ScoutService} from "../../services/scout.service";
-import {Scout, ScoutContact} from "../../models/member.model";
+import {Scout, ScoutContact} from "../../models/scout.model";
 import {finalize} from "rxjs";
 import {FloatLabel} from "primeng/floatlabel";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";

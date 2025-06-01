@@ -1,5 +1,5 @@
 import {Component, inject, input, OnInit, output} from '@angular/core';
-import {RegistrationDate, Scout, ScoutInfo, ScoutType} from "../../models/member.model";
+import {RegistrationDate, Scout, ScoutInfo, ScoutType} from "../../models/scout.model";
 import {FloatLabel} from "primeng/floatlabel";
 import {
   AbstractControl,
@@ -22,7 +22,7 @@ import {NgClass} from "@angular/common";
 import {Button} from "primeng/button";
 import {DatePicker} from "primeng/datepicker";
 import {DateUtils} from "../../../../shared/util/date-utils";
-import {ScoutInfoForm} from "../../models/member-form.model";
+import {ScoutInfoForm} from "../../models/scout-form.model";
 import {finalize} from "rxjs";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {ScoutService} from "../../services/scout.service";

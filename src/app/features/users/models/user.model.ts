@@ -1,5 +1,5 @@
 import {Role} from "./role.model";
-import {OldScout} from "../../scouts/models/scout.model";
+import {UserScout} from "../../scouts/models/scout.model";
 
 export interface User {
   id?: string;
@@ -7,6 +7,6 @@ export interface User {
   password: string;
   enabled: boolean;
   roles: Role[];
-  scoutList?: OldScout[];
+  scoutList?: UserScout[];
   groupName?: string;
 }

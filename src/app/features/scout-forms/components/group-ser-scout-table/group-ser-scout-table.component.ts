@@ -6,8 +6,6 @@ import {AssignPreScoutFormComponent} from "../assign-pre-scout-form/assign-pre-s
 import {PreScoutAssignation} from "../../models/pre-scout-assignation.model";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {statuses, statusIsRejected, statusIsSaveAsScout, statusIsValidForSaving} from "../../models/satus.model";
-import {ScoutFormComponent} from "../../../scouts/components/scout-form/scout-form.component";
-import {noop} from "rxjs";
 import {FilterService} from "primeng/api";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {StatusPipe} from '../../../../shared/pipes/status.pipe';
@@ -92,8 +90,7 @@ export class GroupSerScoutTableComponent implements OnInit {
 
   private saveAssignation(preScoutAssignation: PreScoutAssignation, preScout: PreScout) {
     if (statusIsSaveAsScout(preScoutAssignation.status)) {
-      this.ref = this.dialogService.openDialog(ScoutFormComponent, 'Añadir Persona Educanda', "medium", {scoutFromPreScout: preScout});
-      this.ref.onClose.subscribe(saved => saved ? this.getAssignedInscriptions() : noop());
+      //open form
     } else if (statusIsValidForSaving(preScoutAssignation.status)) {
       this.loading = true;
       this.preScoutService.updatePreScoutAssignation(preScoutAssignation).subscribe({

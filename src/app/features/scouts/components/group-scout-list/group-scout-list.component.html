@@ -14,17 +14,16 @@
         styleClass="p-togglebutton"
         variant="outlined"
         title="Sin Autorización de Imagen"
-        (onClick)="openImageAuthDialog()"
       ></p-button>
     </div>
   </div>
   <p-table
     #dt
     showGridlines
-    [value]="showAll ? scouts! : groupScouts"
+    [value]="scouts!"
     responsiveLayout="scroll"
     sortField="surname"
-    [loading]="showAll ? loading: !groupScouts"
+    [loading]="!scouts"
     selectionMode="single"
   >
     <ng-template pTemplate="caption">
@@ -89,7 +88,7 @@
     <ng-template pTemplate="body" let-scout>
       <tr [ngClass]="{'no-user': !scout.userAssigned}" pSelectableRow [routerLink]="scout.id">
         <td>
-          {{ scout.surname }}, {{ scout.name }}
+          {{ scout.personalData.surname }}, {{ scout.personalData.name }}
         </td>
         <td>
           {{ showAll ? (scout.group.name) : (currentYear - +(scout.birthday | date: "y")! | scoutYear:userGroup?.id) }}
@@ -110,24 +109,7 @@
       </tr>
     </ng-template>
   </p-table>
-  @if (!showAll && groupScouts && groupScouts.length < 1) {
+  @if (!showAll && scouts!.length < 1) {
     No se han encontrado educandas
   }
 </div>
-<p-dialog
-  header="Educandas sin autorización de imágenes"
-  [(visible)]="showDialog"
-  [draggable]="false"
-  [resizable]="false"
-  styleClass="basic-dialog"
-  [modal]="true"
->
-  <p>
-    Educandas sin autorización de imágenes:
-  </p>
-  <ul>
-    @for (scout of noImageScouts; track $index) {
-      <li>{{ scout.name }} {{ scout.surname }} ({{ scout.group.name }})</li>
-    }
-  </ul>
-</p-dialog>

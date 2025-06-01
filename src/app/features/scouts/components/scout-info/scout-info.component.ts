@@ -5,7 +5,7 @@ import {ScoutService} from "../../services/scout.service";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {Tag} from "primeng/tag";
 import {Button} from "primeng/button";
-import {Scout} from "../../models/member.model";
+import {Scout} from "../../models/scout.model";
 import {PersonalDataComponent} from "../personal-data/personal-data.component";
 import {PersonalDataFormComponent} from "../personal-data-form/personal-data-form.component";
 import {AlertService} from "../../../../shared/services/alert-service.service";

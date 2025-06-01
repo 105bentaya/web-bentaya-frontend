@@ -3,7 +3,7 @@ import {Button} from "primeng/button";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
-import {ScoutRecord} from "../../../scouts/models/member.model";
+import {ScoutRecord} from "../../../scouts/models/scout.model";
 import {noop} from "rxjs";
 import {assign} from "lodash";
 import {SpecialMemberDonation} from "../../models/special-member.model";

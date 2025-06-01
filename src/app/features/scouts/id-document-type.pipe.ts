@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {IdentificationDocument} from "./models/member.model";
+import {IdentificationDocument} from "./models/scout.model";
 
 @Pipe({
   name: 'idDocumentType'

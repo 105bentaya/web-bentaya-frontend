@@ -1,5 +1,5 @@
 import {Component, inject, input, OnInit, output} from '@angular/core';
-import {BloodType, InsuranceHolder, Scout} from "../../models/member.model";
+import {BloodType, InsuranceHolder, Scout} from "../../models/scout.model";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormTextAreaComponent} from "../../../../shared/components/form-text-area/form-text-area.component";
 import {FormHelper} from "../../../../shared/util/form-helper";
@@ -20,7 +20,7 @@ import {InputGroupAddon} from "primeng/inputgroupaddon";
 import {Button} from "primeng/button";
 import ScoutHelper from "../../scout.util";
 import {idTypes} from "../../../../shared/constant";
-import {ScoutMedicalForm} from "../../models/member-form.model";
+import {ScoutMedicalForm} from "../../models/scout-form.model";
 import {ScoutService} from "../../services/scout.service";
 import {finalize} from "rxjs";
 

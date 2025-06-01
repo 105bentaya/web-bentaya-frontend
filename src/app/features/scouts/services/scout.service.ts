@@ -1,10 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {OldScout} from "../models/scout.model";
 import {environment} from "../../../../environments/environment";
-import {ScoutUsernamesUpdate} from "../models/scout-usernames-update.model";
-import {EconomicEntry, Scout, ScoutFile, ScoutRecord} from "../models/member.model";
+import {EconomicEntry, Scout, ScoutFile, ScoutRecord, UserScout} from "../models/scout.model";
 import {FileType, FileUtils} from "../../../shared/util/file.utils";
 import {
   EconomicDataForm,
@@ -13,7 +11,7 @@ import {
   ScoutContactForm,
   ScoutInfoForm,
   ScoutMedicalForm
-} from "../models/member-form.model";
+} from "../models/scout-form.model";
 
 @Injectable({
   providedIn: 'root'
@@ -23,59 +21,12 @@ export class ScoutService {
   private readonly http = inject(HttpClient);
   private readonly scoutUrl = `${environment.apiUrl}/scout`;
 
-  getAll(): Observable<OldScout[]> {
-    return this.http.get<OldScout[]>(this.scoutUrl);
+  getAll(): Observable<Scout[]> {
+    return this.http.get<Scout[]>(this.scoutUrl);
   }
 
-  getAllAndDisabled(): Observable<OldScout[]> {
-    return this.http.get<OldScout[]>(`${this.scoutUrl}/all`);
-  }
-
-  getAllWithoutImageAuthorization(): Observable<OldScout[]> {
-    return this.http.get<OldScout[]>(`${this.scoutUrl}/image`);
-  }
-
-  getAllByCurrentGroup(): Observable<OldScout[]> {
-    return this.http.get<OldScout[]>(`${this.scoutUrl}/group`);
-  }
-
-  getAllByCurrentUser(): Observable<OldScout[]> {
-    return this.http.get<OldScout[]>(`${this.scoutUrl}/user`);
-  }
-
-  getScoutUsernames(scoutId: number): Observable<string[]> {
-    return this.http.get<string[]>(`${this.scoutUrl}/scout-form/${scoutId}`);
-  }
-
-  updateScoutUsers(scoutId: number, users: string[]) {
-    return this.http.put(`${this.scoutUrl}/scout-form/${scoutId}`, users.map(user => user.toLowerCase()));
-  }
-
-  getScoutUsernamesUpdateInfo(newUsernames: string[], scoutId?: number): Observable<ScoutUsernamesUpdate> {
-    const params: any = {};
-    if (scoutId) params.scoutId = scoutId;
-    if (newUsernames) params.usernames = newUsernames.map(user => user.toLowerCase());
-    return this.http.get<ScoutUsernamesUpdate>(`${this.scoutUrl}/scout-form-usernames`, {params});
-  }
-
-  save(scout: OldScout): Observable<OldScout> {
-    return this.http.post<OldScout>(this.scoutUrl, scout);
-  }
-
-  saveFromPreScout(scout: OldScout, id: number): Observable<OldScout> {
-    return this.http.post<OldScout>(`${this.scoutUrl}/${id}`, scout);
-  }
-
-  update(scout: OldScout): Observable<OldScout> {
-    return this.http.put<OldScout>(this.scoutUrl, scout);
-  }
-
-  disable(scout: OldScout) {
-    return this.http.delete(`${this.scoutUrl}/disable/${scout.id}`);
-  }
-
-  delete(scout: OldScout) {
-    return this.http.delete(`${this.scoutUrl}/delete/${scout.id}`);
+  getAllByCurrentUser(): Observable<UserScout[]> {
+    return this.http.get<UserScout[]>(`${this.scoutUrl}/user`);
   }
 
   //new

@@ -6,7 +6,6 @@ import {map, Observable} from 'rxjs';
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {UserService} from '../../services/user.service';
 import {BasicGroupInfo} from "../../../../shared/model/group.model";
-import {OldScout} from "../../../scouts/models/scout.model";
 import {ScoutService} from "../../../scouts/services/scout.service";
 import {roles} from "../../models/role.model";
 import {SelectModule} from 'primeng/select';
@@ -22,6 +21,7 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
 import {UserForm} from "../../models/user-form.model";
 import {FloatLabel} from "primeng/floatlabel";
 import {GroupService} from "../../../../shared/services/group.service";
+import {Scout} from "../../../scouts/models/scout.model";
 
 @Component({
   selector: 'app-user-form',
@@ -53,7 +53,7 @@ export class UserFormComponent implements OnInit {
 
   protected readonly roles = roles;
   protected userForm = new FormHelper();
-  protected scouts!: OldScout[];
+  protected scouts!: Scout[];
   protected groups!: BasicGroupInfo[];
   protected user!: UserForm;
   protected loading = false;
@@ -134,6 +134,7 @@ export class UserFormComponent implements OnInit {
   }
 
   private getScouts() {
+    //todo paginate
     return this.scoutService.getAll().pipe(
       map(result => this.scouts = result)
     );

@@ -1,4 +1,4 @@
-import {IdentificationDocument, PersonType} from "../../scouts/models/member.model";
+import {IdentificationDocument, PersonType} from "../../scouts/models/scout.model";
 
 export interface SpecialMember {
   id: number;

@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {ScoutFile, ScoutRecord} from "../../models/member.model";
+import {ScoutFile, ScoutRecord} from "../../models/scout.model";
 import {Button} from "primeng/button";
 import {DatePipe} from "@angular/common";
 import {TableModule} from "primeng/table";

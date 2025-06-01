@@ -12,8 +12,8 @@ import {FormTextAreaComponent} from "../../../../shared/components/form-text-are
 import {InputNumber} from "primeng/inputnumber";
 import {InputText} from "primeng/inputtext";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
-import {EconomicEntry} from "../../models/member.model";
-import {EconomicEntryForm} from "../../models/member-form.model";
+import {EconomicEntry} from "../../models/scout.model";
+import {EconomicEntryForm} from "../../models/scout-form.model";
 import {ScoutService} from "../../services/scout.service";
 
 @Component({
