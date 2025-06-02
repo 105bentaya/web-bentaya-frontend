@@ -1,8 +1,8 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {DatePipe} from "@angular/common";
 import {MultiSelect} from "primeng/multiselect";
 import {MenuItem, PrimeTemplate} from "primeng/api";
-import {Table, TableLazyLoadEvent, TableModule} from "primeng/table";
+import {TableLazyLoadEvent, TableModule} from "primeng/table";
 import {RouterLink} from "@angular/router";
 import {BasicGroupInfo} from "../../../../../shared/model/group.model";
 import {FormsModule} from "@angular/forms";
@@ -19,7 +19,6 @@ import {noop} from "rxjs";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import FilterUtils from "../../../../../shared/util/filter-utils";
 import {DatePicker} from "primeng/datepicker";
-import {DateUtils} from "../../../../../shared/util/date-utils";
 import {LoggedUserDataService} from "../../../../../core/auth/services/logged-user-data.service";
 
 @Component({
@@ -45,11 +44,12 @@ export class OwnBookingListComponent implements OnInit {
   private readonly bookingService = inject(BookingService);
   private readonly dialogService = inject(DynamicDialogService);
   private readonly bookingManagement = inject(BookingManagementService);
+
+  protected readonly FilterUtils = FilterUtils;
   protected readonly statusesOptions = bookingStatuses.filter(status => status.value !== "NEW");
 
   protected loading = false;
   protected totalRecords: number = 0;
-  protected dateRange: Date[] | undefined;
 
   protected bookings!: Booking[];
 
@@ -57,7 +57,6 @@ export class OwnBookingListComponent implements OnInit {
   protected selectedGroups: number[];
   protected centers!: MenuItem[];
   private lastFilterEvent!: TableLazyLoadEvent;
-  @ViewChild("tab") private readonly table!: Table;
 
   constructor() {
     const userGroupId = inject(LoggedUserDataService).getGroup()?.id;
@@ -84,15 +83,5 @@ export class OwnBookingListComponent implements OnInit {
         this.loading = false;
       }
     });
-  }
-
-  protected filterDates() {
-    if (this.dateRange?.[0] && this.dateRange?.[1]) {
-      const startDate = DateUtils.toLocalDateTime(this.dateRange[0]);
-      const endDate = DateUtils.toLocalDateTime(this.dateRange[1]);
-      this.table.filter([startDate, endDate], "filterDates", "custom");
-    } else {
-      this.table.filter(null, "filterDates", "custom");
-    }
   }
 }

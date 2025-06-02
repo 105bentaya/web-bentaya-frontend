@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-12 col-sm-6 d-flex flex-column">
     <b class="fs-5 title-font">Datos básicos</b>
-    <app-basic-info label="Rama" [value]="section | titlecase"/>
-    <app-basic-info label="Unidad" [value]="group" [hideIfNull]="true"/>
+    <app-basic-info label="Rama" [value]="scoutInfo | scoutSection"/>
+    <app-basic-info label="Unidad" [value]="scoutInfo | scoutGroup" [hideIfNull]="true"/>
     <app-basic-info label="Sección" [value]="scoutInfo.section"/>
     <app-basic-info label="Censo" [value]="scoutInfo.census | census"/>
     <app-basic-info label="Estado asociativo" [value]="scoutInfo.active ? 'Alta' : 'Baja'"/>

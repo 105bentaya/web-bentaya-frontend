@@ -1,5 +1,5 @@
 import {Component, inject, input} from '@angular/core';
-import {ScoutPersonalData, Scout, ScoutFile} from '../../../models/scout.model';
+import {Scout, ScoutFile, ScoutPersonalData} from '../../../models/scout.model';
 import {BasicInfoComponent} from "../../basic-info/basic-info.component";
 import {DatePipe} from "@angular/common";
 import {IdDocumentPipe} from "../../../id-document.pipe";
@@ -8,6 +8,7 @@ import {DocumentListComponent} from "../../document-list/document-list.component
 import {AgePipe} from "../../../age.pipe";
 import {ScoutService} from "../../../services/scout.service";
 import {Observable} from "rxjs";
+import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
 
 @Component({
   selector: 'app-personal-data',
@@ -18,7 +19,7 @@ import {Observable} from "rxjs";
     IdDocumentTypePipe,
     DocumentListComponent,
     AgePipe,
-
+    BooleanPipe
   ],
   templateUrl: './personal-data.component.html',
   styleUrl: './personal-data.component.scss'

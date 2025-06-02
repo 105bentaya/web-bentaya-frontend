@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {EconomicEntry, Scout, ScoutFile, ScoutRecord, UserScout} from "../models/scout.model";
@@ -12,6 +12,10 @@ import {
   ScoutInfoForm,
   ScoutMedicalForm
 } from "../models/scout-form.model";
+import {PagedFilter} from "../../../shared/model/filter.model";
+import {Page} from "../../../shared/model/page.model";
+
+export type ScoutQuickFilter = "GROUP" | "ALL" | "IMAGE";
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +24,17 @@ export class ScoutService {
 
   private readonly http = inject(HttpClient);
   private readonly scoutUrl = `${environment.apiUrl}/scout`;
+  private scoutListFilter!: ScoutQuickFilter;
 
-  getAll(): Observable<Scout[]> {
-    return this.http.get<Scout[]>(this.scoutUrl);
+  set lastFilter(value: ScoutQuickFilter) {
+    this.scoutListFilter = value;
+  }
+  get lastFilter(): ScoutQuickFilter {
+    return this.scoutListFilter;
+  }
+
+  getAllFiltered(filter: PagedFilter): Observable<Page<Scout>> {
+    return this.http.get<Page<Scout>>(this.scoutUrl, {params: new HttpParams({fromObject: filter})});
   }
 
   getAllByCurrentUser(): Observable<UserScout[]> {

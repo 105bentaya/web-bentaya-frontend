@@ -88,12 +88,12 @@
             </th>
             <th>
               <p-date-picker
+                #dp
                 selectionMode="range"
                 styleClass="w-100 fw-normal"
                 appendTo="body"
-                [(ngModel)]="dateRange"
-                (onClose)="filterDates();"
-                (onClear)="filterDates()"
+                (onClose)="FilterUtils.filterDateTimes(tab, dp.value)"
+                (onClear)="FilterUtils.filterDateTimes(tab)"
                 readonlyInput
                 showClear
               ></p-date-picker>

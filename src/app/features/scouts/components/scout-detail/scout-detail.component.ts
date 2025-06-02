@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {TabsModule} from "primeng/tabs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ScoutService} from "../../services/scout.service";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {Tag} from "primeng/tag";
@@ -18,6 +18,8 @@ import {GroupDataComponent} from "../scout-detail-tabs/group-data/group-data.com
 import {Location} from "@angular/common";
 import {EconomicDataComponent} from "../scout-detail-tabs/economic-data/economic-data.component";
 import {EconomicDataFormComponent} from "../scout-detail-forms/economic-data-form/economic-data-form.component";
+import {CensusPipe} from "../../census.pipe";
+import {AgePipe} from "../../age.pipe";
 
 @Component({
   selector: 'app-scout-detail',
@@ -37,17 +39,31 @@ import {EconomicDataFormComponent} from "../scout-detail-forms/economic-data-for
     GroupDataFormComponent,
     GroupDataComponent,
     EconomicDataComponent,
-    EconomicDataFormComponent
+    EconomicDataFormComponent,
+    CensusPipe,
+    AgePipe
   ]
 })
 export class ScoutDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly scoutService = inject(ScoutService);
   private readonly alertService = inject(AlertService);
   protected readonly location = inject(Location);
 
   protected scout!: Scout;
   protected editing: boolean = false;
+  protected selectedTab: number;
+
+  constructor() {
+    const queryParam = +this.route.snapshot.queryParams['tab'];
+    if (queryParam >= 0 && queryParam <= 7) {
+      this.selectedTab = +queryParam;
+    } else {
+      this.selectedTab = 0;
+      this.updateQueryParam(this.selectedTab);
+    }
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
@@ -64,5 +80,9 @@ export class ScoutDetailComponent implements OnInit {
       this.scout = updatedMember;
     }
     this.editing = false;
+  }
+
+  updateQueryParam(tab: number | string) {
+    this.router.navigate([], {queryParams: {tab}, replaceUrl: true});
   }
 }

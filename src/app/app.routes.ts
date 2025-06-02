@@ -96,7 +96,13 @@ export const routes: Routes = [
     path: "educandas",
     loadComponent: () => import('./features/scouts/components/scout-list/scout-list.component').then(c => c.ScoutListComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.ADMIN]}
+    data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+  },
+  {
+    path: "educandas/:id",
+    loadComponent: () => import('./features/scouts/components/scout-detail/scout-detail.component').then(c => c.ScoutDetailComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
   },
   {
     path: "registros",
@@ -117,18 +123,6 @@ export const routes: Routes = [
     data: {roles: [UserRole.ADMIN]}
   },
   //Unidad
-  {
-    path: "unidad/educandas",
-    loadComponent: () => import('./features/scouts/components/group-scout-list/group-scout-list.component').then(c => c.GroupScoutListComponent),
-    canActivate: [authGuard],
-    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
-  },
-  {
-    path: "unidad/educandas/:id",
-    loadComponent: () => import('./features/scouts/components/scout-info/scout-info.component').then(c => c.ScoutInfoComponent),
-    canActivate: [authGuard],
-    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
-  },
   {
     path: "unidad/asistencias",
     loadComponent: () => import('./features/attendance/components/scouter-attendance-list/scouter-attendance-list.component').then(c => c.ScouterAttendanceListComponent),

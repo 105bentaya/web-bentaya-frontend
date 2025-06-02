@@ -53,12 +53,12 @@
       <tr>
         <th scope="col">
           <p-date-picker
+            #dp
             selectionMode="range"
             styleClass="w-100 fw-normal"
             appendTo="body"
-            [(ngModel)]="dateRange"
-            (onClose)="filterDates()"
-            (onClear)="filterDates()"
+            (onClose)="FilterUtils.filterDates(dt, dp.value)"
+            (onClear)="FilterUtils.filterDates(dt)"
             readonlyInput
             showClear
           ></p-date-picker>

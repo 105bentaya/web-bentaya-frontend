@@ -5,11 +5,11 @@ import {UserRole} from "../../features/users/models/role.model";
 const calendar = {label: "Calendario", icon: "pi pi-calendar", route: "/calendario"};
 const userScoutData = {label: "Datos", icon: "pi pi-id-card", route: "/datos"};
 const userAttendanceList = {label: 'Asistencia', icon: "pi pi-check-circle", route: "/asistencias"};
-const groupScoutList = {label: "Educandas", icon: "pi pi-users", route: "/unidad/educandas", category: "Unidad"};
+const groupScoutList = {label: "Educandas", icon: "pi pi-users", route: "/educandas", category: "Unidad"};
 const groupAttendanceList = {label: "Listas de Asistencia", icon: "pi pi-list-check", route: "/unidad/asistencias", category: "Unidad"};
 const groupInscriptions = {label: "Preinscripciones", icon: "pi pi-folder", route: "/unidad/preinscripciones", category: "Unidad"};
 const invoiceList = {label: "Facturas", icon: "pi pi-receipt", route: "/facturas", category: "Gestión de Grupo"};
-const generalScoutList = {label: "Educandas", icon: "pi pi-users", route: "/unidad/educandas", category: "Gestión de Grupo"};
+const generalScoutList = {label: "Educandas", icon: "pi pi-users", route: "/educandas", category: "Gestión de Grupo"};
 const groupBookings = {label: "Centros Scout", icon: "fa-solid fa-tents", route: "/centros-scout/grupo", category: "Gestión de Grupo"};
 const scoutCenterRequester = {label: "Mis Reservas", icon: "pi pi-compass", route: "/centros-scout/seguimiento"};
 const scoutCenterManager = {label: "Gestión de Reservas", icon: "fa-solid fa-tents", route: "/centros-scout/gestion", category: "Centros Scout"};
@@ -20,7 +20,7 @@ const jamboreeInscriptions = {label: "Jamboree", icon: "fa-solid fa-earth", rout
 const volunteers = {label: "Voluntariado", icon: "pi pi-heart", route: "/voluntariado", category: "Gestión de Grupo"};
 const senior = {label: "Sección Sénior", icon: "fa-solid fa-hat-cowboy", route: "/seccion-senior/lista", category: "Gestión de Grupo"};
 const userList = {label: "Usuarios", icon: "pi pi-database", route: "/usuarios", category: "Administración"};
-const scoutList = {label: "Educandas", icon: "pi pi-server", route: "/educandas", category: "Administración"};
+const adminScoutList = {label: "Educandas", icon: "pi pi-users", route: "/educandas", category: "Administración"};
 const specialMemberList = {label: "Registros", icon: "fa fa-award", route: "/registros", category: "Administración"};
 const settings = {label: "Ajustes", icon: "pi pi-cog", route: "/ajustes", category: "Administración"};
 
@@ -55,7 +55,10 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(inscriptions, volunteers, senior, jamboreeInscriptions);
   }
   if (user.hasRequiredPermission(UserRole.ADMIN)) {
-    menuItems.push(userList, scoutList, specialMemberList, settings);
+    if (!user.hasRequiredPermission(UserRole.GROUP_SCOUTER, UserRole.SCOUTER)) {
+      menuItems.push(adminScoutList);
+    }
+    menuItems.push(userList, specialMemberList, settings);
   }
 
   return filter([...new Set(menuItems)]);

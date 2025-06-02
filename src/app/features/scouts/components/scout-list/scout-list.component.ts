@@ -1,22 +1,32 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, viewChild} from '@angular/core';
 import {ScoutService} from "../../services/scout.service";
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {ConfirmationService, FilterService} from "primeng/api";
-import {AlertService} from "../../../../shared/services/alert-service.service";
-import {BasicGroupInfo} from "../../../../shared/model/group.model";
-import {ExcelService} from "../../../../shared/services/excel.service";
+import {DialogService} from "primeng/dynamicdialog";
+import {FilterMetadata, SelectItem} from "primeng/api";
+import {BasicGroupInfo, Section} from "../../../../shared/model/group.model";
 import FilterUtils from "../../../../shared/util/filter-utils";
-import {MultiSelectModule} from 'primeng/multiselect';
+import {MultiSelect} from 'primeng/multiselect';
 import {InputTextModule} from 'primeng/inputtext';
-import {TableModule} from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
-import {
-  TableIconButtonComponent
-} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {GroupService} from "../../../../shared/services/group.service";
-import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
-import {Scout} from "../../models/scout.model";
+import {Scout, ScoutType} from "../../models/scout.model";
+import {DatePipe, NgClass, TitleCasePipe} from "@angular/common";
+import {ScoutYearPipe} from "../../../../shared/pipes/scout-year.pipe";
+import {SelectButtonModule} from "primeng/selectbutton";
+import {FormsModule} from "@angular/forms";
+import {RouterLink} from "@angular/router";
+import {SettingsService} from "../../../settings/settings.service";
+import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
+import {finalize} from "rxjs";
+import {CensusPipe} from "../../census.pipe";
+import {ScoutGroupPipe} from "../../scout-group.pipe";
+import {IdDocumentPipe} from "../../id-document.pipe";
+import {SettingType} from "../../../settings/setting.model";
+import {ScoutSectionPipe} from "../../scout-section.pipe";
+import {PagedFilter} from "../../../../shared/model/filter.model";
+import {DatePicker} from "primeng/datepicker";
+import {genders} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-scout-list',
@@ -24,52 +34,137 @@ import {Scout} from "../../models/scout.model";
   styleUrls: ['scout-list.component.scss'],
   providers: [DialogService, DynamicDialogService],
   imports: [
+    SelectButtonModule,
+    FormsModule,
     TableModule,
     InputTextModule,
-    MultiSelectModule,
+    NgClass,
+    DatePipe,
+    ScoutYearPipe,
     Button,
-    TableIconButtonComponent,
-    BooleanPipe
+    RouterLink,
+    MultiSelect,
+    CensusPipe,
+    ScoutGroupPipe,
+    IdDocumentPipe,
+    ScoutSectionPipe,
+    TitleCasePipe,
+    DatePicker
   ]
 })
 
 export class ScoutListComponent implements OnInit {
   private readonly scoutService = inject(ScoutService);
-  private readonly dialogService = inject(DynamicDialogService);
-  private readonly confirmationService = inject(ConfirmationService);
-  private readonly filterService = inject(FilterService);
-  private readonly alertService = inject(AlertService);
-  private readonly excelService = inject(ExcelService);
+  private readonly settingService = inject(SettingsService);
   protected readonly groupService = inject(GroupService);
 
-  protected scouts!: Scout[];
-  protected loading = false;
-  private ref!: DynamicDialogRef;
-  protected groups!: BasicGroupInfo[];
-  protected excelLoading = false;
+  protected readonly FilterUtils = FilterUtils;
+  protected readonly genders = genders;
+  protected readonly sections: ({ label: string; value: Section })[] = [
+    {label: "Castores", value: "CASTORES"},
+    {label: "Lobatos", value: "LOBATOS"},
+    {label: "Scouts", value: "SCOUTS"},
+    {label: "Escultas", value: "ESCULTAS"},
+    {label: "Rovers", value: "ROVERS"},
+    {label: "Scouters", value: "SCOUTERS"},
+    {label: "Scoutsupport", value: "SCOUTSUPPORT"},
+  ];
 
-  ngOnInit() {
-    this.groupService.getBasicGroups({uppercase: true}).subscribe(groups => this.groups = groups);
-    this.getScouts();
+  protected groups!: BasicGroupInfo[];
+  protected quickFilters: SelectItem[] = [];
+
+  protected userGroup: BasicGroupInfo | undefined = inject(LoggedUserDataService).getGroup();
+  protected currentYear!: number;
+
+  protected selectedFilter: "GROUP" | "ALL" | "IMAGE";
+  protected excelLoading = false;
+  protected initialFilter: { [s: string]: FilterMetadata };
+
+  table = viewChild.required(Table);
+  protected scouts!: Scout[];
+  protected loading = true;
+  protected totalRecords!: number;
+
+  constructor() {
+    this.quickFilters = [{label: 'Grupo', value: "ALL"}, {label: 'Sin Imagen', value: "IMAGE"}];
+    if (this.userGroup) {
+      this.quickFilters.unshift({label: this.userGroup.name, value: "GROUP"});
+      this.selectedFilter = "GROUP";
+    } else {
+      this.selectedFilter = "ALL";
+    }
+
+    const lastFilter = this.scoutService.lastFilter;
+    if (lastFilter) {
+      this.selectedFilter = lastFilter;
+    }
+
+    if (this.selectedFilter === "GROUP") {
+      this.initialFilter = {groupIds: {value: [this.userGroup!.id]}};
+    } else {
+      this.initialFilter = {};
+    }
   }
 
-  private getScouts() {
-    this.scoutService.getAll().subscribe({
-      next: scouts => {
-        this.scouts = scouts;
-        this.filterService.register("name-surname-filter", FilterUtils.nameSurnameFilter(this.scouts));
-      }
-    });
+  ngOnInit() {
+    this.settingService.getByName(SettingType.CURRENT_YEAR).subscribe(setting => this.currentYear = +setting.value);
+    this.groupService.getBasicGroups({allGroups: true}).subscribe(groups => this.groups = groups);
+  }
+
+  protected selectButtonChange() {
+    this.scoutService.lastFilter = this.selectedFilter;
+
+    if (this.selectedFilter === "GROUP") {
+      this.table().filter([this.userGroup!.id], 'groupIds', 'custom');
+      this.table().filter([], 'sections', 'custom');
+    } else {
+      this.table().filter([], 'groupIds', 'custom');
+    }
+
+    if (this.selectedFilter === "IMAGE") {
+      this.table().filter(false, 'imageAuthorization', 'custom');
+    } else {
+      this.table().filter(null, 'imageAuthorization', 'custom');
+    }
+  }
+
+  protected loadData(tableLazyLoadEvent: any) {
+    this.loading = true;
+    this.scoutService.getAllFiltered(this.getFilter(tableLazyLoadEvent))
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(result => {
+        this.scouts = result.data;
+        this.totalRecords = result.count;
+      });
+  }
+
+  private getFilter(tableLazyLoadEvent: any): PagedFilter {
+    const groupFilter = tableLazyLoadEvent.filters.groupIds;
+    if (groupFilter) {
+      const realGroupFilter: number[] = groupFilter.value.filter((id: number) => id > 0);
+      const sectionFilter: ScoutType[] = groupFilter.value.filter((id: number) => id < 1).map((id: number) => {
+        if (id === -1) {
+          return "SCOUTER";
+        } else if (id === -2) {
+          return "COMMITTEE";
+        } else if (id === -3) {
+          return "MANAGER";
+        } else {
+          return "INACTIVE";
+        }
+      });
+      groupFilter.value = realGroupFilter;
+      tableLazyLoadEvent.filters.groupScoutTypes = {value: sectionFilter};
+    }
+
+    return FilterUtils.lazyEventToFilter(tableLazyLoadEvent);
   }
 
   protected exportExcelScout() {
-    this.excelLoading = true;
-    // todo
-    // this.excelService.exportAsExcel(
-    //   ScoutHelper.generateData(this.scouts, true),
-    //   ScoutHelper.generateExcelColumns(this.scouts, true),
+    // todo excel this.excelService.exportAsExcel(
+    //   ScoutHelper.generateData(this.scouts!, true),
+    //   ScoutHelper.generateExcelColumns(this.scouts!, true),
     //   "educandas"
     // );
-    this.excelLoading = false;
   }
 }

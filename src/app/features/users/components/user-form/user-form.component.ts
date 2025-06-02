@@ -15,7 +15,6 @@ import {InputTextModule} from 'primeng/inputtext';
 import {RolePipe} from "../../../../shared/pipes/role.pipe";
 import {RolesPipe} from "../../../../shared/pipes/roles.pipe";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
-import {JoinPipe} from "../../../../shared/pipes/join.pipe";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {UserForm} from "../../models/user-form.model";
@@ -36,7 +35,6 @@ import {Scout} from "../../../scouts/models/scout.model";
     RolePipe,
     SelectModule,
     DatePipe,
-    JoinPipe,
     SaveButtonsComponent,
     BasicLoadingInfoComponent,
     FloatLabel
@@ -135,8 +133,15 @@ export class UserFormComponent implements OnInit {
 
   private getScouts() {
     //todo paginate
-    return this.scoutService.getAll().pipe(
-      map(result => this.scouts = result)
+    return this.scoutService.getAllFiltered({
+      page: 0,
+      countPerPage: 0
+    }).pipe(
+      map(result => this.scouts = result.data)
     );
+  }
+
+  protected selectedScoutName(value: number[]) {
+    return this.scouts.filter(scout => scout.id in value).map(scout => scout.personalData.name).join(", ");
   }
 }

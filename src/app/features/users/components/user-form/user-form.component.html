@@ -77,7 +77,6 @@
                   id="scoutIds"
                   [options]="scouts"
                   formControlName="scoutIds"
-                  optionLabel="name"
                   optionValue="id"
                   [loading]="!scouts"
                 >
@@ -86,7 +85,7 @@
                   </ng-template>
                   <ng-template let-value pTemplate="selectedItems">
                     @if (value) {
-                      <div class="overflow-ellipsis">{{ value | join:'name' }}</div>
+                      <div class="overflow-ellipsis">{{ selectedScoutName(value) }}</div>
                     }
                   </ng-template>
                 </p-multiSelect>

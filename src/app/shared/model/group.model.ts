@@ -11,4 +11,4 @@ export interface BasicGroupForm {
   order?: number;
 }
 
-export type Section = "CASTORES" | "LOBATOS" | "SCOUTS" | "ESCULTAS" | "ROVERS";
+export type Section = "CASTORES" | "LOBATOS" | "SCOUTS" | "ESCULTAS" | "ROVERS" | "SCOUTERS" | "SCOUTSUPPORT";

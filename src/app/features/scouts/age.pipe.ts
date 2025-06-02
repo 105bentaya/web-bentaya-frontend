@@ -5,7 +5,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class AgePipe implements PipeTransform {
 
-  transform(value: Date | undefined): string {
+  transform(value: Date | undefined, fullAge = true): string {
     if (!value) return "Sin especificar";
 
     const birth = new Date(value);
@@ -25,6 +25,6 @@ export class AgePipe implements PipeTransform {
       years--;
     }
 
-    return `${years} años ${months} meses ${days} días`;
+    return fullAge ? `${years} años ${months} meses ${days} días` : `${years} años`;
   }
 }

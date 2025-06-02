@@ -2,7 +2,7 @@ import {Component, inject, input} from '@angular/core';
 import {Scout, ScoutInfo, ScoutRecord} from "../../../models/scout.model";
 import {BasicInfoComponent} from "../../basic-info/basic-info.component";
 import {CensusPipe} from "../../../census.pipe";
-import {DatePipe, TitleCasePipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
 import {BasicInfoShowComponent} from "../../basic-info-show/basic-info-show.component";
 import {Tag} from "primeng/tag";
@@ -14,20 +14,23 @@ import {RecordInfoComponent} from "../record-info/record-info.component";
 import {noop} from "rxjs";
 import {SpecialRolePipe} from "../../../../special-member/special-role.pipe";
 import {RouterLink} from "@angular/router";
+import {ScoutGroupPipe} from "../../../scout-group.pipe";
+import {ScoutSectionPipe} from "../../../scout-section.pipe";
 
 @Component({
   selector: 'app-group-data',
   imports: [
     BasicInfoComponent,
     CensusPipe,
-    TitleCasePipe,
     BooleanPipe,
     DatePipe,
     BasicInfoShowComponent,
     Tag,
     TableModule,
     SpecialRolePipe,
-    RouterLink
+    RouterLink,
+    ScoutGroupPipe,
+    ScoutSectionPipe
   ],
   templateUrl: './group-data.component.html',
   styleUrl: './group-data.component.scss',
@@ -42,39 +45,6 @@ export class GroupDataComponent {
 
   protected get scoutInfo(): ScoutInfo {
     return this.scout().scoutInfo;
-  }
-
-  protected get section(): string | undefined {
-    const scoutInfo = this.scout().scoutInfo;
-    switch (scoutInfo.scoutType) {
-      case "SCOUT":
-        return scoutInfo.group!.section!;
-      case "SCOUTER":
-        return "Scouter";
-      case "COMMITTEE":
-      case "MANAGER":
-        return "Scoutsupport";
-      default:
-        return undefined;
-    }
-  }
-
-  protected get group(): string {
-    const scoutInfo = this.scout().scoutInfo;
-    switch (scoutInfo.scoutType) {
-      case "SCOUT":
-        return scoutInfo.group!.name;
-      case "SCOUTER":
-        return "Kraal";
-      case "COMMITTEE":
-        return "Almogaren";
-      case "MANAGER":
-        return "Tagoror";
-      case "INACTIVE":
-        return "Guatatiboa";
-      default:
-        return "-";
-    }
   }
 
   protected openRecordForm() {

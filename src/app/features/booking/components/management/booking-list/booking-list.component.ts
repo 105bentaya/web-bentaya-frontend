@@ -9,7 +9,6 @@ import FilterUtils from "../../../../../shared/util/filter-utils";
 import {InputText} from "primeng/inputtext";
 import {DatePicker} from "primeng/datepicker";
 import {FormsModule} from "@angular/forms";
-import {DateUtils} from "../../../../../shared/util/date-utils";
 import {castArray, pick} from "lodash";
 import {BookingManagementService} from "../../../service/booking-management.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
@@ -39,13 +38,14 @@ export class BookingListComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+
+  protected readonly FilterUtils = FilterUtils;
   protected readonly statusesOptions = bookingStatuses;
 
   protected bookings!: BookingInfo[];
   protected loading = true;
   protected totalRecords: number = 0;
 
-  protected dateRange: Date[] | undefined;
   protected centers!: MenuItem[];
   protected scoutCenterFilter: number[];
   protected statusFilter: string[];
@@ -73,16 +73,6 @@ export class BookingListComponent {
       }, error: () => this.loading = false
     });
     this.router.navigate([], {queryParams: pick(filter, ['scoutCenters', 'statuses']), replaceUrl: true});
-  }
-
-  protected filterDates() {
-    if (this.dateRange?.[0] && this.dateRange?.[1]) {
-      const startDate = DateUtils.toLocalDateTime(this.dateRange[0]);
-      const endDate = DateUtils.toLocalDateTime(this.dateRange[1]);
-      this.table.filter([startDate, endDate], "filterDates", "custom");
-    } else {
-      this.table.filter(null, "filterDates", "custom");
-    }
   }
 
   protected bookingRouterLink(id: number) {

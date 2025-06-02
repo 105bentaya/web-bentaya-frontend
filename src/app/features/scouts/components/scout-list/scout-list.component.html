@@ -1,24 +1,43 @@
 <div class="container-fluid">
-  <div class="d-flex justify-content-between align-items-end mb-3">
-    <h1 class="mb-0 d-flex me-3">Lista de personas educandas</h1>
+  <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+    <h1 class="mb-0">Lista de educandas</h1>
+    <div class="d-flex gap-2 ms-auto">
+      @if (userGroup) {
+        <p-selectButton
+          [options]="quickFilters"
+          [(ngModel)]="selectedFilter"
+          (onChange)="selectButtonChange()"
+          [allowEmpty]="false"
+          size="small"
+        />
+      }
+    </div>
   </div>
   <p-table
     #dt
-    showGridlines
+    responsiveLayout="scroll"
     [value]="scouts"
-    [paginator]="true"
-    [rows]="25"
+    [loading]="loading"
+    selectionMode="single"
+    showGridlines
+
+    paginator
+    [rows]="50"
     [rowsPerPageOptions]="[10,25,50,100,300]"
-    [loading]="!scouts"
-    sortField="surname"
-    [filters]="{enabled: { value: false, matchMode: 'notContains' }}"
+
+    lazy
+    (onLazyLoad)="loadData($event)"
+    [totalRecords]="totalRecords"
+
+    sortField="personalData.surname"
+    [filters]="initialFilter"
   >
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center">
-        <span>Número de personas educandas: {{ dt.totalRecords }}</span>
+        <span>Número de educandas: {{ dt.totalRecords }}</span>
         <p-button
-          [icon]="excelLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-excel'"
-          [disabled]="excelLoading"
+          icon="pi pi-file-excel"
+          [loading]="excelLoading"
           (click)="exportExcelScout()"
           severity="success"
           title="Descargar scouts como excel"
@@ -27,91 +46,161 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="surname">
+        <th pSortableColumn="personalDataSurname">
           Nombre
-          <p-sortIcon field="surname"></p-sortIcon>
+          <p-sortIcon field="personalDataSurname"></p-sortIcon>
         </th>
-        <th pSortableColumn="groupId">
-          Unidad
-          <p-sortIcon field="groupId"></p-sortIcon>
+        @if (selectedFilter !== 'GROUP') {
+          <th pSortableColumn="groupOrder">
+            Unidad
+            <p-sortIcon field="groupOrder"></p-sortIcon>
+          </th>
+          <th>Sección</th>
+        } @else {
+          <th pSortableColumn="personalData.birthday">
+            Año
+            <p-sortIcon field="personalData.birthday"></p-sortIcon>
+          </th>
+        }
+        <th pSortableColumn="personalDataBirthday">
+          Nacimiento
+          <p-sortIcon field="personalDataBirthday"></p-sortIcon>
         </th>
-        <th class="text-center w-min">
-          Baja
+        <th pSortableColumn="personalDataGender">
+          Género
+          <p-sortIcon field="personalDataGender"></p-sortIcon>
         </th>
-        <th class="text-center w-min">
-          Acciones
+        <th>DNI</th>
+        <th pSortableColumn="census">
+          Censo
+          <p-sortIcon field="census"></p-sortIcon>
         </th>
       </tr>
-      <tr class="input-max-width">
+      <tr>
         <th>
           <input
+            class="w-100"
             pInputText
-            type="text"
-            (input)="dt.filter($any($event.target).value, 'id', 'name-surname-filter')"/>
+            placeholder="Filtrar nombre y apellidos"
+            (input)="dt.filter($any($event.target).value, 'name', 'custom')"
+          >
+        </th>
+        @if (selectedFilter !== 'GROUP') {
+          <th>
+            <p-multiSelect
+              [options]="groups"
+              (onChange)="dt.filter($event.value, 'groupIds', 'custom')"
+              (onClear)="dt.filter(null, 'groupIds', 'custom')"
+              [showHeader]="false"
+              [autofocusFilter]="false"
+              [showClear]="true"
+              appendTo="body"
+              scrollHeight="300px"
+              optionLabel="name"
+              optionValue="id"
+              styleClass="w-100 fw-normal"
+              placeholder="Filtrar Unidad"
+            ></p-multiSelect>
+          </th>
+          <th>
+            <p-multiSelect
+              [options]="sections"
+              (onChange)="dt.filter($event.value, 'sections', 'custom')"
+              (onClear)="dt.filter(null, 'sections', 'custom')"
+              [showHeader]="false"
+              [autofocusFilter]="false"
+              [showClear]="true"
+              appendTo="body"
+              scrollHeight="300px"
+              styleClass="w-100 fw-normal"
+              placeholder="Filtrar Sección"
+            ></p-multiSelect>
+          </th>
+        } @else {
+          <th></th>
+        }
+        <th>
+          <p-date-picker
+            #dp
+            selectionMode="range"
+            styleClass="w-100 fw-normal"
+            appendTo="body"
+            (onClose)="FilterUtils.filterDates(dt, dp.value)"
+            (onClear)="FilterUtils.filterDates(dt)"
+            showClear
+            placeholder="Filtrar Fecha"
+          ></p-date-picker>
         </th>
         <th>
           <p-multiSelect
-            [options]="groups"
-            (onChange)="dt.filter($event.value, 'group.id', 'in')"
-            (onClear)="dt.filter(null, 'group.id', 'in')"
+            [options]="genders"
+            (onChange)="dt.filter($event.value, 'genders', 'custom')"
+            (onClear)="dt.filter(null, 'genders', 'custom')"
             [showHeader]="false"
             [autofocusFilter]="false"
             [showClear]="true"
             appendTo="body"
             scrollHeight="300px"
-            optionLabel="name"
-            optionValue="id"
             styleClass="w-100 fw-normal"
+            placeholder="Filtrar Género"
           ></p-multiSelect>
         </th>
-        <th class="text-center">
-          <p-columnFilter
-            type="boolean"
-            field="enabled"
-            matchMode="equals"
-            [showClearButton]="false"
-          ></p-columnFilter>
+        <th>
+          <input
+            class="w-100"
+            pInputText
+            placeholder="Filtrar DNI"
+            (input)="dt.filter($any($event.target).value, 'idDocument', 'custom')"
+          >
         </th>
-        <th></th>
+        <th>
+          <input
+            class="w-100"
+            pInputText
+            placeholder="Filtrar censo"
+            (input)="dt.filter($any($event.target).value, 'census', 'custom')"
+          >
+        </th>
       </tr>
     </ng-template>
-    <ng-template
-      pTemplate="body"
-      let-scout
-    >
-      <tr>
+    <ng-template pTemplate="body" let-scout>
+      <tr [ngClass]="{'no-user': !scout.userAssigned}" pSelectableRow [routerLink]="scout.id">
         <td>
-          {{ scout.surname }}, {{ scout.name }}
+          {{ scout.personalData.surname }}, {{ scout.personalData.feltName ?? scout.personalData.name }}
         </td>
+        @if (selectedFilter !== 'GROUP') {
+          <td>
+            {{ scout.scoutInfo | scoutGroup }}
+          </td>
+          <td>
+            {{ scout.scoutInfo | scoutSection | titlecase }}
+          </td>
+        } @else {
+          <td>
+            {{ currentYear - +(scout.personalData.birthday | date: "y")! | scoutYear:scout.scoutInfo }}
+          </td>
+        }
         <td>
-          {{ scout.group.name }}
-        </td>
-        <td class="text-center">
           <span>
-            {{ scout.enabled | boolean:true }}
+            {{ scout.personalData.birthday | date: "dd/MM/y" }}
           </span>
         </td>
         <td>
-          <div class="d-flex flex-row gap-2 justify-content-center">
-            @if (scout.enabled) {
-              <app-table-icon-button
-                icon="pi pi-user-edit"
-                title="Editar"
-              ></app-table-icon-button>
-            }
-            <app-table-icon-button
-              [disabled]="loading"
-              icon="pi pi-trash"
-              title="Eliminar"
-              severity="danger"
-            ></app-table-icon-button>
-          </div>
+          {{ scout.personalData.gender }}
+        </td>
+        <td>
+          <span>
+            {{ scout.personalData.idDocument | idDocument }}
+          </span>
+        </td>
+        <td>
+          {{ scout.scoutInfo.census | census }}
         </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="4">No se han encontrado personas educandas</td>
+        <td colspan="99">No se han encontrado personas educandas los filtros seleccionados</td>
       </tr>
     </ng-template>
   </p-table>

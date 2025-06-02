@@ -1,5 +1,7 @@
 import {PagedFilter} from "../model/filter.model";
 import {LazyLoadEvent} from "primeng/api";
+import {DateUtils} from "./date-utils";
+import {Table} from "primeng/table";
 
 export default class FilterUtils {
 
@@ -90,5 +92,25 @@ export default class FilterUtils {
       filter[filtersKey] = event.filters[filtersKey].value;
     }
     return filter;
+  }
+
+  public static filterDates(table: Table, dateRange?: Date[] | undefined) {
+    if (dateRange?.[0]) {
+      const startDate = DateUtils.toLocalDate(dateRange[0]);
+      const endDate = DateUtils.toLocalDate(dateRange?.[1] ? dateRange[1] : dateRange[0]);
+      table.filter([startDate, endDate], "filterDates", "custom");
+    } else {
+      table.filter(null, "filterDates", "custom");
+    }
+  }
+
+  public static filterDateTimes(table: Table, dateRange?: Date[] | undefined) {
+    if (dateRange?.[0] && dateRange?.[1]) {
+      const startDate = DateUtils.toLocalDateTime(dateRange[0]);
+      const endDate = DateUtils.toLocalDateTime(dateRange?.[1] ? dateRange[1] : dateRange[0]);
+      table.filter([startDate, endDate], "filterDates", "custom");
+    } else {
+      table.filter(null, "filterDates", "custom");
+    }
   }
 }

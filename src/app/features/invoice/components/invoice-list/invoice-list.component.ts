@@ -1,9 +1,9 @@
-import {Component, inject, OnInit, viewChild} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {MultiSelectModule} from "primeng/multiselect";
 import {PrimeTemplate} from "primeng/api";
-import {Table, TableLazyLoadEvent, TableModule} from "primeng/table";
+import {TableLazyLoadEvent, TableModule} from "primeng/table";
 import {InvoiceService} from "../../invoice.service";
 import {Invoice, InvoiceData} from "../../invoice.model";
 import {CurrencyPipe, DatePipe} from "@angular/common";
@@ -16,7 +16,6 @@ import {cloneDeep} from "lodash";
 import {noop} from "rxjs";
 import {DatePicker} from "primeng/datepicker";
 import {FormsModule} from "@angular/forms";
-import {DateUtils} from "../../../../shared/util/date-utils";
 
 
 @Component({
@@ -41,14 +40,14 @@ export class InvoiceListComponent implements OnInit {
   private readonly invoiceService = inject(InvoiceService);
   private readonly dialogService = inject(DynamicDialogService);
 
+  protected readonly FilterUtils = FilterUtils;
+
   protected invoices!: Invoice[];
   protected invoiceData!: InvoiceData;
   protected totalRecords: number = 0;
   protected loading = true;
 
-  protected dateRange: Date[] | undefined;
   private lastFilter: TableLazyLoadEvent | undefined;
-  private readonly table = viewChild.required(Table);
 
   ngOnInit() {
     this.getData();
@@ -98,15 +97,5 @@ export class InvoiceListComponent implements OnInit {
         this.getData();
       }
     });
-  }
-
-  protected filterDates() {
-    if (this.dateRange?.[0]) {
-      const startDate = DateUtils.toLocalDate(this.dateRange[0]);
-      const endDate = DateUtils.toLocalDate(this.dateRange?.[1] ? this.dateRange[1] : this.dateRange[0]);
-      this.table().filter([startDate, endDate], "filterDates", "custom");
-    } else {
-      this.table().filter(null, "filterDates", "custom");
-    }
   }
 }
