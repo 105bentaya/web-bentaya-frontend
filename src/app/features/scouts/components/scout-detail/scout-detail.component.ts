@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {TabsModule} from "primeng/tabs";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {ScoutService} from "../../services/scout.service";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {Tag} from "primeng/tag";
@@ -15,11 +15,12 @@ import {MedicalDataComponent} from "../scout-detail-tabs/medical-data/medical-da
 import {MedicalDataFormComponent} from "../scout-detail-forms/medical-data-form/medical-data-form.component";
 import {GroupDataFormComponent} from "../scout-detail-forms/group-data-form/group-data-form.component";
 import {GroupDataComponent} from "../scout-detail-tabs/group-data/group-data.component";
-import {Location} from "@angular/common";
 import {EconomicDataComponent} from "../scout-detail-tabs/economic-data/economic-data.component";
 import {EconomicDataFormComponent} from "../scout-detail-forms/economic-data-form/economic-data-form.component";
 import {CensusPipe} from "../../census.pipe";
 import {AgePipe} from "../../age.pipe";
+import {ScoutHistoryFormComponent} from "../scout-detail-forms/scout-history-form/scout-history-form.component";
+import {ScoutHistoryComponent} from "../scout-detail-tabs/scout-history/scout-history.component";
 
 @Component({
   selector: 'app-scout-detail',
@@ -41,7 +42,10 @@ import {AgePipe} from "../../age.pipe";
     EconomicDataComponent,
     EconomicDataFormComponent,
     CensusPipe,
-    AgePipe
+    AgePipe,
+    ScoutHistoryFormComponent,
+    ScoutHistoryComponent,
+    RouterLink
   ]
 })
 export class ScoutDetailComponent implements OnInit {
@@ -49,7 +53,6 @@ export class ScoutDetailComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly scoutService = inject(ScoutService);
   private readonly alertService = inject(AlertService);
-  protected readonly location = inject(Location);
 
   protected scout!: Scout;
   protected editing: boolean = false;
@@ -60,9 +63,9 @@ export class ScoutDetailComponent implements OnInit {
     if (queryParam >= 0 && queryParam <= 7) {
       this.selectedTab = +queryParam;
     } else {
-      this.selectedTab = 0;
-      this.updateQueryParam(this.selectedTab);
+      this.selectedTab = +(localStorage.getItem("scout_tab") ?? 0);
     }
+    this.updateQueryParam(this.selectedTab);
   }
 
   ngOnInit(): void {
@@ -70,11 +73,11 @@ export class ScoutDetailComponent implements OnInit {
     this.scoutService.getById(id).subscribe(scout => this.scout = scout);
   }
 
-  get scoutPersonalData() {
+  protected get scoutPersonalData() {
     return this.scout.personalData;
   }
 
-  onEditionStop(updatedMember: void | Scout) {
+  protected onEditionStop(updatedMember: void | Scout) {
     if (updatedMember) {
       this.alertService.sendBasicSuccessMessage("Scout actualizado con éxito");
       this.scout = updatedMember;
@@ -82,7 +85,8 @@ export class ScoutDetailComponent implements OnInit {
     this.editing = false;
   }
 
-  updateQueryParam(tab: number | string) {
+  protected updateQueryParam(tab: number | string) {
+    localStorage.setItem("scout_tab", JSON.stringify(tab));
     this.router.navigate([], {queryParams: {tab}, replaceUrl: true});
   }
 }

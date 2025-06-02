@@ -4,7 +4,7 @@
       <div class="d-flex flex-column flex-grow-1 justify-content-start">
         <div class="mb-2">
           <span class="fs-4" style="font-family: Trueno-Black, sans-serif;">
-            <i class="fa fa-arrow-left fs-5 cursor-pointer" (click)="location.back()"></i>
+            <i class="fa fa-arrow-left fs-5 cursor-pointer" routerLink="/educandas"></i>
             {{ scoutPersonalData.name }} {{ scoutPersonalData.surname }}
             @if (scoutPersonalData.feltName) {
               ({{ scoutPersonalData.feltName }})
@@ -64,18 +64,18 @@
           style="min-width: 120px; min-height: 100px; max-height: 120px;" src="/assets/scout-user.png"
           alt="Scout"
         >
-        </div>
       </div>
+    </div>
     <p-tabs scrollable [value]="selectedTab" (valueChange)="updateQueryParam($event)" class="main-info-panel">
       <p-tablist>
         <p-tab [value]="0" [disabled]="editing">Datos Personales</p-tab>
         <p-tab [value]="1" [disabled]="editing">Datos de Salud</p-tab>
         <p-tab [value]="2" [disabled]="editing">Datos Familiares</p-tab>
-        <p-tab [value]="3" [disabled]="editing">Datos Formativos</p-tab>
+        <!--<p-tab [value]="3" [disabled]="true">Datos Formativos</p-tab>-->
         <p-tab [value]="4" [disabled]="editing">Datos Asociativos</p-tab>
         <p-tab [value]="5" [disabled]="editing">Historial Scout</p-tab>
         <p-tab [value]="6" [disabled]="editing">Datos económicos</p-tab>
-        <p-tab [value]="7" [disabled]="editing">Otros Datos</p-tab>
+        <!--<p-tab [value]="7" [disabled]="editing">Otros Datos</p-tab>-->
       </p-tablist>
       <p-tabpanels>
         <div class="position-relative px-3">
@@ -128,6 +128,16 @@
               />
             } @else {
               <app-group-data [scout]="scout"/>
+            }
+          </p-tabpanel>
+          <p-tabpanel [value]="5">
+            @if (editing) {
+              <app-scout-history-form
+                [initialData]="scout"
+                (onEditionStop)="onEditionStop($event)"
+              />
+            } @else {
+              <app-scout-history [scout]="scout"/>
             }
           </p-tabpanel>
           <p-tabpanel [value]="6">

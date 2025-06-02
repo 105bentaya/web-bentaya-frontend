@@ -1,0 +1,35 @@
+@if (formHelper.form) {
+  <form [formGroup]="formHelper.form" class="form-container" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-12">
+        <p-float-label variant="on">
+          <app-form-text-area
+            [showTag]=false
+            id="observations"
+            [maxLength]="65535"
+            formControlName="observations"
+          />
+          <label for="observations">Observaciones Generales</label>
+        </p-float-label>
+      </div>
+      <div class="col-12">
+        <p-float-label variant="on">
+          <app-form-text-area
+            [showTag]=false
+            id="progressions"
+            [maxLength]="65535"
+            formControlName="progressions"
+          />
+          <label for="progressions">Progresiones</label>
+        </p-float-label>
+      </div>
+    </div>
+    <app-save-buttons
+      class="mt-3"
+      [showCancelButton]="true"
+      (onCancel)="onEditionStop.emit()"
+      saveType="submit"
+      [saveLoading]="loading"
+    />
+  </form>
+}

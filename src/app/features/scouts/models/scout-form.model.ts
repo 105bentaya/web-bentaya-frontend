@@ -100,3 +100,8 @@ export interface RegistrationDateForm {
   registrationDate: Date | string;
   unregistrationDate?: Date | string;
 }
+
+export interface ScoutHistoryForm {
+  progressions?: string;
+  observations?: string;
+}

@@ -9,6 +9,7 @@ import {
   EconomicEntryForm,
   PersonalDataForm,
   ScoutContactForm,
+  ScoutHistoryForm,
   ScoutInfoForm,
   ScoutMedicalForm
 } from "../models/scout-form.model";
@@ -25,6 +26,7 @@ export class ScoutService {
   private readonly http = inject(HttpClient);
   private readonly scoutUrl = `${environment.apiUrl}/scout`;
   private scoutListFilter!: ScoutQuickFilter;
+  public lastTab: number = 0;
 
   set lastFilter(value: ScoutQuickFilter) {
     this.scoutListFilter = value;
@@ -101,5 +103,9 @@ export class ScoutService {
 
   deleteEntry(scoutId: number, entryId: number): Observable<void> {
     return this.http.delete<void>(`${this.scoutUrl}/economic/entry/${scoutId}/${entryId}`);
+  }
+
+  updateScoutHistory(id: number, scoutHistoryForm: ScoutHistoryForm) {
+    return this.http.patch<Scout>(`${this.scoutUrl}/scout-history/${id}`, scoutHistoryForm);
   }
 }
