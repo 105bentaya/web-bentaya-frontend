@@ -17,8 +17,8 @@ import {GroupDataFormComponent} from "../scout-detail-forms/group-data-form/grou
 import {GroupDataComponent} from "../scout-detail-tabs/group-data/group-data.component";
 import {EconomicDataComponent} from "../scout-detail-tabs/economic-data/economic-data.component";
 import {EconomicDataFormComponent} from "../scout-detail-forms/economic-data-form/economic-data-form.component";
-import {CensusPipe} from "../../census.pipe";
-import {AgePipe} from "../../age.pipe";
+import {CensusPipe} from "../../pipes/census.pipe";
+import {AgePipe} from "../../pipes/age.pipe";
 import {ScoutHistoryFormComponent} from "../scout-detail-forms/scout-history-form/scout-history-form.component";
 import {ScoutHistoryComponent} from "../scout-detail-tabs/scout-history/scout-history.component";
 

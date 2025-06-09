@@ -93,13 +93,19 @@ export const routes: Routes = [
     data: {roles: [UserRole.FORM]}
   },
   {
-    path: "educandas",
+    path: "scouts",
     loadComponent: () => import('./features/scouts/components/scout-list/scout-list.component').then(c => c.ScoutListComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
   },
   {
-    path: "educandas/:id",
+    path: "scouts/alta",
+    loadComponent: () => import('./features/scouts/components/new-scout-form/new-scout-form.component').then(c => c.NewScoutFormComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+  },
+  {
+    path: "scouts/:id",
     loadComponent: () => import('./features/scouts/components/scout-detail/scout-detail.component').then(c => c.ScoutDetailComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}

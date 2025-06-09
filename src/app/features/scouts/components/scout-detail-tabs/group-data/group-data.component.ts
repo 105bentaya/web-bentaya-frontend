@@ -1,7 +1,7 @@
 import {Component, inject, input} from '@angular/core';
 import {Scout, ScoutInfo, ScoutRecord} from "../../../models/scout.model";
 import {BasicInfoComponent} from "../../basic-info/basic-info.component";
-import {CensusPipe} from "../../../census.pipe";
+import {CensusPipe} from "../../../pipes/census.pipe";
 import {DatePipe} from "@angular/common";
 import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
 import {BasicInfoShowComponent} from "../../basic-info-show/basic-info-show.component";
@@ -14,8 +14,8 @@ import {RecordInfoComponent} from "../record-info/record-info.component";
 import {noop} from "rxjs";
 import {SpecialRolePipe} from "../../../../special-member/special-role.pipe";
 import {RouterLink} from "@angular/router";
-import {ScoutGroupPipe} from "../../../scout-group.pipe";
-import {ScoutSectionPipe} from "../../../scout-section.pipe";
+import {ScoutGroupPipe} from "../../../pipes/scout-group.pipe";
+import {ScoutSectionPipe} from "../../../pipes/scout-section.pipe";
 
 @Component({
   selector: 'app-group-data',

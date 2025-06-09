@@ -13,9 +13,9 @@ import {
 } from "../../models/special-member.model";
 import {CurrencyPipe, DatePipe, Location, LowerCasePipe, NgIf} from "@angular/common";
 import {BasicInfoComponent} from "../../../scouts/components/basic-info/basic-info.component";
-import {CensusPipe} from "../../../scouts/census.pipe";
-import {IdDocumentPipe} from "../../../scouts/id-document.pipe";
-import {IdDocumentTypePipe} from "../../../scouts/id-document-type.pipe";
+import {CensusPipe} from "../../../scouts/pipes/census.pipe";
+import {IdDocumentPipe} from "../../../scouts/pipes/id-document.pipe";
+import {IdDocumentTypePipe} from "../../../scouts/pipes/id-document-type.pipe";
 import {Tag} from "primeng/tag";
 import {Button} from "primeng/button";
 import {SpecialMemberFormComponent} from "../special-member-form/special-member-form.component";

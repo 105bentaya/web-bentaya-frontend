@@ -1,12 +1,12 @@
 import {Component, inject, input} from '@angular/core';
 import {Scout, ScoutFile, ScoutMedicalData} from "../../../models/scout.model";
 import {BasicInfoComponent} from "../../basic-info/basic-info.component";
-import {IdDocumentPipe} from "../../../id-document.pipe";
-import {IdDocumentTypePipe} from "../../../id-document-type.pipe";
+import {IdDocumentPipe} from "../../../pipes/id-document.pipe";
+import {IdDocumentTypePipe} from "../../../pipes/id-document-type.pipe";
 import {DocumentListComponent} from "../../document-list/document-list.component";
 import {Observable} from "rxjs";
 import {ScoutService} from "../../../services/scout.service";
-import {BloodTypePipe} from "../../../blood-type.pipe";
+import {BloodTypePipe} from "../../../pipes/blood-type.pipe";
 import {NgClass} from "@angular/common";
 import {BasicInfoShowComponent} from "../../basic-info-show/basic-info-show.component";
 

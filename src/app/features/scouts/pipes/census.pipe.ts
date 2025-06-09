@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {SpecialMemberRole} from "../special-member/models/special-member.model";
+import {SpecialMemberRole} from "../../special-member/models/special-member.model";
 
 @Pipe({
   name: 'census'

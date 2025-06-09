@@ -37,7 +37,7 @@ import ScoutHelper from "../../../scouts/scout.util";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {SpecialMemberForm} from "../../models/special-member-form.model";
 import {ConfirmationService} from "primeng/api";
-import {CensusPipe} from "../../../scouts/census.pipe";
+import {CensusPipe} from "../../../scouts/pipes/census.pipe";
 
 type RelationType = 'SCOUT' | 'EXISTING' | 'NEW' | 'NONE';
 

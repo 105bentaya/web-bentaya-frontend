@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {ScoutInfo} from "./models/scout.model";
+import {ScoutInfo} from "../models/scout.model";
 
 @Pipe({
   name: 'scoutSection'

@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {BloodType} from "./models/scout.model";
+import {BloodType} from "../models/scout.model";
 
 @Pipe({
   name: 'bloodType'

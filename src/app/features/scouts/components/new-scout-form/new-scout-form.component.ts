@@ -20,6 +20,7 @@ export class NewScoutFormComponent {
     //si hasBeenInGroup, buscar scout y empezar por ahí.
 
     this.formHelper.createForm({
+      //personal
       name: [preScout.name, [Validators.required, Validators.maxLength(255)]],
       feltName: [null, Validators.maxLength(255)],
       surname: [preScout.surname, [Validators.required, Validators.maxLength(255)]],
@@ -30,33 +31,40 @@ export class NewScoutFormComponent {
       address: [null, Validators.maxLength(255)],
       city: [null, Validators.maxLength(255)],
       province: [null, Validators.maxLength(255)],
+      residenceMunicipality: [null, Validators.maxLength(255)],
 
-      phone: [preScout.phone, Validators.maxLength(255)],
+      phone: [null, Validators.maxLength(255)],
       landline: [null, Validators.maxLength(255)],
-      email: [preScout.email, [Validators.maxLength(255), Validators.email]],
+      email: [null, [Validators.maxLength(255), Validators.email]],
       shirtSize: [preScout.size, Validators.maxLength(255)],
-      residenceMunicipality: [preScout.residenceMunicipality, Validators.maxLength(255)],
 
-      // dni?: string;
+      //contact //EL DONANTE, EL OTRO LO AÑADES MAS TARDE
+      contact: this.formBuilder.group({
+        name: [preScout.parentsName, Validators.maxLength(255)],
+        surname: [preScout.parentsSurname, Validators.maxLength(255)],
+        relationship: [preScout.relationship, Validators.maxLength(255)],
+        phone: [preScout.phone, Validators.maxLength(255)],
+        email: [preScout.email, [Validators.maxLength(255), Validators.email]],
+        studies: [null, Validators.maxLength(255)],
+        profession: [null, Validators.maxLength(255)],
+        idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder)
+      }),
+
+      //economic, ASEGURARSE QUE EL TITULAR Y NIF DEL TITULAR CORRESPONDE CON EL CONTACTO
+      iban: [null, [Validators.required, ScoutHelper.ibanValidator]],
+      bank: [null, [Validators.required, Validators.maxLength(255)]],
+
+      //medical JUMP TO MEDICAL FORM
+
       // groupId: [null, Validators.requiredIf],
       //
       //
       // section?: string;
       // yearAndSection?: string;
+
       // medicalData?: string;
-      // parentsName?: string;
-      // parentsSurname?: string;
-      // relationship?: string;
-      // phone: string;
-      // email: string;
-      // comment: string;
-      // priority: number;
-      // priorityInfo?: string;
-      // creationDate?: Date;
-      // age?: string;
-      // assignation?: PreScoutAssignation;
-      // size?: string;
-      // inscriptionYear?: number;
+
+      // firstActivityDate?: Date; //fecha de alta
     });
   }
 

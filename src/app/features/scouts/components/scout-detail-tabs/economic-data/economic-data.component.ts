@@ -3,11 +3,11 @@ import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialo
 import {ScoutEconomicData, EconomicEntry, ScoutPersonalData, Scout, ScoutContact, ScoutFile} from "../../../models/scout.model";
 import {DialogService} from "primeng/dynamicdialog";
 import {BasicInfoComponent} from "../../basic-info/basic-info.component";
-import {CensusPipe} from "../../../census.pipe";
+import {CensusPipe} from "../../../pipes/census.pipe";
 import {TableModule} from "primeng/table";
 import {Tag} from "primeng/tag";
-import {IdDocumentPipe} from "../../../id-document.pipe";
-import {IdDocumentTypePipe} from "../../../id-document-type.pipe";
+import {IdDocumentPipe} from "../../../pipes/id-document.pipe";
+import {IdDocumentTypePipe} from "../../../pipes/id-document-type.pipe";
 import {DocumentListComponent} from "../../document-list/document-list.component";
 import {noop, Observable} from "rxjs";
 import {ScoutService} from "../../../services/scout.service";

@@ -1,5 +1,6 @@
 import {AbstractControl, FormBuilder, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {IdentificationDocument, IdType} from "./models/scout.model";
+import {finalize} from "rxjs";
 
 export default class ScoutHelper {
 
@@ -101,4 +102,32 @@ export default class ScoutHelper {
     }
     return false;
   }
+
+  public static ibanValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value?.replace(/\s+/g, '').toUpperCase();
+    if (!value) {
+      return null;
+    }
+
+    if (value.length < 15 || value.length > 34) {
+      return {ibanInvalid: true};
+    }
+
+    const rearranged = value.slice(4) + value.slice(0, 4);
+
+    let remainder = rearranged
+      .split('')
+      .map((char: string) => {
+        const code = char.charCodeAt(0);
+        return code >= 65 && code <= 90 ? (code - 55).toString() : char;
+      })
+      .join('');
+
+    while (remainder.length > 2) {
+      const part = remainder.slice(0, 9);
+      remainder = (parseInt(part, 10) % 97).toString() + remainder.slice(part.length);
+    }
+
+    return parseInt(remainder, 10) % 97 === 1 ? null : {ibanInvalid: true};
+  };
 }

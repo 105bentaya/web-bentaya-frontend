@@ -16,6 +16,7 @@ import {FloatLabel} from "primeng/floatlabel";
 import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {Select} from "primeng/select";
 import {InputText} from "primeng/inputtext";
+import ScoutHelper from "../../../scout.util";
 
 @Component({
   selector: 'app-economic-data-form',
@@ -51,7 +52,7 @@ export class EconomicDataFormComponent implements OnInit {
 
     this.formHelper.createForm({
       donorId: [scout.contactList.find(contact => contact.donor)?.id ?? "SCOUT", Validators.required],
-      iban: [scout.economicData.iban, [Validators.required, this.ibanValidator]],
+      iban: [scout.economicData.iban, [Validators.required, ScoutHelper.ibanValidator]],
       bank: [scout.economicData.bank, [Validators.required, Validators.maxLength(255)]],
     });
   }
@@ -71,35 +72,6 @@ export class EconomicDataFormComponent implements OnInit {
     }
     return result;
   }
-
-
-  private readonly ibanValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value?.replace(/\s+/g, '').toUpperCase();
-    if (!value) {
-      return null;
-    }
-
-    if (value.length < 15 || value.length > 34) {
-      return {ibanInvalid: true};
-    }
-
-    const rearranged = value.slice(4) + value.slice(0, 4);
-
-    let remainder = rearranged
-      .split('')
-      .map((char: string) => {
-        const code = char.charCodeAt(0);
-        return code >= 65 && code <= 90 ? (code - 55).toString() : char;
-      })
-      .join('');
-
-    while (remainder.length > 2) {
-      const part = remainder.slice(0, 9);
-      remainder = (parseInt(part, 10) % 97).toString() + remainder.slice(part.length);
-    }
-
-    return parseInt(remainder, 10) % 97 === 1 ? null : {ibanInvalid: true};
-  };
 
   protected submit() {
     if (this.formHelper.validateAll()) {

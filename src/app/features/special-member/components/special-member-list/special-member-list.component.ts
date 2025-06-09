@@ -4,7 +4,7 @@ import {TableModule} from "primeng/table";
 import {SpecialMemberService} from "../../special-member.service";
 import {RouterLink} from "@angular/router";
 import {SpecialMemberBasicData, specialMemberOptions} from "../../models/special-member.model";
-import {CensusPipe} from "../../../scouts/census.pipe";
+import {CensusPipe} from "../../../scouts/pipes/census.pipe";
 import {SpecialRolePipe} from "../../special-role.pipe";
 import {MultiSelect} from "primeng/multiselect";
 import {InputText} from "primeng/inputtext";
