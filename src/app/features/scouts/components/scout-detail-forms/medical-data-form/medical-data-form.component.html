@@ -264,32 +264,10 @@
                     >
                     <label for="phone">Teléfono</label>
                   </p-float-label>
-                  <div formGroupName="idDocument">
-                    <p-float-label variant="on">
-                      <p-select
-                        [options]="idTypes"
-                        formControlName="idType"
-                        id="idType"
-                        (onChange)="onIdTypeChange('socialSecurityHolderData')"
-                        showClear
-                        (onClear)="onIdTypeClear('socialSecurityHolderData')"
-                      />
-                      <label for="idType">Tipo de Identificación</label>
-                    </p-float-label>
-                  </div>
-                  <div formGroupName="idDocument">
-                    <p-float-label variant="on">
-                      <input
-                        pInputText
-                        formControlName="number"
-                        id="number"
-                      />
-                      <label for="number" class="required">Número de Identificación</label>
-                    </p-float-label>
-                    @if (formHelper.isDirtyAndInvalidWithError(['socialSecurityHolderData', 'idDocument', 'number'], 'formatInvalid')) {
-                      <small class="text-danger">El formato del documento de identidad es inválido</small>
-                    }
-                  </div>
+                  <app-id-document-form
+                    [parentForm]="formHelper.getFormGroup('socialSecurityHolderData')"
+                    rowClass="d-flex flex-column gap-3"
+                  ></app-id-document-form>
                 </div>
               }
             </div>
@@ -366,32 +344,10 @@
                     >
                     <label for="phone">Teléfono</label>
                   </p-float-label>
-                  <div formGroupName="idDocument">
-                    <p-float-label variant="on">
-                      <p-select
-                        [options]="idTypes"
-                        formControlName="idType"
-                        id="idType"
-                        (onChange)="onIdTypeChange('privateInsuranceHolderData')"
-                        showClear
-                        (onClear)="onIdTypeClear('privateInsuranceHolderData')"
-                      />
-                      <label for="idType">Tipo de Identificación</label>
-                    </p-float-label>
-                  </div>
-                  <div formGroupName="idDocument">
-                    <p-float-label variant="on">
-                      <input
-                        pInputText
-                        formControlName="number"
-                        id="number"
-                      />
-                      <label for="number" class="required">Número de Identificación</label>
-                    </p-float-label>
-                    @if (formHelper.isDirtyAndInvalidWithError(['privateInsuranceHolderData', 'idDocument', 'number'], 'formatInvalid')) {
-                      <small class="text-danger">El formato del documento de identidad es inválido</small>
-                    }
-                  </div>
+                  <app-id-document-form
+                    [parentForm]="formHelper.getFormGroup('privateInsuranceHolderData')"
+                    rowClass="d-flex flex-column gap-3"
+                  ></app-id-document-form>
                 </div>
               }
             </div>

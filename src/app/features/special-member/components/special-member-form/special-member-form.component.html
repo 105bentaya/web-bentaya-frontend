@@ -186,32 +186,12 @@
               <label for="email">Correo</label>
             </p-float-label>
           </div>
-          <div class="col-12 col-sm-6 col-lg-4">
-            <p-float-label variant="on">
-              <p-select
-                [options]="idTypes"
-                [formControl]="idDocumentType"
-                id="idType"
-                (onChange)="onIdTypeChange()"
-                showClear
-                (onClear)="onIdTypeClear()"
-              />
-              <label for="idType" class="required">Tipo de Identificación</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-4">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                id="number"
-                [formControl]="idDocumentNumber"
-              />
-              <label for="number" class="required">Número de Identificación</label>
-            </p-float-label>
-            @if (formHelper.isDirtyAndInvalidWithError(['person', 'idDocument', 'number'], 'formatInvalid')) {
-              <small class="text-danger">El formato del documento de identidad es inválido</small>
-            }
-          </div>
+          <app-id-document-form
+            [parentForm]="formHelper.getFormGroup('person')"
+            class="col-12 col-lg-8"
+            colClass="col-12 col-sm-6"
+            labelClass="required"
+          ></app-id-document-form>
         </div>
       }
     </div>

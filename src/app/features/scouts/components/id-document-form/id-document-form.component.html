@@ -1,0 +1,30 @@
+<div [class]="rowClass()">
+  <div [class]="colClass()">
+    <p-float-label variant="on">
+      <p-select
+        [options]="idTypes"
+        [formControl]="idType"
+        id="idType"
+        (onChange)="onIdTypeChange()"
+        showClear
+        (onClear)="onIdTypeClear()"
+      />
+      <label for="idType" [class]="labelClass()">Tipo de Identificación</label>
+    </p-float-label>
+  </div>
+  <div [class]="colClass()">
+    <p-float-label variant="on">
+      <input
+        pInputText
+        [formControl]="number"
+        id="number"
+      />
+      <label for="number" class="required">Número de Identificación</label>
+    </p-float-label>
+    @if (number.dirty && number.invalid && number.hasError("formatInvalid")) {
+      <small class="text-danger">
+        El formato del documento de identidad es inválido
+      </small>
+    }
+  </div>
+</div>

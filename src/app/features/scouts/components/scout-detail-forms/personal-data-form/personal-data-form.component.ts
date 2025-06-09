@@ -8,12 +8,13 @@ import {FloatLabel} from "primeng/floatlabel";
 import {InputText} from "primeng/inputtext";
 import {DatePicker} from "primeng/datepicker";
 import {Select} from "primeng/select";
-import {genders, idTypes, shirtSizes} from "../../../../../shared/constant";
+import {genders, shirtSizes} from "../../../../../shared/constant";
 import {FormTextAreaComponent} from "../../../../../shared/components/form-text-area/form-text-area.component";
 import {ScoutService} from "../../../services/scout.service";
 import {finalize} from "rxjs";
 import {DateUtils} from "../../../../../shared/util/date-utils";
 import {PersonalDataForm} from "../../../models/scout-form.model";
+import {IdDocumentFormComponent} from "../../id-document-form/id-document-form.component";
 
 @Component({
   selector: 'app-personal-data-form',
@@ -25,7 +26,8 @@ import {PersonalDataForm} from "../../../models/scout-form.model";
     ReactiveFormsModule,
     DatePicker,
     Select,
-    FormTextAreaComponent
+    FormTextAreaComponent,
+    IdDocumentFormComponent
   ],
   templateUrl: './personal-data-form.component.html',
   styleUrl: './personal-data-form.component.scss'
@@ -38,7 +40,6 @@ export class PersonalDataFormComponent implements OnInit {
 
   protected readonly genders = genders;
   protected readonly shirtSizes = shirtSizes;
-  protected readonly idTypes = idTypes;
 
   public initialData = input.required<Scout>();
   protected onEditionStop = output<void | Scout>();
@@ -72,10 +73,6 @@ export class PersonalDataFormComponent implements OnInit {
       residenceMunicipality: [personalData.residenceMunicipality, Validators.maxLength(255)],
       gender: [personalData.gender, [Validators.required, Validators.maxLength(255)]]
     });
-
-    if (!this.formHelper.getFormGroupControl('idDocument', 'idType').value) {
-      this.formHelper.getFormGroupControl('idDocument', 'number').disable();
-    }
   }
 
   protected submit() {
@@ -88,23 +85,10 @@ export class PersonalDataFormComponent implements OnInit {
       }
 
       this.loading = true;
-      if (this.initialData()) {
-        this.scoutService.updatePersonalData(this.initialData().id, form)
-          .pipe(finalize(() => this.loading = false))
-          .subscribe(result => this.onEditionStop.emit(result));
-      }
+      this.scoutService.updatePersonalData(this.initialData().id, form)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(result => this.onEditionStop.emit(result));
     }
   }
 
-  protected onIdTypeChange() {
-    const numberControl = this.formHelper.getFormGroupControl('idDocument', 'number');
-    numberControl.enable();
-    numberControl.updateValueAndValidity();
-  }
-
-  protected onIdTypeClear() {
-    const numberControl = this.formHelper.getFormGroupControl('idDocument', 'number');
-    numberControl.setValue(undefined);
-    numberControl.disable();
-  }
 }

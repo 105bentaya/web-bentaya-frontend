@@ -65,8 +65,10 @@
                 formControlName="name"
                 id="name"
               />
-              <label class="required"
-                     for="name">{{ contactIsReal(control) ? 'Nombre' : 'Nombre del representante' }}</label>
+              <label
+                class="required"
+                for="name"
+              >{{ contactIsReal(control) ? 'Nombre' : 'Nombre del representante' }}</label>
             </p-float-label>
           </div>
           <div class="col-12 col-sm-6 col-lg-4">
@@ -92,26 +94,6 @@
               </p-float-label>
             </div>
           }
-          <div class="col-12 col-sm-6 col-lg-4">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="phone"
-                id="phone"
-              />
-              <label for="phone">Teléfono</label>
-            </p-float-label>
-          </div>
-          <div class="col">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="email"
-                id="email"
-              />
-              <label for="email">Correo</label>
-            </p-float-label>
-          </div>
           @if (contactIsReal(control)) {
             <div class="col-12 col-sm-6 col-lg-4">
               <p-float-label variant="on">
@@ -136,30 +118,31 @@
           }
           <div class="col-12 col-sm-6 col-lg-4">
             <p-float-label variant="on">
-              <p-select
-                [options]="idTypes"
-                [formControl]="getIdDocumentControl(control, 'idType')"
-                id="idType"
-                (onChange)="onIdTypeChange(control)"
-                showClear
-                (onClear)="onIdTypeClear(control)"
+              <input
+                pInputText
+                formControlName="phone"
+                id="phone"
               />
-              <label for="idType" class="semi-required">Tipo de Identificación</label>
+              <label for="phone">Teléfono</label>
             </p-float-label>
           </div>
-          <div class="col-12 col-sm-6 col-lg-4">
+          <div class="col">
             <p-float-label variant="on">
               <input
                 pInputText
-                [formControl]="getIdDocumentControl(control, 'number')"
-                id="number"
+                formControlName="email"
+                id="email"
               />
-              <label for="number" class="required">Número de Identificación</label>
+              <label for="email">Correo</label>
             </p-float-label>
-            @if (formHelper.isDirtyAndInvalidWithError(['idDocument', 'number'], 'formatInvalid')) {
-              <small class="text-danger">El formato del documento de identidad es inválido</small>
-            }
           </div>
+          <app-id-document-form
+            [parentForm]="control"
+            class="col-12 col-lg-8"
+            rowClass="row row-cols-1 row-cols-sm-2"
+            colClass="col"
+            labelClass="semi-required"
+          />
           <div class="col-12">
             <p-float-label variant="on">
               <app-form-text-area

@@ -3,7 +3,6 @@ import {FormHelper} from "../../../../shared/util/form-helper";
 import {
   AbstractControl,
   FormBuilder,
-  FormControl,
   FormsModule,
   ReactiveFormsModule,
   ValidationErrors,
@@ -32,12 +31,13 @@ import {
 import {AutoComplete} from "primeng/autocomplete";
 import {Tooltip} from "primeng/tooltip";
 import {SelectButton} from "primeng/selectbutton";
-import {idTypes, personTypes, yesNoOptions} from "../../../../shared/constant";
+import {personTypes, yesNoOptions} from "../../../../shared/constant";
 import ScoutHelper from "../../../scouts/scout.util";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {SpecialMemberForm} from "../../models/special-member-form.model";
 import {ConfirmationService} from "primeng/api";
 import {CensusPipe} from "../../../scouts/pipes/census.pipe";
+import {IdDocumentFormComponent} from "../../../scouts/components/id-document-form/id-document-form.component";
 
 type RelationType = 'SCOUT' | 'EXISTING' | 'NEW' | 'NONE';
 
@@ -57,7 +57,8 @@ type RelationType = 'SCOUT' | 'EXISTING' | 'NEW' | 'NONE';
     RadioButtonContainerComponent,
     AutoComplete,
     Tooltip,
-    SelectButton
+    SelectButton,
+    IdDocumentFormComponent
   ],
   templateUrl: './special-member-form.component.html',
   styleUrl: './special-member-form.component.scss',
@@ -74,7 +75,6 @@ export class SpecialMemberFormComponent implements OnInit {
   protected readonly specialMemberOptions = specialMemberOptions;
   protected readonly personTypes = personTypes;
   protected readonly yesNoOptions = yesNoOptions;
-  protected readonly idTypes = idTypes;
 
   public loading = model.required<boolean>();
   public existingForm = input<SpecialMember>();
@@ -99,6 +99,9 @@ export class SpecialMemberFormComponent implements OnInit {
       existingPerson = existingForm?.person;
     }
 
+    const personIdControl = ScoutHelper.idDocumentFormGroup(this.formBuilder, existingPerson?.idDocument);
+    personIdControl.get("idType")!.setValidators(this.requiredRelation('NEW'));
+
     this.formHelper.createForm({
       role: [existingForm?.role, Validators.required],
       roleCensus: [existingForm?.roleCensus, Validators.required],
@@ -116,15 +119,11 @@ export class SpecialMemberFormComponent implements OnInit {
           [this.requiredRelation('NEW'), Validators.maxLength(255)]
         ],
         surname: [existingPerson?.surname, Validators.maxLength(255)],
-        idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder, existingPerson?.idDocument),
+        idDocument: personIdControl,
         phone: [existingPerson?.phone, Validators.maxLength(255)],
         email: [existingPerson?.email, [Validators.maxLength(255), Validators.email]]
       })
     });
-    this.idDocumentType.setValidators(this.requiredRelation('NEW'));
-    if (!this.idDocumentType.value) {
-      this.idDocumentNumber.disable();
-    }
     if (existingForm) {
       this.formHelper.get("role")?.disable();
       this.selectedRole = existingForm.role;
@@ -216,23 +215,5 @@ export class SpecialMemberFormComponent implements OnInit {
 
   get relation(): RelationType {
     return this.formHelper.controlValue("relation");
-  }
-
-  get idDocumentType(): FormControl {
-    return this.formHelper.get(['person', 'idDocument', 'idType']) as FormControl;
-  }
-
-  get idDocumentNumber(): FormControl {
-    return this.formHelper.get(['person', 'idDocument', 'number']) as FormControl;
-  }
-
-  protected onIdTypeChange() {
-    this.idDocumentNumber.enable();
-    this.idDocumentNumber.updateValueAndValidity();
-  }
-
-  protected onIdTypeClear() {
-    this.idDocumentNumber.setValue(undefined);
-    this.idDocumentNumber.disable();
   }
 }

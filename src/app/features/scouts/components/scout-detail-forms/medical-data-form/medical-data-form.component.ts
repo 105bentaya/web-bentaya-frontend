@@ -19,10 +19,10 @@ import {InputGroup} from "primeng/inputgroup";
 import {InputGroupAddon} from "primeng/inputgroupaddon";
 import {Button} from "primeng/button";
 import ScoutHelper from "../../../scout.util";
-import {idTypes} from "../../../../../shared/constant";
 import {ScoutMedicalForm} from "../../../models/scout-form.model";
 import {ScoutService} from "../../../services/scout.service";
 import {finalize} from "rxjs";
+import {IdDocumentFormComponent} from "../../id-document-form/id-document-form.component";
 
 @Component({
   selector: 'app-medical-data-form',
@@ -39,7 +39,8 @@ import {finalize} from "rxjs";
     InputText,
     InputGroup,
     InputGroupAddon,
-    Button
+    Button,
+    IdDocumentFormComponent
   ],
   providers: [AccordionPanel],
   templateUrl: './medical-data-form.component.html',
@@ -51,7 +52,6 @@ export class MedicalDataFormComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly scoutService = inject(ScoutService);
 
-  protected readonly idTypes = idTypes;
   protected readonly bloodTypeOptions: { value: BloodType, label: string }[] = [
     {value: "NA", label: "Sin especificar"},
     {value: "O_NEGATIVE", label: "O-"},
@@ -102,9 +102,6 @@ export class MedicalDataFormComponent implements OnInit {
       privateInsuranceHolderData: this.createInsuranceHolderData("privateInsuranceHolder"),
       bloodType: [this.medicalData.bloodType, Validators.required]
     });
-
-    this.disableInsuranceIdDocs('socialSecurityHolderData');
-    this.disableInsuranceIdDocs('privateInsuranceHolderData');
   }
 
   private createInsuranceHolderData(holder: string) {
@@ -130,25 +127,6 @@ export class MedicalDataFormComponent implements OnInit {
       return holder.contact.id;
     }
     return "OTHER";
-  }
-
-  private disableInsuranceIdDocs(group: string) {
-    const socialInsuranceHolder = this.formHelper.getFormGroupControl(group, 'idDocument');
-    if (!socialInsuranceHolder.get("idType")?.value) {
-      socialInsuranceHolder.get("number")!.disable();
-    }
-  }
-
-  protected onIdTypeChange(group: string) {
-    const numberControl = this.formHelper.getFormGroupControl(group, 'idDocument').get("number")!;
-    numberControl.enable();
-    numberControl.updateValueAndValidity();
-  }
-
-  protected onIdTypeClear(group: string) {
-    const numberControl = this.formHelper.getFormGroupControl(group, 'idDocument').get("number")!;
-    numberControl.setValue(undefined);
-    numberControl.disable();
   }
 
   private insuranceValidator(insurance: string): ValidatorFn {

@@ -43,32 +43,12 @@
             <label class="required" for="gender">Género</label>
           </p-float-label>
         </div>
-        <div class="col-12 col-sm-6">
-          <p-float-label variant="on">
-            <p-select
-              [options]="idTypes"
-              [formControl]="formHelper.getFormGroupControl('idDocument', 'idType')!"
-              id="idType"
-              (onChange)="onIdTypeChange()"
-              showClear
-              (onClear)="onIdTypeClear()"
-            />
-            <label for="idType" class="semi-required">Tipo de Identificación</label>
-          </p-float-label>
-        </div>
-        <div class="col-12 col-sm-6">
-          <p-float-label variant="on">
-            <input
-              pInputText
-              [formControl]="formHelper.getFormGroupControl('idDocument', 'number')!"
-              id="number"
-            />
-            <label for="number" class="required">Número de Identificación</label>
-          </p-float-label>
-          @if (formHelper.isDirtyAndInvalidWithError(['idDocument', 'number'], 'formatInvalid')) {
-            <small class="text-danger">El formato del documento de identidad es inválido</small>
-          }
-        </div>
+        <app-id-document-form
+          [parentForm]="formHelper.form"
+          rowClass="row gx-2 gy-3"
+          colClass="col-12 col-sm-6"
+          labelClass="semi-required"
+        ></app-id-document-form>
         <div class="col-12 col-sm-6">
           <p-float-label variant="on">
             <p-datePicker

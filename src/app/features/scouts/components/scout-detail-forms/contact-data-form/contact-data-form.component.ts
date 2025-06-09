@@ -2,7 +2,6 @@ import {Component, inject, input, OnInit, output} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -13,7 +12,7 @@ import {
 import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormHelper} from "../../../../../shared/util/form-helper";
 import {Scout, ScoutContact} from "../../../models/scout.model";
-import {idTypes, personTypes, yesNoOptions} from "../../../../../shared/constant";
+import {personTypes, yesNoOptions} from "../../../../../shared/constant";
 import ScoutHelper from "../../../scout.util";
 import {SelectButton} from "primeng/selectbutton";
 import {FloatLabel} from "primeng/floatlabel";
@@ -25,6 +24,7 @@ import {finalize} from "rxjs";
 import {ScoutService} from "../../../services/scout.service";
 import {ScoutContactForm} from "../../../models/scout-form.model";
 import {AlertService} from "../../../../../shared/services/alert-service.service";
+import {IdDocumentFormComponent} from "../../id-document-form/id-document-form.component";
 
 @Component({
   selector: 'app-contact-data-form',
@@ -37,7 +37,8 @@ import {AlertService} from "../../../../../shared/services/alert-service.service
     InputText,
     Select,
     FormTextAreaComponent,
-    Button
+    Button,
+    IdDocumentFormComponent
   ],
   templateUrl: './contact-data-form.component.html',
   styleUrl: './contact-data-form.component.scss'
@@ -50,7 +51,6 @@ export class ContactDataFormComponent implements OnInit {
 
   protected readonly personTypes = personTypes;
   protected readonly relationshipOptions = ["Madre", "Padre", "Tutor", "Tutora"];
-  protected readonly idTypes = idTypes;
   protected readonly yesNoOptions = yesNoOptions;
 
   initialData = input.required<Scout>();
@@ -68,7 +68,7 @@ export class ContactDataFormComponent implements OnInit {
   }
 
   private createContact(data?: ScoutContact) {
-    const control = this.formBuilder.group({
+    return this.formBuilder.group({
       id: [data?.id ?? null],
       personType: [data?.personType ?? "REAL", Validators.required],
       companyName: [data?.companyName ?? null, [this.companyNameValidator, Validators.maxLength(255)]],
@@ -83,12 +83,6 @@ export class ContactDataFormComponent implements OnInit {
       idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder, data?.idDocument),
       donor: [data?.donor ?? null, Validators.required],
     });
-
-    if (!this.getIdDocumentControl(control, "idType")?.value) {
-      this.onIdTypeClear(control);
-    }
-
-    return control;
   }
 
   private readonly companyNameValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -120,22 +114,6 @@ export class ContactDataFormComponent implements OnInit {
 
   protected contactIsReal(form: any) {
     return form?.get('personType').value === "REAL";
-  }
-
-  protected getIdDocumentControl(form: any, control: any) {
-    return form?.get('idDocument')?.get(control) as FormControl;
-  }
-
-  protected onIdTypeChange(form: any) {
-    const numberControl = this.getIdDocumentControl(form, 'number');
-    numberControl.enable();
-    numberControl.updateValueAndValidity();
-  }
-
-  protected onIdTypeClear(form: any) {
-    const numberControl = this.getIdDocumentControl(form, 'number');
-    numberControl.setValue(undefined);
-    numberControl.disable();
   }
 
   protected deleteContact(index: number) {

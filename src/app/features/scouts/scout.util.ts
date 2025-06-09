@@ -1,6 +1,5 @@
 import {AbstractControl, FormBuilder, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {IdentificationDocument, IdType} from "./models/scout.model";
-import {finalize} from "rxjs";
 
 export default class ScoutHelper {
 
