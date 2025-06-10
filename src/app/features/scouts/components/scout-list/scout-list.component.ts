@@ -165,7 +165,7 @@ export class ScoutListComponent implements OnInit {
   }
 
   protected exportExcelScout() {
-    // todo excel this.excelService.exportAsExcel(
+    //todo excel this.excelService.exportAsExcel(
     //   ScoutHelper.generateData(this.scouts!, true),
     //   ScoutHelper.generateExcelColumns(this.scouts!, true),
     //   "educandas"

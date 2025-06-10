@@ -56,21 +56,30 @@ export class ScoutDetailComponent implements OnInit {
 
   protected scout!: Scout;
   protected editing: boolean = false;
-  protected selectedTab: number;
+  protected selectedTab: number = 0;
+
+  protected fromForm: boolean;
+  protected fromFormStatus: "NONE" | "MEDICAL" = "NONE";
 
   constructor() {
-    const queryParam = +this.route.snapshot.queryParams['tab'];
-    if (queryParam >= 0 && queryParam <= 7) {
-      this.selectedTab = +queryParam;
+    const tabQueryParam = +this.route.snapshot.queryParams['tab'];
+    this.fromForm = !!this.route.snapshot.queryParams['fromForm'];
+
+    if (tabQueryParam >= 0 && tabQueryParam <= 7) {
+      this.updateTab(+tabQueryParam);
     } else {
-      this.selectedTab = +(localStorage.getItem("scout_tab") ?? 0);
+      this.updateTab(+(localStorage.getItem("scout_tab") ?? 0));
     }
-    this.updateQueryParam(this.selectedTab);
   }
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
     this.scoutService.getById(id).subscribe(scout => this.scout = scout);
+    if (this.fromForm) {
+      this.updateTab(1);
+      this.fromFormStatus = "MEDICAL";
+      this.editing = true;
+    }
   }
 
   protected get scoutPersonalData() {
@@ -82,10 +91,16 @@ export class ScoutDetailComponent implements OnInit {
       this.alertService.sendBasicSuccessMessage("Scout actualizado con éxito");
       this.scout = updatedMember;
     }
-    this.editing = false;
+    if (this.fromFormStatus === "MEDICAL") {
+      this.updateTab(2);
+      this.fromFormStatus = "NONE";
+    } else {
+      this.editing = false;
+    }
   }
 
-  protected updateQueryParam(tab: number | string) {
+  protected updateTab(tab: number | string) {
+    this.selectedTab = +tab;
     localStorage.setItem("scout_tab", JSON.stringify(tab));
     this.router.navigate([], {queryParams: {tab}, replaceUrl: true});
   }

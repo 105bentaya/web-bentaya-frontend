@@ -267,10 +267,13 @@ export class NewScoutFormComponent implements OnInit {
 
       this.scoutService.saveNewScout(scoutForm).subscribe({
         next: scout => {
+          this.alertService.sendBasicSuccessMessage("Scout creada correctamente");
           const subs = this.documentationFiles.map(file => this.uploadFile(scout.id, file));
           forkJoin(subs)
-            .pipe(finalize(() => this.router.navigateByUrl(`/scouts/${scout.id}`)))
-            .subscribe();
+            .pipe(finalize(() => this.router.navigate(
+              ["/scouts", scout.id],
+              {queryParams: {fromForm: true}}
+            ))).subscribe();
         }, error: () => this.loading = false
       });
     } else {
