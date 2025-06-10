@@ -11,11 +11,7 @@ import {
   ValidatorFn,
   Validators
 } from "@angular/forms";
-import {Select} from "primeng/select";
 import {yesNoOptions} from "../../../../../shared/constant";
-import {InputNumber} from "primeng/inputnumber";
-import {GroupService} from "../../../../../shared/services/group.service";
-import {BasicGroupInfo} from "../../../../../shared/model/group.model";
 import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {SelectButton} from "primeng/selectbutton";
 import {NgClass} from "@angular/common";
@@ -28,6 +24,9 @@ import {FormHelper} from "../../../../../shared/util/form-helper";
 import {ScoutService} from "../../../services/scout.service";
 import {isNil} from "lodash";
 import {AlertService} from "../../../../../shared/services/alert-service.service";
+import {ScoutTypeFormComponent} from "../../scout-type-form/scout-type-form.component";
+import {LoggedUserDataService} from "../../../../../core/auth/services/logged-user-data.service";
+import {UserRole} from "../../../../users/models/role.model";
 
 @Component({
   selector: 'app-group-data-form',
@@ -35,13 +34,12 @@ import {AlertService} from "../../../../../shared/services/alert-service.service
     FloatLabel,
     FormsModule,
     ReactiveFormsModule,
-    Select,
-    InputNumber,
     SaveButtonsComponent,
     SelectButton,
     NgClass,
     Button,
-    DatePicker
+    DatePicker,
+    ScoutTypeFormComponent
   ],
   templateUrl: './group-data-form.component.html',
   styleUrl: './group-data-form.component.scss'
@@ -50,19 +48,11 @@ export class GroupDataFormComponent implements OnInit {
   protected formHelper = new FormHelper();
   protected readonly formBuilder = inject(FormBuilder);
   protected readonly scoutService = inject(ScoutService);
-  private readonly groupService = inject(GroupService);
   private readonly alertService = inject(AlertService);
+  private readonly userData = inject(LoggedUserDataService);
 
   private readonly today = DateUtils.dateTruncatedToDay(new Date());
-  protected groups!: BasicGroupInfo[];
   protected readonly yesNoOptions = yesNoOptions;
-  protected readonly scoutTypes: ({ label: string; value: ScoutType })[] = [
-    {label: "Educanda", value: "SCOUT"},
-    {label: "Educadora", value: "SCOUTER"},
-    {label: "Comité de Grupo", value: "COMMITTEE"},
-    {label: "Gestora", value: "MANAGER"},
-    {label: "Sin unidad (Baja)", value: "INACTIVE"},
-  ];
 
   initialData = input.required<Scout>();
   protected onEditionStop = output<void | Scout>();
@@ -73,7 +63,7 @@ export class GroupDataFormComponent implements OnInit {
   ngOnInit() {
     const scoutInfo = this.initialData().scoutInfo;
     this.formHelper.createForm({
-      scoutType: [scoutInfo.scoutType],
+      scoutType: [scoutInfo.scoutType, Validators.required],
       groupId: [this.getScoutGroup(scoutInfo), this.groupValidation],
       registrationDates: this.formBuilder.array(
         scoutInfo.registrationDates.map(date => this.createRegistrationDate(date))
@@ -82,10 +72,9 @@ export class GroupDataFormComponent implements OnInit {
       census: [scoutInfo.census]
     });
 
-    this.groupService.getBasicGroups().subscribe(groups => {
-      this.groups = groups;
-      this.updateGroupSelect(scoutInfo.scoutType);
-    });
+    if (!this.userData.hasRequiredPermission(UserRole.ADMIN)) {
+      this.formHelper.get("census")?.disable();
+    }
   }
 
   private readonly groupValidation: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -100,39 +89,24 @@ export class GroupDataFormComponent implements OnInit {
     return scoutInfo.group?.id;
   }
 
-  protected showGroup() {
-    const scoutType: ScoutType | undefined = this.formHelper.controlValue("scoutType");
-    return scoutType === "SCOUT" || scoutType === "SCOUTER";
-  }
-
-  protected updateGroupSelect(value: ScoutType) {
-    if (value === "SCOUT") {
-      if (this.groups[0].id === 0) {
-        this.groups.shift();
-      }
-      if (this.formHelper.controlValue("groupId") === 0) {
-        this.formHelper.get("groupId")?.setValue(null);
-      }
-    } else if (this.groups[0].id !== 0) {
-      this.groups.unshift(GroupService.generalGroup);
-    }
-
-    this.updatedRegistrationDates(value);
-  }
-
-  private updatedRegistrationDates(newStatus: ScoutType) {
+  protected updateFormValues(newStatus: ScoutType) {
     const wasActive = this.initialData().scoutInfo.scoutType !== "INACTIVE";
     const isActive = newStatus !== "INACTIVE";
-    const regUpdated = this.registrationDateUpdated;
 
-    if (!isActive && wasActive && !regUpdated) {
-      this.addUnregistrationDate();
-    } else if (isActive && wasActive && regUpdated) {
-      this.deleteUnregistrationDate();
-    } else if (isActive && !wasActive && !regUpdated) {
-      this.addRegistrationDate();
-    } else if (!isActive && !wasActive && regUpdated) {
-      this.deleteRegistrationDate();
+    if (!isActive) {
+      this.formHelper.get("federated")?.setValue(false);
+      if (wasActive && !this.registrationDateUpdated) {
+        this.addUnregistrationDate();
+      } else if (!wasActive && this.registrationDateUpdated) {
+        this.deleteRegistrationDate();
+      }
+    } else {
+      this.formHelper.get("federated")?.setValue(true);
+      if (wasActive && this.registrationDateUpdated) {
+        this.deleteUnregistrationDate();
+      } else if (!wasActive && !this.registrationDateUpdated) {
+        this.addRegistrationDate();
+      }
     }
   }
 

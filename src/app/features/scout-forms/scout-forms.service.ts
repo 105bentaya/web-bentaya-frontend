@@ -22,6 +22,10 @@ export class ScoutFormsService {
     return this.http.get<PreScout[]>(`${this.preScoutUrl}/assignation`);
   }
 
+  getById(id: number): Observable<PreScout> {
+    return this.http.get<PreScout>(`${this.preScoutUrl}/assignation/${id}`);
+  }
+
   sendScoutFormMail(preScout: PreScoutForm): Observable<void> {
     return this.http.post<void>(`${this.preScoutUrl}/form`, preScout);
   }

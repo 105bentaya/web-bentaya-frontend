@@ -131,7 +131,7 @@ hr {
   }
 }
 
-label, span, th {
+label, span, th, b {
   &.required:after {
     content: "*";
     font-weight: bold;
@@ -361,4 +361,8 @@ p-fileupload.small-uploader {
   .p-fileupload-choose-button {
     display: none;
   }
+}
+
+.pointer-event-none {
+  pointer-events: none !important;
 }

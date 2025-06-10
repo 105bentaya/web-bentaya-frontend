@@ -1,17 +1,18 @@
 import {HttpResponse} from "@angular/common/http";
 import {saveAs} from "file-saver";
-import {Observable} from "rxjs";
+import {noop, Observable} from "rxjs";
 
 export type FileType = "MEDICAL" | "PERSONAL" | "ECONOMIC" | "RECORD";
 
 export class FileUtils {
-  public static fileToFormData(file: File, paramName = "file"): FormData {
+  public static fileToFormData(file: File, customName?: string): FormData {
     const form = new FormData();
     form.append("file", file);
+    customName ? form.append('customName', customName) : noop();
     return form;
   }
 
-  public static filesToFormData(files: File[], paramName = "file"): FormData {
+  public static filesToFormData(files: File[]): FormData {
     const form = new FormData();
     files.forEach(file => {
       form.append('files', file);

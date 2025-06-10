@@ -19,11 +19,11 @@ export default class ScoutHelper {
 
     switch (type) {
       case "DNI":
-        return !this.dniIsValid(number.toUpperCase()) ? {formatInvalid: true} : null;
+        return !this.dniIsValid(number) ? {formatInvalid: true} : null;
       case "NIE":
-        return !this.nieIsValid(number.toUpperCase()) ? {formatInvalid: true} : null;
+        return !this.nieIsValid(number) ? {formatInvalid: true} : null;
       case "CIF":
-        return !this.cifIsValid(number.toUpperCase()) ? {formatInvalid: true} : null;
+        return !this.cifIsValid(number) ? {formatInvalid: true} : null;
       default:
         return null;
     }
@@ -35,6 +35,7 @@ export default class ScoutHelper {
   static readonly numberControl = ['A', 'B', 'E', 'H'];
 
   public static cifIsValid(value: string) {
+    value = value.toUpperCase();
     if (ScoutHelper.cifRegex.test(value)) {
       const firstLetter = value[0];
       const numbers = value.slice(1, -1);
@@ -72,7 +73,8 @@ export default class ScoutHelper {
 
   static readonly nieRegex = /^[XYZ]\d{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
 
-  private static nieIsValid(number: string): boolean {
+  public static nieIsValid(number: string): boolean {
+    number = number.toUpperCase();
     if (this.nieRegex.test(number)) {
       const nieFirstLetter = number[0];
       if (nieFirstLetter === "X") {
@@ -91,7 +93,8 @@ export default class ScoutHelper {
   static readonly dniRegex = /^\d{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
   static readonly dniLetters = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"];
 
-  private static dniIsValid(number: string): boolean {
+  public static dniIsValid(number: string): boolean {
+    number = number.toUpperCase();
     if (this.dniRegex.test(number)) {
       const dniNumber = Number(number.slice(0, -1));
       const dniLetter = number.slice(-1);
@@ -102,7 +105,7 @@ export default class ScoutHelper {
     return false;
   }
 
-  public static ibanValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  public static readonly ibanValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const value = control.value?.replace(/\s+/g, '').toUpperCase();
     if (!value) {
       return null;

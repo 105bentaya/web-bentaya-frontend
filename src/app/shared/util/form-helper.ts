@@ -1,4 +1,4 @@
-import {AbstractControlOptions, FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {AbstractControlOptions, FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {inject} from "@angular/core";
 import {lastValueFrom, skip, take} from "rxjs";
 
@@ -114,10 +114,6 @@ export class FormHelper {
     return this.form?.controls[group] as FormGroup;
   }
 
-  getFormGroupControl(group: string, control: string) { //todo remove and use get instead
-    return this.getFormGroup(group)?.controls[control] as FormControl;
-  }
-
   get valid() {
     return this.form.valid;
   }
@@ -185,7 +181,7 @@ export class FormHelper {
       } else {
         control.updateValueAndValidity();
       }
-      if (control.invalid || !control.valid) {
+      if ((control.invalid || !control.valid) && control.enabled) {
         valid = false;
         control.markAsDirty();
       }

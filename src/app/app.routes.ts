@@ -105,6 +105,12 @@ export const routes: Routes = [
     data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
   },
   {
+    path: "scouts/alta/:preScoutId",
+    loadComponent: () => import('./features/scouts/components/new-scout-form/new-scout-form.component').then(c => c.NewScoutFormComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+  },
+  {
     path: "scouts/:id",
     loadComponent: () => import('./features/scouts/components/scout-detail/scout-detail.component').then(c => c.ScoutDetailComponent),
     canActivate: [authGuard],

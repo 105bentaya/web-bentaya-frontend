@@ -12,7 +12,7 @@ import {
 import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {FormHelper} from "../../../../../shared/util/form-helper";
 import {Scout, ScoutContact} from "../../../models/scout.model";
-import {personTypes, yesNoOptions} from "../../../../../shared/constant";
+import {personTypes, relationshipOptions, yesNoOptions} from "../../../../../shared/constant";
 import ScoutHelper from "../../../scout.util";
 import {SelectButton} from "primeng/selectbutton";
 import {FloatLabel} from "primeng/floatlabel";
@@ -50,7 +50,7 @@ export class ContactDataFormComponent implements OnInit {
   protected readonly formHelper = new FormHelper();
 
   protected readonly personTypes = personTypes;
-  protected readonly relationshipOptions = ["Madre", "Padre", "Tutor", "Tutora"];
+  protected readonly relationshipOptions = relationshipOptions;
   protected readonly yesNoOptions = yesNoOptions;
 
   initialData = input.required<Scout>();

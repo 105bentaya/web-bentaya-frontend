@@ -21,7 +21,7 @@
   }
   @if (form.isConfirmationPage()) {
     <app-save-buttons
-      saveLabel="Enviar"
+      [saveLabel]="saveLabel()"
       saveIcon="pi pi-send"
       saveType="submit"
       (onSave)="onSubmit.emit()"

@@ -18,6 +18,7 @@ import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-group-ser-scout-table',
@@ -40,6 +41,7 @@ export class GroupSerScoutTableComponent implements OnInit {
   private readonly dialogService = inject(DynamicDialogService);
   private readonly alertService = inject(AlertService);
   private readonly filterService = inject(FilterService);
+  private readonly router = inject(Router);
 
   private allPreScouts!: PreScout[];
   protected filteredPreScouts!: PreScout[];
@@ -90,7 +92,7 @@ export class GroupSerScoutTableComponent implements OnInit {
 
   private saveAssignation(preScoutAssignation: PreScoutAssignation, preScout: PreScout) {
     if (statusIsSaveAsScout(preScoutAssignation.status)) {
-      //open form
+      this.router.navigateByUrl(`/scouts/alta/${preScout.id}`);
     } else if (statusIsValidForSaving(preScoutAssignation.status)) {
       this.loading = true;
       this.preScoutService.updatePreScoutAssignation(preScoutAssignation).subscribe({

@@ -27,6 +27,9 @@ import {ScoutSectionPipe} from "../../pipes/scout-section.pipe";
 import {PagedFilter} from "../../../../shared/model/filter.model";
 import {DatePicker} from "primeng/datepicker";
 import {genders} from "../../../../shared/constant";
+import {
+  GeneralAButtonComponent
+} from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 
 @Component({
   selector: 'app-scout-list',
@@ -49,7 +52,8 @@ import {genders} from "../../../../shared/constant";
     IdDocumentPipe,
     ScoutSectionPipe,
     TitleCasePipe,
-    DatePicker
+    DatePicker,
+    GeneralAButtonComponent
   ]
 })
 

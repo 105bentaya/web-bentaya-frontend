@@ -21,6 +21,10 @@
   }
 }
 
+.invalid-label {
+  color: var(--p-floatlabel-invalid-color);
+}
+
 //fix
 p-date-picker.ng-invalid.ng-dirty .p-datepicker.p-inputwrapper .p-inputtext {
   border-color: var(--p-inputtext-invalid-border-color);
@@ -91,6 +95,10 @@ p-password.ng-invalid.ng-dirty .p-inputtext {
 
 p-checkbox.ng-invalid.ng-dirty .p-checkbox:not(.p-disabled):has(.p-checkbox-input:hover) .p-checkbox-box {
   @extend %hover;
+}
+
+p-checkbox.ng-invalid.ng-dirty .p-checkbox-checked .p-checkbox-box {
+  background: var(--p-red-600) !important;
 }
 
 p-radiobutton.ng-invalid.ng-dirty .p-radiobutton:not(.p-disabled):has(.p-radiobutton-input:hover) .p-radiobutton-box {

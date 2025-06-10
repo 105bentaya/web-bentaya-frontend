@@ -20,7 +20,7 @@
   --p-button-outlined-success-border-color: var(--p-green-400);
   --p-button-outlined-secondary-border-color: var(--p-surface-400);
 
-  --p-togglebutton-checked-background: #cbe2ff;
+  --p-togglebutton-checked-background: var(--p-primary-200);
   --p-togglebutton-padding: var(--p-button-padding-y) var(--p-button-padding-x);
   --p-togglebutton-border-radius: var(--p-button-border-radius);
 
@@ -71,6 +71,21 @@
     padding-top: 0;
   }
 }
+
+.p-selectbutton.override-disable .p-togglebutton.p-togglebutton-checked {
+  background: var(--p-primary-200) !important;
+  border-color: var(--p-togglebutton-checked-border-color) !important;
+  color: var(--p-togglebutton-checked-color) !important;
+  opacity: 0.9;
+}
+
+.not-disabled:not(.ng-invalid .ng-dirty) {
+  .p-checkbox-box {
+    border: 1px solid var(--p-checkbox-border-color);
+    background: var(--p-checkbox-background);
+  }
+}
+
 
 p-tag.inverted {
   padding-top: 2px;

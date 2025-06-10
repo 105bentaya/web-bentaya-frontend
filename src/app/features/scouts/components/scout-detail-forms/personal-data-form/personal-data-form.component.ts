@@ -8,13 +8,14 @@ import {FloatLabel} from "primeng/floatlabel";
 import {InputText} from "primeng/inputtext";
 import {DatePicker} from "primeng/datepicker";
 import {Select} from "primeng/select";
-import {genders, shirtSizes} from "../../../../../shared/constant";
+import {genders, shirtSizes, yesNoOptions} from "../../../../../shared/constant";
 import {FormTextAreaComponent} from "../../../../../shared/components/form-text-area/form-text-area.component";
 import {ScoutService} from "../../../services/scout.service";
 import {finalize} from "rxjs";
 import {DateUtils} from "../../../../../shared/util/date-utils";
 import {PersonalDataForm} from "../../../models/scout-form.model";
 import {IdDocumentFormComponent} from "../../id-document-form/id-document-form.component";
+import {SelectButton} from "primeng/selectbutton";
 
 @Component({
   selector: 'app-personal-data-form',
@@ -27,7 +28,8 @@ import {IdDocumentFormComponent} from "../../id-document-form/id-document-form.c
     DatePicker,
     Select,
     FormTextAreaComponent,
-    IdDocumentFormComponent
+    IdDocumentFormComponent,
+    SelectButton
   ],
   templateUrl: './personal-data-form.component.html',
   styleUrl: './personal-data-form.component.scss'
@@ -40,6 +42,7 @@ export class PersonalDataFormComponent implements OnInit {
 
   protected readonly genders = genders;
   protected readonly shirtSizes = shirtSizes;
+  protected readonly yesNoOptions = yesNoOptions;
 
   public initialData = input.required<Scout>();
   protected onEditionStop = output<void | Scout>();
@@ -71,7 +74,8 @@ export class PersonalDataFormComponent implements OnInit {
       email: [personalData.email, [Validators.maxLength(255), Validators.email]],
       shirtSize: [personalData.shirtSize, Validators.maxLength(255)],
       residenceMunicipality: [personalData.residenceMunicipality, Validators.maxLength(255)],
-      gender: [personalData.gender, [Validators.required, Validators.maxLength(255)]]
+      gender: [personalData.gender, [Validators.required, Validators.maxLength(255)]],
+      imageAuthorization: [personalData.imageAuthorization, Validators.required]
     });
   }
 

@@ -1,0 +1,78 @@
+import {Component, inject, input, OnInit, output} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {GroupService} from "../../../../shared/services/group.service";
+import {ScoutType} from "../../models/scout.model";
+import {FloatLabel} from "primeng/floatlabel";
+import {Select} from "primeng/select";
+import {NgClass} from "@angular/common";
+import {InputNumber} from "primeng/inputnumber";
+import {BasicGroupInfo} from "../../../../shared/model/group.model";
+
+@Component({
+  selector: 'app-scout-type-form',
+  imports: [
+    FloatLabel,
+    Select,
+    ReactiveFormsModule,
+    NgClass,
+    InputNumber
+  ],
+  templateUrl: './scout-type-form.component.html',
+  styleUrl: './scout-type-form.component.scss'
+})
+export class ScoutTypeFormComponent implements OnInit {
+  private readonly groupService = inject(GroupService);
+
+  parentForm = input.required<FormGroup | AbstractControl>();
+  showCensus = input<boolean>(true);
+  onGroupSelect = output<ScoutType>();
+
+  protected groups!: BasicGroupInfo[];
+  protected readonly scoutTypes: ({ label: string; value: ScoutType })[] = [
+    {label: "Educanda", value: "SCOUT"},
+    {label: "Educadora", value: "SCOUTER"},
+    {label: "Comité de Grupo", value: "COMMITTEE"},
+    {label: "Gestora", value: "MANAGER"},
+    {label: "Sin unidad (Baja)", value: "INACTIVE"},
+  ];
+
+
+  ngOnInit(): void {
+    this.groupService.getBasicGroups().subscribe(groups => {
+      this.groups = groups;
+      this.updateGroupSelect(this.scoutType.value);
+    });
+  }
+
+  protected get census(): FormControl {
+    return this.parentForm().get('census') as FormControl;
+  }
+
+  protected get scoutType(): FormControl {
+    return this.parentForm().get('scoutType') as FormControl;
+  }
+
+  protected get groupId(): FormControl {
+    return this.parentForm().get('groupId') as FormControl;
+  }
+
+  get showGroup(): boolean {
+    const scoutType: ScoutType = this.parentForm().get('scoutType')?.value;
+    return scoutType === 'SCOUT' || scoutType === 'SCOUTER';
+  }
+
+  protected updateGroupSelect(value: ScoutType): void {
+    if (value === 'SCOUT') {
+      if (this.groups[0]?.id === 0) {
+        this.groups.shift();
+      }
+      if (this.parentForm().get('groupId')?.value === 0) {
+        this.parentForm().get('groupId')?.setValue(null);
+      }
+    } else if (this.groups[0]?.id !== 0) {
+      this.groups.unshift(GroupService.generalGroup);
+    }
+
+    this.onGroupSelect.emit(value);
+  }
+}

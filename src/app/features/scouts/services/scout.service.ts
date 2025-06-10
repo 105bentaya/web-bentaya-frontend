@@ -7,6 +7,7 @@ import {FileType, FileUtils} from "../../../shared/util/file.utils";
 import {
   EconomicDataForm,
   EconomicEntryForm,
+  NewScoutForm,
   PersonalDataForm,
   ScoutContactForm,
   ScoutHistoryForm,
@@ -31,6 +32,7 @@ export class ScoutService {
   set lastFilter(value: ScoutQuickFilter) {
     this.scoutListFilter = value;
   }
+
   get lastFilter(): ScoutQuickFilter {
     return this.scoutListFilter;
   }
@@ -49,16 +51,20 @@ export class ScoutService {
     return this.http.get<Scout>(`${this.scoutUrl}/${id}`);
   }
 
-  downloadDocument(id: number) {
-    return this.http.get(`${this.scoutUrl}/document/${id}`, {responseType: 'blob', observe: 'response'});
+  downloadDocument(documentId: number) {
+    return this.http.get(`${this.scoutUrl}/document/${documentId}`, {responseType: 'blob', observe: 'response'});
   }
 
-  uploadDocument(id: number, file: File, fileType: FileType) {
-    return this.http.post<ScoutFile>(`${this.scoutUrl}/document/${id}/${fileType}`, FileUtils.fileToFormData(file));
+  uploadDocument(scoutId: number, file: File, fileType: FileType, customName?: string) {
+    return this.http.post<ScoutFile>(`${this.scoutUrl}/document/${scoutId}/${fileType}`, FileUtils.fileToFormData(file, customName));
   }
 
-  deleteDocument(id: number, fileId: number, fileType: FileType) {
-    return this.http.delete<void>(`${this.scoutUrl}/document/${id}/${fileId}/${fileType}`);
+  deleteDocument(scoutId: number, fileId: number, fileType: FileType) {
+    return this.http.delete<void>(`${this.scoutUrl}/document/${scoutId}/${fileId}/${fileType}`);
+  }
+
+  saveNewScout(scoutForm: NewScoutForm) {
+    return this.http.post<Scout>(`${this.scoutUrl}/new`, scoutForm);
   }
 
   updatePersonalData(id: number, personalDataForm: PersonalDataForm) {

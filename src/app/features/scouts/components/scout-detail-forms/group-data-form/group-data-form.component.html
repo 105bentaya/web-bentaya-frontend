@@ -1,43 +1,10 @@
 <div>
   <form class="form-container" (ngSubmit)="submit()" [formGroup]="formHelper.form">
+    <app-scout-type-form
+      [parentForm]="formHelper.form"
+      (onGroupSelect)="updateFormValues($event)"
+    ></app-scout-type-form>
     <div class="row">
-      <div class="col-12" [ngClass]="showGroup() ? 'col-md' : 'col-sm'">
-        <p-float-label variant="on">
-          <p-input-number
-            formControlName="census"
-            id="census"
-            [useGrouping]="false"
-            prefix="35-105-"
-            showClear
-          />
-          <label class="semi-required" for="census">Censo</label>
-        </p-float-label>
-      </div>
-      <div class="col-12 col-sm">
-        <p-float-label variant="on">
-          <p-select
-            [options]="scoutTypes"
-            formControlName="scoutType"
-            id="scoutType"
-            (onChange)="updateGroupSelect($event.value)"
-          />
-          <label class="required" for="scoutType">Tipo de asociada</label>
-        </p-float-label>
-      </div>
-      @if (showGroup()) {
-        <div class="col">
-          <p-float-label variant="on">
-            <p-select
-              [options]="groups"
-              formControlName="groupId"
-              optionLabel="name"
-              optionValue="id"
-              id="groupId"
-            />
-            <label class="required" for="groupId">Unidad de la asociada</label>
-          </p-float-label>
-        </div>
-      }
       <div class="col-12">
         <div class="d-flex flex-column">
           <label class="required" for="federated">Federada</label>

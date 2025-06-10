@@ -1,8 +1,8 @@
 export class DateUtils {
 
-  public static dateOrUndefined(registrationDate: Date | undefined): Date | undefined {
-      if (registrationDate) {
-        return new Date(registrationDate);
+  public static dateOrUndefined(date: Date | string | undefined): Date | undefined {
+      if (date) {
+        return new Date(date);
       }
       return undefined;
   }

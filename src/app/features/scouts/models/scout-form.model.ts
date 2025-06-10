@@ -1,5 +1,32 @@
 import {BloodType, IdentificationDocument, ScoutType} from "./scout.model";
 
+export interface NewScoutForm {
+  iban: string;
+  bank: string;
+  scoutType: ScoutType;
+  groupId?: number;
+  census?: string;
+  firstActivityDate: Date | string;
+  imageAuthorization: boolean;
+  contact: ScoutContactForm;
+  name: string;
+  feltName?: string;
+  surname: string;
+  birthday: Date | string;
+  gender: string;
+  idDocument?: IdentificationDocument;
+  shirtSize?: string;
+  address?: string;
+  city?: string;
+  province?: string;
+  residenceMunicipality?: string;
+  phone?: string;
+  landline?: string;
+  email?: string;
+  scoutUsers: string[];
+  preScoutId?: number;
+}
+
 export interface PersonalDataForm {
   idDocument?: IdentificationDocument;
   observations?: string;
@@ -19,6 +46,7 @@ export interface PersonalDataForm {
   shirtSize?: string;
   residenceMunicipality?: string;
   gender?: string;
+  imageAuthorization: boolean;
 }
 
 export interface ScoutContactForm {

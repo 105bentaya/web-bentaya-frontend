@@ -25,6 +25,7 @@ export const personTypes: ({ label: string; value: PersonType })[] = [
   {label: "Real", value: "REAL"},
   {label: "Jurídica", value: "JURIDICAL"}
 ];
+export const relationshipOptions = ["Madre", "Padre", "Tutor", "Tutora"];
 
 export const maintenanceEmail = "informatica@105bentaya.org";
 export const generalEmail = "scouts@105bentaya.org";

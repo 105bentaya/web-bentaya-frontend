@@ -41,7 +41,7 @@ export class DocumentListComponent implements OnInit {
   titleName = input<string>("Documentos");
   titleSize = input<"small" | "big">("big");
 
-  private readonly uploader = viewChild.required(FileUpload);
+  private readonly uploader = viewChild.required<FileUpload>("documentListUploader");
 
   protected loading: boolean = false;
 
