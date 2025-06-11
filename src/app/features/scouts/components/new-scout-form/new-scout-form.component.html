@@ -564,6 +564,37 @@
       saveLabel="Guardar y seguir"
       (onSubmit)="submit()"
     />
+  } @else if (preScoutHasBeenInGroup) {
+    <p>
+      La nueva educanda ha indicado que ya ha estado en grupo. Los datos aportados son: {{ preScout?.yearAndSection }}.
+    </p>
+    @if (previousScout) {
+      <p>
+        Se ha encontrado la siguiente antigua asociada cuyo DNI coincide con los datos de la inscripción. Dale a
+        continuar para
+        volver a dar de alta a esta persona. Si crees que la los datos de esta persona no coinciden con los de la
+        inscripción, ponte en contacto con informática.
+      </p>
+      <app-basic-info label="Nombre" [value]="previousScout.personalData.name"/>
+      <app-basic-info label="Apellidos" [value]="previousScout.personalData.surname"/>
+      <app-basic-info label="Fecha de Nacimiento" [value]="previousScout.personalData.birthday | date:'dd/MM/yyyy'"/>
+      <app-basic-info label="Género" [value]="previousScout.personalData.gender"/>
+      <app-basic-info
+        [label]="previousScout.personalData.idDocument | idDocumentType"
+        [value]="previousScout.personalData.idDocument | idDocument"
+      />
+    } @else {
+      <p>
+        No obstante, <b>no se han encontrado</b> antiguas asociadas DNI coincida con los de la preinscripción. Si crees
+        que esto es un error y <b>ves la persona asociada en el censo de grupo</b>, avisa a
+        informática para que dé el alta.
+        En cambio, si <b>tienes la seguridad</b> de que la nueva scout no ha estado antes en el grupo
+        (es decir, la inscripción está mal), puedes crear una scout nueva dándole a continuar.
+      </p>
+    }
+    <p-button class="float-end mt-2" label="Continuar" (onClick)="startFromHasBeenBefore()"></p-button>
+  } @else {
+    <app-basic-loading-info/>
   }
 </div>
 

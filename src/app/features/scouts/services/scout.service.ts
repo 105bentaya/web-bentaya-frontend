@@ -118,4 +118,8 @@ export class ScoutService {
   findLastCensus(): Observable<number> {
     return this.http.get<number>(`${this.scoutUrl}/last-census`);
   }
+
+  findScoutsLikeHasBeenInGroup(preScoutId: number) {
+    return this.http.get<Scout>(`${this.scoutUrl}/previous-scout/${preScoutId}`);
+  }
 }

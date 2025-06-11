@@ -23,7 +23,7 @@ import {
   shirtSizes,
   yesNoOptions
 } from "../../../../shared/constant";
-import {IdentificationDocument, ScoutType} from "../../models/scout.model";
+import {IdentificationDocument, Scout, ScoutType} from "../../models/scout.model";
 import {IdDocumentFormComponent} from "../id-document-form/id-document-form.component";
 import {Steps} from "primeng/steps";
 import {MenuItem} from "primeng/api";
@@ -60,6 +60,8 @@ import {BasicGroupInfo} from "../../../../shared/model/group.model";
 import {ScoutGroupPipe} from "../../pipes/scout-group.pipe";
 import {Message} from "primeng/message";
 import {CensusPipe} from "../../pipes/census.pipe";
+import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
+import {Button} from "primeng/button";
 
 type UserDocument = "basicDataDoc" | "bankDoc" | "authorizationDoc" | "imageAuthorizationDoc";
 
@@ -91,7 +93,9 @@ type UserDocument = "basicDataDoc" | "bankDoc" | "authorizationDoc" | "imageAuth
     JoinPipe,
     ScoutGroupPipe,
     Message,
-    CensusPipe
+    CensusPipe,
+    BasicLoadingInfoComponent,
+    Button
   ],
   templateUrl: './new-scout-form.component.html',
   styleUrl: './new-scout-form.component.scss',
@@ -128,7 +132,10 @@ export class NewScoutFormComponent implements OnInit {
   private readonly documentationFiles: { file: File, control: UserDocument }[] = [];
   private selectedDocument!: UserDocument;
 
-  private preScoutId: number | undefined;
+  protected preScout: PreScout | undefined;
+  protected preScoutHasBeenInGroup: boolean = false;
+  protected previousScout!: Scout;
+
   private isAdmin = false;
   protected loading: boolean = false;
   protected scoutFormToSave!: NewScoutForm;
@@ -142,33 +149,40 @@ export class NewScoutFormComponent implements OnInit {
     const preScoutId = this.route.snapshot.params["preScoutId"];
     this.isAdmin = this.userData.hasRequiredPermission(UserRole.ADMIN);
     if (preScoutId) {
-      this.preScoutService.getById(preScoutId).subscribe(res => {
-        this.preScoutId = preScoutId;
-        this.createForm(res);
+      this.preScoutService.getById(preScoutId).subscribe(preScout => {
+        this.preScout = preScout;
+        if (preScout.hasBeenInGroup) {
+          this.scoutService.findScoutsLikeHasBeenInGroup(preScoutId).subscribe(scout => {
+            this.previousScout = scout;
+            this.preScoutHasBeenInGroup = true;
+          });
+        } else {
+          this.createForm(preScout);
+        }
       });
     } else {
       this.createForm();
     }
   }
 
-  private createForm(preScout?: PreScout) {
+  private createForm(preScout?: PreScout, previousScout?: Scout) {
     //todo si hasBeenInGroup, buscar scout y empezar por ahí.
 
     this.formHelper.createForm({
       name: [this.titleCase.transform(preScout?.name), [Validators.required, Validators.maxLength(255)]],
-      feltName: [null, Validators.maxLength(255)],
+      feltName: [previousScout?.personalData.feltName, Validators.maxLength(255)],
       surname: [this.titleCase.transform(preScout?.surname), [Validators.required, Validators.maxLength(255)]],
       birthday: [preScout?.birthday ? new Date(preScout.birthday.split("/").reverse().join("-")) : null, Validators.required],
       gender: [this.titleCase.transform(preScout?.gender), [Validators.required, Validators.maxLength(255)]],
       idDocument: ScoutHelper.idDocumentFormGroup(this.formBuilder, this.getIdDocumentFromPreScout(preScout)),
       shirtSize: [preScout?.size, Validators.maxLength(255)],
-      address: [null, Validators.maxLength(255)],
-      city: [null, Validators.maxLength(255)],
-      province: [null, Validators.maxLength(255)],
+      address: [previousScout?.personalData.address, Validators.maxLength(255)],
+      city: [previousScout?.personalData.city, Validators.maxLength(255)],
+      province: [previousScout?.personalData.province, Validators.maxLength(255)],
       residenceMunicipality: [null, Validators.maxLength(255)],
-      phone: [null, [Validators.maxLength(255), this.requiredIfScouterOrSupport]],
-      landline: [null, Validators.maxLength(255)],
-      email: [null, [Validators.maxLength(255), Validators.email, this.requiredIfScouterOrSupport]],
+      phone: [previousScout?.personalData.phone, [Validators.maxLength(255), this.requiredIfScouterOrSupport]],
+      landline: [previousScout?.personalData.landline, Validators.maxLength(255)],
+      email: [previousScout?.personalData.email, [Validators.maxLength(255), Validators.email, this.requiredIfScouterOrSupport]],
 
       contact: this.formBuilder.group({
         personType: ['REAL', this.requiredIfScout],
@@ -192,11 +206,12 @@ export class NewScoutFormComponent implements OnInit {
       imageAuthorizationDoc: [false],
       scoutType: [preScout ? "SCOUT" : null, Validators.required],
       groupId: [preScout?.assignation?.group.id ?? null, this.groupValidation],
-      census: [null],
+      census: [previousScout?.scoutInfo.census],
       firstActivityDate: [null, Validators.required],
       imageAuthorization: [true, Validators.required],
       contactUser: [false],
-      scoutUser: [false]
+      scoutUser: [false],
+      existingScoutId: [previousScout?.id]
     });
     this.formHelper.currentPage = 0;
     this.formHelper.onLastPage = () => this.createScoutForm();
@@ -216,7 +231,7 @@ export class NewScoutFormComponent implements OnInit {
       ]
     ]);
 
-    if (this.preScoutId && !this.isAdmin) {
+    if (this.preScout && !this.isAdmin) {
       this.formHelper.get("scoutType")?.disable();
       this.formHelper.get("groupId")?.disable();
     }
@@ -335,6 +350,15 @@ export class NewScoutFormComponent implements OnInit {
 
       this.checkFormEmails(scoutForm);
 
+      if (this.preScout) {
+        scoutForm.preScoutId = this.preScout.id;
+      }
+      scoutForm.hasBeenBefore = this.preScoutHasBeenInGroup;
+
+      if (!this.isAdmin) {
+        delete scoutForm.census;
+      }
+
       this.scoutFormToSave = scoutForm;
     } else {
       this.formHelper.currentPage = 3;
@@ -377,10 +401,6 @@ export class NewScoutFormComponent implements OnInit {
     delete scoutForm.contactUser;
     delete scoutForm.scoutUser;
     scoutForm.scoutUsers = userEmails;
-
-    if (this.preScoutId) {
-      scoutForm.preScoutId = this.preScoutId;
-    }
   }
 
   private uploadFile(scoutId: number, documentationFile: { file: File, control: UserDocument }) {
@@ -441,6 +461,14 @@ export class NewScoutFormComponent implements OnInit {
         return "Autorización anual";
       case "imageAuthorizationDoc":
         return "Permiso de imagen";
+    }
+  }
+
+  protected startFromHasBeenBefore() {
+    if (this.previousScout) {
+      this.createForm(this.preScout, this.previousScout);
+    } else {
+      this.createForm(this.preScout);
     }
   }
 }

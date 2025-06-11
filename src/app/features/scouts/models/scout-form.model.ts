@@ -25,6 +25,7 @@ export interface NewScoutForm {
   email?: string;
   scoutUsers: string[];
   preScoutId?: number;
+  hasBeenBefore: boolean;
 }
 
 export interface PersonalDataForm {
