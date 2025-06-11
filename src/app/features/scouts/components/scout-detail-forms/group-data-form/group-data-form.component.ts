@@ -55,6 +55,7 @@ export class GroupDataFormComponent implements OnInit {
   protected readonly yesNoOptions = yesNoOptions;
 
   initialData = input.required<Scout>();
+  newScoutType = input<ScoutType>();
   protected onEditionStop = output<void | Scout>();
 
   protected loading: boolean = false;
@@ -62,8 +63,9 @@ export class GroupDataFormComponent implements OnInit {
 
   ngOnInit() {
     const scoutInfo = this.initialData().scoutInfo;
+    const possibleNewScoutType = this.newScoutType();
     this.formHelper.createForm({
-      scoutType: [scoutInfo.scoutType, Validators.required],
+      scoutType: [possibleNewScoutType ?? scoutInfo.scoutType, Validators.required],
       groupId: [this.getScoutGroup(scoutInfo), this.groupValidation],
       registrationDates: this.formBuilder.array(
         scoutInfo.registrationDates.map(date => this.createRegistrationDate(date))
@@ -72,8 +74,12 @@ export class GroupDataFormComponent implements OnInit {
       census: [scoutInfo.census]
     });
 
-    if (!this.userData.hasRequiredPermission(UserRole.ADMIN)) {
+    if (!this.userData.hasRequiredPermission(UserRole.SECRETARY)) {
       this.formHelper.get("census")?.disable();
+    }
+
+    if (possibleNewScoutType) {
+      this.updateFormValues(possibleNewScoutType);
     }
   }
 

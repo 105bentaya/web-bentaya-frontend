@@ -1,5 +1,5 @@
 <div class="row">
-  @if (showCensus()) {
+  @if (showCensus) {
     <div class="col-12" [ngClass]="showGroup ? 'col-md' : 'col-sm'">
       <p-floatlabel variant="on">
         <p-inputgroup>
@@ -8,16 +8,16 @@
             id="census"
             [useGrouping]="false"
             prefix="35-105-"
+            [min]="1"
             class="border-end-radius-0"
           />
           <label class="semi-required" for="census">Censo</label>
           <p-inputgroup-addon>
             <p-button
-              title="Autocompletar Censo"
+              pTooltip="Asignar Siguiente Censo"
               text
               icon="fa-solid fa-clock-rotate-left"
               (onClick)="autoCompleteLastCensus()"
-              [disabled]="!lastCensus()"
             />
           </p-inputgroup-addon>
         </p-inputgroup>
@@ -50,3 +50,17 @@
     </div>
   }
 </div>
+
+@if (showCensus) {
+  @if (censusIsGreaterThanLast) {
+    <p-message severity="warn" class="mb-3">
+      El último número censo se actualizará al número {{ census.value }},
+      cuando el último de la lista es el {{ lastCensus }}.
+      Si deseas volver a cambiarlo tendrás que hacerlo desde la pestaña de ajustes.
+    </p-message>
+  } @else if (!census.value && scoutType.value !== 'INACTIVE') {
+    <p-message severity="warn" icon="pi pi-exclamation-circle">
+      Si no especificas un censo, la asociada se quedará como alta pendiente.
+    </p-message>
+  }
+}

@@ -29,6 +29,8 @@ export class RolePipe implements PipeTransform {
         return "SOLICITANTE CENTRO SCOUTS";
       case UserRole.SCOUT_CENTER_MANAGER:
         return "GESTOR CENTROS SCOUT";
+      case UserRole.SECRETARY:
+        return "SECRETARÍA";
       default:
         return role;
     }

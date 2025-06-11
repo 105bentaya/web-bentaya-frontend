@@ -21,6 +21,7 @@ import {
 } from "./features/booking/components/management/booking-management-calendar/booking-management-calendar.component";
 import {inject} from "@angular/core";
 import {UserRoutesService} from "./core/auth/services/user-routes.service";
+import {LoggedUserDataService} from "./core/auth/services/logged-user-data.service";
 
 export const routes: Routes = [
   {
@@ -94,45 +95,55 @@ export const routes: Routes = [
   },
   {
     path: "scouts",
+    redirectTo: () => inject(LoggedUserDataService).hasRequiredPermission(UserRole.SECRETARY) ? 'scouts/censo' : 'scouts/lista',
+  },
+  {
+    path: "scouts/lista",
     loadComponent: () => import('./features/scouts/components/scout-list/scout-list.component').then(c => c.ScoutListComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+  },
+  {
+    path: "scouts/censo",
+    loadComponent: () => import('./features/scouts/components/scout-list/scout-list.component').then(c => c.ScoutListComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SECRETARY]}
   },
   {
     path: "scouts/alta",
     loadComponent: () => import('./features/scouts/components/new-scout-form/new-scout-form.component').then(c => c.NewScoutFormComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
   },
   {
     path: "scouts/alta/:preScoutId",
     loadComponent: () => import('./features/scouts/components/new-scout-form/new-scout-form.component').then(c => c.NewScoutFormComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
   },
   {
     path: "scouts/:id",
     loadComponent: () => import('./features/scouts/components/scout-detail/scout-detail.component').then(c => c.ScoutDetailComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.ADMIN, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
   },
   {
     path: "registros",
     loadComponent: () => import('./features/special-member/components/special-member-list/special-member-list.component').then(c => c.SpecialMemberListComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.ADMIN]}
+    data: {roles: [UserRole.SECRETARY]}
   },
   {
     path: "registros/nuevo",
     loadComponent: () => import('./features/special-member/components/special-member-new-form/special-member-new-form.component').then(c => c.SpecialMemberNewFormComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.ADMIN]}
+    data: {roles: [UserRole.SECRETARY]}
   },
   {
     path: "registros/:id",
     loadComponent: () => import('./features/special-member/components/special-member-detail/special-member-detail.component').then(c => c.SpecialMemberDetailComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.ADMIN]}
+    data: {roles: [UserRole.SECRETARY]}
   },
   //Unidad
   {

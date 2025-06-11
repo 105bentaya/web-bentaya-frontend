@@ -32,7 +32,7 @@ export interface ScoutRecord {
 export interface ScoutInfo {
   scoutType: ScoutType;
   registrationDates: RegistrationDate[];
-  active: boolean;
+  status: ScoutStatus;
   federated: boolean;
   census?: number;
   group?: BasicGroupInfo;
@@ -171,6 +171,7 @@ export interface IdentificationDocument {
 export type PersonType = "REAL" | "JURIDICAL";
 export type IdType = "DNI" | "NIE" | "CIF" | "PAS" | "OTR";
 export type ScoutType = "SCOUT" | "SCOUTER" | "COMMITTEE" | "MANAGER" | "INACTIVE";
+export type ScoutStatus = "ACTIVE" | "PENDING_EXISTING" | "PENDING_NEW" | "INACTIVE";
 export type BloodType =
   "O_POSITIVE"
   | "O_NEGATIVE"

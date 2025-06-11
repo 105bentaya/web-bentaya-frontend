@@ -10,6 +10,11 @@ import {BasicGroupInfo} from "../../../../shared/model/group.model";
 import {InputGroup} from "primeng/inputgroup";
 import {InputGroupAddon} from "primeng/inputgroupaddon";
 import {Button} from "primeng/button";
+import {Tooltip} from "primeng/tooltip";
+import {Message} from "primeng/message";
+import {ScoutService} from "../../services/scout.service";
+import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
+import {UserRole} from "../../../users/models/role.model";
 
 @Component({
   selector: 'app-scout-type-form',
@@ -21,17 +26,22 @@ import {Button} from "primeng/button";
     InputNumber,
     InputGroup,
     InputGroupAddon,
-    Button
+    Button,
+    Tooltip,
+    Message
   ],
   templateUrl: './scout-type-form.component.html',
   styleUrl: './scout-type-form.component.scss'
 })
 export class ScoutTypeFormComponent implements OnInit {
   private readonly groupService = inject(GroupService);
+  private readonly scoutService = inject(ScoutService);
+  private readonly userData = inject(LoggedUserDataService);
 
   parentForm = input.required<FormGroup | AbstractControl>();
-  showCensus = input<boolean>(true);
-  lastCensus = input<number>();
+  showCensus = this.userData.hasRequiredPermission(UserRole.SECRETARY);
+
+  protected lastCensus: number = 0;
   onGroupSelect = output<ScoutType>();
 
   protected groups!: BasicGroupInfo[];
@@ -43,8 +53,8 @@ export class ScoutTypeFormComponent implements OnInit {
     {label: "Sin unidad (Baja)", value: "INACTIVE"},
   ];
 
-
   ngOnInit(): void {
+    this.scoutService.findLastCensus().subscribe(census => this.lastCensus = census);
     this.groupService.getBasicGroups().subscribe(groups => {
       this.groups = groups;
       this.updateGroupSelect(this.scoutType.value);
@@ -84,6 +94,10 @@ export class ScoutTypeFormComponent implements OnInit {
   }
 
   protected autoCompleteLastCensus() {
-    this.census.setValue(this.lastCensus()! + 1);
+    this.census.setValue(this.lastCensus + 1);
+  }
+
+  protected get censusIsGreaterThanLast() {
+    return (this.census.value && this.census.value > this.lastCensus + 1);
   }
 }

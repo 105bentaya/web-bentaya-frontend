@@ -27,7 +27,6 @@ export class ScoutService {
   private readonly http = inject(HttpClient);
   private readonly scoutUrl = `${environment.apiUrl}/scout`;
   private scoutListFilter!: ScoutQuickFilter;
-  public lastTab: number = 0;
 
   set lastFilter(value: ScoutQuickFilter) {
     this.scoutListFilter = value;
@@ -65,6 +64,10 @@ export class ScoutService {
 
   saveNewScout(scoutForm: NewScoutForm) {
     return this.http.post<Scout>(`${this.scoutUrl}/new`, scoutForm);
+  }
+
+  deletePendingScout(scoutId: number) {
+    return this.http.delete<void>(`${this.scoutUrl}/pending/${scoutId}`);
   }
 
   updatePersonalData(id: number, personalDataForm: PersonalDataForm) {
@@ -121,5 +124,9 @@ export class ScoutService {
 
   findScoutsLikeHasBeenInGroup(preScoutId: number) {
     return this.http.get<Scout>(`${this.scoutUrl}/previous-scout/${preScoutId}`);
+  }
+
+  getTotalPendingRegistrations() {
+    return this.http.get<number>(`${this.scoutUrl}/any-pending-registrations`);
   }
 }

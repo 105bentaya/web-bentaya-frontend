@@ -12,21 +12,20 @@
         <p>
           Para dar de alta a una persona educanda deberás tener a mano <b>los 4</b> papeles de inscripción
           <b>completos</b>. En el último paso tendrás que <b>subir cada documento</b> de manera individual, ya sea una
-          foto o un pdf.
+          foto o un pdf. Para otro tipo de asociada sólo necesitas los datos básicos.
         </p>
         <app-scout-type-form
           [parentForm]="formHelper.form"
-          [showCensus]="showCensus"
-          [lastCensus]="lastCensus"
         ></app-scout-type-form>
       } @else if (formHelper.currentPage === 1) {
         <div>
-          <p>
-            En este primer apartado deben introducirse exclusivamente los datos de la <b>scout</b>, no los de sus
-            contactos. Los campos de teléfono móvil y correo electrónico <b>sólo deben completarse</b> si la scout
-            dispone
-            de un número y una dirección de correo <b>propios</b>.
-          </p>
+          @if (scoutType === 'SCOUT') {
+            <p>
+              En este primer apartado deben introducirse exclusivamente los datos de la <b>asociada</b>, no los de sus
+              contactos. Los campos de teléfono móvil y correo electrónico <b>sólo deben completarse</b> si la asociada
+              dispone de un número y una dirección de correo <b>propios</b>.
+            </p>
+          }
           <p>Introduce <b>todos</b> los datos que dispongas.</p>
           <div class="row">
             <div class="col-12 col-sm-6 col-lg-3">
@@ -301,17 +300,21 @@
         </div>
       } @else if (formHelper.currentPage === 3) {
         <div class="row">
-          <p>
-            Introduce los datos bancarios de la <b>persona declarada como donante</b> y los datos asociativos de la
-            scout.
-          </p>
-          <div class="col-12 col-sm-6 col-md-4">
+          @if (scoutType === 'SCOUT') {
+            <p>
+              Introduce los datos bancarios de la <b>persona declarada como donante</b> y los datos asociativos de la
+              scout.
+            </p>
+          }
+          <div class="col">
             <p-float-label variant="on">
               <p-datePicker
                 id="firstActivityDate"
                 formControlName="firstActivityDate"
               />
-              <label class="required" for="birthday">Fecha de Primera Actividad</label>
+              <label class="required" for="birthday">
+                {{ scoutType === 'SCOUT' ? 'Fecha de Primera Actividad' : 'Fecha de Alta' }}
+              </label>
             </p-float-label>
           </div>
           @if (scoutType === "SCOUT") {
@@ -407,7 +410,7 @@
                 } @else if (scoutType !== 'SCOUT') {
                   <small class="fw-bold">
                     <i class="pi pi-exclamation-triangle" style="vertical-align: text-bottom"></i>
-                    ¡Añade un correo a la scout para poder asignarle un usuario!
+                    ¡Añade un correo a la asociada para poder asignarle un usuario!
                   </small>
                 }
               </div>
@@ -548,13 +551,6 @@
               [value]="scoutFormToSave.scoutUsers.length > 0 ? (scoutFormToSave.scoutUsers | join) : '-'"
             />
           </div>
-          @if (censusIsGreaterThanLast) {
-            <p-message severity="warn" class="mb-3">
-              El último número censo se actualizará al número {{ scoutFormToSave.census }},
-              cuando el último de la lista es el {{ lastCensus }}.
-              Si desea volver a cambiarlo tendrá que entrar a la pestaña de ajustes.
-            </p-message>
-          }
         </div>
       }
     </form>

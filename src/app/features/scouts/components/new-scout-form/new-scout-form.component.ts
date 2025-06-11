@@ -58,7 +58,6 @@ import {JoinPipe} from "../../../../shared/pipes/join.pipe";
 import {GroupService} from "../../../../shared/services/group.service";
 import {BasicGroupInfo} from "../../../../shared/model/group.model";
 import {ScoutGroupPipe} from "../../pipes/scout-group.pipe";
-import {Message} from "primeng/message";
 import {CensusPipe} from "../../pipes/census.pipe";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {Button} from "primeng/button";
@@ -92,7 +91,6 @@ type UserDocument = "basicDataDoc" | "bankDoc" | "authorizationDoc" | "imageAuth
     BooleanPipe,
     JoinPipe,
     ScoutGroupPipe,
-    Message,
     CensusPipe,
     BasicLoadingInfoComponent,
     Button
@@ -136,18 +134,16 @@ export class NewScoutFormComponent implements OnInit {
   protected preScoutHasBeenInGroup: boolean = false;
   protected previousScout!: Scout;
 
-  private isAdmin = false;
+  private isSecretary = false;
   protected loading: boolean = false;
   protected scoutFormToSave!: NewScoutForm;
   private groups!: BasicGroupInfo[];
-  protected lastCensus: number = 0;
 
   ngOnInit() {
     this.groupService.getBasicGroups({generalGroup: true}).subscribe(data => this.groups = data);
-    this.scoutService.findLastCensus().subscribe(census => this.lastCensus = census);
 
     const preScoutId = this.route.snapshot.params["preScoutId"];
-    this.isAdmin = this.userData.hasRequiredPermission(UserRole.ADMIN);
+    this.isSecretary = this.userData.hasRequiredPermission(UserRole.SECRETARY);
     if (preScoutId) {
       this.preScoutService.getById(preScoutId).subscribe(preScout => {
         this.preScout = preScout;
@@ -166,8 +162,6 @@ export class NewScoutFormComponent implements OnInit {
   }
 
   private createForm(preScout?: PreScout, previousScout?: Scout) {
-    //todo si hasBeenInGroup, buscar scout y empezar por ahí.
-
     this.formHelper.createForm({
       name: [this.titleCase.transform(preScout?.name), [Validators.required, Validators.maxLength(255)]],
       feltName: [previousScout?.personalData.feltName, Validators.maxLength(255)],
@@ -231,7 +225,7 @@ export class NewScoutFormComponent implements OnInit {
       ]
     ]);
 
-    if (this.preScout && !this.isAdmin) {
+    if (this.preScout && !this.isSecretary) {
       this.formHelper.get("scoutType")?.disable();
       this.formHelper.get("groupId")?.disable();
     }
@@ -304,16 +298,8 @@ export class NewScoutFormComponent implements OnInit {
     return this.scoutType === "SCOUTER" || this.scoutType === "MANAGER" || this.scoutType === "COMMITTEE";
   }
 
-  protected get showCensus() {
-    return this.isAdmin;
-  }
-
   protected get scoutGroup() {
     return this.groups.find(group => group.id === this.scoutFormToSave.groupId);
-  }
-
-  protected get censusIsGreaterThanLast() {
-    return !!(this.scoutFormToSave?.census && this.scoutFormToSave.census > this.lastCensus + 1);
   }
 
   private createScoutForm() {
@@ -355,7 +341,7 @@ export class NewScoutFormComponent implements OnInit {
       }
       scoutForm.hasBeenBefore = this.preScoutHasBeenInGroup;
 
-      if (!this.isAdmin) {
+      if (!this.isSecretary) {
         delete scoutForm.census;
       }
 

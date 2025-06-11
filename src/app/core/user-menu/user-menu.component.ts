@@ -3,7 +3,7 @@ import {Button, ButtonIcon} from "primeng/button";
 import {NgClass} from "@angular/common";
 import {UserMenuService} from "./user-menu.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {NavigationEnd, Router, RouterLink} from "@angular/router";
+import {NavigationEnd, NavigationSkipped, Router, RouterLink} from "@angular/router";
 import {AuthService} from "../auth/services/auth.service";
 import {Divider} from "primeng/divider";
 import {buildSplitMenu} from "./user-menu.helper";
@@ -76,7 +76,7 @@ export class UserMenuComponent implements OnInit {
 
     this.router.events.pipe(
       takeUntilDestroyed(),
-      filter(event => event instanceof NavigationEnd)
+      filter(event => (event instanceof NavigationEnd || event instanceof NavigationSkipped))
     ).subscribe(e => this.checkForSelection(e.url));
 
     this.notificationService.userHasNotifications$
@@ -95,8 +95,13 @@ export class UserMenuComponent implements OnInit {
 
   private checkForSelection(url: string) {
     this.items.filter(i => i.selected).forEach(i => i.selected = false);
-    const item = this.items.find(item => item.route && url.startsWith(item.route));
+    const item = this.findMenuItem(url);
     if (item) item.selected = true;
+  }
+
+  private findMenuItem(url: string) {
+    return this.items.find(item => item.route && url.startsWith(item.route)) ??
+      this.items.find(item => item.route?.startsWith(`/${url.split("/")[1]}`));
   }
 
   protected resizeMenu() {

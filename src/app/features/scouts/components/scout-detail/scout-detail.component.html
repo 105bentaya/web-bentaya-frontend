@@ -1,6 +1,6 @@
 <div class="container-fluid container-xxl">
   @if (scout) {
-    <div class="d-flex justify-content-between gap-2 overflow-hidden">
+    <div class="d-flex justify-content-between gap-1 overflow-hidden">
       <div class="d-flex flex-column flex-grow-1 justify-content-start">
         <div class="mb-2">
           <span class="fs-4" style="font-family: Trueno-Black, sans-serif;">
@@ -11,85 +11,142 @@
             }
           </span>
         </div>
-        <div class="d-none d-sm-flex row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
-          <div class="d-flex flex-row flex-sm-column flex-wrap gap-2 justify-content-between overflow-ellipsis">
-            <div class="text-nowrap overflow-ellipsis mw-100">
+        <div class="d-none d-sm-flex row row-cols-1 row-cols-sm-2 row-cols-md-3 gx-1">
+          <div class="d-none d-md-flex column-container">
+            <div class="info-container">
               @if (scoutPersonalData.idDocument) {
                 <b>{{ scoutPersonalData.idDocument.idType }}:</b> {{ scoutPersonalData.idDocument.number || '-' }}
               } @else {
                 <b>DNI:</b> -
               }
             </div>
-            <div class="text-nowrap overflow-ellipsis mw-100" [title]="scout.scoutInfo?.census || '-'">
-              <b>CENSO:</b> {{ scout.scoutInfo?.census | census }}
-            </div>
-          </div>
-          <div class="d-none d-md-flex flex-column justify-content-between">
-            <div class="text-nowrap overflow-ellipsis mw-100">
-              <b>RAMA:</b> {{ (scout.scoutInfo.scoutType | scoutSection:scout.scoutInfo.group | titlecase) || '-' }}
-            </div>
-            <div class="text-nowrap overflow-ellipsis mw-100">
-              <b>UNIDAD:</b> {{ (scout.scoutInfo.scoutType | scoutGroup:scout.scoutInfo.group) || '-' }}
-            </div>
-          </div>
-          <div class="d-none d-sm-flex flex-column justify-content-between">
-            <div class="text-nowrap overflow-ellipsis mw-100">
+            <div class="info-container">
               <b>GÉNERO:</b> {{ scoutPersonalData.gender }}
             </div>
-            <div class="text-nowrap overflow-ellipsis mw-100">
+            <div class="info-container">
               <b>EDAD:</b> {{ scoutPersonalData.birthday | age:false }}
             </div>
           </div>
-          <div class="d-none d-xl-flex flex-column gap-2 align-items-start flex-shrink-1 justify-content-between">
+          <div class="d-none d-sm-flex column-container">
+            <div class="info-container">
+              <b>RAMA:</b> {{ (scout.scoutInfo.scoutType | scoutSection:scout.scoutInfo.group | titlecase) || '-' }}
+            </div>
+            <div class="info-container">
+              <b>UNIDAD:</b> {{ (scout.scoutInfo.scoutType | scoutGroup:scout.scoutInfo.group) || '-' }}
+            </div>
+            <div class="info-container">
+              <b>SECCIÓN:</b> {{ (scout.scoutInfo.section) || '-' }}
+            </div>
+          </div>
+          <div class="column-container">
+            <div class="info-container" [title]="scout.scoutInfo?.census || '-'">
+              <b>CENSO:</b> {{ scout.scoutInfo?.census | census }}
+            </div>
             <div>
               <p-tag
                 styleClass="py-0 px-1"
-                [value]="scout.scoutInfo?.active ? 'ALTA' : 'BAJA'"
-                [severity]="scout.scoutInfo?.active ? 'success' : 'danger'"
+                [value]="scout.scoutInfo.status | scoutStatus | uppercase"
+                [severity]="scout.scoutInfo.status | scoutStatus:true"
               />
             </div>
             <div>
               <p-tag
                 styleClass="py-0 px-1"
-                [value]="scout.scoutInfo?.federated ? 'FEDERADA' : 'NO FEDERADA'"
-                [severity]="scout.scoutInfo?.federated ? 'info' : 'warn'"
+                [value]="scout.scoutInfo.federated ? 'FEDERADA' : 'NO FEDERADA'"
+                [severity]="scout.scoutInfo.federated ? 'info' : 'warn'"
               />
             </div>
           </div>
         </div>
+        @if (scout.roleInfos.length > 0) {
+          <div class="d-none d-md-flex row row-cols-1 row-cols-lg-3 gx-1">
+            @for (role of scout.roleInfos; track role.id) {
+              <div class="text-nowrap mw-100">
+                <b>{{ role.role | specialRole:true | uppercase }}:</b> {{ role.roleCensus | census:role.role }}
+              </div>
+            }
+          </div>
+        }
       </div>
-      <div class="border p-1 h-100 rounded-5 d-none d-sm-block ms-3">
-        <img
-          class="object-fit-cover"
-          style="min-width: 120px; min-height: 100px; max-height: 120px;" src="/assets/scout-user.png"
-          alt="Scout"
+      <div class="d-flex flex-column align-items-center gap-2">
+        <div
+          class="border h-100 rounded-5 d-none d-sm-block overflow-hidden"
+          [ngClass]="{'mh-120': isSecretary, 'mh-140': !isSecretary }"
         >
+          <img
+            class="object-fit-cover h-100"
+            style="width: 130px; border-radius: 28px" src="/assets/scout-user.png"
+            alt="Scout"
+          >
+        </div>
+        @if (isSecretary && fromFormStatus === "NONE") {
+          @if (editing) {
+            @if (secretaryEdition) {
+              <p-button
+                label="Cancelar"
+                severity="danger"
+                outlined
+                size="small"
+                styleClass="py-1"
+                (onClick)="onEditionStop()"
+              ></p-button>
+            }
+          } @else if (scout.scoutInfo.status === 'ACTIVE') {
+            <p-button
+              label="Dar de Baja"
+              severity="danger"
+              outlined
+              size="small"
+              styleClass="py-1"
+              (onClick)="startSecretaryEdition()"
+            ></p-button>
+          } @else if (scout.scoutInfo.status !== 'INACTIVE') {
+            <p-button
+              label="Gestionar Alta"
+              severity="info"
+              outlined
+              size="small"
+              styleClass="py-1"
+              (onClick)="startSecretaryEdition()"
+            ></p-button>
+          } @else if (scout.scoutInfo.status === 'INACTIVE') {
+            <p-button
+              label="Dar de Alta"
+              severity="info"
+              outlined
+              size="small"
+              styleClass="py-1"
+              (onClick)="startSecretaryEdition()"
+            ></p-button>
+          }
+        }
       </div>
     </div>
     <p-tabs scrollable [value]="selectedTab" (valueChange)="updateTab($event)" class="main-info-panel">
-      <p-tablist>
-        <p-tab [value]="0" [disabled]="editing">Datos Personales</p-tab>
-        <p-tab [value]="1" [disabled]="editing">Datos de Salud</p-tab>
-        <p-tab [value]="2" [disabled]="editing">Datos Familiares</p-tab>
-        <!--<p-tab [value]="3" [disabled]="true">Datos Formativos</p-tab>-->
-        <p-tab [value]="4" [disabled]="editing">Datos Asociativos</p-tab>
-        <p-tab [value]="5" [disabled]="editing">Historial Scout</p-tab>
-        <p-tab [value]="6" [disabled]="editing">Datos económicos</p-tab>
-        <!--<p-tab [value]="7" [disabled]="editing">Otros Datos</p-tab>-->
-      </p-tablist>
+      @if (!secretaryEdition) {
+        <p-tablist>
+          <p-tab [value]="0" [disabled]="editing">Datos Personales</p-tab>
+          <p-tab [value]="1" [disabled]="editing">Datos de Salud</p-tab>
+          <p-tab [value]="2" [disabled]="editing">Datos Familiares</p-tab>
+          <!--<p-tab [value]="3" [disabled]="true">Datos Formativos</p-tab>-->
+          <p-tab [value]="4" [disabled]="editing">Datos Asociativos</p-tab>
+          <p-tab [value]="5" [disabled]="editing">Historial Scout</p-tab>
+          <p-tab [value]="6" [disabled]="editing">Datos económicos</p-tab>
+          <!--<p-tab [value]="7" [disabled]="editing">Otros Datos</p-tab>-->
+        </p-tablist>
+      }
       <p-tabpanels>
         <div class="position-relative px-3">
-          @if (!editing) {
-            <p-button
-              [icon]="editing ? 'pi pi-times' : 'pi pi-pencil'"
-              [severity]="editing ? 'danger' : 'primary'"
-              rounded
-              outlined
-              class="position-absolute end-0"
-              size="small"
-              (onClick)="editing = !editing"
-            ></p-button>
-          }
+          <p-button
+            icon="pi pi-pencil"
+            severity="primary"
+            rounded
+            outlined
+            class="position-absolute end-0"
+            [ngClass]="{'d-none': !showEditingButton}"
+            size="small"
+            (onClick)="editing = true"
+          ></p-button>
           <p-tabpanel [value]="0">
             @if (editing) {
               <app-personal-data-form
@@ -121,10 +178,54 @@
             }
           </p-tabpanel>
           <p-tabpanel [value]="4">
+            @if (secretaryEdition) {
+              <b class="fs-5 title-font">
+                @if (scout.scoutInfo.status === 'ACTIVE') {
+                  Dar de Baja
+                } @else {
+                  Dar de Alta
+                }
+              </b>
+              @switch (scout.scoutInfo.status) {
+                @case ('ACTIVE') {
+                  <p>
+                    Si deseas dar de baja a esta scout, confirma que la fecha de baja es correcta y dale a guardar. Los
+                    usuarios asignados a esta scout perderán el acceso a la web.
+                  </p>
+                }
+                @case ('PENDING_NEW') {
+                  <div class="d-flex flex-row gap-1">
+                    <p>
+                      Hay un nuevo alta pendiente. Si ya has revisado todos los datos, <b>elige un censo</b> y dale a
+                      guardar para confirmar el alta. Si no quiere dar el alta, haga click en el botón de 'Eliminar'.
+                    </p>
+                    <p-button
+                      label="Eliminar"
+                      severity="danger"
+                      (onClick)="askForDelete()"
+                    />
+                  </div>
+
+                }
+                @case ('PENDING_EXISTING') {
+                  <p>
+                    Hay un nuevo alta pendiente. Es de una persona que <b>ya estuvo de alta</b>, por lo que no hay que
+                    asignar nuevo censo. Si ya has revisado todos los datos, dale a guardar para confirmar el alta. Si
+                    no la quiere dar de alta, elija 'Baja' como tipo de asociada.
+                  </p>
+                }
+                @case ('INACTIVE') {
+                  <p>
+                    Vuelve a dar de alta a esta scout eligiendo el tipo de asociada.
+                  </p>
+                }
+              }
+            }
             @if (editing) {
               <app-group-data-form
                 [initialData]="scout"
                 (onEditionStop)="onEditionStop($event)"
+                [newScoutType]="newScoutType"
               />
             } @else {
               <app-group-data [scout]="scout"/>

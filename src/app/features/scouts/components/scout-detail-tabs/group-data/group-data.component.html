@@ -6,7 +6,7 @@
     <app-basic-info label="Sección" [value]="scoutInfo.section"/>
     <app-basic-info label="Censo" [value]="scoutInfo.census | census"/>
     <app-basic-info label="Federada" [value]="scoutInfo.federated | boolean"/>
-    <app-basic-info label="Estado asociativo" [value]="scoutInfo.active ? 'Alta' : 'Baja'"/>
+    <app-basic-info label="Estado asociativo" [value]="scoutInfo.status | scoutStatus"/>
     @if (scoutInfo.registrationDates.length < 1) {
       <app-basic-info label="Fechas de alta y baja" value="Sin registrar"/>
     } @else if (scoutInfo.registrationDates.length === 1) {
@@ -34,7 +34,7 @@
           }
         } @else {
           @let registrationDate = scoutInfo.registrationDates[scoutInfo.registrationDates.length - 1];
-          @if (scoutInfo.active || !registrationDate.unregistrationDate) {
+          @if (scoutInfo.status === 'ACTIVE' || !registrationDate.unregistrationDate) {
             <app-basic-info
               label="Última fecha de alta"
               [value]="registrationDate.registrationDate | date:'dd/MM/yyyy'"

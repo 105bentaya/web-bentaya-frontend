@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-    <h1 class="mb-0">Censo Bentaya</h1>
-    <div class="d-flex gap-2 ms-auto">
-      @if (userGroup) {
+    <h1 class="mb-0">{{ isSecretary ? 'Censo Bentaya' : 'Lista de Educandas' }}</h1>
+    <div class="d-flex flex-wrap-reverse gap-2 justify-content-end ms-auto">
+      @if (tabValue !== "PENDING") {
         <p-selectButton
           [options]="quickFilters"
           [(ngModel)]="selectedFilter"
@@ -14,11 +14,24 @@
       <app-general-a-button
         size="small"
         label="Dar Alta"
-        routerLink="alta"
+        routerLink="/scouts/alta"
         variant="filled"
       />
     </div>
   </div>
+  @if (isSecretary) {
+    <p-tabs [(value)]="tabValue" (valueChange)="onPendingFilterChange($event)">
+      <p-tablist>
+        <p-tab value="PENDING">
+          <span>Altas Pendientes</span>
+          @if (pendingRegistrations) {
+            <p-badge severity="danger" class="ms-1" size="small" [value]="pendingRegistrations.toString()"/>
+          }
+        </p-tab>
+        <p-tab value="ALL">Censo</p-tab>
+      </p-tablist>
+    </p-tabs>
+  }
   <p-table
     #dt
     responsiveLayout="scroll"
@@ -34,13 +47,13 @@
     lazy
     (onLazyLoad)="loadData($event)"
     [totalRecords]="totalRecords"
+    [lazyLoadOnInit]="false"
 
     sortField="personalData.surname"
-    [filters]="initialFilter"
   >
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center">
-        <span>Número de scouts: {{ dt.totalRecords }}</span>
+        <span>Número de asociadas: {{ dt.totalRecords }}</span>
         <p-button
           icon="pi pi-file-excel"
           [loading]="excelLoading"
@@ -61,7 +74,7 @@
             Unidad
             <p-sortIcon field="groupOrder"></p-sortIcon>
           </th>
-          <th>Sección</th>
+          <th>Rama</th>
         } @else {
           <th pSortableColumn="personalData.birthday">
             Año
@@ -119,7 +132,7 @@
               appendTo="body"
               scrollHeight="300px"
               styleClass="w-100 fw-normal"
-              placeholder="Filtrar Sección"
+              placeholder="Filtrar Rama"
             ></p-multiSelect>
           </th>
         } @else {
@@ -170,7 +183,7 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-scout>
-      <tr [ngClass]="{'no-user': !scout.userAssigned}" pSelectableRow [routerLink]="scout.id">
+      <tr [ngClass]="{'no-user': !scout.userAssigned}" pSelectableRow routerLink="/scouts/{{scout.id}}">
         <td>
           {{ scout.personalData.surname }}, {{ scout.personalData.feltName ?? scout.personalData.name }}
         </td>

@@ -16,6 +16,7 @@ import {SpecialRolePipe} from "../../../../special-member/special-role.pipe";
 import {RouterLink} from "@angular/router";
 import {ScoutGroupPipe} from "../../../pipes/scout-group.pipe";
 import {ScoutSectionPipe} from "../../../pipes/scout-section.pipe";
+import {ScoutStatusPipe} from "../../../pipes/scout-status.pipe";
 
 @Component({
   selector: 'app-group-data',
@@ -31,7 +32,8 @@ import {ScoutSectionPipe} from "../../../pipes/scout-section.pipe";
     RouterLink,
     ScoutGroupPipe,
     ScoutSectionPipe,
-    TitleCasePipe
+    TitleCasePipe,
+    ScoutStatusPipe
   ],
   templateUrl: './group-data.component.html',
   styleUrl: './group-data.component.scss',

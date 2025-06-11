@@ -5,7 +5,7 @@ import {ScoutService} from "../../services/scout.service";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {Tag} from "primeng/tag";
 import {Button} from "primeng/button";
-import {Scout} from "../../models/scout.model";
+import {Scout, ScoutType} from "../../models/scout.model";
 import {PersonalDataComponent} from "../scout-detail-tabs/personal-data/personal-data.component";
 import {PersonalDataFormComponent} from "../scout-detail-forms/personal-data-form/personal-data-form.component";
 import {AlertService} from "../../../../shared/services/alert-service.service";
@@ -22,8 +22,13 @@ import {AgePipe} from "../../pipes/age.pipe";
 import {ScoutHistoryFormComponent} from "../scout-detail-forms/scout-history-form/scout-history-form.component";
 import {ScoutHistoryComponent} from "../scout-detail-tabs/scout-history/scout-history.component";
 import {ScoutSectionPipe} from "../../pipes/scout-section.pipe";
-import {TitleCasePipe} from "@angular/common";
+import {NgClass, TitleCasePipe, UpperCasePipe} from "@angular/common";
 import {ScoutGroupPipe} from "../../pipes/scout-group.pipe";
+import {ScoutStatusPipe} from "../../pipes/scout-status.pipe";
+import {SpecialRolePipe} from "../../../special-member/special-role.pipe";
+import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
+import {UserRole} from "../../../users/models/role.model";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-scout-detail',
@@ -51,7 +56,11 @@ import {ScoutGroupPipe} from "../../pipes/scout-group.pipe";
     RouterLink,
     ScoutSectionPipe,
     TitleCasePipe,
-    ScoutGroupPipe
+    ScoutGroupPipe,
+    ScoutStatusPipe,
+    UpperCasePipe,
+    SpecialRolePipe,
+    NgClass
   ]
 })
 export class ScoutDetailComponent implements OnInit {
@@ -59,13 +68,17 @@ export class ScoutDetailComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly scoutService = inject(ScoutService);
   private readonly alertService = inject(AlertService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   protected scout!: Scout;
   protected editing: boolean = false;
+  protected secretaryEdition: boolean = false;
   protected selectedTab: number = 0;
+  protected allowedTabsForEdition = [0, 1, 2, 5];
 
   protected fromForm: boolean;
   protected fromFormStatus: "NONE" | "MEDICAL" = "NONE";
+  protected isSecretary = inject(LoggedUserDataService).hasRequiredPermission(UserRole.SECRETARY);
 
   constructor() {
     const tabQueryParam = +this.route.snapshot.queryParams['tab'];
@@ -98,10 +111,13 @@ export class ScoutDetailComponent implements OnInit {
       this.scout = updatedMember;
     }
     if (this.fromFormStatus === "MEDICAL") {
-      this.updateTab(2);
+      if (this.scout.scoutInfo.scoutType === "SCOUT") {
+        this.updateTab(2);
+      }
       this.fromFormStatus = "NONE";
     } else {
       this.editing = false;
+      this.secretaryEdition = false;
     }
   }
 
@@ -109,5 +125,37 @@ export class ScoutDetailComponent implements OnInit {
     this.selectedTab = +tab;
     localStorage.setItem("scout_tab", JSON.stringify(tab));
     this.router.navigate([], {queryParams: {tab}, replaceUrl: true});
+  }
+
+  protected get newScoutType(): ScoutType | undefined {
+    if (this.secretaryEdition && this.scout.scoutInfo.status === "ACTIVE") {
+      return "INACTIVE";
+    }
+    return undefined;
+  }
+
+  protected startSecretaryEdition() {
+    this.secretaryEdition = true;
+    this.selectedTab = 4;
+    this.editing = true;
+  }
+
+  protected get showEditingButton() {
+    return !this.editing && (this.isSecretary || this.allowedTabsForEdition.includes(this.selectedTab));
+  }
+
+  protected askForDelete() {
+    this.confirmationService.confirm({
+      message: "¿Desea eliminar esta posible alta? Esta acción no se puede revertir.",
+      header: "Eliminar Posible Alta",
+      accept: () => this.deletePendingScout()
+    });
+  }
+
+  protected deletePendingScout() {
+    this.scoutService.deletePendingScout(this.scout.id).subscribe(() => {
+      this.alertService.sendBasicSuccessMessage("Alta pendiente eliminada");
+      this.router.navigateByUrl("/scouts");
+    });
   }
 }

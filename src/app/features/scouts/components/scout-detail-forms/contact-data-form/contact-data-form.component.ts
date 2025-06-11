@@ -59,9 +59,13 @@ export class ContactDataFormComponent implements OnInit {
   protected loading: boolean = false;
 
   ngOnInit() {
+    const existingContactList = this.initialData().contactList.length > 0 ?
+      this.initialData().contactList.map(data => this.createContact(data)) :
+      [this.createContact()];
+
     this.formHelper.createForm({
       contactList: this.formBuilder.array(
-        this.initialData() ? this.initialData().contactList.map(data => this.createContact(data)) : [this.createContact()],
+        existingContactList,
         [Validators.minLength(1), Validators.maxLength(3)]
       )
     });

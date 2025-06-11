@@ -2,3 +2,24 @@
   margin-top: 0.5rem;
   --p-tabs-tabpanel-padding: 0.5rem 0;
 }
+
+.column-container {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.info-container {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.mh-140 {
+  max-height: 140px;
+}
+
+.mh-120 {
+  max-height: 120px;
+}
