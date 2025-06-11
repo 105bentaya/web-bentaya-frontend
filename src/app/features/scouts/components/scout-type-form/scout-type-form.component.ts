@@ -7,6 +7,9 @@ import {Select} from "primeng/select";
 import {NgClass} from "@angular/common";
 import {InputNumber} from "primeng/inputnumber";
 import {BasicGroupInfo} from "../../../../shared/model/group.model";
+import {InputGroup} from "primeng/inputgroup";
+import {InputGroupAddon} from "primeng/inputgroupaddon";
+import {Button} from "primeng/button";
 
 @Component({
   selector: 'app-scout-type-form',
@@ -15,7 +18,10 @@ import {BasicGroupInfo} from "../../../../shared/model/group.model";
     Select,
     ReactiveFormsModule,
     NgClass,
-    InputNumber
+    InputNumber,
+    InputGroup,
+    InputGroupAddon,
+    Button
   ],
   templateUrl: './scout-type-form.component.html',
   styleUrl: './scout-type-form.component.scss'
@@ -25,6 +31,7 @@ export class ScoutTypeFormComponent implements OnInit {
 
   parentForm = input.required<FormGroup | AbstractControl>();
   showCensus = input<boolean>(true);
+  lastCensus = input<number>();
   onGroupSelect = output<ScoutType>();
 
   protected groups!: BasicGroupInfo[];
@@ -74,5 +81,9 @@ export class ScoutTypeFormComponent implements OnInit {
     }
 
     this.onGroupSelect.emit(value);
+  }
+
+  protected autoCompleteLastCensus() {
+    this.census.setValue(this.lastCensus()! + 1);
   }
 }

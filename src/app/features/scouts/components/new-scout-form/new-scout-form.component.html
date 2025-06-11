@@ -17,6 +17,7 @@
         <app-scout-type-form
           [parentForm]="formHelper.form"
           [showCensus]="showCensus"
+          [lastCensus]="lastCensus"
         ></app-scout-type-form>
       } @else if (formHelper.currentPage === 1) {
         <div>
@@ -315,25 +316,25 @@
           </div>
           @if (scoutType === "SCOUT") {
             <div class="col-12 col-sm-6 col-md-4">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="bank"
-                maxlength="255"
-              >
-              <label class="required" for="bank">Banco</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-md-4">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="iban"
-                maxlength="255"
-              >
-              <label class="required" for="iban">IBAN</label>
-            </p-float-label>
-          </div>
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="bank"
+                  maxlength="255"
+                >
+                <label class="required" for="bank">Banco</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-md-4">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="iban"
+                  maxlength="255"
+                >
+                <label class="required" for="iban">IBAN</label>
+              </p-float-label>
+            </div>
             <div class="col-12">
               <p>
                 En caso de no aportar la autorización de uso de imagen, se entenderá que esta ha sido concedida. Para
@@ -535,17 +536,25 @@
           </div>
           @if (scoutFormToSave.census) {
             <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
-              <app-basic-info label="Censo" [value]="scoutFormToSave.census"/>
+              <app-basic-info label="Censo" [value]="scoutFormToSave.census | census"/>
             </div>
           }
           <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
             <app-basic-info label="Fecha de alta" [value]="scoutFormToSave.firstActivityDate | date:'dd/MM/yyyy'"/>
           </div>
           <div class="col">
-            <app-basic-info label="Usuarios" [value]="(scoutFormToSave.scoutUsers | join) ?? 'Ninguno'"/>
+            <app-basic-info
+              label="Usuarios"
+              [value]="scoutFormToSave.scoutUsers.length > 0 ? (scoutFormToSave.scoutUsers | join) : '-'"
+            />
           </div>
-
-
+          @if (censusIsGreaterThanLast) {
+            <p-message severity="warn" class="mb-3">
+              El último número censo se actualizará al número {{ scoutFormToSave.census }},
+              cuando el último de la lista es el {{ lastCensus }}.
+              Si desea volver a cambiarlo tendrá que entrar a la pestaña de ajustes.
+            </p-message>
+          }
         </div>
       }
     </form>

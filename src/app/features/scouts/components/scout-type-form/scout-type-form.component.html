@@ -1,16 +1,27 @@
 <div class="row">
   @if (showCensus()) {
     <div class="col-12" [ngClass]="showGroup ? 'col-md' : 'col-sm'">
-      <p-float-label variant="on">
-        <p-input-number
-          [formControl]="census"
-          id="census"
-          [useGrouping]="false"
-          prefix="35-105-"
-          showClear
-        />
-        <label class="semi-required" for="census">Censo</label>
-      </p-float-label>
+      <p-floatlabel variant="on">
+        <p-inputgroup>
+          <p-input-number
+            [formControl]="census"
+            id="census"
+            [useGrouping]="false"
+            prefix="35-105-"
+            class="border-end-radius-0"
+          />
+          <label class="semi-required" for="census">Censo</label>
+          <p-inputgroup-addon>
+            <p-button
+              title="Autocompletar Censo"
+              text
+              icon="fa-solid fa-clock-rotate-left"
+              (onClick)="autoCompleteLastCensus()"
+              [disabled]="!lastCensus()"
+            />
+          </p-inputgroup-addon>
+        </p-inputgroup>
+      </p-floatlabel>
     </div>
   }
   <div class="col-12 col-sm">

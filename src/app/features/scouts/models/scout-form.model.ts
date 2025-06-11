@@ -5,7 +5,7 @@ export interface NewScoutForm {
   bank?: string;
   scoutType: ScoutType;
   groupId?: number;
-  census?: string;
+  census?: number;
   firstActivityDate: Date | string;
   imageAuthorization: boolean;
   contact?: ScoutContactForm;

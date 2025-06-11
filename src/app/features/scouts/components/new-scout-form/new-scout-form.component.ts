@@ -58,6 +58,8 @@ import {JoinPipe} from "../../../../shared/pipes/join.pipe";
 import {GroupService} from "../../../../shared/services/group.service";
 import {BasicGroupInfo} from "../../../../shared/model/group.model";
 import {ScoutGroupPipe} from "../../pipes/scout-group.pipe";
+import {Message} from "primeng/message";
+import {CensusPipe} from "../../pipes/census.pipe";
 
 type UserDocument = "basicDataDoc" | "bankDoc" | "authorizationDoc" | "imageAuthorizationDoc";
 
@@ -87,7 +89,9 @@ type UserDocument = "basicDataDoc" | "bankDoc" | "authorizationDoc" | "imageAuth
     IdDocumentTypePipe,
     BooleanPipe,
     JoinPipe,
-    ScoutGroupPipe
+    ScoutGroupPipe,
+    Message,
+    CensusPipe
   ],
   templateUrl: './new-scout-form.component.html',
   styleUrl: './new-scout-form.component.scss',
@@ -129,9 +133,11 @@ export class NewScoutFormComponent implements OnInit {
   protected loading: boolean = false;
   protected scoutFormToSave!: NewScoutForm;
   private groups!: BasicGroupInfo[];
+  protected lastCensus: number = 0;
 
   ngOnInit() {
     this.groupService.getBasicGroups({generalGroup: true}).subscribe(data => this.groups = data);
+    this.scoutService.findLastCensus().subscribe(census => this.lastCensus = census);
 
     const preScoutId = this.route.snapshot.params["preScoutId"];
     this.isAdmin = this.userData.hasRequiredPermission(UserRole.ADMIN);
@@ -289,6 +295,10 @@ export class NewScoutFormComponent implements OnInit {
 
   protected get scoutGroup() {
     return this.groups.find(group => group.id === this.scoutFormToSave.groupId);
+  }
+
+  protected get censusIsGreaterThanLast() {
+    return !!(this.scoutFormToSave?.census && this.scoutFormToSave.census > this.lastCensus + 1);
   }
 
   private createScoutForm() {

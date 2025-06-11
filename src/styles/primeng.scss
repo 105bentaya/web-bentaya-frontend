@@ -235,3 +235,8 @@ p-toggle-button.no-label {
     height: 100%;
   }
 }
+
+.border-end-radius-0 > input {
+  border-end-end-radius: 0 !important;
+  border-start-end-radius: 0 !important;
+}

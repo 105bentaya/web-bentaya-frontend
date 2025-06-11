@@ -114,4 +114,8 @@ export class ScoutService {
   updateScoutHistory(id: number, scoutHistoryForm: ScoutHistoryForm) {
     return this.http.patch<Scout>(`${this.scoutUrl}/scout-history/${id}`, scoutHistoryForm);
   }
+
+  findLastCensus(): Observable<number> {
+    return this.http.get<number>(`${this.scoutUrl}/last-census`);
+  }
 }
