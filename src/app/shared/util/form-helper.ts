@@ -11,6 +11,8 @@ export class FormHelper {
   private pages!: string[][];
   public currentPage = -1;
   public onLastPage: Function = () => {};
+  public onNextPageChange: Function = () => {};
+  public onPrevPageChange: Function = () => {};
 
   setPages(controls: string[][]) {
     this.pages = controls;
@@ -21,7 +23,10 @@ export class FormHelper {
   }
 
   goToPrevPage() {
-    if (this.currentPage >= 0) this.currentPage--;
+    if (this.currentPage >= 0) {
+      this.currentPage--;
+      this.onPrevPageChange();
+    }
   }
 
   showNext(): boolean {
@@ -47,6 +52,7 @@ export class FormHelper {
       if (valid) {
         document.getElementById("form-steps")?.scrollIntoView();
         this.currentPage++;
+        this.onNextPageChange();
         if (this.currentPage == this.pages.length) this.onLastPage();
       }
     });

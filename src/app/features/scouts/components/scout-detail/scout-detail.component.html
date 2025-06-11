@@ -26,10 +26,10 @@
           </div>
           <div class="d-none d-md-flex flex-column justify-content-between">
             <div class="text-nowrap overflow-ellipsis mw-100">
-              <b>RAMA:</b> {{ scout.scoutInfo?.group?.name || '-' }}
+              <b>RAMA:</b> {{ (scout.scoutInfo.scoutType | scoutSection:scout.scoutInfo.group | titlecase) || '-' }}
             </div>
             <div class="text-nowrap overflow-ellipsis mw-100">
-              <b>UNIDAD:</b> {{ scout.scoutInfo?.group?.name || '-' }}
+              <b>UNIDAD:</b> {{ (scout.scoutInfo.scoutType | scoutGroup:scout.scoutInfo.group) || '-' }}
             </div>
           </div>
           <div class="d-none d-sm-flex flex-column justify-content-between">

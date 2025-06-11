@@ -1,22 +1,23 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {ScoutInfo} from "../models/scout.model";
+import {ScoutType} from "../models/scout.model";
+import {BasicGroupInfo} from "../../../shared/model/group.model";
 
 @Pipe({
   name: 'scoutSection'
 })
 export class ScoutSectionPipe implements PipeTransform {
 
-  transform(scoutInfo: ScoutInfo): string {
-    switch (scoutInfo.scoutType) {
+  transform(scoutType: ScoutType, group?: BasicGroupInfo): string {
+    switch (scoutType) {
       case "SCOUT":
-        return scoutInfo.group!.section!;
+        return group?.section ?? "Educanda";
       case "SCOUTER":
         return "Scouter";
       case "COMMITTEE":
       case "MANAGER":
         return "Scoutsupport";
       case "INACTIVE":
-        return "Sin Sección";
+        return "Sin Sección (Baja)";
       default:
         return "-";
     }

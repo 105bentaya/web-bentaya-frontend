@@ -2,7 +2,7 @@ import {Component, inject, input} from '@angular/core';
 import {Scout, ScoutInfo, ScoutRecord} from "../../../models/scout.model";
 import {BasicInfoComponent} from "../../basic-info/basic-info.component";
 import {CensusPipe} from "../../../pipes/census.pipe";
-import {DatePipe} from "@angular/common";
+import {DatePipe, TitleCasePipe} from "@angular/common";
 import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
 import {BasicInfoShowComponent} from "../../basic-info-show/basic-info-show.component";
 import {Tag} from "primeng/tag";
@@ -30,7 +30,8 @@ import {ScoutSectionPipe} from "../../../pipes/scout-section.pipe";
     SpecialRolePipe,
     RouterLink,
     ScoutGroupPipe,
-    ScoutSectionPipe
+    ScoutSectionPipe,
+    TitleCasePipe
   ],
   templateUrl: './group-data.component.html',
   styleUrl: './group-data.component.scss',

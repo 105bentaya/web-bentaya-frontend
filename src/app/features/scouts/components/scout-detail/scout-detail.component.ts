@@ -21,6 +21,9 @@ import {CensusPipe} from "../../pipes/census.pipe";
 import {AgePipe} from "../../pipes/age.pipe";
 import {ScoutHistoryFormComponent} from "../scout-detail-forms/scout-history-form/scout-history-form.component";
 import {ScoutHistoryComponent} from "../scout-detail-tabs/scout-history/scout-history.component";
+import {ScoutSectionPipe} from "../../pipes/scout-section.pipe";
+import {TitleCasePipe} from "@angular/common";
+import {ScoutGroupPipe} from "../../pipes/scout-group.pipe";
 
 @Component({
   selector: 'app-scout-detail',
@@ -45,7 +48,10 @@ import {ScoutHistoryComponent} from "../scout-detail-tabs/scout-history/scout-hi
     AgePipe,
     ScoutHistoryFormComponent,
     ScoutHistoryComponent,
-    RouterLink
+    RouterLink,
+    ScoutSectionPipe,
+    TitleCasePipe,
+    ScoutGroupPipe
   ]
 })
 export class ScoutDetailComponent implements OnInit {

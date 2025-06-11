@@ -10,150 +10,163 @@
       }
       @if (formHelper.currentPage === 0) {
         <p>
-          En este primer apartado deben introducirse exclusivamente los datos de la <b>scout</b>, no los de sus
-          contactos. Los campos de teléfono móvil y correo electrónico <b>sólo deben completarse</b> si la scout dispone
-          de un número y una dirección de correo <b>propios</b>.
+          Para dar de alta a una persona educanda deberás tener a mano <b>los 4</b> papeles de inscripción
+          <b>completos</b>. En el último paso tendrás que <b>subir cada documento</b> de manera individual, ya sea una
+          foto o un pdf.
         </p>
-        <p>Introduce <b>todos</b> los datos que dispongas.</p>
-        <div class="row">
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="name"
-                id="name"
-              />
-              <label class="required" for="name">Nombre</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="surname"
-                id="surname"
-              />
-              <label class="required" for="surname">Apellidos</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="feltName"
-                id="feltName"
-              />
-              <label for="feltName">Nombre sentido</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <p-select
-                [options]="genders"
-                formControlName="gender"
-                id="gender"
-              />
-              <label class="required" for="gender">Género</label>
-            </p-float-label>
-          </div>
-          <app-id-document-form
-            class="col-12 col-lg-6"
-            [parentForm]="formHelper.form"
-            colClass="col-12 col-sm-6"
-            labelClass="semi-required"
-          />
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <p-datePicker
-                id="birthday"
-                formControlName="birthday"
-              />
-              <label class="required" for="birthday">Fecha de Nacimiento</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <p-select
-                [options]="shirtSizes"
-                formControlName="shirtSize"
-                id="shirtSize"
-                showClear
-              />
-              <label class="semi-required" for="shirtSize">Talla de camiseta</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="address"
-                id="address"
-              />
-              <label for="address">Dirección Postal</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="city"
-                id="city"
-              />
-              <label for="city">Ciudad</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="province"
-                id="province"
-              />
-              <label for="province">Provincia</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="residenceMunicipality"
-                id="residenceMunicipality"
-              />
-              <label for="residenceMunicipality">Municipio de residencia</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="phone"
-                id="phone"
-              />
-              <label for="phone">Teléfono Móvil</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6 col-lg-3">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="landline"
-                id="landline"
-              />
-              <label for="landline">Teléfono Fijo</label>
-            </p-float-label>
-          </div>
-          <div class="col-12 col-sm-6">
-            <p-float-label variant="on">
-              <input
-                pInputText
-                formControlName="email"
-                id="email"
-              />
-              <label for="email">Correo electrónico</label>
-            </p-float-label>
+        <app-scout-type-form
+          [parentForm]="formHelper.form"
+          [showCensus]="showCensus"
+        ></app-scout-type-form>
+      } @else if (formHelper.currentPage === 1) {
+        <div>
+          <p>
+            En este primer apartado deben introducirse exclusivamente los datos de la <b>scout</b>, no los de sus
+            contactos. Los campos de teléfono móvil y correo electrónico <b>sólo deben completarse</b> si la scout
+            dispone
+            de un número y una dirección de correo <b>propios</b>.
+          </p>
+          <p>Introduce <b>todos</b> los datos que dispongas.</p>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="name"
+                  id="name"
+                />
+                <label class="required" for="name">Nombre</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="surname"
+                  id="surname"
+                />
+                <label class="required" for="surname">Apellidos</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="feltName"
+                  id="feltName"
+                />
+                <label for="feltName">Nombre sentido</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <p-select
+                  [options]="genders"
+                  formControlName="gender"
+                  id="gender"
+                />
+                <label class="required" for="gender">Género</label>
+              </p-float-label>
+            </div>
+            <app-id-document-form
+              class="col-12 col-lg-6"
+              [parentForm]="formHelper.form"
+              colClass="col-12 col-sm-6"
+              labelClass="semi-required"
+            />
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <p-datePicker
+                  id="birthday"
+                  formControlName="birthday"
+                />
+                <label class="required" for="birthday">Fecha de Nacimiento</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <p-select
+                  [options]="shirtSizes"
+                  formControlName="shirtSize"
+                  id="shirtSize"
+                  showClear
+                />
+                <label class="semi-required" for="shirtSize">Talla de camiseta</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="address"
+                  id="address"
+                />
+                <label for="address">Dirección Postal</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="city"
+                  id="city"
+                />
+                <label for="city">Ciudad</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="province"
+                  id="province"
+                />
+                <label for="province">Provincia</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="residenceMunicipality"
+                  id="residenceMunicipality"
+                />
+                <label for="residenceMunicipality">Municipio de residencia</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="phone"
+                  id="phone"
+                />
+                <label [ngClass]="{'required' : scoutIsScouterOrSupport}" for="phone">Teléfono Móvil</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="landline"
+                  id="landline"
+                />
+                <label for="landline">Teléfono Fijo</label>
+              </p-float-label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <p-float-label variant="on">
+                <input
+                  pInputText
+                  formControlName="email"
+                  id="email"
+                />
+                <label [ngClass]="{'required' : scoutIsScouterOrSupport}" for="email">Correo electrónico</label>
+              </p-float-label>
+            </div>
           </div>
         </div>
-      } @else if (formHelper.currentPage === 1) {
+      } @else if (formHelper.currentPage === 2) {
         <div formGroupName="contact" class="row">
           <p>
             En este apartado se deben introducir los datos de la persona de contacto <b>principal</b> (el primer
@@ -285,7 +298,7 @@
             labelClass="required"
           />
         </div>
-      } @else if (formHelper.currentPage === 2) {
+      } @else if (formHelper.currentPage === 3) {
         <div class="row">
           <p>
             Introduce los datos bancarios de la <b>persona declarada como donante</b> y los datos asociativos de la
@@ -300,14 +313,15 @@
               <label class="required" for="birthday">Fecha de Primera Actividad</label>
             </p-float-label>
           </div>
-          <div class="col-12 col-sm-6 col-md-4">
+          @if (scoutType === "SCOUT") {
+            <div class="col-12 col-sm-6 col-md-4">
             <p-float-label variant="on">
               <input
                 pInputText
                 formControlName="bank"
                 maxlength="255"
               >
-              <label class="required" for="scoutType">Banco</label>
+              <label class="required" for="bank">Banco</label>
             </p-float-label>
           </div>
           <div class="col-12 col-md-4">
@@ -317,14 +331,9 @@
                 formControlName="iban"
                 maxlength="255"
               >
-              <label class="required" for="scoutType">IBAN</label>
+              <label class="required" for="iban">IBAN</label>
             </p-float-label>
           </div>
-          <app-scout-type-form
-            [parentForm]="formHelper.form"
-            [showCensus]="showCensus"
-          ></app-scout-type-form>
-          @if (scoutType === "SCOUT") {
             <div class="col-12">
               <p>
                 En caso de no aportar la autorización de uso de imagen, se entenderá que esta ha sido concedida. Para
@@ -374,7 +383,7 @@
               />
             </div>
           }
-          @if (scoutType === "SCOUT" || scoutType === "SCOUTER") {
+          @if (scoutType !== "INACTIVE") {
             <div>
               <b class="sub-title">Usuarios asociados</b>
               <p>
@@ -394,7 +403,7 @@
                   <app-checkbox-container label="Scout ({{scoutEmail}})">
                     <p-checkbox formControlName="scoutUser" binary/>
                   </app-checkbox-container>
-                } @else if (scoutType === 'SCOUTER') {
+                } @else if (scoutType !== 'SCOUT') {
                   <small class="fw-bold">
                     <i class="pi pi-exclamation-triangle" style="vertical-align: text-bottom"></i>
                     ¡Añade un correo a la scout para poder asignarle un usuario!
@@ -404,12 +413,140 @@
             </div>
           }
         </div>
-      } @else if (formHelper.currentPage === 3) {
+      } @else if (formHelper.currentPage === 4) {
         <p>
           A continuación se guardarán los datos indicados hasta el momento y se te redirigirá a la edición de <b>datos
           médicos</b>, donde hay que introducir los datos en la categoría correspondiente. Por último, se abrirá
           la pantalla de contactos, por si hay alguno más que añadir.
         </p>
+        <div class="row confirmation-container">
+          <div class="col-12 mb-0">
+            <b class="fs-5">Datos Scout</b>
+          </div>
+
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Nombre" [value]="scoutFormToSave.name"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Nombre Sentido" [value]="scoutFormToSave.feltName"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Apellidos" [value]="scoutFormToSave.surname"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Fecha de Nacimiento" [value]="scoutFormToSave.birthday | date:'dd/MM/yyyy'"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Género" [value]="scoutFormToSave.gender"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info
+              [label]="scoutFormToSave.idDocument | idDocumentType"
+              [value]="scoutFormToSave.idDocument | idDocument"
+            />
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Talla" [value]="scoutFormToSave.shirtSize"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Dirección" [value]="scoutFormToSave.address"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Ciudad" [value]="scoutFormToSave.city"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Provincia" [value]="scoutFormToSave.province"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Municipio de residencia" [value]="scoutFormToSave.residenceMunicipality"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Teléfono Móvil" [value]="scoutFormToSave.phone"/>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Teléfono Fijo" [value]="scoutFormToSave.landline"/>
+          </div>
+          <div class="col">
+            <app-basic-info label="Correo electrónico" [value]="scoutFormToSave.email"/>
+          </div>
+
+          @if (scoutFormToSave.contact) {
+            <div class="col-12 mt-2 mb-0">
+              <b class="fs-5">Contacto</b>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Tipo de persona" [value]="scoutFormToSave.contact.personType"/>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Donante" [value]="scoutFormToSave.contact.donor | boolean"/>
+            </div>
+            @if (scoutFormToSave.contact.personType === 'JURIDICAL') {
+              <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                <app-basic-info label="Razón social" [value]="scoutFormToSave.contact.companyName"/>
+              </div>
+            }
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Nombre" [value]="scoutFormToSave.contact.name"/>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Apellidos" [value]="scoutFormToSave.contact.surname"/>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Relación" [value]="scoutFormToSave.contact.relationship"/>
+            </div>
+            @if (scoutFormToSave.contact.personType === 'REAL') {
+              <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                <app-basic-info label="Estudios" [value]="scoutFormToSave.contact.studies"/>
+              </div>
+              <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                <app-basic-info label="Profresión" [value]="scoutFormToSave.contact.profession"/>
+              </div>
+            }
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info
+                [label]="scoutFormToSave.contact.idDocument | idDocumentType"
+                [value]="scoutFormToSave.contact.idDocument | idDocument"
+              />
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Teléfono" [value]="scoutFormToSave.contact.phone"/>
+            </div>
+            <div class="col">
+              <app-basic-info label="Correo electrónico" [value]="scoutFormToSave.contact.email"/>
+            </div>
+          }
+
+          <div class="col-12 mt-2 mb-0">
+            <b class="fs-5">Otros Datos</b>
+          </div>
+          @if (scoutFormToSave.scoutType === "SCOUT") {
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Iban" [value]="scoutFormToSave.iban"/>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Banco" [value]="scoutFormToSave.bank"/>
+            </div>
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Autorización de imagen" [value]="scoutFormToSave.imageAuthorization | boolean"/>
+            </div>
+          }
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Unidad" [value]="scoutFormToSave.scoutType | scoutGroup:scoutGroup"/>
+          </div>
+          @if (scoutFormToSave.census) {
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+              <app-basic-info label="Censo" [value]="scoutFormToSave.census"/>
+            </div>
+          }
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+            <app-basic-info label="Fecha de alta" [value]="scoutFormToSave.firstActivityDate | date:'dd/MM/yyyy'"/>
+          </div>
+          <div class="col">
+            <app-basic-info label="Usuarios" [value]="(scoutFormToSave.scoutUsers | join) ?? 'Ninguno'"/>
+          </div>
+
+
+        </div>
       }
     </form>
     <app-large-form-buttons

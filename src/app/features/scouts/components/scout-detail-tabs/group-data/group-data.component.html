@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-12 col-sm-6 d-flex flex-column">
     <b class="fs-5 title-font">Datos básicos</b>
-    <app-basic-info label="Rama" [value]="scoutInfo | scoutSection"/>
-    <app-basic-info label="Unidad" [value]="scoutInfo | scoutGroup" [hideIfNull]="true"/>
+    <app-basic-info label="Rama" [value]="scoutInfo.scoutType | scoutSection:scoutInfo.group | titlecase"/>
+    <app-basic-info label="Unidad" [value]="scoutInfo.scoutType | scoutGroup:scoutInfo.group" [hideIfNull]="true"/>
     <app-basic-info label="Sección" [value]="scoutInfo.section"/>
     <app-basic-info label="Censo" [value]="scoutInfo.census | census"/>
-    <app-basic-info label="Estado asociativo" [value]="scoutInfo.active ? 'Alta' : 'Baja'"/>
     <app-basic-info label="Federada" [value]="scoutInfo.federated | boolean"/>
+    <app-basic-info label="Estado asociativo" [value]="scoutInfo.active ? 'Alta' : 'Baja'"/>
     @if (scoutInfo.registrationDates.length < 1) {
       <app-basic-info label="Fechas de alta y baja" value="Sin registrar"/>
     } @else if (scoutInfo.registrationDates.length === 1) {

@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-    <h1 class="mb-0">Lista de educandas</h1>
+    <h1 class="mb-0">Censo Bentaya</h1>
     <div class="d-flex gap-2 ms-auto">
       @if (userGroup) {
         <p-selectButton
@@ -40,7 +40,7 @@
   >
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center">
-        <span>Número de educandas: {{ dt.totalRecords }}</span>
+        <span>Número de scouts: {{ dt.totalRecords }}</span>
         <p-button
           icon="pi pi-file-excel"
           [loading]="excelLoading"
@@ -176,10 +176,10 @@
         </td>
         @if (selectedFilter !== 'GROUP') {
           <td>
-            {{ scout.scoutInfo | scoutGroup }}
+            {{ scout.scoutInfo.scoutType | scoutGroup:scout.scoutInfo.group }}
           </td>
           <td>
-            {{ scout.scoutInfo | scoutSection | titlecase }}
+            {{ scout.scoutInfo.scoutType | scoutSection:scout.scoutInfo.group | titlecase }}
           </td>
         } @else {
           <td>

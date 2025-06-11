@@ -1,14 +1,14 @@
 import {BloodType, IdentificationDocument, ScoutType} from "./scout.model";
 
 export interface NewScoutForm {
-  iban: string;
-  bank: string;
+  iban?: string;
+  bank?: string;
   scoutType: ScoutType;
   groupId?: number;
   census?: string;
   firstActivityDate: Date | string;
   imageAuthorization: boolean;
-  contact: ScoutContactForm;
+  contact?: ScoutContactForm;
   name: string;
   feltName?: string;
   surname: string;
