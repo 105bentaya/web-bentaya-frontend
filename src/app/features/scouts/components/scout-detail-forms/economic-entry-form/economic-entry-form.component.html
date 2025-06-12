@@ -4,12 +4,23 @@
       <div class="col-12 col-sm-4">
         <p-floatlabel variant="on">
           <p-datePicker
-            id="date"
-            formControlName="date"
+            id="issueDate"
+            formControlName="issueDate"
             appendTo="body"
             showClear
           ></p-datePicker>
-          <label class="required" for="date">Fecha</label>
+          <label class="required" for="issueDate">Fecha de Ejecución</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-4">
+        <p-floatlabel variant="on">
+          <p-datePicker
+            id="dueDate"
+            formControlName="dueDate"
+            appendTo="body"
+            showClear
+          ></p-datePicker>
+          <label class="required" for="dueDate">Fecha Valor</label>
         </p-floatlabel>
       </div>
       <div class="col-12 col-sm-4">
@@ -22,32 +33,10 @@
             currency="EUR"
             [min]="0"
           ></p-inputNumber>
-          <label class="required" for="amount">Cantidad</label>
+          <label class="required" for="amount">Importe</label>
         </p-floatlabel>
       </div>
-      <div class="col-12 col-sm-4">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            id="type"
-            formControlName="type"
-            maxlength="255"
-          >
-          <label class="required" for="type">Concepto Económico</label>
-        </p-floatlabel>
-      </div>
-      <div class="col-12 col-sm-6">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            id="account"
-            formControlName="account"
-            maxlength="255"
-          >
-          <label class="required" for="account">Cuenta</label>
-        </p-floatlabel>
-      </div>
-      <div class="col-12 col-sm-6">
+      <div class="col-12">
         <p-floatlabel variant="on">
           <input
             pInputText
@@ -55,31 +44,65 @@
             formControlName="description"
             maxlength="255"
           >
-          <label class="required" for="description">Concepto</label>
+          <label class="required" for="description">Descripción</label>
         </p-floatlabel>
       </div>
       <div class="col-12 col-sm-6">
         <p-floatlabel variant="on">
-          <input
-            pInputText
-            id="income"
-            formControlName="income"
+          <p-select
+            id="type"
+            formControlName="type"
+            appendTo="body"
+            [options]="types"
+            editable
             maxlength="255"
-            (input)="onIncomeSelect()"
-          >
-          <label class="required" for="income">Ingreso</label>
+          />
+          <label class="required" for="type">Concepto Económico</label>
         </p-floatlabel>
       </div>
       <div class="col-12 col-sm-6">
         <p-floatlabel variant="on">
-          <input
-            pInputText
-            id="spending"
-            formControlName="spending"
-            maxlength="255"
-            (input)="onSpendingSelect()"
-          >
-          <label class="required" for="spending">Gasto</label>
+          <p-select
+            id="account"
+            formControlName="account"
+            appendTo="body"
+            [options]="accounts"
+          />
+          <label class="required" for="account">Cuenta</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <p-select
+            id="incomeId"
+            formControlName="incomeId"
+            appendTo="body"
+            [options]="donationTypes?.incomeTypes"
+            optionLabel="description"
+            optionValue="id"
+            (onChange)="onIncomeSelect()"
+            [loading]="!donationTypes"
+            [class]="formHelper.isDirtyAndInvalid() && formHelper.hasFormError('expenseIncomeRequired') ? 'ng-invalid ng-dirty' : ''"
+            showClear
+          />
+          <label class="required" for="incomeId">Ingreso</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <p-select
+            id="expenseId"
+            formControlName="expenseId"
+            appendTo="body"
+            [options]="donationTypes?.expenseTypes"
+            optionLabel="description"
+            optionValue="id"
+            (onChange)="onExpenseSelect()"
+            [loading]="!donationTypes"
+            [class]="formHelper.isDirtyAndInvalid() && formHelper.hasFormError('expenseIncomeRequired') ? 'ng-invalid ng-dirty' : ''"
+            showClear
+          />
+          <label class="required" for="expenseId">Gasto</label>
         </p-floatlabel>
       </div>
       <div class="col-12 mb-2">

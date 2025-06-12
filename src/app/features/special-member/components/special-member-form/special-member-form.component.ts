@@ -38,6 +38,7 @@ import {SpecialMemberForm} from "../../models/special-member-form.model";
 import {ConfirmationService} from "primeng/api";
 import {CensusPipe} from "../../../scouts/pipes/census.pipe";
 import {IdDocumentFormComponent} from "../../../scouts/components/id-document-form/id-document-form.component";
+import {ActivatedRoute} from "@angular/router";
 
 type RelationType = 'SCOUT' | 'EXISTING' | 'NEW' | 'NONE';
 
@@ -71,6 +72,7 @@ export class SpecialMemberFormComponent implements OnInit {
   private readonly specialMemberService = inject(SpecialMemberService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly censusPipe = inject(CensusPipe);
+  private readonly route = inject(ActivatedRoute);
 
   protected readonly specialMemberOptions = specialMemberOptions;
   protected readonly personTypes = personTypes;
@@ -88,6 +90,7 @@ export class SpecialMemberFormComponent implements OnInit {
   protected specialMemberItems: FilterResult[] = [];
 
   ngOnInit() {
+    const roleQueryParam = this.specialMemberOptions.find(opt => opt.value === this.route.snapshot.queryParams["tab"])?.value;
     const existingForm = this.existingForm();
     let existingPerson: SpecialMemberPerson | undefined;
 
@@ -103,7 +106,7 @@ export class SpecialMemberFormComponent implements OnInit {
     personIdControl.get("idType")!.setValidators(this.requiredRelation('NEW'));
 
     this.formHelper.createForm({
-      role: [existingForm?.role, Validators.required],
+      role: [existingForm?.role ?? roleQueryParam, Validators.required],
       roleCensus: [existingForm?.roleCensus, Validators.required],
       agreementDate: [DateUtils.dateOrUndefined(existingForm?.agreementDate)],
       awardDate: [DateUtils.dateOrUndefined(existingForm?.awardDate)],
@@ -124,11 +127,15 @@ export class SpecialMemberFormComponent implements OnInit {
         email: [existingPerson?.email, [Validators.maxLength(255), Validators.email]]
       })
     });
-    if (existingForm) {
+
+    if (existingForm || roleQueryParam) {
+      this.selectedRole = existingForm?.role ?? roleQueryParam;
       this.formHelper.get("role")?.disable();
-      this.selectedRole = existingForm.role;
-      this.specialMemberService.findLastCensus(existingForm.role).subscribe(census => {
+      this.specialMemberService.findLastCensus(this.selectedRole!).subscribe(census => {
         this.nextCensus = census + 1;
+        if (!existingForm) {
+          this.formHelper.get("roleCensus")?.setValue(this.nextCensus);
+        }
       });
     }
   }

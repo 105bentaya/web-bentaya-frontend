@@ -183,6 +183,7 @@ p-toggle-button.no-label {
 }
 
 .fixed-table {
+  --p-datatable-header-padding: 0.125rem 0.25rem;
   table {
     table-layout: fixed;
   }

@@ -26,6 +26,12 @@ export const personTypes: ({ label: string; value: PersonType })[] = [
   {label: "Jurídica", value: "JURIDICAL"}
 ];
 export const relationshipOptions = ["Madre", "Padre", "Tutor", "Tutora"];
+export const accounts = [
+  "Cajamar 1",
+  "Cajamar 2",
+  "CaixaBank 1",
+  "CaixaBank 2"
+];
 
 export const maintenanceEmail = "informatica@105bentaya.org";
 export const generalEmail = "scouts@105bentaya.org";

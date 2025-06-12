@@ -23,6 +23,7 @@ import {InputNumber} from "primeng/inputnumber";
 import {InputText} from "primeng/inputtext";
 import {SpecialMemberService} from "../../special-member.service";
 import {SpecialMemberDonationForm} from "../../models/special-member-form.model";
+import {accounts} from "../../../../shared/constant";
 
 @Component({
   selector: 'app-special-member-donation-form',
@@ -53,6 +54,8 @@ export class SpecialMemberDonationFormComponent implements OnInit {
     {value: 'ECONOMIC', label: 'Económica'},
     {value: 'IN_KIND', label: 'En especies'}
   ];
+  protected readonly accounts = accounts;
+  protected readonly paymentTypes = ["Transferencia", "Adeudo en Cuenta"];
 
   protected donationId: number | undefined;
   private memberId!: number;
@@ -76,9 +79,9 @@ export class SpecialMemberDonationFormComponent implements OnInit {
       date: [DateUtils.dateOrUndefined(data?.date), Validators.required],
       type: [data?.type, Validators.required],
       inKindDonationType: [data?.inKindDonationType, [this.requiredIfType('IN_KIND'), Validators.maxLength(255)]],
-      amount: [data?.amount ? data?.amount / 100 : null, [this.requiredIfType('ECONOMIC'), Validators.min(0)]],
+      amount: [data?.amount ? data?.amount / 100 : null, [Validators.required, Validators.min(0)]],
       paymentType: [data?.paymentType, [this.requiredIfType('ECONOMIC'), Validators.maxLength(255)]],
-      bankAccount: [data?.paymentType, [this.requiredIfType('ECONOMIC'), Validators.maxLength(255)]],
+      bankAccount: [data?.bankAccount, [this.requiredIfType('ECONOMIC'), Validators.maxLength(255)]],
       notes: [data?.notes, Validators.maxLength(511)]
     });
   }
@@ -95,12 +98,11 @@ export class SpecialMemberDonationFormComponent implements OnInit {
 
       const form: SpecialMemberDonationForm = {...this.formHelper.value};
       form.date = DateUtils.toLocalDate(form.date);
+      form.amount! *= 100;
 
       if (form.type === 'ECONOMIC') {
         delete form.inKindDonationType;
-        form.amount! *= 100;
       } else {
-        delete form.amount;
         delete form.paymentType;
         delete form.bankAccount;
       }

@@ -11,7 +11,7 @@ import {
   SpecialMemberDonation,
   SpecialMemberRole
 } from "../../models/special-member.model";
-import {CurrencyPipe, DatePipe, Location, LowerCasePipe, NgIf} from "@angular/common";
+import {CurrencyPipe, DatePipe, Location, NgIf} from "@angular/common";
 import {BasicInfoComponent} from "../../../scouts/components/basic-info/basic-info.component";
 import {CensusPipe} from "../../../scouts/pipes/census.pipe";
 import {IdDocumentPipe} from "../../../scouts/pipes/id-document.pipe";
@@ -20,7 +20,7 @@ import {Tag} from "primeng/tag";
 import {Button} from "primeng/button";
 import {SpecialMemberFormComponent} from "../special-member-form/special-member-form.component";
 import {SpecialMemberForm} from "../../models/special-member-form.model";
-import {finalize, noop} from "rxjs";
+import {finalize} from "rxjs";
 import {SpecialRolePipe} from "../../special-role.pipe";
 import {PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
@@ -53,7 +53,6 @@ import {SpecialMemberDonationPipe} from "../../special-member-donation.pipe";
     PrimeTemplate,
     TableModule,
     SpecialMemberDonationPipe,
-    LowerCasePipe,
     CurrencyPipe
   ],
   templateUrl: './special-member-detail.component.html',
@@ -95,8 +94,20 @@ export class SpecialMemberDetailComponent implements OnInit {
   }
 
   protected totalDonatedAmount(record: SpecialMemberDetailRecord): number {
-    return record.donations.reduce((acc, donation) => acc + (donation.amount ?? 0), 0);
+    return record.donations
+      .filter(don => don.type === "ECONOMIC")
+      .reduce((acc, donation) => acc + (donation.amount ?? 0), 0);
   };
+
+  protected totalInKindAmount(record: SpecialMemberDetailRecord): number {
+    return record.donations
+      .filter(don => don.type === "IN_KIND")
+      .reduce((acc, donation) => acc + (donation.amount ?? 0), 0);
+  };
+
+  protected totalEconomicDonations(record: SpecialMemberDetailRecord): number {
+    return record.donations.filter(donation => donation.type === 'ECONOMIC').length;
+  }
 
   protected totalInKindDonations(record: SpecialMemberDetailRecord): number {
     return record.donations.filter(donation => donation.type === 'IN_KIND').length;
@@ -121,9 +132,8 @@ export class SpecialMemberDetailComponent implements OnInit {
     );
     ref.onClose.subscribe(result => {
       if (result) {
-        const list = record.donations;
-        list.push(result);
-        this.openDonationInfo(result, record, list.length - 1);
+        record.donations = [...record.donations, result];
+        this.openDonationInfo(result, record, record.donations.length - 1);
       }
     });
   }
@@ -135,6 +145,11 @@ export class SpecialMemberDetailComponent implements OnInit {
       "small",
       {donation, memberId: record.id}
     );
-    ref.onClose.subscribe(deleted => deleted ? record.donations.splice(index, 1) : noop());
+    ref.onClose.subscribe(deleted => {
+      if (deleted) {
+        record.donations.splice(index, 1);
+      }
+      record.donations = [...record.donations];
+    });
   }
 }

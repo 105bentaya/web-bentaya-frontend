@@ -5,9 +5,19 @@
       <p-button
         label="Dar Alta"
         routerLink="nuevo"
+        queryParamsHandling="preserve"
       ></p-button>
     </div>
   </div>
+  <p-tabs [(value)]="tabValue" (valueChange)="updateTab()">
+    <p-tablist>
+      <p-tab value="HONOUR">Registro Honor</p-tab>
+      <p-tab value="PROTECTOR">Registro Protectoras</p-tab>
+      <p-tab value="FOUNDER">Registro Fundadoras</p-tab>
+      <p-tab value="ACKNOWLEDGEMENT">Reconocimientos</p-tab>
+      <p-tab value="DONOR">Registro Donantes</p-tab>
+    </p-tablist>
+  </p-tabs>
   <p-table
     #table
     [value]="specialMemberInfo"
@@ -22,12 +32,12 @@
     lazy
     (onLazyLoad)="loadData($event)"
     [totalRecords]="totalRecords"
+    [lazyLoadOnInit]="false"
   >
     <ng-template #header>
       <tr>
         <th pSortableColumn="roleCensus">Censo <p-sortIcon field="roleCensus"/></th>
         <th>Nombre</th>
-        <th>Registro</th>
       </tr>
       <tr>
         <th>
@@ -46,19 +56,6 @@
             (input)="table.filter($any($event.target).value, 'name', 'custom')"
           >
         </th>
-        <th>
-          <p-multiSelect
-            styleClass="w-100 fw-normal"
-            appendTo="body"
-            [options]="specialMemberOptions"
-            [filter]="false"
-            [showToggleAll]="false"
-            showClear
-            placeholder="Filtrar registro"
-            (onChange)="table.filter($event.value, 'roles', 'custom')"
-            (onClear)="table.filter(null, 'roles', 'custom')"
-          ></p-multiSelect>
-        </th>
       </tr>
     </ng-template>
     <ng-template #body let-specialMember>
@@ -68,9 +65,6 @@
         </td>
         <td>
           {{ specialMember.name }}
-        </td>
-        <td>
-          {{ specialMember.role | specialRole:true }}
         </td>
       </tr>
     </ng-template>

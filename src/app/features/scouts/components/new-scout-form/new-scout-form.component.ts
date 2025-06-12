@@ -258,8 +258,6 @@ export class NewScoutFormComponent implements OnInit {
         return {idType: "CIF", number};
       } else if (ScoutHelper.nieIsValid(number)) {
         return {idType: "NIE", number};
-      } else {
-        return {idType: undefined!, number};
       }
     }
     return undefined;

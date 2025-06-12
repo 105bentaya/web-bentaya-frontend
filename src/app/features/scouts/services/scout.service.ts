@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, shareReplay} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {EconomicEntry, Scout, ScoutFile, ScoutRecord, UserScout} from "../models/scout.model";
 import {FileType, FileUtils} from "../../../shared/util/file.utils";
@@ -16,6 +16,7 @@ import {
 } from "../models/scout-form.model";
 import {PagedFilter} from "../../../shared/model/filter.model";
 import {Page} from "../../../shared/model/page.model";
+import {InvoiceTypes} from "../../invoice/invoice.model";
 
 export type ScoutQuickFilter = "GROUP" | "ALL" | "IMAGE";
 
@@ -128,5 +129,10 @@ export class ScoutService {
 
   getTotalPendingRegistrations() {
     return this.http.get<number>(`${this.scoutUrl}/any-pending-registrations`);
+  }
+
+  private readonly donationTypeUrl: Observable<InvoiceTypes> = this.http.get<InvoiceTypes>(`${this.scoutUrl}/donation-types`).pipe(shareReplay(1));
+  get getDonationTypes() {
+    return this.donationTypeUrl;
   }
 }

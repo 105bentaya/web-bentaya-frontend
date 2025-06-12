@@ -8,7 +8,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {TabViewModule} from "primeng/tabview";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {Invoice, InvoiceExpenseType, InvoiceGrant, InvoicePayer, IssuerNif} from "../../invoice.model";
+import {Invoice, InvoiceConceptType, InvoiceGrant, InvoicePayer, IssuerNif} from "../../invoice.model";
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {CheckboxModule} from "primeng/checkbox";
@@ -27,6 +27,7 @@ import {maxFileUploadByteSize} from "../../../../shared/constant";
 import {imageAndPdfTypes} from "../../../../shared/util/file.utils";
 import {AutoComplete, AutoCompleteCompleteEvent, AutoCompleteSelectEvent} from "primeng/autocomplete";
 import {KeyFilter} from "primeng/keyfilter";
+import {EconomicConceptPipe} from "../../economic-concept.pipe";
 
 @Component({
   selector: 'app-invoice-form',
@@ -50,7 +51,8 @@ import {KeyFilter} from "primeng/keyfilter";
     KeyFilter
   ],
   templateUrl: './invoice-form.component.html',
-  styleUrl: './invoice-form.component.scss'
+  styleUrl: './invoice-form.component.scss',
+  providers: [EconomicConceptPipe]
 })
 export class InvoiceFormComponent implements OnInit {
 
@@ -58,6 +60,7 @@ export class InvoiceFormComponent implements OnInit {
   private readonly config = inject(DynamicDialogConfig);
   private readonly alertService = inject(AlertService);
   private readonly invoiceService = inject(InvoiceService);
+  private readonly conceptPipe = inject(EconomicConceptPipe);
   readonly confirmationService = inject(ConfirmationService);
 
   protected readonly invoiceFormHelper = new FormHelper();
@@ -67,7 +70,7 @@ export class InvoiceFormComponent implements OnInit {
   private readonly saveButton: MenuItem = {label: "Guardar y cerrar", command: () => this.onSubmit()};
   private readonly saveButtonAndContinue: MenuItem = {label: "Guardar y seguir", command: () => this.onSubmit(true)};
 
-  protected expenseTypes!: InvoiceExpenseType[];
+  protected expenseTypes!: InvoiceConceptType[];
   protected grants!: InvoiceGrant[];
   protected payers!: InvoicePayer[];
   protected readonly paymentMethods = [
@@ -95,10 +98,9 @@ export class InvoiceFormComponent implements OnInit {
   protected issuerSuggestions: IssuerNif[] = [];
   protected nifSuggestions: IssuerNif[] = [];
   protected nifFilter: RegExp = /[A-Za-z0-9?]/;
-
   ngOnInit(): void {
     if (this.config.data) {
-      this.expenseTypes = this.config.data.invoiceData.expenseTypes.map((expense: InvoiceExpenseType) => this.transformExpenseName(expense));
+      this.expenseTypes = this.config.data.invoiceData.expenseTypes.map((expense: InvoiceConceptType) => this.transformConceptName(expense));
       this.grants = this.config.data.invoiceData.grants;
       this.payers = this.config.data.invoiceData.payers;
       this.autoCompleteOptions = this.config.data.invoiceData.autocompleteOptions;
@@ -135,9 +137,9 @@ export class InvoiceFormComponent implements OnInit {
     this.invoiceFormHelper.get("nif")?.setValue(event.value.nif);
   }
 
-  private transformExpenseName(expense: InvoiceExpenseType): InvoiceExpenseType {
-    expense.expenseType = `${expense.id} - ${expense.expenseType}`;
-    return expense;
+  private transformConceptName(concept: InvoiceConceptType): InvoiceConceptType {
+    concept.description = this.conceptPipe.transform(concept);
+    return concept;
   }
 
   private initForm(invoice?: Invoice) {

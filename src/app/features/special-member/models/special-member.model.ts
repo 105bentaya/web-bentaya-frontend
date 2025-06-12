@@ -52,7 +52,7 @@ export interface SpecialMemberDonation {
   date: Date;
   type: DonationType;
   inKindDonationType?: string;
-  amount?: number;
+  amount: number;
   paymentType?: string;
   bankAccount?: string;
   notes?: string;

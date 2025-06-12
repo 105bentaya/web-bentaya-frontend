@@ -1,15 +1,14 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit, viewChild} from '@angular/core';
 import {Button} from "primeng/button";
-import {TableModule} from "primeng/table";
+import {Table, TableModule} from "primeng/table";
 import {SpecialMemberService} from "../../special-member.service";
-import {RouterLink} from "@angular/router";
-import {SpecialMemberBasicData, specialMemberOptions} from "../../models/special-member.model";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {SpecialMemberBasicData, SpecialMemberRole} from "../../models/special-member.model";
 import {CensusPipe} from "../../../scouts/pipes/census.pipe";
-import {SpecialRolePipe} from "../../special-role.pipe";
-import {MultiSelect} from "primeng/multiselect";
 import {InputText} from "primeng/inputtext";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {finalize} from "rxjs";
+import {Tab, TabList, Tabs} from "primeng/tabs";
 
 @Component({
   selector: 'app-special-member-list',
@@ -18,22 +17,35 @@ import {finalize} from "rxjs";
     TableModule,
     RouterLink,
     CensusPipe,
-    SpecialRolePipe,
-    MultiSelect,
-    InputText
+    InputText,
+    Tab,
+    TabList,
+    Tabs
   ],
   templateUrl: './special-member-list.component.html',
   styleUrl: './special-member-list.component.scss'
 })
-export class SpecialMemberListComponent {
+export class SpecialMemberListComponent implements OnInit {
 
   private readonly specialMemberService = inject(SpecialMemberService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   protected specialMemberInfo!: SpecialMemberBasicData[];
   protected loading = true;
   protected totalRecords!: number;
 
-  protected readonly specialMemberOptions = specialMemberOptions;
+  protected tabValue: SpecialMemberRole;
+
+  table = viewChild.required<Table>("table");
+
+  constructor() {
+    this.tabValue = this.route.snapshot.queryParams["tab"] ?? "HONOUR";
+  }
+
+  ngOnInit() {
+    this.updateTab();
+  }
 
   protected loadData(tableLazyLoadEvent: any) {
     this.loading = true;
@@ -43,5 +55,10 @@ export class SpecialMemberListComponent {
           this.specialMemberInfo = result.data;
           this.totalRecords = result.count;
         });
+  }
+
+  protected updateTab() {
+    this.table().filter([this.tabValue], 'roles', 'custom');
+    this.router.navigate([], {queryParams: {tab: this.tabValue}, replaceUrl: true});
   }
 }

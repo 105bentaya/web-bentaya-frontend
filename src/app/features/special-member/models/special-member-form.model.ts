@@ -27,7 +27,7 @@ export interface SpecialMemberDonationForm {
   date: Date | string;
   type: DonationType;
   inKindDonationType?: string;
-  amount?: number;
+  amount: number;
   paymentType?: string;
   bankAccount?: string;
   notes?: string;

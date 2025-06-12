@@ -1,5 +1,6 @@
 import {BasicGroupInfo} from "../../../shared/model/group.model";
 import {SpecialMember} from "../../special-member/models/special-member.model";
+import {InvoiceConceptType} from "../../invoice/invoice.model";
 
 export interface Scout {
   id: number;
@@ -49,11 +50,12 @@ export interface ScoutEconomicData {
 
 export interface EconomicEntry {
   id: number;
-  date: Date;
+  issueDate: Date;
+  dueDate: Date;
   description: string;
   amount: number;
-  income: string;
-  spending: string;
+  incomeType: InvoiceConceptType;
+  expenseType: InvoiceConceptType;
   account: string;
   type: string;
   observations: string;

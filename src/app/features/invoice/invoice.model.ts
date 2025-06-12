@@ -11,22 +11,27 @@ export interface Invoice {
   method: string;
   liquidated: boolean;
   observations?: string;
-  expenseType: InvoiceExpenseType;
+  expenseType: InvoiceConceptType;
   grant?: InvoiceGrant;
   payer: InvoicePayer;
   files: InvoiceFile[]
 }
 
 export interface InvoiceData {
-  expenseTypes: InvoiceExpenseType[];
+  expenseTypes: InvoiceConceptType[];
   grants: InvoiceGrant[];
   payers: InvoicePayer[];
   autocompleteOptions: IssuerNif[]
 }
 
-export interface InvoiceExpenseType {
+export interface InvoiceTypes {
+  expenseTypes: InvoiceConceptType[];
+  incomeTypes: InvoiceConceptType[];
+}
+
+export interface InvoiceConceptType {
   id: number;
-  expenseType: string;
+  description: string;
 }
 
 export interface InvoiceGrant {

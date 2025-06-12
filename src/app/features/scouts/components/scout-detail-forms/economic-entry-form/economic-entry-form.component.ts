@@ -4,8 +4,15 @@ import {ConfirmationService} from "primeng/api";
 import {AlertService} from "../../../../../shared/services/alert-service.service";
 import {FormHelper} from "../../../../../shared/util/form-helper";
 import {DateUtils} from "../../../../../shared/util/date-utils";
-import {FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {finalize} from "rxjs";
+import {
+  AbstractControl,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
+import {finalize, map} from "rxjs";
 import {DatePicker} from "primeng/datepicker";
 import {FloatLabel} from "primeng/floatlabel";
 import {FormTextAreaComponent} from "../../../../../shared/components/form-text-area/form-text-area.component";
@@ -15,6 +22,11 @@ import {SaveButtonsComponent} from "../../../../../shared/components/buttons/sav
 import {EconomicEntry} from "../../../models/scout.model";
 import {EconomicEntryForm} from "../../../models/scout-form.model";
 import {ScoutService} from "../../../services/scout.service";
+import {InvoiceConceptType, InvoiceTypes} from "../../../../invoice/invoice.model";
+import {Select} from "primeng/select";
+import {GroupService} from "../../../../../shared/services/group.service";
+import {accounts} from "../../../../../shared/constant";
+import {EconomicConceptPipe} from "../../../../invoice/economic-concept.pipe";
 
 @Component({
   selector: 'app-economic-entry-form',
@@ -26,54 +38,89 @@ import {ScoutService} from "../../../services/scout.service";
     InputNumber,
     InputText,
     ReactiveFormsModule,
-    SaveButtonsComponent
+    SaveButtonsComponent,
+    Select
   ],
   templateUrl: './economic-entry-form.component.html',
-  styleUrl: './economic-entry-form.component.scss'
+  styleUrl: './economic-entry-form.component.scss',
+  providers: [EconomicConceptPipe]
 })
 export class EconomicEntryFormComponent implements OnInit {
 
   private readonly config = inject(DynamicDialogConfig);
   private readonly ref = inject(DynamicDialogRef);
   private readonly scoutService = inject(ScoutService);
+  private readonly groupService = inject(GroupService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly alertService = inject(AlertService);
+  private readonly conceptPipe = inject(EconomicConceptPipe);
   protected readonly formHelper = new FormHelper();
+  protected readonly types = [
+    "Donación",
+    "Pago",
+    "Aportación",
+    "Cobro"
+  ];
+  protected accounts = [
+    ...accounts,
+    "Caja Tesorería"
+  ];
 
   protected entryId: number | undefined;
   private scoutId!: number;
   protected loading = false;
   protected deleteLoading = false;
+  protected donationTypes!: InvoiceTypes;
 
   ngOnInit() {
+    this.getDonationTypes();
+    this.groupService.getBasicGroups().subscribe(res => this.accounts = this.accounts.concat(res.map(group => `Caja ${group.name}`)));
     const entry = this.config.data.entry;
     this.scoutId = this.config.data.scoutId;
     this.entryId = entry?.id;
     this.createForm(entry);
   }
 
+  private getDonationTypes() {
+    this.scoutService.getDonationTypes
+      .pipe(map(concepts => ({
+        expenseTypes: this.transformConceptType(concepts.expenseTypes),
+        incomeTypes: this.transformConceptType(concepts.incomeTypes)
+      })))
+      .subscribe(result => this.donationTypes = result);
+  }
+
+  private transformConceptType(types: InvoiceConceptType[]) {
+    return types.map(concept => ({...concept, description: this.conceptPipe.transform(concept)}));
+  }
+
   private createForm(data?: EconomicEntry) {
     this.formHelper.createForm({
-      date: [DateUtils.dateOrUndefined(data?.date), Validators.required],
+      issueDate: [DateUtils.dateOrUndefined(data?.issueDate), Validators.required],
+      dueDate: [DateUtils.dateOrUndefined(data?.dueDate), Validators.required],
       description: [data?.description, [Validators.required, Validators.maxLength(255)]],
       amount: [data?.amount ? data?.amount / 100 : null, Validators.required],
-      income: [data?.income, Validators.maxLength(255)],
-      spending: [data?.spending, Validators.maxLength(255)],
-      account: [data?.account, Validators.maxLength(255)],
+      incomeId: [data?.incomeType?.id],
+      expenseId: [data?.expenseType?.id],
+      account: [data?.account, [Validators.maxLength(255), Validators.required]],
       type: [data?.type, [Validators.required, Validators.maxLength(255)]],
       observations: [data?.observations, Validators.maxLength(511)]
-    });
+    }, {validators: this.expenseIncomeValidator});
 
-    if (data?.income) {
+    if (data?.incomeType) {
       this.onIncomeSelect();
-    } else if (data?.spending) {
-      this.onSpendingSelect();
+    } else if (data?.expenseType) {
+      this.onExpenseSelect();
     }
   }
 
+  private readonly expenseIncomeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    return !control.get("incomeId")?.value && !control.get("expenseId")?.value ? {expenseIncomeRequired: true} : null;
+  };
+
   protected onIncomeSelect() {
-    const value = this.formHelper.get("income")?.value;
-    const control = this.formHelper.get("spending");
+    const value = this.formHelper.get("incomeId")?.value;
+    const control = this.formHelper.get("expenseId");
 
     if (value) {
       control?.setValue(null);
@@ -83,9 +130,9 @@ export class EconomicEntryFormComponent implements OnInit {
     }
   }
 
-  protected onSpendingSelect() {
-    const value = this.formHelper.get("spending")?.value;
-    const control = this.formHelper.get("income");
+  protected onExpenseSelect() {
+    const value = this.formHelper.get("expenseId")?.value;
+    const control = this.formHelper.get("incomeId");
 
     if (value) {
       control?.setValue(null);

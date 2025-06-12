@@ -8,20 +8,20 @@
         <b>Tipo de Donación</b>
         <div>{{ donation.type | specialMemberDonation }}</div>
       </div>
-      <div class="col-12 col-sm-8">
+      <div class="col-12 col-sm-4">
+        <b>{{ donation.type === 'IN_KIND' ? 'Valoración Económica' : 'Importe' }}</b>
+        <div>{{ donation.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
+      </div>
+      <div class="col-12 col-sm-4">
         <b>Fecha</b>
         <div>{{ donation.date | date:"dd/MM/yyyy" }}</div>
       </div>
       @if (donation.type === 'IN_KIND') {
         <div class="col-12">
-          <b>Tipo de Especia</b>
+          <b>Tipo de Especie</b>
           <div>{{ donation.inKindDonationType }}</div>
         </div>
       } @else {
-        <div class="col-12 col-sm-4">
-          <b>Cantidad</b>
-          <div>{{ donation.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
-        </div>
         <div class="col-12 col-sm-4">
           <b>Forma de Pago</b>
           <div>{{ donation.paymentType }}</div>

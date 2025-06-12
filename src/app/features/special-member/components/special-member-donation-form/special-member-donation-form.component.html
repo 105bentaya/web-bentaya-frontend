@@ -24,43 +24,48 @@
           <label class="required" for="date">Fecha</label>
         </p-floatlabel>
       </div>
+      <div class="col-12 col-sm-4">
+        <p-floatlabel variant="on">
+          <p-inputNumber
+            id="amount"
+            formControlName="amount"
+            mode="currency"
+            locale="es-ES"
+            currency="EUR"
+            [min]="0"
+          ></p-inputNumber>
+          <label class="required" for="amount">
+            {{ donationType === 'IN_KIND' ? 'Valoración Económica' : 'Importe' }}
+          </label>
+        </p-floatlabel>
+      </div>
       @if (donationType === 'ECONOMIC') {
-        <div class="col-12 col-sm-4">
-          <p-floatlabel variant="on">
-            <p-inputNumber
-              id="amount"
-              formControlName="amount"
-              mode="currency"
-              locale="es-ES"
-              currency="EUR"
-              [min]="0"
-            ></p-inputNumber>
-            <label class="required" for="amount">Cantidad</label>
-          </p-floatlabel>
-        </div>
         <div class="col-12 col-sm-6">
           <p-floatlabel variant="on">
-            <input
-              pInputText
+            <p-select
               id="paymentType"
               formControlName="paymentType"
+              appendTo="body"
+              [options]="paymentTypes"
+              editable
               maxlength="255"
-            >
+            />
             <label class="required" for="paymentType">Forma de pago</label>
           </p-floatlabel>
         </div>
         <div class="col-12 col-sm-6">
           <p-floatlabel variant="on">
-            <input
-              pInputText
+            <p-select
               id="bankAccount"
               formControlName="bankAccount"
-              maxlength="255"
-            ><label class="required" for="bankAccount">Cuenta bancaria</label>
+              appendTo="body"
+              [options]="accounts"
+            />
+            <label class="required" for="bankAccount">Cuenta bancaria</label>
           </p-floatlabel>
         </div>
       } @else if (donationType === 'IN_KIND') {
-        <div class="col-12 col-sm-4">
+        <div class="col-12">
           <p-floatlabel variant="on">
             <input
               pInputText

@@ -9,27 +9,31 @@
         <div>{{ entry.type }}</div>
       </div>
       <div class="col-12 col-sm-4">
-        <b>Concepto</b>
+        <b>Fecha de Ejecución</b>
+        <div>{{ entry.issueDate | date:"dd/MM/yyyy" }}</div>
+      </div>
+      <div class="col-12 col-sm-4">
+        <b>Fecha Valor</b>
+        <div>{{ entry.dueDate | date:"dd/MM/yyyy" }}</div>
+      </div>
+      <div class="col-12 col-sm-8">
+        <b>Descripción</b>
         <div>{{ entry.description }}</div>
       </div>
       <div class="col-12 col-sm-4">
-        <b>Fecha</b>
-        <div>{{ entry.date | date:"dd/MM/yyyy" }}</div>
-      </div>
-      <div class="col-12 col-sm-4">
-        <b>Cantidad</b>
+        <b>Importe</b>
         <div>{{ entry.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
       </div>
-      <div class="col-12 col-sm-4">
-        @if (entry.income) {
+      <div class="col-12">
+        @if (entry.incomeType) {
           <b>Ingreso</b>
-          <div>{{ entry.income }}</div>
+          <div>{{ entry.incomeType.description }}</div>
         } @else {
           <b>Gasto</b>
-          <div>{{ entry.spending }}</div>
+          <div>{{ entry.expenseType.description }}</div>
         }
       </div>
-      <div class="col-12 col-sm-4">
+      <div class="col-12">
         <b>Cuenta</b>
         <div>{{ entry.account }}</div>
       </div>
