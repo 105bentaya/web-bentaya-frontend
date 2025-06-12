@@ -18,6 +18,7 @@
               text
               icon="fa-solid fa-clock-rotate-left"
               (onClick)="autoCompleteLastCensus()"
+              [loading]="!this.lastCensus"
             />
           </p-inputgroup-addon>
         </p-inputgroup>

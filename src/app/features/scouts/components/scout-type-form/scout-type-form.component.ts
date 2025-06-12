@@ -94,10 +94,10 @@ export class ScoutTypeFormComponent implements OnInit {
   }
 
   protected autoCompleteLastCensus() {
-    this.census.setValue(this.lastCensus + 1);
+    if (this.lastCensus) this.census.setValue(this.lastCensus + 1);
   }
 
   protected get censusIsGreaterThanLast() {
-    return (this.census.value && this.census.value > this.lastCensus + 1);
+    return (this.lastCensus && this.census.value && this.census.value > this.lastCensus + 1);
   }
 }

@@ -21,7 +21,7 @@
 }
 @if (scoutType != 'INACTIVE') {
   <div class="d-flex flex-column gap-2">
-    <b>Usuarios Conocidos</b>
+    <b>{{ scoutType === 'SCOUT' ? 'Usuarios Conocidos' : 'Usuario' }}</b>
     @if (scoutEmail) {
       <app-checkbox-container label="{{scoutEmail}} - Persona Asociada">
         <p-check-box
@@ -29,6 +29,8 @@
           binary
         />
       </app-checkbox-container>
+    } @else if (contactEmails.length < 1) {
+      <div>No hay usuarios conocidos disponible para esta asociada.</div>
     }
     @for (contact of contactEmails; track contact) {
       <app-checkbox-container label="{{contact.email}} - Familiar">

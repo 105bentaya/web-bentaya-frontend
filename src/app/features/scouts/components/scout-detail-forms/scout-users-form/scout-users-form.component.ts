@@ -120,7 +120,7 @@ export class ScoutUsersFormComponent implements OnInit {
 
       const userSet = new Set<string>();
       users.forEach(user => userSet.add(user));
-      const scoutUsers = Array.from(userSet);
+      const scoutUsers = Array.from(userSet).map(user => user.toLowerCase());
 
       this.scoutService.getNewUsers(scoutUsers).subscribe({
         next: newUsers => this.confirm(scoutUsers, newUsers),

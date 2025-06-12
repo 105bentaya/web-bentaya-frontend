@@ -25,6 +25,7 @@ import {ScoutService} from "../../../services/scout.service";
 import {ScoutContactForm} from "../../../models/scout-form.model";
 import {AlertService} from "../../../../../shared/services/alert-service.service";
 import {IdDocumentFormComponent} from "../../id-document-form/id-document-form.component";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-contact-data-form',
@@ -47,6 +48,7 @@ export class ContactDataFormComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly scoutService = inject(ScoutService);
   private readonly alertService = inject(AlertService);
+  private readonly confirmationService = inject(ConfirmationService);
   protected readonly formHelper = new FormHelper();
 
   protected readonly personTypes = personTypes;
@@ -95,6 +97,7 @@ export class ContactDataFormComponent implements OnInit {
 
   protected submit() {
     if (this.formHelper.validateAll()) {
+      this.loading = true;
       const form: ScoutContactForm[] = [...this.formHelper.value.contactList];
       form.forEach(contact => {
         if (contact.personType === "REAL") {
@@ -102,18 +105,35 @@ export class ContactDataFormComponent implements OnInit {
         } else {
           delete contact.profession;
           delete contact.studies;
-        }
 
+        }
         if (contact.idDocument && (!contact.idDocument.idType || !contact.idDocument.number)) {
           delete contact.idDocument;
         }
+        if (contact.email) {
+          contact.email = contact.email.toLowerCase();
+        }
+
       });
 
-      this.loading = true;
-      this.scoutService.updateScoutContacts(this.initialData().id, form)
-        .pipe(finalize(() => this.loading = false))
-        .subscribe(result => this.onEditionStop.emit(result));
+      const originalContactUsers = this.initialData().usernames.filter(username => this.initialData().contactList.some(contact => contact.email === username));
+      if (originalContactUsers.some(user => !form.some(contact => contact.email === user))) {
+        this.confirmationService.confirm({
+          message: "Hay correos electrónicos que se han cambiado y están asociados a un usuario. " +
+            "Tras cambiarlos, se eliminará el acceso de dicho usuario a la asociada. ¿Desea continuar?",
+          accept: () => this.updateData(form),
+          reject: () => this.loading = false
+        });
+      } else {
+        this.updateData(form);
+      }
     }
+  }
+
+  private updateData(form: ScoutContactForm[]) {
+    this.scoutService.updateScoutContacts(this.initialData().id, form)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(result => this.onEditionStop.emit(result));
   }
 
   protected contactIsReal(form: any) {

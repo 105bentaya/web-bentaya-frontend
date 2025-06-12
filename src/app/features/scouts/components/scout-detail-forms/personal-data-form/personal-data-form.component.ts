@@ -16,6 +16,7 @@ import {DateUtils} from "../../../../../shared/util/date-utils";
 import {PersonalDataForm} from "../../../models/scout-form.model";
 import {IdDocumentFormComponent} from "../../id-document-form/id-document-form.component";
 import {SelectButton} from "primeng/selectbutton";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-personal-data-form',
@@ -39,6 +40,7 @@ export class PersonalDataFormComponent implements OnInit {
   protected readonly formHelper = new FormHelper();
   protected readonly formBuilder = inject(FormBuilder);
   protected readonly scoutService = inject(ScoutService);
+  protected readonly confirmationService = inject(ConfirmationService);
 
   protected readonly genders = genders;
   protected readonly shirtSizes = shirtSizes;
@@ -81,18 +83,35 @@ export class PersonalDataFormComponent implements OnInit {
 
   protected submit() {
     if (this.formHelper.validateAll()) {
+      this.loading = true;
       const form: PersonalDataForm = {...this.formHelper.value,};
-      form.birthday = DateUtils.toLocalDate(form.birthday);
 
+      form.birthday = DateUtils.toLocalDate(form.birthday);
       if (form.idDocument && (!form.idDocument.idType || !form.idDocument.number)) {
         delete form.idDocument;
       }
+      if (form.email) {
+        form.email = form.email.toLowerCase();
+      }
+      const originalEmail = this.initialData().personalData.email;
 
-      this.loading = true;
-      this.scoutService.updatePersonalData(this.initialData().id, form)
-        .pipe(finalize(() => this.loading = false))
-        .subscribe(result => this.onEditionStop.emit(result));
+      if (originalEmail !== form.email && this.initialData().usernames.includes(originalEmail)) {
+        this.confirmationService.confirm({
+          message: "El correo electrónico de esta scouter está asociado a un usuario. " +
+            "Tras cambiarlo, se eliminará el acceso de dicho usuario. ¿Desea continuar?",
+          accept: () => this.updateData(form),
+          reject: () => this.loading = false
+        });
+      } else {
+        this.updateData(form);
+      }
     }
+  }
+
+  private updateData(form: PersonalDataForm) {
+    this.scoutService.updatePersonalData(this.initialData().id, form)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(result => this.onEditionStop.emit(result));
   }
 
 }
