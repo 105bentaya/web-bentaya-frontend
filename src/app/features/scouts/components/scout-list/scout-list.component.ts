@@ -89,7 +89,7 @@ export class ScoutListComponent implements OnInit {
   protected groups!: BasicGroupInfo[];
   protected quickFilters: SelectItem[] = [];
 
-  protected userGroup: BasicGroupInfo | undefined = this.userData.getGroup();
+  protected userGroup: BasicGroupInfo | undefined = this.userData.getScouterGroup();
   protected currentYear!: number;
 
   protected selectedFilter: "GROUP" | "ALL" | "IMAGE";

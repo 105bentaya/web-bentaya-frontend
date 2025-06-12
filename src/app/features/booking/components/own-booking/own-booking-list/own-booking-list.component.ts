@@ -59,7 +59,7 @@ export class OwnBookingListComponent implements OnInit {
   private lastFilterEvent!: TableLazyLoadEvent;
 
   constructor() {
-    const userGroupId = inject(LoggedUserDataService).getGroup()?.id;
+    const userGroupId = inject(LoggedUserDataService).getScouterGroup()?.id;
     this.selectedGroups = userGroupId ? [userGroupId, 0] : [0];
   }
 

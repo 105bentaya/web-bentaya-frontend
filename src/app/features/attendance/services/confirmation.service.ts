@@ -55,7 +55,7 @@ export class ConfirmationService {
       )
       .pipe(tap((data: Blob) => {
         saveAs(data,
-          `Asistencia_${this.loggedUserData.getGroup()?.name}_RS_Actual.xlsx`);
+          `Asistencia_${this.loggedUserData.getScouterGroup()?.name}_RS_Actual.xlsx`);
       }));
   }
 }

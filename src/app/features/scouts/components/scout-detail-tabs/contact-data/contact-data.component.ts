@@ -5,6 +5,7 @@ import {IdDocumentPipe} from "../../../pipes/id-document.pipe";
 import {IdDocumentTypePipe} from "../../../pipes/id-document-type.pipe";
 import {Tag} from "primeng/tag";
 import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-contact-data',
@@ -13,7 +14,8 @@ import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
     IdDocumentPipe,
     IdDocumentTypePipe,
     Tag,
-    BooleanPipe
+    BooleanPipe,
+    NgClass
   ],
   templateUrl: './contact-data.component.html',
   styleUrl: './contact-data.component.scss'

@@ -109,7 +109,7 @@ export class CalendarComponent implements OnInit {
 
     this.calendarDate = new Date();
     this.viewOptions = [{value: 'dayGridMonth', icon: 'pi pi-calendar'}, {value: 'customList', icon: 'pi pi-list'}];
-    this.isScouter = this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER, UserRole.GROUP_SCOUTER);
+    this.isScouter = this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER);
 
     if (this.isScouter) this.options.dateClick = (arg) => this.openAddDialog(arg.date);
 
@@ -135,7 +135,7 @@ export class CalendarComponent implements OnInit {
 
   private buildFilter() {
     const filter = new Set<number>;
-    const loggedUserGroupId = this.loggedUserData.getGroup()?.id;
+    const loggedUserGroupId = this.loggedUserData.getScouterGroup()?.id;
     if (loggedUserGroupId) filter.add(loggedUserGroupId);
     this.loggedUserData.getScoutGroupIds().forEach(groupId => filter.add(groupId));
     return [...filter];

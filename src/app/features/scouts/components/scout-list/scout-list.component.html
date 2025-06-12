@@ -94,6 +94,7 @@
           Censo
           <p-sortIcon field="census"></p-sortIcon>
         </th>
+        <th>Correo electrónico</th>
       </tr>
       <tr>
         <th>
@@ -180,6 +181,14 @@
             (input)="dt.filter($any($event.target).value, 'census', 'custom')"
           >
         </th>
+        <th>
+          <input
+            class="w-100"
+            pInputText
+            placeholder="Filtrar correo"
+            (input)="dt.filter($any($event.target).value, 'email', 'custom')"
+          >
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-scout>
@@ -214,6 +223,9 @@
         </td>
         <td>
           {{ scout.scoutInfo.census | census }}
+        </td>
+        <td>
+          {{ scout.personalData.email ?? 'No Tiene' }}
         </td>
       </tr>
     </ng-template>

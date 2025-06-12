@@ -27,6 +27,7 @@ import {AlertService} from "../../../../../shared/services/alert-service.service
 import {ScoutTypeFormComponent} from "../../scout-type-form/scout-type-form.component";
 import {LoggedUserDataService} from "../../../../../core/auth/services/logged-user-data.service";
 import {UserRole} from "../../../../users/models/role.model";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-group-data-form',
@@ -50,6 +51,7 @@ export class GroupDataFormComponent implements OnInit {
   protected readonly scoutService = inject(ScoutService);
   private readonly alertService = inject(AlertService);
   private readonly userData = inject(LoggedUserDataService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   private readonly today = DateUtils.dateTruncatedToDay(new Date());
   protected readonly yesNoOptions = yesNoOptions;
@@ -252,9 +254,36 @@ export class GroupDataFormComponent implements OnInit {
         form.groupId = undefined;
       }
 
-      this.scoutService.updateScoutInfo(this.initialData().id, form)
-        .pipe(finalize(() => this.loading = false))
-        .subscribe(result => this.onEditionStop.emit(result));
+      if (this.scoutWillLoseUsers(form.scoutType)) {
+        this.confirmationService.confirm({
+          message: "Si cambia el tipo de asociada, se eliminará el acceso de todos sus usuarios. Para volver" +
+            " a añadir un usuario deberás hacerlo desde la pestaña de 'Datos Personales'. ¿Desea continuar?",
+          accept: () => this.updateInfo(form),
+          reject: () => this.loading = false
+        });
+      } else {
+        this.updateInfo(form);
+      }
     }
+  }
+
+  private scoutWillLoseUsers(newScoutType: ScoutType) {
+    if (this.initialData().usernames.length < 1) {
+      return false;
+    }
+
+    const currentScoutType = this.initialData().scoutInfo.scoutType;
+    return currentScoutType === "SCOUT" && newScoutType !== "SCOUT" ||
+      this.scoutTypeHasScouterAccess(currentScoutType) && !this.scoutTypeHasScouterAccess(currentScoutType);
+  }
+
+  private scoutTypeHasScouterAccess(scoutType: ScoutType) {
+    return scoutType === "SCOUTER" || scoutType === "MANAGER" || scoutType === "COMMITTEE";
+  }
+
+  private updateInfo(form: ScoutInfoForm) {
+    this.scoutService.updateScoutInfo(this.initialData().id, form)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(result => this.onEditionStop.emit(result));
   }
 }

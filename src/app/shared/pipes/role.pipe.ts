@@ -12,11 +12,9 @@ export class RolePipe implements PipeTransform {
       case UserRole.USER:
         return "USUARIO";
       case UserRole.SCOUTER: {
-        const userGroupName = userGroup ? ` ${userGroup.toUpperCase()}` : '';
-        return "SCOUTER" + userGroupName;
+        const userGroupName = userGroup ? userGroup.toUpperCase() : 'DE GRUPO';
+        return `SCOUTER ${userGroupName}`;
       }
-      case UserRole.GROUP_SCOUTER:
-        return "SCOUTER DE GRUPO";
       case UserRole.EDITOR:
         return "EDITOR";
       case UserRole.ADMIN:

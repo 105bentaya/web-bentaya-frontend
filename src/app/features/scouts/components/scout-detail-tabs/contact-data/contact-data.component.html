@@ -1,7 +1,10 @@
 @if (contactList().length < 1) {
   <p-tag value="No hay familiares asociados" severity="secondary"/>
 } @else {
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
+  <div
+    class="row row-cols-1"
+    [ngClass]="{'row-cols-sm-2': contactList().length > 1, 'row-cols-lg-3': contactList().length > 2}"
+  >
     @for (contact of contactList(); track contact.id) {
       <div class="col">
         <b class="fs-5 title-font">Familiar {{ $index + 1 }}</b>

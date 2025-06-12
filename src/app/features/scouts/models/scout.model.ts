@@ -5,15 +5,13 @@ import {InvoiceConceptType} from "../../invoice/invoice.model";
 export interface Scout {
   id: number;
   roleInfos: SpecialMember[];
-  observations?: string;
-  extraFiles: ScoutFile[];
-  images: ScoutFile[];
   personalData: ScoutPersonalData;
   contactList: ScoutContact[];
   medicalData: ScoutMedicalData;
   economicData: ScoutEconomicData;
   scoutHistory: ScoutHistory;
   scoutInfo: ScoutInfo;
+  usernames: string[]
 }
 
 export interface ScoutHistory {
@@ -170,6 +168,8 @@ export interface IdentificationDocument {
   number: string;
 }
 
+
+export type UserOwner = "Persona asociada" | "Familiar" | "Otro";
 export type PersonType = "REAL" | "JURIDICAL";
 export type IdType = "DNI" | "NIE" | "CIF" | "PAS" | "OTR";
 export type ScoutType = "SCOUT" | "SCOUTER" | "COMMITTEE" | "MANAGER" | "INACTIVE";

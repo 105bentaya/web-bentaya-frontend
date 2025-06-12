@@ -3,6 +3,7 @@
   overflow: hidden;
   @media screen and (max-width: 575px) {
     width: 100%;
-    border-bottom: 2px var(--bs-border-style) var(--bs-border-color) !important;
+    border-top: 2px var(--bs-border-style) var(--bs-border-color) !important;
+    border-bottom: 1px var(--bs-border-style) var(--bs-border-color) !important;
   }
 }

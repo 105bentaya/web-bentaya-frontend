@@ -37,7 +37,7 @@ export const routes: Routes = [
     path: "calendario",
     loadComponent: () => import('./features/calendar/components/calendar/calendar.component').then(c => c.CalendarComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER, UserRole.USER]}
+    data: {roles: [UserRole.SCOUTER, UserRole.USER]}
   },
   {
     path: "login",
@@ -101,7 +101,7 @@ export const routes: Routes = [
     path: "scouts/lista",
     loadComponent: () => import('./features/scouts/components/scout-list/scout-list.component').then(c => c.ScoutListComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+    data: {roles: [UserRole.SCOUTER]}
   },
   {
     path: "scouts/censo",
@@ -113,19 +113,19 @@ export const routes: Routes = [
     path: "scouts/alta",
     loadComponent: () => import('./features/scouts/components/new-scout-form/new-scout-form.component').then(c => c.NewScoutFormComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER]}
   },
   {
     path: "scouts/alta/:preScoutId",
     loadComponent: () => import('./features/scouts/components/new-scout-form/new-scout-form.component').then(c => c.NewScoutFormComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER]}
   },
   {
     path: "scouts/:id",
     loadComponent: () => import('./features/scouts/components/scout-detail/scout-detail.component').then(c => c.ScoutDetailComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER]}
   },
   {
     path: "registros",
@@ -189,7 +189,7 @@ export const routes: Routes = [
     path: "facturas",
     loadComponent: () => import('./features/invoice/components/invoice-list/invoice-list.component').then(c => c.InvoiceListComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]}
+    data: {roles: [UserRole.SCOUTER]}
   },
   //Links del home
   {
@@ -334,13 +334,13 @@ const Booking: Route[] = [
     path: "grupo",
     loadComponent: () => import('./features/booking/components/own-booking/own-booking-list/own-booking-list.component').then(c => c.OwnBookingListComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]},
+    data: {roles: [UserRole.SCOUTER]},
   },
   {
     path: "grupo/:bookingId",
     loadComponent: () => import('./features/booking/components/own-booking/own-booking-follow-up/own-booking-follow-up.component').then(c => c.OwnBookingFollowUpComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SCOUTER, UserRole.GROUP_SCOUTER]},
+    data: {roles: [UserRole.SCOUTER]},
   },
   {
     path: "seguimiento",

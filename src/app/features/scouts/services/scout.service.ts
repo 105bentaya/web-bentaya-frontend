@@ -135,4 +135,13 @@ export class ScoutService {
   get getDonationTypes() {
     return this.donationTypeUrl;
   }
+
+  getNewUsers(param: string[]) {
+    const params: any = {usernames: param.map(user => user.toLowerCase())};
+    return this.http.get<string[]>(`${this.scoutUrl}/new-users`, {params});
+  }
+
+  updateScoutUsers(scoutId: number, usernames: string[]) {
+    return this.http.post<string[]>(`${this.scoutUrl}/update-scout-users/${scoutId}`, usernames);
+  }
 }

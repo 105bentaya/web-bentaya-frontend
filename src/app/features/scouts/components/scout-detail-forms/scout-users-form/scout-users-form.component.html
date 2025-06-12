@@ -1,0 +1,70 @@
+@switch (scoutType) {
+  @case ("SCOUT") {
+    <p>
+      En este formulario puedes editar los usuarios que tienen acceso a la educanda. Puedes activar un usuario para el
+      correo de la educanda o para alguno de sus familiares marcando la casilla correspondiente.
+      También puedes añadir un usuario sin relación con la asociada, pero esto <b>no es recomendable</b>, ya que no
+      tendríamos constancia de quien tiene acceso.
+    </p>
+  }
+  @case ("INACTIVE") {
+    <p>
+      Las asociadas de baja no pueden tener ningún usuario asociado.
+    </p>
+  }
+  @default {
+    <p>
+      En este formulario puedes activar o desactivar el usuario que tiene acceso a esta asociada marcando la casilla.
+      Este usuario puede entrar en la web con los privilegios de scouter, así que asegúrate que es correcto.
+    </p>
+  }
+}
+@if (scoutType != 'INACTIVE') {
+  <div class="d-flex flex-column gap-2">
+    <b>Usuarios Conocidos</b>
+    @if (scoutEmail) {
+      <app-checkbox-container label="{{scoutEmail}} - Persona Asociada">
+        <p-check-box
+          [(ngModel)]="scoutEmailAssigned"
+          binary
+        />
+      </app-checkbox-container>
+    }
+    @for (contact of contactEmails; track contact) {
+      <app-checkbox-container label="{{contact.email}} - Familiar">
+        <p-check-box
+          [(ngModel)]="contact.assigned"
+          binary
+        />
+      </app-checkbox-container>
+    }
+    @if (scoutType === 'SCOUT') {
+      <form [formGroup]="this.formHelper.form">
+        <div class="d-flex align-items-center gap-1 mb-2">
+          <b class="">Otros</b>
+          <p-tag class="inverted gray" value="Añadir" (click)="addOtherUser()"/>
+        </div>
+        <div formArrayName="otherUsers">
+          <div class="d-flex flex-column gap-2" id="otherUsers">
+            @for (control of otherUsersArray.controls; track control) {
+              <p-inputgroup>
+                <input pInputText [formControlName]="$index">
+                <p-inputgroup-addon class="cursor-pointer">
+                  <p-button severity="danger" text icon="pi pi-trash" (onClick)="deleteOtherUser($index)"></p-button>
+                </p-inputgroup-addon>
+              </p-inputgroup>
+            }
+          </div>
+        </div>
+      </form>
+    }
+  </div>
+  <app-save-buttons
+    class="mt-2"
+    [showCancelButton]="true"
+    (onCancel)="ref.close()"
+    (onSave)="submit()"
+    [saveLoading]="loading"
+  ></app-save-buttons>
+}
+

@@ -7,5 +7,5 @@ export interface UserForm {
   enabled: boolean;
   roles: UserRole[];
   scoutIds?: number[];
-  groupId?: number;
+  scouterId?: number;
 }

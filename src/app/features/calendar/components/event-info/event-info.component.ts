@@ -74,9 +74,7 @@ export class EventInfoComponent implements OnInit, OnDestroy {
 
   private scouterCanEditEvent(event: EventInfo) {
     const userIsScouter = this.loggedUserData.hasRequiredPermission(UserRole.SCOUTER);
-    const userIsGroupScouter = this.loggedUserData.hasRequiredPermission(UserRole.GROUP_SCOUTER);
-    return userIsScouter && (event.forEveryone || event.group?.id === this.loggedUserData.getGroup()?.id ) ||
-      userIsGroupScouter && event.forEveryone;
+    return userIsScouter && (event.forEveryone || event.group?.id === this.loggedUserData.getScouterGroup()?.id );
   }
 
   private getEventDate(date: Date, unknownTime: boolean) {

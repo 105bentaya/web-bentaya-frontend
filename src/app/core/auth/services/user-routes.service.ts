@@ -53,13 +53,14 @@ export class UserRoutesService {
 
   getUserHome() {
     if (this.authService.isLoggedIn()) {
-      if (this.userDataService.hasRequiredPermission(UserRole.SCOUTER, UserRole.GROUP_SCOUTER, UserRole.USER)) return "/calendario";
+      if (this.userDataService.hasRequiredPermission(UserRole.SCOUTER, UserRole.USER)) return "/calendario";
       if (this.userDataService.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) return "/centros-scout/seguimiento";
       if (this.userDataService.hasRequiredPermission(UserRole.EDITOR)) return "/unauthorized";
       if (this.userDataService.hasRequiredPermission(UserRole.SCOUT_CENTER_MANAGER)) return "/centros-scout/gestion";
       if (this.userDataService.hasRequiredPermission(UserRole.FORM)) return "/preinscripciones";
       if (this.userDataService.hasRequiredPermission(UserRole.TRANSACTION)) return "/donaciones/lista";
       if (this.userDataService.hasRequiredPermission(UserRole.ADMIN)) return "/usuarios";
+      if (this.userDataService.hasRequiredPermission(UserRole.SECRETARY)) return "/scouts/censo";
     }
     return "inicio";
   }

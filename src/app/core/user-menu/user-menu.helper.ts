@@ -6,10 +6,10 @@ const calendar = {label: "Calendario", icon: "pi pi-calendar", route: "/calendar
 const userScoutData = {label: "Datos", icon: "pi pi-id-card", route: "/datos"};
 const userAttendanceList = {label: 'Asistencia', icon: "pi pi-check-circle", route: "/asistencias"};
 const groupScoutList = {label: "Educandas", icon: "pi pi-users", route: "/scouts", category: "Unidad"};
+const generalScoutList = {label: "Educandas", icon: "pi pi-users", route: "/scouts", category: "Gestión de Grupo"};
 const groupAttendanceList = {label: "Listas de Asistencia", icon: "pi pi-list-check", route: "/unidad/asistencias", category: "Unidad"};
 const groupInscriptions = {label: "Preinscripciones", icon: "pi pi-folder", route: "/unidad/preinscripciones", category: "Unidad"};
 const invoiceList = {label: "Facturas", icon: "pi pi-receipt", route: "/facturas", category: "Gestión de Grupo"};
-const generalScoutList = {label: "Educandas", icon: "pi pi-users", route: "/scouts", category: "Gestión de Grupo"};
 const secretaryScoutList = {label: "Censo", icon: "pi pi-users", route: "/scouts/censo", category: "Gestión de Grupo"};
 const specialMemberList = {label: "Registros", icon: "fa fa-award", route: "/registros", category: "Gestión de Grupo"};
 const groupBookings = {label: "Centros Scout", icon: "fa-solid fa-tents", route: "/centros-scout/grupo", category: "Gestión de Grupo"};
@@ -35,9 +35,12 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
   }
   if (user.hasRequiredPermission(UserRole.SCOUTER)) {
     if (!user.hasRequiredPermission(UserRole.SECRETARY)) {
-      menuItems.push(groupScoutList);
+      menuItems.push(user.getScouterGroup() ? groupScoutList : generalScoutList);
     }
-    menuItems.push(groupAttendanceList, groupInscriptions, invoiceList);
+    if (user.getScouterGroup()) {
+      menuItems.push(groupAttendanceList, groupInscriptions);
+    }
+    menuItems.push(invoiceList);
   }
   if (user.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) {
     menuItems.push(scoutCenterRequester);
@@ -48,13 +51,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
   if (user.hasRequiredPermission(UserRole.SECRETARY)) {
     menuItems.push(secretaryScoutList, specialMemberList);
   }
-  if (user.hasRequiredPermission(UserRole.GROUP_SCOUTER)) {
-    if (!user.hasRequiredPermission(UserRole.SECRETARY)) {
-      menuItems.push(generalScoutList);
-    }
-    menuItems.push(invoiceList);
-  }
-  if (user.hasRequiredPermission(UserRole.GROUP_SCOUTER, UserRole.SCOUTER) && !user.hasRequiredPermission(UserRole.SCOUT_CENTER_MANAGER)) {
+  if (user.hasRequiredPermission(UserRole.SCOUTER) && !user.hasRequiredPermission(UserRole.SCOUT_CENTER_MANAGER)) {
     menuItems.push(groupBookings);
   }
   if (user.hasRequiredPermission(UserRole.TRANSACTION)) {
@@ -87,5 +84,5 @@ function filter(menuItems: any[]) {
 }
 
 function userIsScoutMember(user: LoggedUserDataService): boolean {
-  return user.hasRequiredPermission(UserRole.USER, UserRole.SCOUTER, UserRole.GROUP_SCOUTER);
+  return user.hasRequiredPermission(UserRole.USER, UserRole.SCOUTER);
 }

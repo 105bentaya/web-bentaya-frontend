@@ -68,7 +68,7 @@ export class UserFormComponent implements OnInit {
       username: [this.user?.username, Validators.required],
       password: [this.user?.password, Validators.required],
       roles: [this.user?.roles, Validators.required],
-      groupId: [this.user?.groupId, this.groupIdValidator],
+      scouterId: [this.user?.scouterId, this.groupIdValidator],
       scoutIds: [this.user?.scoutIds, this.scoutListValidator],
     });
   }
