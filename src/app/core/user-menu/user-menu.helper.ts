@@ -3,7 +3,7 @@ import {MenuItem} from "primeng/api";
 import {UserRole} from "../../features/users/models/role.model";
 
 const calendar = {label: "Calendario", icon: "pi pi-calendar", route: "/calendario"};
-const userScoutData = {label: "Datos", icon: "pi pi-id-card", route: "/datos"};
+const scoutData = {label: "Datos", icon: "pi pi-id-card", route: "/datos"};
 const userAttendanceList = {label: 'Asistencia', icon: "pi pi-check-circle", route: "/asistencias"};
 const groupScoutList = {label: "Educandas", icon: "pi pi-users", route: "/scouts", category: "Unidad"};
 const generalScoutList = {label: "Educandas", icon: "pi pi-users", route: "/scouts", category: "Gestión de Grupo"};
@@ -31,7 +31,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(calendar);
   }
   if (user.hasRequiredPermission(UserRole.USER)) {
-    menuItems.push(userScoutData, userAttendanceList);
+    menuItems.push(scoutData, userAttendanceList);
   }
   if (user.hasRequiredPermission(UserRole.SCOUTER)) {
     if (!user.hasRequiredPermission(UserRole.SECRETARY)) {
@@ -40,7 +40,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     if (user.getScouterGroup()) {
       menuItems.push(groupAttendanceList, groupInscriptions);
     }
-    menuItems.push(invoiceList);
+    menuItems.push(scoutData, invoiceList);
   }
   if (user.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) {
     menuItems.push(scoutCenterRequester);

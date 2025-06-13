@@ -1,5 +1,5 @@
 <div class="row">
-  @if (showCensus) {
+  @if (userIsSecretary) {
     <div class="col-12" [ngClass]="showGroup ? 'col-md' : 'col-sm'">
       <p-floatlabel variant="on">
         <p-inputgroup>
@@ -45,6 +45,7 @@
           optionLabel="name"
           optionValue="id"
           id="groupId"
+          [loading]="!groups"
         />
         <label class="required" for="groupId">Unidad de la asociada</label>
       </p-float-label>
@@ -52,7 +53,7 @@
   }
 </div>
 
-@if (showCensus) {
+@if (userIsSecretary) {
   @if (censusIsGreaterThanLast) {
     <p-message severity="warn" class="mb-3">
       El último número censo se actualizará al número {{ census.value }},

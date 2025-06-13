@@ -52,11 +52,13 @@
   <div class="col-12 col-sm-6 d-flex flex-column">
     <div class="d-flex gap-1 align-items-center">
       <b class="fs-5 title-font">Expedientes</b>
-      <p-tag
-        class="inverted gray"
-        value="Añadir"
-        (click)="openRecordForm()"
-      />
+      @if (editable()) {
+        <p-tag
+          class="inverted gray"
+          value="Añadir"
+          (click)="openRecordForm()"
+        />
+      }
     </div>
     <div class="mt-2">
       @if (scoutInfo.recordList.length < 1) {
@@ -88,11 +90,13 @@
             [label]="specialRole.role | specialRole:true"
             [value]="specialRole.roleCensus | census:specialRole.role"
           />
-          <i
-            class="fa-solid fa-circle-plus mb-1 cursor-pointer"
-            routerLink="/registros/{{specialRole.id}}"
-            title="Ir a ficha"
-          ></i>
+          @if (editable()) {
+            <i
+              class="fa-solid fa-circle-plus mb-1 cursor-pointer"
+              routerLink="/registros/{{specialRole.id}}"
+              title="Ir a ficha"
+            ></i>
+          }
         </div>
       }
     </div>

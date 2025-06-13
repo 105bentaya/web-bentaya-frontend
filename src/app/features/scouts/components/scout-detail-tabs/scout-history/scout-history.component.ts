@@ -11,7 +11,7 @@ export class ScoutHistoryComponent {
 
   scout = input.required<Scout>();
 
-  get scoutHistory(): ScoutHistory {
+  get scoutHistory(): ScoutHistory | undefined {
     return this.scout().scoutHistory;
   }
 }

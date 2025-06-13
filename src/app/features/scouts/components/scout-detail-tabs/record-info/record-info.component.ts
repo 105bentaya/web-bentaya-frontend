@@ -30,12 +30,14 @@ export class RecordInfoComponent implements OnInit {
 
   protected record!: ScoutRecord;
   private scoutId!: number;
+  protected editable = false;
 
   protected loading = false;
 
   ngOnInit() {
     this.record = this.config.data.record;
     this.scoutId = this.config.data.scoutId;
+    this.editable = this.config.data.editable;
   }
 
   protected openFormDialog() {

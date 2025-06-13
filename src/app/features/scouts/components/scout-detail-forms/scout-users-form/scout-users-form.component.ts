@@ -17,6 +17,7 @@ import {ScoutService} from "../../../services/scout.service";
 import {ConfirmationService} from "primeng/api";
 import FormUtils from "../../../../../shared/util/form-utils";
 import {finalize} from "rxjs";
+import {AlertService} from "../../../../../shared/services/alert-service.service";
 
 @Component({
   selector: 'app-scout-users-form',
@@ -42,6 +43,7 @@ export class ScoutUsersFormComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly scoutService = inject(ScoutService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly alertService = inject(AlertService);
 
   protected scout!: Scout;
 
@@ -141,7 +143,10 @@ export class ScoutUsersFormComponent implements OnInit {
   private saveUsers(usernames: string[]) {
     this.scoutService.updateScoutUsers(this.scout.id, usernames)
       .pipe(finalize(() => this.loading = false))
-      .subscribe(res => this.ref.close(res));
+      .subscribe(res => {
+        this.alertService.sendBasicSuccessMessage("Usuarios actualizados");
+        this.ref.close(res);
+      });
   }
 
   private generateUsernameChangeMessage(users: string[], newUsers: string[]) {

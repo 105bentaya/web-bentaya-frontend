@@ -230,6 +230,7 @@ export class NewScoutFormComponent implements OnInit {
       this.formHelper.get("groupId")?.disable();
     }
     this.formHelper.get("contact")?.get("idDocument")?.get("idType")?.addValidators(this.requiredIfScout);
+    this.formHelper.get("idDocument")?.get("idType")?.addValidators(this.requiredIfScouterOrSupport);
     this.formHelper.get("imageAuthorization")?.disable();
   }
 

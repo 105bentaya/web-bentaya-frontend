@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, Input, input} from '@angular/core';
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 import {ScoutEconomicData, EconomicEntry, ScoutPersonalData, Scout, ScoutContact, ScoutFile} from "../../../models/scout.model";
 import {DialogService} from "primeng/dynamicdialog";
@@ -34,6 +34,8 @@ export class EconomicDataComponent {
   private readonly scoutService = inject(ScoutService);
 
   public scout = input.required<Scout>();
+  public canEditEntries = input<boolean>(false);
+  public editable = input<boolean>(false);
 
   protected get economicData(): ScoutEconomicData {
     return this.scout().economicData;
@@ -72,7 +74,7 @@ export class EconomicDataComponent {
       EconomicEntryInfoComponent,
       "Expediente",
       "small",
-      {entry, scoutId: this.scout().id}
+      {entry, scoutId: this.scout().id, editable: this.canEditEntries()}
     );
     ref.onClose.subscribe(deleted => deleted ? this.economicData.entries.splice(index, 1) : noop());
   }

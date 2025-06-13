@@ -39,7 +39,7 @@ export class ScoutTypeFormComponent implements OnInit {
   private readonly userData = inject(LoggedUserDataService);
 
   parentForm = input.required<FormGroup | AbstractControl>();
-  showCensus = this.userData.hasRequiredPermission(UserRole.SECRETARY);
+  userIsSecretary = this.userData.hasRequiredPermission(UserRole.SECRETARY);
 
   protected lastCensus: number = 0;
   onGroupSelect = output<ScoutType>();
@@ -47,14 +47,18 @@ export class ScoutTypeFormComponent implements OnInit {
   protected groups!: BasicGroupInfo[];
   protected readonly scoutTypes: ({ label: string; value: ScoutType })[] = [
     {label: "Educanda", value: "SCOUT"},
-    {label: "Educadora", value: "SCOUTER"},
-    {label: "Comité de Grupo", value: "COMMITTEE"},
-    {label: "Gestora", value: "MANAGER"},
-    {label: "Sin unidad (Baja)", value: "INACTIVE"},
+    {label: "Educadora", value: "SCOUTER"}
   ];
 
   ngOnInit(): void {
-    this.scoutService.findLastCensus().subscribe(census => this.lastCensus = census);
+    if (this.userIsSecretary) {
+      this.scoutService.findLastCensus().subscribe(census => this.lastCensus = census);
+      this.scoutTypes.push(
+        {label: "Comité de Grupo", value: "COMMITTEE"},
+        {label: "Gestora", value: "MANAGER"},
+        {label: "Sin unidad (Baja)", value: "INACTIVE"}
+      );
+    }
     this.groupService.getBasicGroups().subscribe(groups => {
       this.groups = groups;
       this.updateGroupSelect(this.scoutType.value);

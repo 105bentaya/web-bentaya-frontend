@@ -22,6 +22,7 @@ import {
 import {inject} from "@angular/core";
 import {UserRoutesService} from "./core/auth/services/user-routes.service";
 import {LoggedUserDataService} from "./core/auth/services/logged-user-data.service";
+import {ScoutDetailComponent} from "./features/scouts/components/scout-detail/scout-detail.component";
 
 export const routes: Routes = [
   {
@@ -125,7 +126,7 @@ export const routes: Routes = [
     path: "scouts/:id",
     loadComponent: () => import('./features/scouts/components/scout-detail/scout-detail.component').then(c => c.ScoutDetailComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER]}
+    data: {roles: [UserRole.SECRETARY, UserRole.SCOUTER], fromScoutList: true}
   },
   {
     path: "registros",
@@ -175,7 +176,13 @@ export const routes: Routes = [
     path: "datos",
     loadComponent: () => import('./features/scouts/components/user-scout-info/user-scout-info.component').then(c => c.UserScoutInfoComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.USER]}
+    data: {roles: [UserRole.USER, UserRole.SCOUTER]},
+    children: [
+      {
+        path: ':id',
+        component: ScoutDetailComponent
+      }
+    ]
   },
   //Donaciones
   {

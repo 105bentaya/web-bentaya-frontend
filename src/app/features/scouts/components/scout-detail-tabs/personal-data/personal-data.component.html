@@ -33,12 +33,14 @@
     <app-basic-info label="Provincia" [value]="personalData.province"/>
     <app-basic-info label="Municipio de Residencia" [value]="personalData.residenceMunicipality"/>
     <div class="d-flex align-items-center gap-1 mt-1">
-      <b class="fs-5 title-font">Usuarios</b>
-      <p-tag
-        class="inverted gray"
-        value="Editar"
-        (click)="editUsers()"
-      />
+      <b class="fs-5 title-font">{{editable() ? 'Usuarios' : 'Usuarios asociados'}}</b>
+      @if (editable()) {
+        <p-tag
+          class="inverted gray"
+          value="Editar"
+          (click)="editUsers()"
+        />
+      }
     </div>
     @if (usernames.length < 1) {
       <p-tag class="mt-1" severity="secondary" value="No usuarios asignados"/>
@@ -46,13 +48,18 @@
     @for (username of usernames; track username) {
       <div class="mb-1">
         <b>{{ username.owner }}:</b> {{ username.email }}
-        @if (username.owner === 'Otro') {
+        @if (editable() && username.owner === 'Otro') {
           <i
             class="pi pi-exclamation-circle align-middle text-danger fw-bold"
             pTooltip="Evita tener usuarios sin relación con la asociada"
           ></i>
         }
       </div>
+    }
+    @if (!editable()) {
+      <small>
+        Si cree que alguno de estos usuarios no debería tener acceso a los datos, avise a un scouter de su unidad
+      </small>
     }
   </div>
   @if (personalData.observations) {
@@ -64,6 +71,8 @@
   <div class="col-12 mt-3">
     <app-document-list
       [(documents)]="personalData.documents"
+      [canEdit]="editable()"
+      [canDelete]="editable()"
       [uploadPetition]="filePetition"
       [deletePetition]="deletePetition"
     />

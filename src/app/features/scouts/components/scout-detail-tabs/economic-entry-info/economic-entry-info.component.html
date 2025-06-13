@@ -1,7 +1,9 @@
 <div class="info-container">
-  <div class="position-absolute" style="height: 1.75rem; right: 1rem;">
-    <p-button styleClass="h-100 px-2" (click)="openFormDialog()" [disabled]="loading">Editar</p-button>
-  </div>
+  @if (editable) {
+    <div class="position-absolute" style="height: 1.75rem; right: 1rem;">
+      <p-button styleClass="h-100 px-2" (click)="openFormDialog()" [disabled]="loading">Editar</p-button>
+    </div>
+  }
   <div class="mt-1">
     <div class="row">
       <div class="col-12 col-sm-4">

@@ -1,14 +1,16 @@
 <div class="info-container">
-  <div class="position-absolute" style="height: 1.75rem; right: 1rem;">
-    <p-button styleClass="h-100 px-2" (click)="openFormDialog()" [disabled]="loading">Editar Expediente</p-button>
-  </div>
+  @if (editable) {
+    <div class="position-absolute" style="height: 1.75rem; right: 1rem;">
+      <p-button styleClass="h-100 px-2" (click)="openFormDialog()" [disabled]="loading">Editar Expediente</p-button>
+    </div>
+  }
   <div class="mt-1">
     <div class="row">
-      <div class="col-12">
+      <div class="col-6">
         <b>Tipo de expediente</b>
         <div>{{ record.recordType }}</div>
       </div>
-      <div class="col">
+      <div class="col-6">
         <b>Fecha de Inicio</b>
         <div>{{ record.startDate | date:"dd/MM/yyyy" }}</div>
       </div>
@@ -25,6 +27,8 @@
       <div class="col-12">
         <app-document-list
           [(documents)]="record.files"
+          [canEdit]="editable"
+          [canDelete]="editable"
           [uploadPetition]="uploadPetition"
           [deletePetition]="deletePetition"
           titleSize="small"

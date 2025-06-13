@@ -22,13 +22,22 @@ import {AgePipe} from "../../pipes/age.pipe";
 import {ScoutHistoryFormComponent} from "../scout-detail-forms/scout-history-form/scout-history-form.component";
 import {ScoutHistoryComponent} from "../scout-detail-tabs/scout-history/scout-history.component";
 import {ScoutSectionPipe} from "../../pipes/scout-section.pipe";
-import {NgClass, TitleCasePipe, UpperCasePipe} from "@angular/common";
+import {NgClass, NgTemplateOutlet, TitleCasePipe, UpperCasePipe} from "@angular/common";
 import {ScoutGroupPipe} from "../../pipes/scout-group.pipe";
 import {ScoutStatusPipe} from "../../pipes/scout-status.pipe";
 import {SpecialRolePipe} from "../../../special-member/special-role.pipe";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 import {UserRole} from "../../../users/models/role.model";
 import {ConfirmationService} from "primeng/api";
+
+enum Permission {
+  "BASIC_INFORMATION",
+  "ALL_INFORMATION",
+  "BASIC_EDITION",
+  "FULL_EDITION"
+}
+
+type TabOptions = 'personal' | 'salud' | 'familiar' | 'asociativo' | 'scout' | 'economico';
 
 @Component({
   selector: 'app-scout-detail',
@@ -60,7 +69,8 @@ import {ConfirmationService} from "primeng/api";
     ScoutStatusPipe,
     UpperCasePipe,
     SpecialRolePipe,
-    NgClass
+    NgClass,
+    NgTemplateOutlet
   ]
 })
 export class ScoutDetailComponent implements OnInit {
@@ -69,36 +79,89 @@ export class ScoutDetailComponent implements OnInit {
   private readonly scoutService = inject(ScoutService);
   private readonly alertService = inject(AlertService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly userData = inject(LoggedUserDataService);
+
+  protected readonly Permission = Permission;
 
   protected scout!: Scout;
+  protected selectedTab!: TabOptions;
+  protected loading = true;
+
+  protected permission: Permission = Permission.BASIC_INFORMATION;
   protected editing: boolean = false;
   protected secretaryEdition: boolean = false;
-  protected selectedTab: number = 0;
-  protected allowedTabsForEdition = [0, 1, 2, 5];
+
+  private readonly allTabs: { id: TabOptions; label: string; showIf: Permission; editIf: Permission }[] = [
+    {id: 'personal', label: "Datos Personales", showIf: Permission.BASIC_INFORMATION, editIf: Permission.BASIC_EDITION},
+    {id: 'salud', label: "Datos de Salud", showIf: Permission.BASIC_INFORMATION, editIf: Permission.BASIC_EDITION},
+    {id: 'familiar', label: "Datos Familiares", showIf: Permission.BASIC_INFORMATION, editIf: Permission.BASIC_EDITION},
+    {
+      id: 'asociativo',
+      label: "Datos Asociativos",
+      showIf: Permission.ALL_INFORMATION,
+      editIf: Permission.FULL_EDITION
+    },
+    {id: 'scout', label: "Historial Scout", showIf: Permission.ALL_INFORMATION, editIf: Permission.FULL_EDITION},
+    {
+      id: 'economico',
+      label: "Datos Económicos",
+      showIf: Permission.BASIC_INFORMATION,
+      editIf: Permission.BASIC_EDITION
+    },
+  ];
+  protected shownTabs: { id: TabOptions; label: string }[] = [];
 
   protected fromForm: boolean;
   protected fromFormStatus: "NONE" | "MEDICAL" = "NONE";
-  protected isSecretary = inject(LoggedUserDataService).hasRequiredPermission(UserRole.SECRETARY);
+  protected fromScoutList = false;
 
   constructor() {
-    const tabQueryParam = +this.route.snapshot.queryParams['tab'];
     this.fromForm = !!this.route.snapshot.queryParams['fromForm'];
-
-    if (tabQueryParam >= 0 && tabQueryParam <= 7) {
-      this.updateTab(+tabQueryParam);
-    } else {
-      this.updateTab(+(localStorage.getItem("scout_tab") ?? 0));
-    }
+    this.fromScoutList = !!this.route.snapshot.data['fromScoutList'];
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params['id'];
-    this.scoutService.getById(id).subscribe(scout => this.scout = scout);
-    if (this.fromForm) {
-      this.updateTab(1);
+    this.route.params
+      .subscribe(data => {
+        this.loading = true;
+        this.scoutService.getById(data["id"]).subscribe(scout => {
+          this.scout = scout;
+          this.generateTabs();
+        });
+      });
+
+    if (this.fromForm && this.permission >= Permission.BASIC_EDITION) {
+      this.updateTab('salud');
       this.fromFormStatus = "MEDICAL";
       this.editing = true;
     }
+  }
+
+  private generateTabs() {
+    if (this.userData.hasRequiredPermission(UserRole.SECRETARY)) {
+      this.permission = Permission.FULL_EDITION;
+    } else if (this.userData.hasRequiredPermission(UserRole.SCOUTER)) {
+      const scoutType = this.scout.scoutInfo.scoutType;
+      const scoutIsScouter = scoutType === "SCOUTER" && this.scout.id === this.userData.getScouter()?.id;
+      const scouterHasScoutGroup = scoutType === "SCOUT" && this.userData.getScouterGroup()?.id === this.scout.scoutInfo.group?.id;
+      this.permission = scoutIsScouter || scouterHasScoutGroup ? Permission.BASIC_EDITION : Permission.ALL_INFORMATION;
+    } else {
+      this.permission = Permission.BASIC_INFORMATION;
+    }
+
+    this.shownTabs = this.allTabs.filter(tab => this.permission >= tab.showIf);
+
+    const tabQueryParam = this.route.snapshot.queryParams['tab'];
+    if (this.allTabs.some(tab => tab.id === tabQueryParam)) {
+      this.updateTab(tabQueryParam);
+    } else {
+      this.updateTab(JSON.parse(localStorage.getItem("scout_tab")!) ?? 'personal');
+    }
+    this.loading = false;
+  }
+
+  protected startEditing() {
+    this.editing = this.tabEditionAllowed;
   }
 
   protected get scoutPersonalData() {
@@ -112,7 +175,9 @@ export class ScoutDetailComponent implements OnInit {
     }
     if (this.fromFormStatus === "MEDICAL") {
       if (this.scout.scoutInfo.scoutType === "SCOUT") {
-        this.updateTab(2);
+        this.updateTab('salud');
+      } else {
+        this.editing = false;
       }
       this.fromFormStatus = "NONE";
     } else {
@@ -121,8 +186,8 @@ export class ScoutDetailComponent implements OnInit {
     }
   }
 
-  protected updateTab(tab: number | string) {
-    this.selectedTab = +tab;
+  protected updateTab(tab: TabOptions) {
+    this.selectedTab = tab;
     localStorage.setItem("scout_tab", JSON.stringify(tab));
     this.router.navigate([], {queryParams: {tab}, replaceUrl: true});
   }
@@ -136,12 +201,8 @@ export class ScoutDetailComponent implements OnInit {
 
   protected startSecretaryEdition() {
     this.secretaryEdition = true;
-    this.selectedTab = 4;
+    this.selectedTab = 'asociativo';
     this.editing = true;
-  }
-
-  protected get showEditingButton() {
-    return !this.editing && (this.isSecretary || this.allowedTabsForEdition.includes(this.selectedTab));
   }
 
   protected askForDelete() {
@@ -157,5 +218,14 @@ export class ScoutDetailComponent implements OnInit {
       this.alertService.sendBasicSuccessMessage("Alta pendiente eliminada");
       this.router.navigateByUrl("/scouts");
     });
+  }
+
+  protected get tabEditionAllowed() {
+    const minimumTabPermission = this.allTabs.find(tab => tab.id === this.selectedTab)?.editIf ?? Permission.FULL_EDITION;
+    return this.permission >= minimumTabPermission;
+  }
+
+  protected get hideEditButton() {
+    return this.editing || !this.tabEditionAllowed;
   }
 }

@@ -33,8 +33,8 @@ export class ScoutHistoryFormComponent implements OnInit {
 
   ngOnInit() {
     this.formHelper.createForm({
-      progressions: [this.initialData().scoutHistory.progressions, Validators.maxLength(65535)],
-      observations: [this.initialData().scoutHistory.observations, Validators.maxLength(65535)]
+      progressions: [this.initialData().scoutHistory?.progressions, Validators.maxLength(65535)],
+      observations: [this.initialData().scoutHistory?.observations, Validators.maxLength(65535)]
     });
   }
 

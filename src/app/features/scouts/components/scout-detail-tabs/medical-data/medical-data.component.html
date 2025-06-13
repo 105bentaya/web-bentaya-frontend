@@ -89,6 +89,8 @@
   <div class="col-12 col-lg-8">
     <app-document-list
       [(documents)]="medicalData.documents"
+      [canEdit]="editable()"
+      [canDelete]="editable()"
       [uploadPetition]="filePetition"
       [deletePetition]="deletePetition"
     />

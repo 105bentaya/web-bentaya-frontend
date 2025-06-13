@@ -29,6 +29,7 @@ export class MedicalDataComponent {
   private readonly scoutService = inject(ScoutService);
 
   scout = input.required<Scout>();
+  editable = input<boolean>(false);
 
   protected showSocialHolder = false;
   protected showPrivateHolder = false;

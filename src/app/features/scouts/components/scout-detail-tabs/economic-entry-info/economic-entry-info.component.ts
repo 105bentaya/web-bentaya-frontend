@@ -26,6 +26,7 @@ export class EconomicEntryInfoComponent implements OnInit {
 
   protected entry!: EconomicEntry;
   private scoutId!: number;
+  protected editable = false;
 
   protected loading = false;
 

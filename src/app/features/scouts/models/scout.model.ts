@@ -9,7 +9,7 @@ export interface Scout {
   contactList: ScoutContact[];
   medicalData: ScoutMedicalData;
   economicData: ScoutEconomicData;
-  scoutHistory: ScoutHistory;
+  scoutHistory?: ScoutHistory;
   scoutInfo: ScoutInfo;
   usernames: string[]
 }

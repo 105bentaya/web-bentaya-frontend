@@ -72,7 +72,7 @@
               class="col-12 col-lg-6"
               [parentForm]="formHelper.form"
               colClass="col-12 col-sm-6"
-              labelClass="semi-required"
+              [labelClass]="this.scoutIsScouterOrSupport ? 'required' : 'semi-required'"
             />
             <div class="col-12 col-sm-6 col-lg-3">
               <p-float-label variant="on">
@@ -568,8 +568,8 @@
       <p>
         Se ha encontrado la siguiente antigua asociada cuyo DNI coincide con los datos de la inscripción. Dale a
         continuar para
-        volver a dar de alta a esta persona. Si crees que la los datos de esta persona no coinciden con los de la
-        inscripción, ponte en contacto con informática.
+        volver a dar de alta a esta persona. Si crees que la los datos de esta persona <b>no coinciden</b> con los de la
+        inscripción, ponte en contacto con informática y <b>no des el alta</b>.
       </p>
       <app-basic-info label="Nombre" [value]="previousScout.personalData.name"/>
       <app-basic-info label="Apellidos" [value]="previousScout.personalData.surname"/>
@@ -579,16 +579,19 @@
         [label]="previousScout.personalData.idDocument | idDocumentType"
         [value]="previousScout.personalData.idDocument | idDocument"
       />
+      <p-button class="float-end mt-2" label="Continuar" (onClick)="startFromHasBeenBefore()"></p-button>
     } @else {
       <p>
         No obstante, <b>no se han encontrado</b> antiguas asociadas DNI coincida con los de la preinscripción. Si crees
         que esto es un error y <b>ves la persona asociada en el censo de grupo</b>, avisa a
         informática para que dé el alta.
+      </p>
+      <p>
         En cambio, si <b>tienes la seguridad</b> de que la nueva scout no ha estado antes en el grupo
-        (es decir, la inscripción está mal), puedes crear una scout nueva dándole a continuar.
+        (es decir, la inscripción está mal), puedes crear una scout nueva dándole a
+        <u class="cursor-pointer" (click)="startFromHasBeenBefore()">continuar</u>.
       </p>
     }
-    <p-button class="float-end mt-2" label="Continuar" (onClick)="startFromHasBeenBefore()"></p-button>
   } @else {
     <app-basic-loading-info/>
   }

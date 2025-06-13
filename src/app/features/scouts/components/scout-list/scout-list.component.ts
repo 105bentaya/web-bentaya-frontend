@@ -141,7 +141,7 @@ export class ScoutListComponent implements OnInit {
   private loadPendingRegistrations() {
     this.selectedFilter = "ALL";
     this.selectButtonChange();
-    this.table().filter(["PENDING_NEW"], 'statuses', 'custom');
+    this.table().filter(["PENDING_NEW", "PENDING_EXISTING"], 'statuses', 'custom');
   }
 
   protected selectButtonChange() {

@@ -1,10 +1,12 @@
-<div class="container-fluid container-xxl">
-  @if (scout) {
+<div [ngClass]="{'container-fluid container-xxl': fromScoutList}">
+  @if (!loading) {
     <div class="d-flex justify-content-between gap-1 overflow-hidden">
       <div class="d-flex flex-column flex-grow-1 justify-content-start">
         <div class="mb-2">
           <span class="fs-4" style="font-family: Trueno-Black, sans-serif;">
-            <i class="fa fa-arrow-left fs-5 cursor-pointer" routerLink="/scouts"></i>
+            @if (fromScoutList) {
+              <i class="fa fa-arrow-left fs-5 cursor-pointer" routerLink="/scouts"></i>
+            }
             {{ scoutPersonalData.name }} {{ scoutPersonalData.surname }}
             @if (scoutPersonalData.feltName) {
               ({{ scoutPersonalData.feltName }})
@@ -71,7 +73,7 @@
       <div class="d-flex flex-column align-items-center gap-2">
         <div
           class="border h-100 rounded-5 d-none d-sm-block overflow-hidden"
-          [ngClass]="{'mh-120': isSecretary, 'mh-140': !isSecretary }"
+          [ngClass]="{'mh-120': permission >= Permission.FULL_EDITION, 'mh-140': permission < Permission.FULL_EDITION }"
         >
           <img
             class="object-fit-cover h-100"
@@ -79,60 +81,15 @@
             alt="Scout"
           >
         </div>
-        @if (isSecretary && fromFormStatus === "NONE") {
-          @if (editing) {
-            @if (secretaryEdition) {
-              <p-button
-                label="Cancelar"
-                severity="danger"
-                outlined
-                size="small"
-                styleClass="py-1"
-                (onClick)="onEditionStop()"
-              ></p-button>
-            }
-          } @else if (scout.scoutInfo.status === 'ACTIVE') {
-            <p-button
-              label="Dar de Baja"
-              severity="danger"
-              outlined
-              size="small"
-              styleClass="py-1"
-              (onClick)="startSecretaryEdition()"
-            ></p-button>
-          } @else if (scout.scoutInfo.status !== 'INACTIVE') {
-            <p-button
-              label="Gestionar Alta"
-              severity="info"
-              outlined
-              size="small"
-              styleClass="py-1"
-              (onClick)="startSecretaryEdition()"
-            ></p-button>
-          } @else if (scout.scoutInfo.status === 'INACTIVE') {
-            <p-button
-              label="Dar de Alta"
-              severity="info"
-              outlined
-              size="small"
-              styleClass="py-1"
-              (onClick)="startSecretaryEdition()"
-            ></p-button>
-          }
-        }
+        <ng-container *ngTemplateOutlet="secretaryButtons"/>
       </div>
     </div>
-    <p-tabs scrollable [value]="selectedTab" (valueChange)="updateTab($event)" class="main-info-panel">
+    <p-tabs scrollable [value]="selectedTab" (valueChange)="updateTab($any($event))" class="main-info-panel">
       @if (!secretaryEdition) {
         <p-tablist>
-          <p-tab [value]="0" [disabled]="editing">Datos Personales</p-tab>
-          <p-tab [value]="1" [disabled]="editing">Datos de Salud</p-tab>
-          <p-tab [value]="2" [disabled]="editing">Datos Familiares</p-tab>
-          <!--<p-tab [value]="3" [disabled]="true">Datos Formativos</p-tab>-->
-          <p-tab [value]="4" [disabled]="editing">Datos Asociativos</p-tab>
-          <p-tab [value]="5" [disabled]="editing">Historial Scout</p-tab>
-          <p-tab [value]="6" [disabled]="editing">Datos económicos</p-tab>
-          <!--<p-tab [value]="7" [disabled]="editing">Otros Datos</p-tab>-->
+          @for (tab of shownTabs; track tab.id) {
+            <p-tab [value]="tab.id" [disabled]="editing">{{ tab.label }}</p-tab>
+          }
         </p-tablist>
       }
       <p-tabpanels>
@@ -143,31 +100,31 @@
             rounded
             outlined
             class="position-absolute end-0"
-            [ngClass]="{'d-none': !showEditingButton}"
+            [ngClass]="{'d-none': hideEditButton}"
             size="small"
-            (onClick)="editing = true"
+            (onClick)="startEditing()"
           ></p-button>
-          <p-tabpanel [value]="0">
+          <p-tabpanel value="personal">
             @if (editing) {
               <app-personal-data-form
                 [initialData]="scout"
                 (onEditionStop)="onEditionStop($event)"
               />
             } @else {
-              <app-personal-data [scout]="scout"/>
+              <app-personal-data [scout]="scout" [editable]="tabEditionAllowed"/>
             }
           </p-tabpanel>
-          <p-tabpanel [value]="1">
+          <p-tabpanel value="salud">
             @if (editing) {
               <app-medical-data-form
                 [initialData]="scout"
                 (onEditionStop)="onEditionStop($event)"
               />
             } @else {
-              <app-medical-data [scout]="scout"/>
+              <app-medical-data [scout]="scout" [editable]="tabEditionAllowed"/>
             }
           </p-tabpanel>
-          <p-tabpanel [value]="2">
+          <p-tabpanel value="familiar">
             @if (editing) {
               <app-contact-data-form
                 [initialData]="scout"
@@ -177,61 +134,19 @@
               <app-contact-data [contactList]="scout.contactList"/>
             }
           </p-tabpanel>
-          <p-tabpanel [value]="4">
-            @if (secretaryEdition) {
-              <b class="fs-5 title-font">
-                @if (scout.scoutInfo.status === 'ACTIVE') {
-                  Dar de Baja
-                } @else {
-                  Dar de Alta
-                }
-              </b>
-              @switch (scout.scoutInfo.status) {
-                @case ('ACTIVE') {
-                  <p>
-                    Si deseas dar de baja a esta scout, confirma que la fecha de baja es correcta y dale a guardar. Los
-                    usuarios asignados a esta scout perderán el acceso a la web.
-                  </p>
-                }
-                @case ('PENDING_NEW') {
-                  <div class="d-flex flex-row gap-1">
-                    <p>
-                      Hay un nuevo alta pendiente. Si ya has revisado todos los datos, <b>elige un censo</b> y dale a
-                      guardar para confirmar el alta. Si no quiere dar el alta, haga click en el botón de 'Eliminar'.
-                    </p>
-                    <p-button
-                      label="Eliminar"
-                      severity="danger"
-                      (onClick)="askForDelete()"
-                    />
-                  </div>
-
-                }
-                @case ('PENDING_EXISTING') {
-                  <p>
-                    Hay un nuevo alta pendiente. Es de una persona que <b>ya estuvo de alta</b>, por lo que no hay que
-                    asignar nuevo censo. Si ya has revisado todos los datos, dale a guardar para confirmar el alta. Si
-                    no la quiere dar de alta, elija 'Baja' como tipo de asociada.
-                  </p>
-                }
-                @case ('INACTIVE') {
-                  <p>
-                    Vuelve a dar de alta a esta scout eligiendo el tipo de asociada.
-                  </p>
-                }
-              }
-            }
+          <p-tabpanel value="asociativo">
             @if (editing) {
+              <ng-container *ngTemplateOutlet="secretaryEditionInfo"/>
               <app-group-data-form
                 [initialData]="scout"
                 (onEditionStop)="onEditionStop($event)"
                 [newScoutType]="newScoutType"
               />
             } @else {
-              <app-group-data [scout]="scout"/>
+              <app-group-data [scout]="scout" [editable]="tabEditionAllowed"/>
             }
           </p-tabpanel>
-          <p-tabpanel [value]="5">
+          <p-tabpanel value="scout">
             @if (editing) {
               <app-scout-history-form
                 [initialData]="scout"
@@ -241,14 +156,18 @@
               <app-scout-history [scout]="scout"/>
             }
           </p-tabpanel>
-          <p-tabpanel [value]="6">
+          <p-tabpanel value="economico">
             @if (editing) {
               <app-economic-data-form
                 [initialData]="scout"
                 (onEditionStop)="onEditionStop($event)"
               />
             } @else {
-              <app-economic-data [scout]="scout"/>
+              <app-economic-data
+                [scout]="scout"
+                [editable]="tabEditionAllowed"
+                [canEditEntries]="permission >= Permission.FULL_EDITION"
+              />
             }
           </p-tabpanel>
         </div>
@@ -257,3 +176,93 @@
   } @else {
     <app-basic-loading-info/>
   }</div>
+
+<ng-template #secretaryButtons>
+  @if (permission >= Permission.FULL_EDITION && fromFormStatus === "NONE") {
+    @if (editing) {
+      @if (secretaryEdition) {
+        <p-button
+          label="Cancelar"
+          severity="danger"
+          outlined
+          size="small"
+          styleClass="py-1"
+          (onClick)="onEditionStop()"
+        ></p-button>
+      }
+    } @else if (scout.scoutInfo.status === 'ACTIVE') {
+      <p-button
+        label="Dar de Baja"
+        severity="danger"
+        outlined
+        size="small"
+        styleClass="py-1"
+        (onClick)="startSecretaryEdition()"
+      ></p-button>
+    } @else if (scout.scoutInfo.status !== 'INACTIVE') {
+      <p-button
+        label="Gestionar Alta"
+        severity="info"
+        outlined
+        size="small"
+        styleClass="py-1"
+        (onClick)="startSecretaryEdition()"
+      ></p-button>
+    } @else if (scout.scoutInfo.status === 'INACTIVE') {
+      <p-button
+        label="Dar de Alta"
+        severity="info"
+        outlined
+        size="small"
+        styleClass="py-1"
+        (onClick)="startSecretaryEdition()"
+      ></p-button>
+    }
+  }
+</ng-template>
+
+<ng-template #secretaryEditionInfo>
+  @if (secretaryEdition) {
+    <b class="fs-5 title-font">
+      @if (scout.scoutInfo.status === 'ACTIVE') {
+        Dar de Baja
+      } @else {
+        Dar de Alta
+      }
+    </b>
+    @switch (scout.scoutInfo.status) {
+      @case ('ACTIVE') {
+        <p>
+          Si deseas dar de baja a esta scout, confirma que la fecha de baja es correcta y dale a guardar. Los
+          usuarios asignados a esta scout perderán el acceso a la web.
+        </p>
+      }
+      @case ('PENDING_NEW') {
+        <div class="d-flex flex-row gap-1">
+          <p>
+            Hay un nuevo alta pendiente. Si ya has revisado todos los datos, <b>elige un censo</b> y dale a
+            guardar para confirmar el alta. Si no quiere dar el alta, haga click en el botón de 'Eliminar'.
+          </p>
+          <p-button
+            label="Eliminar"
+            severity="danger"
+            (onClick)="askForDelete()"
+          />
+        </div>
+
+      }
+      @case ('PENDING_EXISTING') {
+        <p>
+          Hay un nuevo alta pendiente. Es de una persona que <b>ya estuvo de alta</b>, por lo que no hay que
+          asignar nuevo censo. Si ya has revisado todos los datos, dale a guardar para confirmar el alta. Si
+          no la quiere dar de alta, elija 'Baja' como tipo de asociada.
+        </p>
+      }
+      @case ('INACTIVE') {
+        <p>
+          Vuelve a dar de alta a esta scout eligiendo el tipo de asociada.
+        </p>
+      }
+    }
+  }
+</ng-template>

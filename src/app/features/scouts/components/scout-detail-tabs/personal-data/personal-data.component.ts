@@ -1,4 +1,4 @@
-import {Component, inject, input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, inject, Input, input, OnChanges, SimpleChanges} from '@angular/core';
 import {Scout, ScoutFile, ScoutPersonalData} from '../../../models/scout.model';
 import {BasicInfoComponent} from "../../basic-info/basic-info.component";
 import {DatePipe} from "@angular/common";
@@ -39,6 +39,7 @@ export class PersonalDataComponent implements OnChanges {
   private readonly dialogService = inject(DynamicDialogService);
 
   scout = input.required<Scout>();
+  editable = input<boolean>(false);
 
   protected usernames: { owner: UserOwner; email: string; }[] = [];
   private readonly ownerOrder = {

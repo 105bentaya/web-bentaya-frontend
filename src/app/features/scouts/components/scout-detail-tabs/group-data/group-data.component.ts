@@ -44,6 +44,7 @@ export class GroupDataComponent {
   private readonly dialogService = inject(DynamicDialogService);
 
   public scout = input.required<Scout>();
+  public editable = input<boolean>(false);
   protected showDates: boolean = false;
 
   protected get scoutInfo(): ScoutInfo {
@@ -66,7 +67,7 @@ export class GroupDataComponent {
       RecordInfoComponent,
       "Expediente",
       "small",
-      {record, scoutId: this.scout().id}
+      {record, scoutId: this.scout().id, editable: this.editable()}
     );
     ref.onClose.subscribe(deleted => deleted ? this.scoutInfo.recordList.splice(index, 1) : noop());
   }

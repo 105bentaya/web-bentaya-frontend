@@ -1,25 +1,25 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
-import {ScoutService} from "../../services/scout.service";
 import {TabsModule} from "primeng/tabs";
 import {UserScout} from "../../../users/models/user.model";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
+import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-user-scout-info',
   imports: [
-    BasicLoadingInfoComponent,
-    TabsModule
+    TabsModule,
+    RouterOutlet
   ],
   templateUrl: './user-scout-info.component.html',
   styleUrl: './user-scout-info.component.scss'
 })
 export class UserScoutInfoComponent implements OnInit {
 
-  private readonly scoutService = inject(ScoutService);
   private readonly userData = inject(LoggedUserDataService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   protected scouts!: UserScout[];
-  protected currentIndex = 0;
+  protected currentId!: number;
 
   ngOnInit(): void {
     const scouts = this.userData.getScouts();
@@ -28,6 +28,19 @@ export class UserScoutInfoComponent implements OnInit {
       scouter.name = "Tus Datos";
       scouts.unshift(scouter);
     }
+
+    const paramId = this.route.snapshot.firstChild?.params["id"];
+    if (paramId && scouts.some(scout => scout.id === +paramId)) {
+      this.currentId = +paramId;
+    } else {
+      this.currentId = scouts[0].id;
+    }
+
     this.scouts = scouts;
+    this.onTabChange(this.currentId);
+  }
+
+  onTabChange(newId: string | number) {
+    this.router.navigate(["datos", newId],  {queryParamsHandling: "preserve", replaceUrl: true});
   }
 }

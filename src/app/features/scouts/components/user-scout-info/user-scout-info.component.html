@@ -1,33 +1,32 @@
 <div class="container">
-  @if (scouts) {
-    <h1 class="mb-0">Datos de Asociadas</h1>
-    <p-tabs [value]="currentIndex" [scrollable]="true">
-      @if (scouts.length > 1) {
-        <p-tablist class="mt-2">
-          @for (scout of scouts; track $index) {
-            <p-tab [value]="$index" (click)="currentIndex = $index">{{ scout.name }}</p-tab>
-          }
-        </p-tablist>
-      }
-      <p-tabpanels class="px-0">
-        @for (scout of scouts; track $index) {
-          <p-tabpanel [value]="$index">
-            <small>
-              De acuerdo con lo establecido en la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos
-              Personales y garantía de los derechos digitales, la Asociación Scouts-Exploradores Bentaya le informa que
-              los datos personales serán tratados en nuestros ficheros con la única finalidad de mantenimiento de la
-              relación Asociado/a – Asociación y para el cumplimiento de las obligaciones legales de la Asociación y de
-              membresía en Scouts-Exploradores de Las Palmas SELP, de Canarias SEC, de España ASDE y en la Organización
-              Mundial del Movimiento Scout OMMS.
-            </small>
-          </p-tabpanel>
-        }
-      </p-tabpanels>
-    </p-tabs>
-    @if (scouts.length < 1) {
-      No se han encontrado personas educandas asociadas a este usuario
+  <h1 class="mb-0">
+    @if (scouts.length > 1) {
+      Datos de asociadas
+    } @else {
+      Tus Datos
     }
-  } @else {
-    <app-basic-loading-info></app-basic-loading-info>
+  </h1>
+  <p-tabs [value]="currentId" [scrollable]="true" (valueChange)="onTabChange($event)">
+    @if (scouts.length > 1) {
+      <p-tablist class="mt-2">
+        @for (scout of scouts; track $index) {
+          <p-tab [value]="scout.id">{{ scout.name }}</p-tab>
+        }
+      </p-tablist>
+    }
+  </p-tabs>
+  <router-outlet/>
+  <hr>
+  <small>
+    Si hay algún dato incorrecto, póngase de acuerdo con los scouters de la unidad para corregirlo - De acuerdo con lo
+    establecido en la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos
+    Personales y garantía de los derechos digitales, la Asociación Scouts-Exploradores Bentaya le informa que
+    los datos personales serán tratados en nuestros ficheros con la única finalidad de mantenimiento de la
+    relación Asociado/a – Asociación y para el cumplimiento de las obligaciones legales de la Asociación y de
+    membresía en Scouts-Exploradores de Las Palmas SELP, de Canarias SEC, de España ASDE y en la Organización
+    Mundial del Movimiento Scout OMMS.
+  </small>
+  @if (scouts.length < 1) {
+    No se han encontrado personas educandas asociadas a este usuario
   }
 </div>

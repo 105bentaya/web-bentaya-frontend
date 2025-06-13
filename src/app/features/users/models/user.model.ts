@@ -12,7 +12,7 @@ export interface User {
 }
 
 export interface UserScout {
-  id?: number;
+  id: number;
   group: BasicGroupInfo;
   name: string;
   surname: string;

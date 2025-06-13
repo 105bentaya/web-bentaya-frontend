@@ -15,11 +15,13 @@
   <div class="col-12 col-sm-6 d-flex flex-column">
     <div class="d-flex gap-1 align-items-center">
       <b class="fs-5 title-font">Apuntes</b>
-      <p-tag
-        class="inverted gray"
-        value="Añadir"
-        (click)="openEntryForm()"
-      />
+      @if (canEditEntries()) {
+        <p-tag
+          class="inverted gray"
+          value="Añadir"
+          (click)="openEntryForm()"
+        />
+      }
     </div>
     <div class="mt-2">
       @if (economicData.entries.length < 1) {
@@ -45,6 +47,8 @@
   <div class="col-12 col-lg-8">
     <app-document-list
       [(documents)]="economicData.documents"
+      [canEdit]="editable()"
+      [canDelete]="editable()"
       [uploadPetition]="filePetition"
       [deletePetition]="deletePetition"
     />
