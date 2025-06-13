@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ScoutCenterManagementComponent } from './scout-center-management.component';
+import {ScoutCenterManagementComponent} from './scout-center-management.component';
 
 describe('ScoutCenterManagementComponent', () => {
   let component: ScoutCenterManagementComponent;

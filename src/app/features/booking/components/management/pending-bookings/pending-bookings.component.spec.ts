@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PendingBookingsComponent } from './pending-bookings.component';
+import {PendingBookingsComponent} from './pending-bookings.component';
 
 describe('PendingBookingsComponent', () => {
   let component: PendingBookingsComponent;

@@ -1,14 +1,6 @@
 import {Component, inject, input, OnInit, output} from '@angular/core';
 import {FormHelper} from "../../../../../shared/util/form-helper";
-import {
-  AbstractControl,
-  FormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators
-} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ScoutService} from "../../../services/scout.service";
 import {Scout, ScoutContact} from "../../../models/scout.model";
 import {finalize} from "rxjs";

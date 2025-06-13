@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OwnBookingFollowUpComponent } from './own-booking-follow-up.component';
+import {OwnBookingFollowUpComponent} from './own-booking-follow-up.component';
 
 describe('OwnBookingFollowUpComponent', () => {
   let component: OwnBookingFollowUpComponent;

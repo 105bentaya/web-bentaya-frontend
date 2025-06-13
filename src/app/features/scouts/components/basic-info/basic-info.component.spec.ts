@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BasicInfoComponent } from './basic-info.component';
+import {BasicInfoComponent} from './basic-info.component';
 
 describe('BasicInfoComponent', () => {
   let component: BasicInfoComponent;

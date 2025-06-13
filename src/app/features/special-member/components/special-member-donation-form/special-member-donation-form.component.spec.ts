@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SpecialMemberDonationFormComponent } from './special-member-donation-form.component';
+import {SpecialMemberDonationFormComponent} from './special-member-donation-form.component';
 
 describe('SpecialMemberDonationFormComponent', () => {
   let component: SpecialMemberDonationFormComponent;

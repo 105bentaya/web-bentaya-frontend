@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { JamboreeInscriptionListComponent } from './jamboree-inscription-list.component';
+import {JamboreeInscriptionListComponent} from './jamboree-inscription-list.component';
 
 describe('JamboreeInscriptionListComponent', () => {
   let component: JamboreeInscriptionListComponent;

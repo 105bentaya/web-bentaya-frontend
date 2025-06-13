@@ -10,8 +10,8 @@ import {Table, TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {GroupService} from "../../../../shared/services/group.service";
-import {Scout, ScoutType} from "../../models/scout.model";
-import {DatePipe, NgClass, TitleCasePipe} from "@angular/common";
+import {ScoutListData, ScoutType} from "../../models/scout.model";
+import {DatePipe, TitleCasePipe} from "@angular/common";
 import {ScoutYearPipe} from "../../../../shared/pipes/scout-year.pipe";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {FormsModule} from "@angular/forms";
@@ -44,7 +44,6 @@ import {Badge} from "primeng/badge";
     FormsModule,
     TableModule,
     InputTextModule,
-    NgClass,
     DatePipe,
     ScoutYearPipe,
     Button,
@@ -96,7 +95,7 @@ export class ScoutListComponent implements OnInit {
   protected excelLoading = false;
 
   table = viewChild.required(Table);
-  protected scouts!: Scout[];
+  protected scouts!: ScoutListData[];
   protected loading = true;
   protected totalRecords!: number;
 
@@ -187,9 +186,9 @@ export class ScoutListComponent implements OnInit {
         }
       });
       groupFilter.value = realGroupFilter;
-      tableLazyLoadEvent.filters.groupScoutTypes = {value: sectionFilter};
+      tableLazyLoadEvent.filters.scoutTypes = {value: sectionFilter};
     } else {
-      delete tableLazyLoadEvent.filters.groupScoutTypes;
+      delete tableLazyLoadEvent.filters.scoutTypes;
     }
 
     return FilterUtils.lazyEventToFilter(tableLazyLoadEvent);

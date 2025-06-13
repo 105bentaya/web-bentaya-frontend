@@ -54,19 +54,22 @@
           </div>
           @if (isScouter()) {
             <div class="col">
-              <p-floatlabel variant="on">
-                <p-select
-                  id="groupId"
-                  [options]="groups"
-                  formControlName="groupId"
-                  optionLabel="name"
-                  optionValue="id"
-                  styleClass="text-start"
-                ></p-select>
-                <label class="required" for="groupId">
-                  Unidad del Scouter
-                </label>
-              </p-floatlabel>
+              <div class="col">
+                <p-floatlabel variant="on">
+                  <p-select
+                    class="w-100"
+                    id="scouterId"
+                    [options]="scouterRoleScouts"
+                    formControlName="scouterId"
+                    optionValue="id"
+                    optionLabel="name"
+                    [loading]="!scouterRoleScouts"
+                  />
+                  <label class="required" for="scoutIds">
+                    Scouter asociado
+                  </label>
+                </p-floatlabel>
+              </div>
             </div>
           }
           @if (isUser()) {
@@ -75,18 +78,14 @@
                 <p-multiSelect
                   class="w-100"
                   id="scoutIds"
-                  [options]="scouts"
+                  [options]="userRoleScouts"
                   formControlName="scoutIds"
                   optionValue="id"
-                  [loading]="!scouts"
+                  optionLabel="name"
+                  [loading]="!userRoleScouts"
                 >
                   <ng-template let-scout pTemplate="item">
-                    {{ scout.personalData.surname }}, {{ scout.personalData.name }} - <small>{{ scout.personalData.birthday | date: "d/MM/y" }}</small>
-                  </ng-template>
-                  <ng-template let-value pTemplate="selectedItems">
-                    @if (value) {
-                      <div class="overflow-ellipsis">{{ selectedScoutName(value) }}</div>
-                    }
+                    {{ scout.surname }}, {{ scout.name }} - <small>{{ scout.birthday | date: "d/MM/y" }}</small>
                   </ng-template>
                 </p-multiSelect>
                 <label class="required" for="scoutIds">

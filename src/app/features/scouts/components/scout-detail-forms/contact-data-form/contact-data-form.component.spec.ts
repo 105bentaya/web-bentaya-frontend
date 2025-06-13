@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ContactDataFormComponent } from './contact-data-form.component';
+import {ContactDataFormComponent} from './contact-data-form.component';
 
 describe('ContactDataFormComponent', () => {
   let component: ContactDataFormComponent;

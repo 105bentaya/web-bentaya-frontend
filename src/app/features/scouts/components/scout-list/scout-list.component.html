@@ -192,40 +192,40 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-scout>
-      <tr [ngClass]="{'no-user': !scout.userAssigned}" pSelectableRow routerLink="/scouts/{{scout.id}}">
+      <tr pSelectableRow routerLink="/scouts/{{scout.id}}">
         <td>
-          {{ scout.personalData.surname }}, {{ scout.personalData.feltName ?? scout.personalData.name }}
+          {{ scout.surname }}, {{ scout.feltName ?? scout.name }}
         </td>
         @if (selectedFilter !== 'GROUP') {
           <td>
-            {{ scout.scoutInfo.scoutType | scoutGroup:scout.scoutInfo.group }}
+            {{ scout.scoutType | scoutGroup:scout.group }}
           </td>
           <td>
-            {{ scout.scoutInfo.scoutType | scoutSection:scout.scoutInfo.group | titlecase }}
+            {{ scout.scoutType | scoutSection:scout.group | titlecase }}
           </td>
         } @else {
           <td>
-            {{ currentYear - +(scout.personalData.birthday | date: "y")! | scoutYear:scout.scoutInfo }}
+            {{ currentYear - +(scout.birthday | date: "y")! | scoutYear:scout.scoutType:scout.group }}
           </td>
         }
         <td>
           <span>
-            {{ scout.personalData.birthday | date: "dd/MM/y" }}
+            {{ scout.birthday | date: "dd/MM/y" }}
           </span>
         </td>
         <td>
-          {{ scout.personalData.gender }}
+          {{ scout.gender }}
         </td>
         <td>
           <span>
-            {{ scout.personalData.idDocument | idDocument }}
+            {{ scout.idDocument | idDocument }}
           </span>
         </td>
         <td>
-          {{ scout.scoutInfo.census | census }}
+          {{ scout.census | census }}
         </td>
         <td>
-          {{ scout.personalData.email ?? 'No Tiene' }}
+          {{ scout.email ?? 'No Tiene' }}
         </td>
       </tr>
     </ng-template>

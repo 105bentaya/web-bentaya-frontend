@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EconomicDataComponent } from './economic-data.component';
+import {EconomicDataComponent} from './economic-data.component';
 
 describe('EconomicDataComponent', () => {
   let component: EconomicDataComponent;

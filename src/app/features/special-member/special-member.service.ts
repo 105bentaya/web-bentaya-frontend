@@ -2,7 +2,8 @@ import {inject, Injectable} from '@angular/core';
 import {
   FilterResult,
   SpecialMemberBasicData,
-  SpecialMemberDetail, SpecialMemberDonation,
+  SpecialMemberDetail,
+  SpecialMemberDonation,
   SpecialMemberRole
 } from "./models/special-member.model";
 import {HttpClient, HttpParams} from "@angular/common/http";

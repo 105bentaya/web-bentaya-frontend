@@ -1,5 +1,6 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {ScoutInfo} from "../../features/scouts/models/scout.model";
+import {ScoutType} from "../../features/scouts/models/scout.model";
+import {BasicGroupInfo} from "../model/group.model";
 
 @Pipe({
   name: 'scoutYear',
@@ -33,10 +34,10 @@ export class ScoutYearPipe implements PipeTransform {
     21: "4º Rover"
   };
 
-  transform(value: number, scoutInfo?: ScoutInfo): string {
-    if (scoutInfo) {
-      if (scoutInfo?.scoutType === "SCOUT") {
-        return this.groups[scoutInfo.group!.section!][value] ?? 'Fuera de Edad';
+  transform(value: number, scoutType?: ScoutType, group?: BasicGroupInfo): string {
+    if (scoutType) {
+      if (scoutType === "SCOUT") {
+        return this.groups[group!.section!][value] ?? 'Fuera de Edad';
       } else {
         return "-";
       }

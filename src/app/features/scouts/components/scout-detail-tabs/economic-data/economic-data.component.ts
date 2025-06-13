@@ -1,6 +1,13 @@
-import {Component, inject, Input, input} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
-import {ScoutEconomicData, EconomicEntry, ScoutPersonalData, Scout, ScoutContact, ScoutFile} from "../../../models/scout.model";
+import {
+  EconomicEntry,
+  Scout,
+  ScoutContact,
+  ScoutEconomicData,
+  ScoutFile,
+  ScoutPersonalData
+} from "../../../models/scout.model";
 import {DialogService} from "primeng/dynamicdialog";
 import {BasicInfoComponent} from "../../basic-info/basic-info.component";
 import {CensusPipe} from "../../../pipes/census.pipe";

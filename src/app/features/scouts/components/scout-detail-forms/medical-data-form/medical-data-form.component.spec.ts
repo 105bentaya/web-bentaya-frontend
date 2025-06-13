@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MedicalDataFormComponent } from './medical-data-form.component';
+import {MedicalDataFormComponent} from './medical-data-form.component';
 
 describe('MedicalDataFormComponent', () => {
   let component: MedicalDataFormComponent;

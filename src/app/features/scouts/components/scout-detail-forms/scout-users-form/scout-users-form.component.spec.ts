@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ScoutUsersFormComponent } from './scout-users-form.component';
+import {ScoutUsersFormComponent} from './scout-users-form.component';
 
 describe('ScoutUsersFormComponent', () => {
   let component: ScoutUsersFormComponent;

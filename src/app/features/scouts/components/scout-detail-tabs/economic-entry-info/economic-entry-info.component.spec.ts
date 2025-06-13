@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EconomicEntryInfoComponent } from './economic-entry-info.component';
+import {EconomicEntryInfoComponent} from './economic-entry-info.component';
 
 describe('EconomicEntryInfoComponent', () => {
   let component: EconomicEntryInfoComponent;

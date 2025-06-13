@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { IdDocumentFormComponent } from './id-document-form.component';
+import {IdDocumentFormComponent} from './id-document-form.component';
 
 describe('IdDocumentFormComponent', () => {
   let component: IdDocumentFormComponent;

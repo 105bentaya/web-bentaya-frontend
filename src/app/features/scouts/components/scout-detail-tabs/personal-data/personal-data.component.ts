@@ -1,4 +1,4 @@
-import {Component, inject, Input, input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, inject, input, OnChanges, SimpleChanges} from '@angular/core';
 import {Scout, ScoutFile, ScoutPersonalData} from '../../../models/scout.model';
 import {BasicInfoComponent} from "../../basic-info/basic-info.component";
 import {DatePipe} from "@angular/common";

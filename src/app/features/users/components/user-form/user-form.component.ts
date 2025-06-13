@@ -1,8 +1,7 @@
-import {DatePipe} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
 import {AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {map, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {UserService} from '../../services/user.service';
 import {BasicGroupInfo} from "../../../../shared/model/group.model";
@@ -20,7 +19,8 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
 import {UserForm} from "../../models/user-form.model";
 import {FloatLabel} from "primeng/floatlabel";
 import {GroupService} from "../../../../shared/services/group.service";
-import {Scout} from "../../../scouts/models/scout.model";
+import {ScoutListData} from "../../../scouts/models/scout.model";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-user-form',
@@ -34,10 +34,10 @@ import {Scout} from "../../../scouts/models/scout.model";
     RolesPipe,
     RolePipe,
     SelectModule,
-    DatePipe,
     SaveButtonsComponent,
     BasicLoadingInfoComponent,
-    FloatLabel
+    FloatLabel,
+    DatePipe
   ]
 })
 export class UserFormComponent implements OnInit {
@@ -51,7 +51,8 @@ export class UserFormComponent implements OnInit {
 
   protected readonly roles = roles;
   protected userForm = new FormHelper();
-  protected scouts!: Scout[];
+  protected userRoleScouts!: ScoutListData[];
+  protected scouterRoleScouts!: ScoutListData[];
   protected groups!: BasicGroupInfo[];
   protected user!: UserForm;
   protected loading = false;
@@ -59,8 +60,11 @@ export class UserFormComponent implements OnInit {
   ngOnInit(): void {
     this.groupService.getBasicGroups({uppercase: true}).subscribe(groups => this.groups = groups);
     const userId = this.route.snapshot.params['userId'];
-    if (userId === "new") this.newForm();
-    else this.getUserById(userId);
+    if (userId === "new") {
+      this.newForm();
+    } else {
+      this.getUserById(userId);
+    }
   }
 
   private newForm() {
@@ -121,27 +125,22 @@ export class UserFormComponent implements OnInit {
     this.userService.findFormById(userId).subscribe({
       next: user => {
         this.user = user;
-        if (user.scoutIds?.length! > 0) this.getScouts().subscribe(() => this.newForm());
-        else this.newForm();
+        this.newForm();
+        this.onRolesChange();
       }
     });
   }
 
   protected onRolesChange() {
-    if (!this.scouts && this.isUser()) this.getScouts().subscribe();
+    if (!this.userRoleScouts && this.isUser()) this.getScouts();
+    if (!this.scouterRoleScouts && this.isScouter()) this.getScouters();
   }
 
   private getScouts() {
-    //todo paginate
-    return this.scoutService.getAllFiltered({
-      page: 0,
-      countPerPage: 0
-    }).pipe(
-      map(result => this.scouts = result.data)
-    );
+    return this.scoutService.getAllForUserEdition(["SCOUT"]).subscribe(result => this.userRoleScouts = result);
   }
 
-  protected selectedScoutName(value: number[]) {
-    return this.scouts.filter(scout => scout.id in value).map(scout => scout.personalData.name).join(", ");
+  private getScouters() {
+    return this.scoutService.getAllForUserEdition(["SCOUTER", "MANAGER", "COMMITTEE"]).subscribe(result => this.scouterRoleScouts = result);
   }
 }

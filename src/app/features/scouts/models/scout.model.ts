@@ -14,6 +14,20 @@ export interface Scout {
   usernames: string[]
 }
 
+export interface ScoutListData {
+  id: number;
+  name: string;
+  surname: string;
+  feltName?: string;
+  scoutType: ScoutType;
+  group?: BasicGroupInfo;
+  birthday: Date;
+  gender: string;
+  idDocument?: IdentificationDocument;
+  census?: number;
+  email: string;
+}
+
 export interface ScoutHistory {
   observations: string;
   progressions: string;

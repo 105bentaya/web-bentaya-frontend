@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroupDataComponent } from './group-data.component';
+import {GroupDataComponent} from './group-data.component';
 
 describe('GroupDataComponent', () => {
   let component: GroupDataComponent;

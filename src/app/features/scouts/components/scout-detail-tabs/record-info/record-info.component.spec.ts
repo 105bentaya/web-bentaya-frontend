@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RecordInfoComponent } from './record-info.component';
+import {RecordInfoComponent} from './record-info.component';
 
 describe('RecordInfoComponent', () => {
   let component: RecordInfoComponent;

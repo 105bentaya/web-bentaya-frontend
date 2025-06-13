@@ -7,7 +7,6 @@ import {DocumentListComponent} from "../../document-list/document-list.component
 import {Observable} from "rxjs";
 import {ScoutService} from "../../../services/scout.service";
 import {BloodTypePipe} from "../../../pipes/blood-type.pipe";
-import {NgClass} from "@angular/common";
 import {BasicInfoShowComponent} from "../../basic-info-show/basic-info-show.component";
 
 @Component({
@@ -18,7 +17,6 @@ import {BasicInfoShowComponent} from "../../basic-info-show/basic-info-show.comp
     IdDocumentTypePipe,
     DocumentListComponent,
     BloodTypePipe,
-    NgClass,
     BasicInfoShowComponent
   ],
   templateUrl: './medical-data.component.html',

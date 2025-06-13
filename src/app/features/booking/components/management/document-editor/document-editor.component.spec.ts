@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DocumentEditorComponent } from './document-editor.component';
+import {DocumentEditorComponent} from './document-editor.component';
 
 describe('DocumentEditorComponent', () => {
   let component: DocumentEditorComponent;

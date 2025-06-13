@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { JamboreeFormComponent } from './jamboree-form.component';
+import {JamboreeFormComponent} from './jamboree-form.component';
 
 describe('JamboreeFormComponent', () => {
   let component: JamboreeFormComponent;

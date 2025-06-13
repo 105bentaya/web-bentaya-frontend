@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EconomicEntryFormComponent } from './economic-entry-form.component';
+import {EconomicEntryFormComponent} from './economic-entry-form.component';
 
 describe('EconomicEntryFormComponent', () => {
   let component: EconomicEntryFormComponent;
