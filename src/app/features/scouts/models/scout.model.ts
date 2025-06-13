@@ -147,29 +147,12 @@ export interface ScoutPersonalData {
   imageAuthorization: boolean;
 }
 
-export interface UserScout {
-  id?: number;
-  group: BasicGroupInfo;
-  name: string;
-  surname: string;
-  dni?: string;
-  birthday: Date;
-  medicalData: string;
-  gender: string;
-  imageAuthorization: boolean;
-  shirtSize?: string;
-  municipality?: string;
-  census?: number;
-  contactList: ScoutContact[];
-}
-
 export interface IdentificationDocument {
   idType: IdType;
   number: string;
 }
 
 
-export type UserOwner = "Persona asociada" | "Familiar" | "Otro";
 export type PersonType = "REAL" | "JURIDICAL";
 export type IdType = "DNI" | "NIE" | "CIF" | "PAS" | "OTR";
 export type ScoutType = "SCOUT" | "SCOUTER" | "COMMITTEE" | "MANAGER" | "INACTIVE";

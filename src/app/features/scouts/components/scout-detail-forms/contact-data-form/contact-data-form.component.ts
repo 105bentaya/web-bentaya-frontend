@@ -119,7 +119,7 @@ export class ContactDataFormComponent implements OnInit {
       const originalContactUsers = this.initialData().usernames.filter(username => this.initialData().contactList.some(contact => contact.email === username));
       if (originalContactUsers.some(user => !form.some(contact => contact.email === user))) {
         this.confirmationService.confirm({
-          message: "Hay correos electrónicos que se han cambiado y están asociados a un usuario. " +
+          message: "Hay correos electrónicos que se han cambiado y están vinculados a un usuario. " +
             "Tras cambiarlos, se eliminará el acceso de dicho usuario a la asociada. ¿Desea continuar?",
           accept: () => this.updateData(form),
           reject: () => this.loading = false

@@ -1,5 +1,5 @@
 import {Role} from "./role.model";
-import {UserScout} from "../../scouts/models/scout.model";
+import {BasicGroupInfo} from "../../../shared/model/group.model";
 
 export interface User {
   id?: string;
@@ -9,4 +9,11 @@ export interface User {
   roles: Role[];
   scoutList?: UserScout[];
   groupName?: string;
+}
+
+export interface UserScout {
+  id?: number;
+  group: BasicGroupInfo;
+  name: string;
+  surname: string;
 }

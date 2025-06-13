@@ -29,7 +29,11 @@ export class LoggedUserDataService {
   }
 
   getScouterGroup(): BasicGroupInfo | undefined {
-    return this.userProfile.scouterGroup;
+    return this.userProfile.scouterScout?.group;
+  }
+
+  getScouter(): UserScout | undefined {
+    return this.userProfile.scouterScout;
   }
 
   getUsername(): string {

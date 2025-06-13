@@ -1,15 +1,14 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
-import {DatePipe} from "@angular/common";
 import {ScoutService} from "../../services/scout.service";
 import {TabsModule} from "primeng/tabs";
-import {UserScout} from "../../models/scout.model";
+import {UserScout} from "../../../users/models/user.model";
+import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 
 @Component({
   selector: 'app-user-scout-info',
   imports: [
     BasicLoadingInfoComponent,
-    DatePipe,
     TabsModule
   ],
   templateUrl: './user-scout-info.component.html',
@@ -18,14 +17,17 @@ import {UserScout} from "../../models/scout.model";
 export class UserScoutInfoComponent implements OnInit {
 
   private readonly scoutService = inject(ScoutService);
+  private readonly userData = inject(LoggedUserDataService);
   protected scouts!: UserScout[];
   protected currentIndex = 0;
 
   ngOnInit(): void {
-    this.scoutService.getAllByCurrentUser().subscribe({
-      next: scouts => {
-        this.scouts = scouts.sort((a, b) => b.birthday.toString().localeCompare(a.birthday.toString()));
-      }
-    });
+    const scouts = this.userData.getScouts();
+    const scouter = this.userData.getScouter();
+    if (scouter) {
+      scouter.name = "Tus Datos";
+      scouts.unshift(scouter);
+    }
+    this.scouts = scouts;
   }
 }

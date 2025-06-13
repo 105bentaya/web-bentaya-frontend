@@ -5,7 +5,7 @@ export interface UserProfile {
   id: number;
   username: string;
   roles: UserRole[];
-  scouterGroup?: BasicGroupInfo;
+  scouterScout?: UserScout;
   scoutList: UserScout[];
 }
 

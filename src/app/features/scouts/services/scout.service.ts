@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, shareReplay} from "rxjs";
 import {environment} from "../../../../environments/environment";
-import {EconomicEntry, Scout, ScoutFile, ScoutRecord, UserScout} from "../models/scout.model";
+import {EconomicEntry, Scout, ScoutFile, ScoutRecord} from "../models/scout.model";
 import {FileType, FileUtils} from "../../../shared/util/file.utils";
 import {
   EconomicDataForm,
@@ -39,10 +39,6 @@ export class ScoutService {
 
   getAllFiltered(filter: PagedFilter): Observable<Page<Scout>> {
     return this.http.get<Page<Scout>>(this.scoutUrl, {params: new HttpParams({fromObject: filter})});
-  }
-
-  getAllByCurrentUser(): Observable<UserScout[]> {
-    return this.http.get<UserScout[]>(`${this.scoutUrl}/user`);
   }
 
   //new

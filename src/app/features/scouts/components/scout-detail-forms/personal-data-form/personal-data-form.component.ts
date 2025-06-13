@@ -97,7 +97,7 @@ export class PersonalDataFormComponent implements OnInit {
 
       if (originalEmail !== form.email && this.initialData().usernames.includes(originalEmail)) {
         this.confirmationService.confirm({
-          message: "El correo electrónico de esta scouter está asociado a un usuario. " +
+          message: "El correo electrónico de esta asociada está vinculado a un usuario. " +
             "Tras cambiarlo, se eliminará el acceso de dicho usuario. ¿Desea continuar?",
           accept: () => this.updateData(form),
           reject: () => this.loading = false
