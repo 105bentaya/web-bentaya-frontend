@@ -10,6 +10,7 @@
             prefix="35-105-"
             [min]="1"
             class="border-end-radius-0"
+            [max]="canBeExplorer ? 2147483647 : firstExplorerCensus - 1"
           />
           <label class="semi-required" for="census">Censo</label>
           <p-inputgroup-addon>
@@ -21,6 +22,17 @@
               [loading]="!this.lastCensus"
             />
           </p-inputgroup-addon>
+          @if (canBeExplorer) {
+            <p-inputgroup-addon>
+              <p-button
+                pTooltip="Asignar Siguiente Censo de Exploradora"
+                text
+                icon="fa-solid fa-dragon"
+                (onClick)="autoCompleteLastExplorerCensus()"
+                [loading]="!this.lastCensus"
+              />
+            </p-inputgroup-addon>
+          }
         </p-inputgroup>
       </p-floatlabel>
     </div>
@@ -54,7 +66,13 @@
 </div>
 
 @if (userIsSecretary) {
-  @if (censusIsGreaterThanLast) {
+  @if (canBeExplorer && explorerCensusIsGreaterThanLast) {
+    <p-message severity="warn" class="mb-3">
+      El último número censo de exploradora se actualizará al número {{ census.value }},
+      cuando el último de la lista es el {{ lastExplorerCensus }}.
+      Si deseas volver a cambiarlo tendrás que hacerlo desde la pestaña de ajustes.
+    </p-message>
+  } @else if (census.value < firstExplorerCensus && censusIsGreaterThanLast) {
     <p-message severity="warn" class="mb-3">
       El último número censo se actualizará al número {{ census.value }},
       cuando el último de la lista es el {{ lastCensus }}.

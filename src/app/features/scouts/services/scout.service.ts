@@ -123,6 +123,10 @@ export class ScoutService {
     return this.http.get<number>(`${this.scoutUrl}/last-census`);
   }
 
+  findLastExplorerCensus(): Observable<number> {
+    return this.http.get<number>(`${this.scoutUrl}/last-explorer-census`);
+  }
+
   findScoutsLikeHasBeenInGroup(preScoutId: number) {
     return this.http.get<Scout>(`${this.scoutUrl}/previous-scout/${preScoutId}`);
   }

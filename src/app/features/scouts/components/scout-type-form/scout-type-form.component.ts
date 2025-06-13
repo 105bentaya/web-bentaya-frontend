@@ -42,6 +42,9 @@ export class ScoutTypeFormComponent implements OnInit {
   userIsSecretary = this.userData.hasRequiredPermission(UserRole.SECRETARY);
 
   protected lastCensus: number = 0;
+  protected originalCensus: number | undefined;
+  protected lastExplorerCensus: number = 0;
+  protected readonly firstExplorerCensus = 95001;
   onGroupSelect = output<ScoutType>();
 
   protected groups!: BasicGroupInfo[];
@@ -52,7 +55,9 @@ export class ScoutTypeFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.userIsSecretary) {
+      this.originalCensus = this.census.value;
       this.scoutService.findLastCensus().subscribe(census => this.lastCensus = census);
+      this.scoutService.findLastExplorerCensus().subscribe(census => this.lastExplorerCensus = census);
       this.scoutTypes.push(
         {label: "Comité de Grupo", value: "COMMITTEE"},
         {label: "Gestora", value: "MANAGER"},
@@ -101,7 +106,19 @@ export class ScoutTypeFormComponent implements OnInit {
     if (this.lastCensus) this.census.setValue(this.lastCensus + 1);
   }
 
+  protected autoCompleteLastExplorerCensus() {
+    if (this.lastExplorerCensus) this.census.setValue(this.lastExplorerCensus + 1);
+  }
+
   protected get censusIsGreaterThanLast() {
-    return (this.lastCensus && this.census.value && this.census.value > this.lastCensus + 1);
+    return this.lastCensus && this.census.value > this.lastCensus + 1;
+  }
+
+  protected get explorerCensusIsGreaterThanLast() {
+    return this.lastExplorerCensus && this.census.value > this.lastExplorerCensus + 1;
+  }
+
+  protected get canBeExplorer() {
+    return (!this.originalCensus || this.originalCensus >= this.firstExplorerCensus) && this.scoutType.value === "INACTIVE";
   }
 }

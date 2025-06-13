@@ -193,6 +193,17 @@
         ></p-inputNumber>
         <label for="donor-census">Último censo de donante</label>
       </p-floatlabel>
+      <p-floatlabel variant="on">
+        <p-inputNumber
+          id="donor-census"
+          class="w-100"
+          [(ngModel)]="settingsForm[SettingType.LAST_CENSUS_EXPLORER].currentValue"
+          mode="decimal"
+          [useGrouping]="false"
+          [allowEmpty]="false"
+        ></p-inputNumber>
+        <label for="donor-census">Último censo de exploradora</label>
+      </p-floatlabel>
       <app-save-buttons
         class="mt-2"
         [saveDisabled]="saveButtonDisabled()"
