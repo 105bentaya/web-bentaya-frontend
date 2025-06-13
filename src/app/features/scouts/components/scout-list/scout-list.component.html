@@ -1,37 +1,56 @@
 <div class="container-fluid">
-  <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+  <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
     <h1 class="mb-0">{{ isSecretary ? 'Censo Bentaya' : 'Lista de Educandas' }}</h1>
-    <div class="d-flex flex-wrap-reverse gap-2 justify-content-end ms-auto">
+    <div class="d-flex flex-wrap-reverse gap-1 justify-content-end ms-auto">
       @if (tabValue !== "PENDING") {
         <p-selectButton
-          [options]="quickFilters"
+          [options]="mainQuickFilters"
           [(ngModel)]="selectedFilter"
-          (onChange)="selectButtonChange()"
+          (onChange)="mainFilterChange()"
           [allowEmpty]="false"
           size="small"
+          class="filter-button"
         />
       }
-      <app-general-a-button
-        size="small"
-        label="Dar Alta"
-        routerLink="/scouts/alta"
-        variant="filled"
-      />
     </div>
   </div>
-  @if (isSecretary) {
-    <p-tabs [(value)]="tabValue" (valueChange)="onPendingFilterChange($event)">
-      <p-tablist>
-        <p-tab value="PENDING">
-          <span>Altas Pendientes</span>
-          @if (pendingRegistrations) {
-            <p-badge severity="danger" class="ms-1" size="small" [value]="pendingRegistrations.toString()"/>
-          }
-        </p-tab>
-        <p-tab value="ALL">Censo</p-tab>
-      </p-tablist>
-    </p-tabs>
-  }
+  <div class="d-flex flex-wrap-reverse gap-1 align-items-end" [ngClass]="{'mb-2': !isSecretary}">
+    @if (isSecretary) {
+      <p-tabs [(value)]="tabValue" (valueChange)="onPendingFilterChange($event)">
+        <p-tablist>
+          <p-tab value="PENDING">
+            <span>Altas Pendientes</span>
+            @if (pendingRegistrations) {
+              <p-badge severity="danger" class="ms-1" size="small" [value]="pendingRegistrations.toString()"/>
+            }
+          </p-tab>
+          <p-tab value="ALL">Censo</p-tab>
+        </p-tablist>
+      </p-tabs>
+    }
+    @if (tabValue !== "PENDING") {
+      @if (selectedFilter === "GROUP") {
+        <p-selectButton
+          [ngModel]="null"
+          [options]="groupQuickFilters"
+          (onChange)="groupFilterChange($event.value)"
+          [allowEmpty]="false"
+          size="small"
+          class="ms-auto filter-button"
+        />
+      } @else {
+        <p-selectButton
+          [(ngModel)]="activeFilterValue"
+          [options]="activeQuickFilters"
+          (onChange)="activeFilterChange()"
+          [allowEmpty]="false"
+          size="small"
+          class="ms-auto filter-button"
+        />
+      }
+    }
+  </div>
+  <p-context-menu #cm [model]="contextMenuItem"/>
   <p-table
     #dt
     responsiveLayout="scroll"
@@ -39,6 +58,7 @@
     [loading]="loading"
     selectionMode="single"
     showGridlines
+    class="scout-list"
 
     paginator
     [rows]="50"
@@ -50,17 +70,49 @@
     [lazyLoadOnInit]="false"
 
     sortField="personalData.surname"
+
+    [contextMenu]="cm"
+    [(contextMenuSelection)]="selectedScoutId"
   >
     <ng-template pTemplate="caption">
       <div class="d-flex justify-content-between align-items-center">
         <span>Número de asociadas: {{ dt.totalRecords }}</span>
-        <p-button
-          icon="pi pi-file-excel"
-          [loading]="excelLoading"
-          (click)="exportExcelScout()"
-          severity="success"
-          title="Descargar scouts como excel"
-        ></p-button>
+        <div class="d-none d-sm-flex align-items-center gap-2 flex-wrap">
+          <p-button
+            icon="pi pi-file-excel"
+            [loading]="excelLoading"
+            (click)="exportExcelScout()"
+            severity="success"
+            title="Descargar scouts como excel"
+            size="small"
+            label="Descargar"
+            styleClass="px-2 py-1 rounded-3"
+          ></p-button>
+          <app-general-a-button
+            routerLink="/scouts/alta"
+            variant="filled"
+            icon="pi pi-user-plus"
+            size="small"
+            label="Alta"
+            buttonClass="px-2 py-1 rounded-3"
+          />
+        </div>
+        <div class="d-flex d-sm-none align-items-center gap-1">
+          <p-button
+            icon="pi pi-file-excel"
+            [loading]="excelLoading"
+            (click)="exportExcelScout()"
+            severity="success"
+            title="Descargar scouts como excel"
+            size="small"
+          ></p-button>
+          <app-general-a-button
+            routerLink="/scouts/alta"
+            variant="filled"
+            icon="pi pi-user-plus"
+            size="small"
+          />
+        </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -96,103 +148,110 @@
         </th>
         <th>Correo electrónico</th>
       </tr>
-      <tr>
-        <th>
-          <input
-            class="w-100"
-            pInputText
-            placeholder="Filtrar nombre y apellidos"
-            (input)="dt.filter($any($event.target).value, 'name', 'custom')"
-          >
-        </th>
-        @if (selectedFilter !== 'GROUP') {
+      @if (tabValue !== 'PENDING') {
+        <tr>
+          <th>
+            <input
+              class="w-100"
+              pInputText
+              placeholder="Filtrar nombre y apellidos"
+              (input)="dt.filter($any($event.target).value, 'name', 'custom')"
+            >
+          </th>
+          @if (selectedFilter !== 'GROUP') {
+            <th>
+              <p-multiSelect
+                [options]="groups"
+                (onChange)="dt.filter($event.value, 'groupIds', 'custom')"
+                (onClear)="dt.filter(null, 'groupIds', 'custom')"
+                [showHeader]="false"
+                [autofocusFilter]="false"
+                [showClear]="true"
+                appendTo="body"
+                scrollHeight="300px"
+                optionLabel="name"
+                optionValue="id"
+                styleClass="w-100 fw-normal"
+                placeholder="Filtrar Unidad"
+              ></p-multiSelect>
+            </th>
+            <th>
+              <p-multiSelect
+                [options]="sections"
+                (onChange)="dt.filter($event.value, 'sections', 'custom')"
+                (onClear)="dt.filter(null, 'sections', 'custom')"
+                [showHeader]="false"
+                [autofocusFilter]="false"
+                [showClear]="true"
+                appendTo="body"
+                scrollHeight="300px"
+                styleClass="w-100 fw-normal"
+                placeholder="Filtrar Rama"
+              ></p-multiSelect>
+            </th>
+          } @else {
+            <th></th>
+          }
+          <th>
+            <p-date-picker
+              #dp
+              selectionMode="range"
+              styleClass="w-100 fw-normal"
+              appendTo="body"
+              (onClose)="FilterUtils.filterDates(dt, dp.value)"
+              (onClear)="FilterUtils.filterDates(dt)"
+              showClear
+              placeholder="Filtrar Fecha"
+            ></p-date-picker>
+          </th>
           <th>
             <p-multiSelect
-              [options]="groups"
-              (onChange)="dt.filter($event.value, 'groupIds', 'custom')"
-              (onClear)="dt.filter(null, 'groupIds', 'custom')"
+              [options]="genders"
+              (onChange)="dt.filter($event.value, 'genders', 'custom')"
+              (onClear)="dt.filter(null, 'genders', 'custom')"
               [showHeader]="false"
               [autofocusFilter]="false"
               [showClear]="true"
               appendTo="body"
               scrollHeight="300px"
-              optionLabel="name"
-              optionValue="id"
               styleClass="w-100 fw-normal"
-              placeholder="Filtrar Unidad"
+              placeholder="Filtrar Género"
             ></p-multiSelect>
           </th>
           <th>
-            <p-multiSelect
-              [options]="sections"
-              (onChange)="dt.filter($event.value, 'sections', 'custom')"
-              (onClear)="dt.filter(null, 'sections', 'custom')"
-              [showHeader]="false"
-              [autofocusFilter]="false"
-              [showClear]="true"
-              appendTo="body"
-              scrollHeight="300px"
-              styleClass="w-100 fw-normal"
-              placeholder="Filtrar Rama"
-            ></p-multiSelect>
+            <input
+              class="w-100"
+              pInputText
+              placeholder="Filtrar DNI"
+              (input)="dt.filter($any($event.target).value, 'idDocument', 'custom')"
+            >
           </th>
-        } @else {
-          <th></th>
-        }
-        <th>
-          <p-date-picker
-            #dp
-            selectionMode="range"
-            styleClass="w-100 fw-normal"
-            appendTo="body"
-            (onClose)="FilterUtils.filterDates(dt, dp.value)"
-            (onClear)="FilterUtils.filterDates(dt)"
-            showClear
-            placeholder="Filtrar Fecha"
-          ></p-date-picker>
-        </th>
-        <th>
-          <p-multiSelect
-            [options]="genders"
-            (onChange)="dt.filter($event.value, 'genders', 'custom')"
-            (onClear)="dt.filter(null, 'genders', 'custom')"
-            [showHeader]="false"
-            [autofocusFilter]="false"
-            [showClear]="true"
-            appendTo="body"
-            scrollHeight="300px"
-            styleClass="w-100 fw-normal"
-            placeholder="Filtrar Género"
-          ></p-multiSelect>
-        </th>
-        <th>
-          <input
-            class="w-100"
-            pInputText
-            placeholder="Filtrar DNI"
-            (input)="dt.filter($any($event.target).value, 'idDocument', 'custom')"
-          >
-        </th>
-        <th>
-          <input
-            class="w-100"
-            pInputText
-            placeholder="Filtrar censo"
-            (input)="dt.filter($any($event.target).value, 'census', 'custom')"
-          >
-        </th>
-        <th>
-          <input
-            class="w-100"
-            pInputText
-            placeholder="Filtrar correo"
-            (input)="dt.filter($any($event.target).value, 'email', 'custom')"
-          >
-        </th>
-      </tr>
+          <th>
+            <input
+              class="w-100"
+              pInputText
+              placeholder="Filtrar censo"
+              (input)="dt.filter($any($event.target).value, 'census', 'custom')"
+            >
+          </th>
+          <th>
+            <input
+              class="w-100"
+              pInputText
+              placeholder="Filtrar correo"
+              (input)="dt.filter($any($event.target).value, 'email', 'custom')"
+            >
+          </th>
+        </tr>
+      }
     </ng-template>
     <ng-template pTemplate="body" let-scout>
-      <tr pSelectableRow routerLink="/scouts/{{scout.id}}">
+      <tr
+        pSelectableRow
+        routerLink="/scouts/{{scout.id}}"
+        [pContextMenuRow]="scout.id"
+        [pContextMenuRowIndex]="3213"
+      >
         <td>
           {{ scout.surname }}, {{ scout.feltName ?? scout.name }}
         </td>

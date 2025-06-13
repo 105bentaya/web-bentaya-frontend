@@ -208,6 +208,14 @@ p-toggle-button.no-label {
   padding-bottom: .5rem;
 }
 
+.filter-button {
+  height: 2rem;
+  --p-selectbutton-border-radius: .5rem;
+  button {
+    padding: 0 .5rem;
+  }
+}
+
 //fixes
 
 //en el datepicker, no están alineados los días de la semana con los días del mes

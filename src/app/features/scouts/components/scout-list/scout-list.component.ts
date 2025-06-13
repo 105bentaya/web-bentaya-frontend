@@ -1,7 +1,7 @@
 import {Component, inject, OnInit, viewChild} from '@angular/core';
 import {ScoutService} from "../../services/scout.service";
 import {DialogService} from "primeng/dynamicdialog";
-import {SelectItem} from "primeng/api";
+import {MenuItem, SelectItem} from "primeng/api";
 import {BasicGroupInfo, Section} from "../../../../shared/model/group.model";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {MultiSelect} from 'primeng/multiselect';
@@ -11,7 +11,7 @@ import {Button} from 'primeng/button';
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {GroupService} from "../../../../shared/services/group.service";
 import {ScoutListData, ScoutType} from "../../models/scout.model";
-import {DatePipe, TitleCasePipe} from "@angular/common";
+import {DatePipe, NgClass, TitleCasePipe} from "@angular/common";
 import {ScoutYearPipe} from "../../../../shared/pipes/scout-year.pipe";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {FormsModule} from "@angular/forms";
@@ -33,6 +33,7 @@ import {
 import {UserRole} from "../../../users/models/role.model";
 import {Tab, TabList, Tabs} from "primeng/tabs";
 import {Badge} from "primeng/badge";
+import {ContextMenu} from "primeng/contextmenu";
 
 @Component({
   selector: 'app-scout-list',
@@ -59,7 +60,9 @@ import {Badge} from "primeng/badge";
     Tabs,
     TabList,
     Tab,
-    Badge
+    Badge,
+    NgClass,
+    ContextMenu
   ]
 })
 
@@ -86,7 +89,18 @@ export class ScoutListComponent implements OnInit {
   protected pendingRegistrations: number | undefined;
 
   protected groups!: BasicGroupInfo[];
-  protected quickFilters: SelectItem[] = [];
+  protected mainQuickFilters: SelectItem[] = [];
+  protected readonly groupQuickFilters: SelectItem[] = [
+    {label: 'Educandas', value: "SCOUT"},
+    {label: 'Scouters', value: "SCOUTER"},
+    {label: 'Ambas', value: null}
+  ];
+  protected activeFilterValue: "ACTIVE" | "INACTIVE" | null = "ACTIVE";
+  protected readonly activeQuickFilters: SelectItem[] = [
+    {label: 'Altas', value: "ACTIVE"},
+    {label: 'Bajas', value: "INACTIVE"},
+    {label: 'Ambas', value: null}
+  ];
 
   protected userGroup: BasicGroupInfo | undefined = this.userData.getScouterGroup();
   protected currentYear!: number;
@@ -99,12 +113,26 @@ export class ScoutListComponent implements OnInit {
   protected loading = true;
   protected totalRecords!: number;
 
+  protected selectedScoutId!: number;
+  protected contextMenuItem: MenuItem[] = [
+    {
+      label: 'Abrir en pestaña nueva',
+      icon: 'pi pi-external-link',
+      target: 'blank',
+      routerLink: () => `/scouts/${this.selectedScoutId}`
+    },
+  ];
+
   constructor() {
-    this.quickFilters = [{label: 'Grupo', value: "ALL"}, {label: 'Sin Imagen', value: "IMAGE"}];
+    this.mainQuickFilters = [{label: 'Grupo', value: "ALL"}, {label: 'Sin Imagen', value: "IMAGE"}];
+
     if (this.userGroup) {
-      this.quickFilters.unshift({label: this.userGroup.name, value: "GROUP"});
+      this.mainQuickFilters.unshift({label: this.userGroup.name, value: "GROUP"});
       this.selectedFilter = "GROUP";
     } else {
+      if (this.scoutService.lastFilter === "GROUP") {
+        this.scoutService.lastFilter = "ALL";
+      }
       this.selectedFilter = "ALL";
     }
 
@@ -125,7 +153,7 @@ export class ScoutListComponent implements OnInit {
         this.onPendingFilterChange(this.tabValue);
       });
     } else {
-      this.selectButtonChange();
+      this.mainFilterChange();
     }
   }
 
@@ -133,24 +161,26 @@ export class ScoutListComponent implements OnInit {
     if (tab === "PENDING") {
       this.loadPendingRegistrations();
     } else {
-      this.table().filter([], 'statuses', 'custom');
+      this.mainFilterChange();
     }
   }
 
   private loadPendingRegistrations() {
-    this.selectedFilter = "ALL";
-    this.selectButtonChange();
+    this.table().filters = {};
     this.table().filter(["PENDING_NEW", "PENDING_EXISTING"], 'statuses', 'custom');
   }
 
-  protected selectButtonChange() {
+  protected mainFilterChange() {
     this.scoutService.lastFilter = this.selectedFilter;
 
     if (this.selectedFilter === "GROUP") {
       this.table().filter([this.userGroup!.id], 'groupIds', 'custom');
       this.table().filter([], 'sections', 'custom');
+      this.table().filter([], 'statuses', 'custom');
     } else {
       this.table().filter([], 'groupIds', 'custom');
+      this.table().filter([], 'scoutTypes', 'custom');
+      this.activeFilterChange();
     }
 
     if (this.selectedFilter === "IMAGE") {
@@ -158,6 +188,18 @@ export class ScoutListComponent implements OnInit {
     } else {
       this.table().filter(null, 'imageAuthorization', 'custom');
     }
+  }
+
+  protected groupFilterChange(value: any) {
+    this.table().filter(value, 'scoutTypes', 'custom');
+  }
+
+  protected activeFilterChange() {
+    let value: any = this.activeFilterValue;
+    if (value === "ACTIVE") {
+      value = ["ACTIVE", "PENDING_NEW", "PENDING_EXISTING"];
+    }
+    this.table().filter(value, 'statuses', 'custom');
   }
 
   protected loadData(tableLazyLoadEvent: any) {
@@ -186,9 +228,9 @@ export class ScoutListComponent implements OnInit {
         }
       });
       groupFilter.value = realGroupFilter;
-      tableLazyLoadEvent.filters.scoutTypes = {value: sectionFilter};
+      tableLazyLoadEvent.filters.groupScoutTypes = {value: sectionFilter};
     } else {
-      delete tableLazyLoadEvent.filters.scoutTypes;
+      delete tableLazyLoadEvent.filters.groupScoutTypes;
     }
 
     return FilterUtils.lazyEventToFilter(tableLazyLoadEvent);

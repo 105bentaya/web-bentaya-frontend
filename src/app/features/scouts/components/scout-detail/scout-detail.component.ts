@@ -142,9 +142,9 @@ export class ScoutDetailComponent implements OnInit {
       this.permission = Permission.FULL_EDITION;
     } else if (this.userData.hasRequiredPermission(UserRole.SCOUTER)) {
       const scoutType = this.scout.scoutInfo.scoutType;
-      const scoutIsScouter = scoutType === "SCOUTER" && this.scout.id === this.userData.getScouter()?.id;
+      const scoutIsScouter = this.scout.id === this.userData.getScouter()?.id;
       const scouterHasScoutGroup = scoutType === "SCOUT" && this.userData.getScouterGroup()?.id === this.scout.scoutInfo.group?.id;
-      this.permission = scoutIsScouter || scouterHasScoutGroup ? Permission.BASIC_EDITION : Permission.ALL_INFORMATION;
+      this.permission = (scoutIsScouter || scouterHasScoutGroup) ? Permission.BASIC_EDITION : Permission.ALL_INFORMATION;
     } else {
       this.permission = Permission.BASIC_INFORMATION;
     }
