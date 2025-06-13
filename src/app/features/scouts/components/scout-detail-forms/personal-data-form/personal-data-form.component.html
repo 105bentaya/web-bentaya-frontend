@@ -100,17 +100,28 @@
           </p-float-label>
         </div>
         <div class="col-12">
-          <div class="d-flex flex-column">
-            <label class="required" for="imageAuthorization">Autorización de imagen</label>
-            <p-select-button
-              id="imageAuthorization"
-              class="w-fit"
-              [options]="yesNoOptions"
-              [allowEmpty]="false"
-              formControlName="imageAuthorization"
-            ></p-select-button>
-          </div>
-        </div>
+          <div class="d-flex gap-3">
+            <div class="d-flex flex-column">
+              <label class="required" for="largeFamily">Familia Numerosa</label>
+              <p-select-button
+                id="largeFamily"
+                class="w-fit"
+                [options]="yesNoOptions"
+                [allowEmpty]="false"
+                formControlName="largeFamily"
+              />
+            </div>
+            <div class="d-flex flex-column">
+              <label class="required" for="imageAuthorization">Autorización de imagen</label>
+              <p-select-button
+                id="imageAuthorization"
+                class="w-fit"
+                [options]="yesNoOptions"
+                [allowEmpty]="false"
+                formControlName="imageAuthorization"
+              />
+            </div>
+          </div></div>
       </div>
       <div class="col row gy-3 gx-2 h-100">
         <b class="fs-5 title-font mt-1">Datos de dirección</b>

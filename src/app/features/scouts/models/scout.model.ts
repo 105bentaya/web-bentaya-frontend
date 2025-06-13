@@ -159,6 +159,7 @@ export interface ScoutPersonalData {
   observations: string;
   documents: ScoutFile[];
   imageAuthorization: boolean;
+  largeFamily: boolean;
 }
 
 export interface IdentificationDocument {

@@ -77,7 +77,8 @@ export class PersonalDataFormComponent implements OnInit {
       shirtSize: [personalData.shirtSize, Validators.maxLength(255)],
       residenceMunicipality: [personalData.residenceMunicipality, Validators.maxLength(255)],
       gender: [personalData.gender, [Validators.required, Validators.maxLength(255)]],
-      imageAuthorization: [personalData.imageAuthorization, Validators.required]
+      imageAuthorization: [personalData.imageAuthorization, Validators.required],
+      largeFamily: [personalData.largeFamily, Validators.required]
     });
   }
 
