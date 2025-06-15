@@ -20,6 +20,7 @@ import {noop, Observable} from "rxjs";
 import {ScoutService} from "../../../services/scout.service";
 import {EconomicEntryFormComponent} from "../../scout-detail-forms/economic-entry-form/economic-entry-form.component";
 import {EconomicEntryInfoComponent} from "../economic-entry-info/economic-entry-info.component";
+import {CurrencyPipe, DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-economic-data',
@@ -30,7 +31,9 @@ import {EconomicEntryInfoComponent} from "../economic-entry-info/economic-entry-
     Tag,
     IdDocumentPipe,
     IdDocumentTypePipe,
-    DocumentListComponent
+    DocumentListComponent,
+    CurrencyPipe,
+    DatePipe
   ],
   templateUrl: './economic-data.component.html',
   styleUrl: './economic-data.component.scss',
@@ -79,7 +82,7 @@ export class EconomicDataComponent {
   protected openEntryInfo(entry: EconomicEntry, index: number) {
     const ref = this.dialogService.openDialog(
       EconomicEntryInfoComponent,
-      "Expediente",
+      "Apunte",
       "small",
       {entry, scoutId: this.scout().id, editable: this.canEditEntries()}
     );

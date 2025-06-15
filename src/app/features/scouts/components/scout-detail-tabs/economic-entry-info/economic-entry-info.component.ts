@@ -33,6 +33,7 @@ export class EconomicEntryInfoComponent implements OnInit {
   ngOnInit() {
     this.entry = this.config.data.entry;
     this.scoutId = this.config.data.scoutId;
+    this.editable = this.config.data.editable;
   }
 
   protected openFormDialog() {
