@@ -180,7 +180,7 @@
                     mode="basic"
                     [chooseButtonProps]="{size: 'small', label: ''}"
                     chooseIcon="pi pi-upload"
-                    [accept]="imageTypes"
+                    [accept]="imgTypes"
                     [maxFileSize]="maxFileUploadByteSize"
                     (uploadHandler)="uploadMainPhoto($event, scoutCenter)"
                     [customUpload]="true"
@@ -202,7 +202,7 @@
                 <p-fileupload
                   #photoUploader
                   [multiple]="true"
-                  [accept]="imageTypes"
+                  [accept]="imgTypes"
                   [maxFileSize]="maxFileUploadByteSize"
                   (uploadHandler)="uploadNewPhotos($event, scoutCenter, photoUploader)"
                   customUpload

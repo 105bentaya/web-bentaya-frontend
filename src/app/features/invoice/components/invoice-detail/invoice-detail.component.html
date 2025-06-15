@@ -111,18 +111,19 @@
             [disabled]="loading"
             styleClass="justify-content-start mt-2"
             chooseIcon="fa-solid fa-upload"
-            [accept]="imageAndPdfTypes"
+            [accept]="allowedFiles"
             [maxFileSize]="maxFileUploadByteSize"
             (uploadHandler)="uploadFile($event, uploader)"
             [customUpload]="true"
             [auto]="true"
             [multiple]="true"
+            [fileLimit]="fileLimit"
             invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
             invalidFileSizeMessageDetail="el tamaño máximo es {0}."
             invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
             invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
             invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
-            invalidFileLimitMessageDetail="el límite es de {0} archivos."
+            invalidFileLimitMessageDetail="el límite de subida es de {0} archivos simultáneamente."
           />
         </div>
       </div>

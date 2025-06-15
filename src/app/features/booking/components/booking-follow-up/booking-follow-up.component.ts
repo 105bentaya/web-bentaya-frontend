@@ -17,7 +17,7 @@ import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loa
 import {Button} from "primeng/button";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {bookingEmail, maxFileUploadByteSize} from "../../../../shared/constant";
-import {docAndPdfTypes, FileUtils} from "../../../../shared/util/file.utils";
+import {FileUtils} from "../../../../shared/util/file.utils";
 import {ScoutCenterService} from "../../../scout-center/scout-center.service";
 import {BookingFetcherService} from "../../service/booking-fetcher.service";
 import {
@@ -71,7 +71,7 @@ export class BookingFollowUpComponent implements OnInit {
   protected readonly bookingIsAlwaysExclusive = bookingIsAlwaysExclusive;
   protected readonly Status = Status;
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
-  protected readonly docAndPdfTypes = docAndPdfTypes;
+  protected readonly allowedFiles = FileUtils.getAllowedExtensions("DOC", "PDF");
   protected readonly bookingEmail = bookingEmail;
 
   protected showMoreData = false;

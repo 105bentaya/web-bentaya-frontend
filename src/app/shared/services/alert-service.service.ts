@@ -34,4 +34,13 @@ export class AlertService {
       life
     });
   }
+
+  sendBasicWarnMessage(message: string, life?: number) {
+    this.sendMessage({
+      title: "Aviso",
+      message: message,
+      severity: "warn",
+      life
+    });
+  }
 }

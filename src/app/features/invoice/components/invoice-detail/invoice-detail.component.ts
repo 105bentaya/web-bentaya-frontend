@@ -13,7 +13,7 @@ import {finalize, forkJoin} from "rxjs";
 import {InvoiceService} from "../../invoice.service";
 import {ConfirmationService, PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
-import {FileUtils, imageAndPdfTypes} from "../../../../shared/util/file.utils";
+import {FileUtils} from "../../../../shared/util/file.utils";
 
 @Component({
   selector: 'app-invoice-detail',
@@ -38,8 +38,9 @@ export class InvoiceDetailComponent implements OnInit {
   private readonly invoiceService = inject(InvoiceService);
   private readonly confirmationService = inject(ConfirmationService);
 
+  protected readonly allowedFiles = FileUtils.getAllowedExtensions("IMG", "PDF");
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
-  protected readonly imageAndPdfTypes = imageAndPdfTypes;
+  protected readonly fileLimit = 5;
 
   protected invoice!: Invoice;
   private invoiceData: any;
@@ -72,6 +73,10 @@ export class InvoiceDetailComponent implements OnInit {
   }
 
   protected uploadFile(event: FileUploadHandlerEvent, uploader: FileUpload) {
+    if (event.files.length > this.fileLimit) {
+      uploader.clear();
+      return;
+    }
     const fileUploadPetitions = event.files.map(file => this.invoiceService.uploadFile(this.invoice.id, file));
     this.loading = true;
     forkJoin(fileUploadPetitions)

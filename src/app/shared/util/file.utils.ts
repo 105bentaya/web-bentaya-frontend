@@ -65,6 +65,10 @@ export class FileUtils {
     }
     return "assets/file-icons/text.png";
   }
+
+  public static getAllowedExtensions(...allowedFiles: FileAllowedType[]) {
+    return allowedFiles.map(allowedFile => allowedTypeExtensions[allowedFile]).join(",");
+  }
 }
 
 const pdfMimeType = "application/pdf";
@@ -76,15 +80,15 @@ const docMimeTypes = [
   "application/vnd.oasis.opendocument.text",
   "application/rtf"
 ];
-
 const imageMimeTypes = [
   "image/webp",
   "image/jpeg",
   "image/png",
   "image/svg+xml"
 ];
-
-export const docTypes = ".docx,.doc,.dot,.dotx,.odt,.rtf";
-export const docAndPdfTypes = `${docTypes},.pdf`;
-export const imageTypes = ".webp,.jpg,.png,.svg";
-export const imageAndPdfTypes = `${imageTypes},.pdf`;
+type FileAllowedType = "DOC" | "PDF" | "IMG"
+const allowedTypeExtensions = {
+  "DOC": ".docx,.doc,.dot,.dotx,.odt,.rtf",
+  "IMG": ".webp,.jpg,.png,.svg",
+  "PDF": ".pdf",
+};

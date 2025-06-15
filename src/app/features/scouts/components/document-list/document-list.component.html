@@ -18,16 +18,17 @@
     class="small-uploader"
     styleClass="h-100"
     [multiple]="true"
-    accept=".pdf"
+    [accept]="allowedFiles"
     [maxFileSize]="maxFileUploadByteSize"
     (uploadHandler)="uploadFiles($event)"
     [customUpload]="true"
+    [fileLimit]="fileLimit"
     invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
     invalidFileSizeMessageDetail="el tamaño máximo es {0}."
     invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
     invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
     invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
-    invalidFileLimitMessageDetail="el límite es de {0} archivos."
+    invalidFileLimitMessageDetail="el límite de subida es de {0} archivos simultáneamente."
     [auto]="true"
     mode="basic"
   />
@@ -76,8 +77,8 @@
               <small class="fw-semibold opacity-75">
                 @if (doc.customName) {
                   <span class="d-none d-sm-inline">{{ doc.name }} - </span>
-                  }
-                  Subido el: {{ doc.uploadDate | date:"dd/MM/yyyy HH:mm:ss" }}
+                }
+                Subido el: {{ doc.uploadDate | date:"dd/MM/yyyy HH:mm:ss" }}
               </small>
             </div>
           </div>

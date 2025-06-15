@@ -159,7 +159,7 @@
         [disabled]="documentsLoading || saveLoading"
         styleClass="justify-content-start mt-2"
         chooseIcon="fa-solid fa-upload"
-        [accept]="imageAndPdfTypes"
+        [accept]="allowedFiles"
         [maxFileSize]="maxFileUploadByteSize"
         [customUpload]="true"
         [multiple]="true"

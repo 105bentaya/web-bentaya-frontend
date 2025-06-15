@@ -31,7 +31,9 @@ export class DocumentListComponent implements OnInit {
   protected confirmationService = inject(ConfirmationService);
 
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
+  protected readonly allowedFiles = FileUtils.getAllowedExtensions('DOC', 'IMG', 'PDF');
   protected readonly FileUtils = FileUtils;
+  protected readonly fileLimit = 4;
 
   documents = model.required<ScoutFile[]>();
   uploadPetition = input<(file: File) => Observable<ScoutFile>>();
@@ -67,7 +69,10 @@ export class DocumentListComponent implements OnInit {
   }
 
   protected uploadFiles(event: FileUploadHandlerEvent) {
-    if (this.loading) return;
+    if (this.loading || event.files?.length > this.fileLimit) {
+      this.uploader().clear();
+      return;
+    }
     if (event.files?.length > 0) {
       const fileUploadPetitions = event.files.map(file => this.uploadPetition()!(file));
       this.loading = true;

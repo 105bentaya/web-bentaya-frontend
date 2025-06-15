@@ -26,12 +26,12 @@ import {FileUtils} from "../../../../shared/util/file.utils";
   styleUrl: './document-file-uploader.component.scss'
 })
 export class DocumentFileUploaderComponent {
-
   private readonly bookingService = inject(BookingService);
   private readonly alertService = inject(AlertService);
   private readonly confirmationService = inject(ConfirmationService);
 
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
+  protected readonly fileLimit = 3;
 
   @Input() type!: BookingDocumentType;
   @Input() files: BookingDocument[] = [];
@@ -80,6 +80,11 @@ export class DocumentFileUploaderComponent {
   }
 
   protected uploadFiles(event: FileUploadHandlerEvent) {
+    if (this.uploader.files.length > this.fileLimit) {
+      this.alertService.sendBasicWarnMessage(`No puedes subir más de ${this.fileLimit} archivos simultáneamente`);
+      this.uploader.clear();
+      return;
+    }
     const fileUploadPetitions = event.files.map(file => this.bookingService.uploadBookingDocument(this.bookingId, file, this.type.id));
     this.loading = true;
     forkJoin(fileUploadPetitions)

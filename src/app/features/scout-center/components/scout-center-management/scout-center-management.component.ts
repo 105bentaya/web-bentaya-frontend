@@ -6,7 +6,7 @@ import {CurrencyPipe, NgClass, NgStyle} from "@angular/common";
 import {Button} from "primeng/button";
 import {FileUpload, FileUploadHandlerEvent} from "primeng/fileupload";
 import {maxFileUploadByteSize} from "../../../../shared/constant";
-import {docTypes, FileUtils, imageTypes} from "../../../../shared/util/file.utils";
+import {FileUtils} from "../../../../shared/util/file.utils";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {finalize} from "rxjs";
@@ -59,9 +59,9 @@ export class ScoutCenterManagementComponent implements OnInit {
 
   protected readonly centerIsAlwaysExclusive = centerIsAlwaysExclusive;
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
-  protected readonly docTypes = docTypes;
+  protected readonly docTypes = FileUtils.getAllowedExtensions("DOC");
+  protected readonly imgTypes = FileUtils.getAllowedExtensions("IMG");
 
-  protected readonly imageTypes = imageTypes;
   protected scoutCenters!: ScoutCenterWithFiles[];
   protected loading = false;
 

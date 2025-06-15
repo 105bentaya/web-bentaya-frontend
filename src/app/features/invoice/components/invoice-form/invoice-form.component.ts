@@ -24,7 +24,7 @@ import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-b
 import {finalize, forkJoin} from "rxjs";
 import {FileUpload} from "primeng/fileupload";
 import {maxFileUploadByteSize} from "../../../../shared/constant";
-import {imageAndPdfTypes} from "../../../../shared/util/file.utils";
+import {FileUtils} from "../../../../shared/util/file.utils";
 import {AutoComplete, AutoCompleteCompleteEvent, AutoCompleteSelectEvent} from "primeng/autocomplete";
 import {KeyFilter} from "primeng/keyfilter";
 import {EconomicConceptPipe} from "../../economic-concept.pipe";
@@ -64,8 +64,8 @@ export class InvoiceFormComponent implements OnInit {
   readonly confirmationService = inject(ConfirmationService);
 
   protected readonly invoiceFormHelper = new FormHelper();
+  protected readonly allowedFiles = FileUtils.getAllowedExtensions('IMG', 'PDF');
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
-  protected readonly imageAndPdfTypes = imageAndPdfTypes;
 
   private readonly saveButton: MenuItem = {label: "Guardar y cerrar", command: () => this.onSubmit()};
   private readonly saveButtonAndContinue: MenuItem = {label: "Guardar y seguir", command: () => this.onSubmit(true)};
@@ -98,6 +98,7 @@ export class InvoiceFormComponent implements OnInit {
   protected issuerSuggestions: IssuerNif[] = [];
   protected nifSuggestions: IssuerNif[] = [];
   protected nifFilter: RegExp = /[A-Za-z0-9?]/;
+
   ngOnInit(): void {
     if (this.config.data) {
       this.expenseTypes = this.config.data.invoiceData.expenseTypes.map((expense: InvoiceConceptType) => this.transformConceptName(expense));

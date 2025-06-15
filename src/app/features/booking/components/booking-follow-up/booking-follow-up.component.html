@@ -248,7 +248,7 @@
             </div>
             <p-fileupload
               class="document-file-uploader"
-              [accept]="docAndPdfTypes"
+              [accept]="allowedFiles"
               [maxFileSize]="maxFileUploadByteSize"
               (uploadHandler)="uploadIncidenceFile($event)"
               [customUpload]="true"
