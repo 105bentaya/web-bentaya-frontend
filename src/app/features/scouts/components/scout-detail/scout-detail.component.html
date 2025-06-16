@@ -62,9 +62,10 @@
         </div>
         @if (scout.roleInfos.length > 0) {
           <div class="d-none d-md-flex row row-cols-1 row-cols-lg-3 gx-1">
-            @for (role of scout.roleInfos; track role.id) {
+            @for (specialMember of scout.roleInfos; track specialMember.id) {
               <div class="text-nowrap mw-100">
-                <b>{{ role.role | specialRole:true | uppercase }}:</b> {{ role.roleCensus | census:role.role }}
+                <b>{{ specialMember.role | specialRole:true | uppercase }}:</b>
+                {{ specialMember.roleCensus | census:{role: specialMember.role} }}
               </div>
             }
           </div>

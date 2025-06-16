@@ -91,22 +91,42 @@ export class ScoutDetailComponent implements OnInit {
   protected editing: boolean = false;
   protected secretaryEdition: boolean = false;
 
-  private readonly allTabs: { id: TabOptions; label: string; showIf: Permission; editIf: Permission }[] = [
-    {id: 'personal', label: "Datos Personales", showIf: Permission.BASIC_INFORMATION, editIf: Permission.BASIC_EDITION},
-    {id: 'salud', label: "Datos de Salud", showIf: Permission.BASIC_INFORMATION, editIf: Permission.BASIC_EDITION},
-    {id: 'familiar', label: "Datos Familiares", showIf: Permission.BASIC_INFORMATION, editIf: Permission.BASIC_EDITION},
+  private readonly allTabs: { id: TabOptions; label: string; showIf: Permission; editIf: () => boolean }[] = [
+    {
+      id: 'personal',
+      label: "Datos Personales",
+      showIf: Permission.BASIC_INFORMATION,
+      editIf: () => this.permissionGreaterThan(Permission.BASIC_EDITION)
+    },
+    {
+      id: 'salud',
+      label: "Datos de Salud",
+      showIf: Permission.BASIC_INFORMATION,
+      editIf: () => this.permissionGreaterThan(Permission.BASIC_EDITION)
+    },
+    {
+      id: 'familiar',
+      label: "Datos Familiares",
+      showIf: Permission.BASIC_INFORMATION,
+      editIf: () => this.permissionGreaterThan(Permission.BASIC_EDITION)
+    },
     {
       id: 'asociativo',
       label: "Datos Asociativos",
       showIf: Permission.ALL_INFORMATION,
-      editIf: Permission.FULL_EDITION
+      editIf: () => this.permissionGreaterThan(Permission.FULL_EDITION)
     },
-    {id: 'scout', label: "Historial Scout", showIf: Permission.ALL_INFORMATION, editIf: Permission.FULL_EDITION},
+    {
+      id: 'scout',
+      label: "Historial Scout",
+      showIf: Permission.ALL_INFORMATION,
+      editIf: () => this.permissionGreaterThan(Permission.FULL_EDITION) || this.permissionGreaterThan(Permission.BASIC_EDITION) && this.scout.scoutInfo.scoutType === "SCOUT"
+    },
     {
       id: 'economico',
       label: "Datos Económicos",
       showIf: Permission.BASIC_INFORMATION,
-      editIf: Permission.BASIC_EDITION
+      editIf: () => this.permissionGreaterThan(Permission.BASIC_EDITION)
     },
   ];
   protected shownTabs: { id: TabOptions; label: string }[] = [];
@@ -221,11 +241,14 @@ export class ScoutDetailComponent implements OnInit {
   }
 
   protected get tabEditionAllowed() {
-    const minimumTabPermission = this.allTabs.find(tab => tab.id === this.selectedTab)?.editIf ?? Permission.FULL_EDITION;
-    return this.permission >= minimumTabPermission;
+    return this.allTabs.find(tab => tab.id === this.selectedTab)?.editIf() ?? this.permissionGreaterThan(Permission.FULL_EDITION);
   }
 
   protected get hideEditButton() {
     return this.editing || !this.tabEditionAllowed;
+  }
+
+  private permissionGreaterThan(permission: Permission) {
+    return this.permission >= permission;
   }
 }

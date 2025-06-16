@@ -6,12 +6,14 @@ import {SpecialMemberRole} from "../../special-member/models/special-member.mode
 })
 export class CensusPipe implements PipeTransform {
 
-  transform(value: number | undefined, specialRole?: SpecialMemberRole): string {
+  transform(value: number | undefined, options?: { role?: SpecialMemberRole, onlyPrefix?: boolean }): string {
     if (!value) return "Sin censo";
-    if (specialRole) {
-      return `${this.getRolePrefix(specialRole)}${String(value).padStart(4, "0")}`;
-    }
-    return `35-105-${String(value).padStart(5, "0")}`;
+    const result = options?.role ?
+      `${this.getRolePrefix(options.role)}${String(value).padStart(4, "0")}` :
+      `35-105-${String(value).padStart(5, "0")}`;
+
+    return options?.onlyPrefix ?
+      result.substring(0, result.length - value.toString().length) : result;
   }
 
   private getRolePrefix(specialRole: SpecialMemberRole) {

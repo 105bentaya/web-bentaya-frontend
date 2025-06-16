@@ -15,6 +15,7 @@ import {Message} from "primeng/message";
 import {ScoutService} from "../../services/scout.service";
 import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
 import {UserRole} from "../../../users/models/role.model";
+import {CensusPipe} from "../../pipes/census.pipe";
 
 @Component({
   selector: 'app-scout-type-form',
@@ -31,19 +32,21 @@ import {UserRole} from "../../../users/models/role.model";
     Message
   ],
   templateUrl: './scout-type-form.component.html',
-  styleUrl: './scout-type-form.component.scss'
+  styleUrl: './scout-type-form.component.scss',
+  providers: [CensusPipe]
 })
 export class ScoutTypeFormComponent implements OnInit {
   private readonly groupService = inject(GroupService);
   private readonly scoutService = inject(ScoutService);
   private readonly userData = inject(LoggedUserDataService);
+  private readonly censusPipe = inject(CensusPipe);
 
   parentForm = input.required<FormGroup | AbstractControl>();
   userIsSecretary = this.userData.hasRequiredPermission(UserRole.SECRETARY);
 
-  protected lastCensus: number = 0;
+  protected lastCensus: number | undefined;
   protected originalCensus: number | undefined;
-  protected lastExplorerCensus: number = 0;
+  protected lastExplorerCensus: number | undefined;
   protected readonly firstExplorerCensus = 95001;
   onGroupSelect = output<ScoutType>();
 
@@ -68,6 +71,10 @@ export class ScoutTypeFormComponent implements OnInit {
       this.groups = groups;
       this.updateGroupSelect(this.scoutType.value);
     });
+  }
+
+  protected get censusPrefix(): string {
+    return this.censusPipe.transform(this.census.value, {onlyPrefix: true});
   }
 
   protected get census(): FormControl {
@@ -103,11 +110,11 @@ export class ScoutTypeFormComponent implements OnInit {
   }
 
   protected autoCompleteLastCensus() {
-    if (this.lastCensus) this.census.setValue(this.lastCensus + 1);
+    this.census.setValue(this.lastCensus! + 1);
   }
 
   protected autoCompleteLastExplorerCensus() {
-    if (this.lastExplorerCensus) this.census.setValue(this.lastExplorerCensus + 1);
+    this.census.setValue(this.lastExplorerCensus! + 1);
   }
 
   protected get censusIsGreaterThanLast() {

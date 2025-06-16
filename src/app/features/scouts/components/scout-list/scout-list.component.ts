@@ -201,6 +201,8 @@ export class ScoutListComponent implements OnInit {
     let value: any = this.activeFilterValue;
     if (value === "ACTIVE") {
       value = ["ACTIVE", "PENDING_NEW", "PENDING_EXISTING"];
+    } else {
+      value = ["INACTIVE"];
     }
     this.table().filter(value, 'statuses', 'custom');
   }

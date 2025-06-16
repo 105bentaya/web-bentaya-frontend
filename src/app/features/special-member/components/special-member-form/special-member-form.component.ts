@@ -155,7 +155,7 @@ export class SpecialMemberFormComponent implements OnInit {
   }
 
   protected getPrefix(): string {
-    let result = this.censusPipe.transform(1, this.selectedRole)[0];
+    let result = this.censusPipe.transform(1, {role: this.selectedRole})[0];
     const currentCensusLength = 4 - this.formHelper.controlValue("roleCensus")?.toString().length;
     if (currentCensusLength > 0) {
       result += "0".repeat(currentCensusLength);

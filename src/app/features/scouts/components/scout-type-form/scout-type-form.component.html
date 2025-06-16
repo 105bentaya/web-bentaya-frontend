@@ -7,7 +7,7 @@
             [formControl]="census"
             id="census"
             [useGrouping]="false"
-            prefix="35-105-"
+            [prefix]="censusPrefix"
             [min]="1"
             class="border-end-radius-0"
             [max]="canBeExplorer ? 2147483647 : firstExplorerCensus - 1"
@@ -19,7 +19,7 @@
               text
               icon="fa-solid fa-clock-rotate-left"
               (onClick)="autoCompleteLastCensus()"
-              [loading]="!this.lastCensus"
+              [loading]="this.lastCensus === undefined"
             />
           </p-inputgroup-addon>
           @if (canBeExplorer) {
@@ -29,7 +29,7 @@
                 text
                 icon="fa-solid fa-dragon"
                 (onClick)="autoCompleteLastExplorerCensus()"
-                [loading]="!this.lastCensus"
+                [loading]="this.lastExplorerCensus === undefined"
               />
             </p-inputgroup-addon>
           }

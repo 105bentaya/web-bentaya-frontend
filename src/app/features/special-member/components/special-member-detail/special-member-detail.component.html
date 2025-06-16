@@ -23,7 +23,7 @@
           </div>
           @for (record of specialMemberDetail.records; track record.id) {
             <div class="text-nowrap overflow-ellipsis mw-100">
-              <b>{{ record.role | specialRole }}:</b> {{ record.roleCensus | census:record.role }}
+              <b>{{ record.role | specialRole }}:</b> {{ record.roleCensus | census:{role: record.role} }}
             </div>
           }
         </div>
@@ -62,7 +62,7 @@
                     <b class="fs-5 title-font">Datos registro</b>
                     <app-basic-info
                       [label]="'Nº ' + (record.role | specialRole)"
-                      [value]="record.roleCensus | census:record.role"
+                      [value]="record.roleCensus | census:{role: record.role}"
                     />
                     <app-basic-info label="Fecha de acuerdo" [value]="record.agreementDate | date:'dd/MM/yy'"/>
                     <app-basic-info label="Fecha de entrega" [value]="record.awardDate | date:'dd/MM/yy'"/>

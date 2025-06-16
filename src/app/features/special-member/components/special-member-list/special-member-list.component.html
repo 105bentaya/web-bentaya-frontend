@@ -61,7 +61,7 @@
     <ng-template #body let-specialMember>
       <tr class="d-table-row" pSelectableRow [routerLink]="specialMember.id">
         <td>
-          {{ specialMember.roleCensus | census:specialMember.role }}
+          {{ specialMember.roleCensus | census:{role: specialMember.role} }}
         </td>
         <td>
           {{ specialMember.name }}

@@ -88,7 +88,7 @@
         <div class="d-flex align-items-center gap-1">
           <app-basic-info
             [label]="specialRole.role | specialRole:true"
-            [value]="specialRole.roleCensus | census:specialRole.role"
+            [value]="specialRole.roleCensus | census:{role: specialRole.role}"
           />
           @if (editable()) {
             <i
