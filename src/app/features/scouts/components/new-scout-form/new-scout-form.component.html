@@ -372,7 +372,7 @@
                 class="small-uploader"
                 styleClass="h-100"
                 [multiple]="false"
-                accept=".pdf"
+                [accept]="allowedFiles"
                 [maxFileSize]="maxFileUploadByteSize"
                 (uploadHandler)="selectFile($event)"
                 [customUpload]="true"

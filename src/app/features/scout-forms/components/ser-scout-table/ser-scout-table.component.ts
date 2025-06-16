@@ -5,7 +5,7 @@ import {ScoutFormsService} from '../../scout-forms.service';
 import {SettingsService} from "../../../settings/settings.service";
 import {AssignPreScoutFormComponent} from "../assign-pre-scout-form/assign-pre-scout-form.component";
 import {PreScoutAssignation} from "../../models/pre-scout-assignation.model";
-import {adminStatuses, statusIsSaveAsScout, statusIsValidForSaving} from "../../models/satus.model";
+import {adminStatuses, statusIsValidForSaving} from "../../models/satus.model";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {ExcelService} from "../../../../shared/services/excel.service";
@@ -170,9 +170,7 @@ export class SerScoutTableComponent implements OnInit {
   }
 
   private saveAssignation(preScoutAssignation: PreScoutAssignation, preScout: PreScout) {
-    if (statusIsSaveAsScout(preScoutAssignation.status)) {
-      this.alertService.sendBasicSuccessMessage("Añadir asignación de educandas");
-    } else if (statusIsValidForSaving(preScoutAssignation.status)) {
+    if (statusIsValidForSaving(preScoutAssignation.status)) {
       this.loading = true;
       this.saveOrUpdate(preScoutAssignation, preScout).subscribe({
           next: () => {

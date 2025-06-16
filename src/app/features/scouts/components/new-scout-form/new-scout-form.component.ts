@@ -44,7 +44,7 @@ import {UserRole} from "../../../users/models/role.model";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {DateUtils} from "../../../../shared/util/date-utils";
 import {ScoutService} from "../../services/scout.service";
-import {FileType} from "../../../../shared/util/file.utils";
+import {FileType, FileUtils} from "../../../../shared/util/file.utils";
 import {
   CheckboxContainerComponent
 } from "../../../../shared/components/checkbox-container/checkbox-container.component";
@@ -118,6 +118,7 @@ export class NewScoutFormComponent implements OnInit {
   protected readonly yesNoOptions = yesNoOptions;
   protected readonly relationshipOptions = relationshipOptions;
   protected readonly maxFileUploadByteSize = maxFileUploadByteSize;
+  protected readonly allowedFiles = FileUtils.getAllowedExtensions("PDF", "IMG");
   protected steps: MenuItem[] = [
     {label: 'Datos Asociativos'},
     {label: 'Datos de la Scout'},

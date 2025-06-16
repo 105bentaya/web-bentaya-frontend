@@ -5,7 +5,7 @@ import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {AssignPreScoutFormComponent} from "../assign-pre-scout-form/assign-pre-scout-form.component";
 import {PreScoutAssignation} from "../../models/pre-scout-assignation.model";
 import {AlertService} from "../../../../shared/services/alert-service.service";
-import {statuses, statusIsRejected, statusIsSaveAsScout, statusIsValidForSaving} from "../../models/satus.model";
+import {statuses, statusIsRejected, statusIsValidForSaving} from "../../models/satus.model";
 import {FilterService} from "primeng/api";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {StatusPipe} from '../../../../shared/pipes/status.pipe';
@@ -91,9 +91,7 @@ export class GroupSerScoutTableComponent implements OnInit {
   }
 
   private saveAssignation(preScoutAssignation: PreScoutAssignation, preScout: PreScout) {
-    if (statusIsSaveAsScout(preScoutAssignation.status)) {
-      this.router.navigateByUrl(`/scouts/alta/${preScout.id}`);
-    } else if (statusIsValidForSaving(preScoutAssignation.status)) {
+    if (statusIsValidForSaving(preScoutAssignation.status)) {
       this.loading = true;
       this.preScoutService.updatePreScoutAssignation(preScoutAssignation).subscribe({
           next: () => {

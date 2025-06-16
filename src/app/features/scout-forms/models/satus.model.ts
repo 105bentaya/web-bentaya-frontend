@@ -2,8 +2,7 @@ export const statuses = [
   {id: 0, name: "Asignada"},
   {id: 1, name: "Esperando Reunión"},
   {id: 2, name: "Esperando Papeles"},
-  {id: 3, name: "Rechazada"},
-  {id: 4, name: "Guardar y añadir"}
+  {id: 3, name: "Rechazada"}
 ];
 
 export const adminStatuses = [
@@ -13,10 +12,6 @@ export const adminStatuses = [
   {id: 3, name: "Rechazada"},
   {id: -1, name: "Desasignar"}
 ];
-
-export function statusIsSaveAsScout(status: number): boolean {
-  return status == 4;
-}
 
 export function statusIsRejected(status: number): boolean {
   return status == 3;

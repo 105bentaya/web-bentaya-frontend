@@ -10,6 +10,8 @@ import {FloatLabelModule} from "primeng/floatlabel";
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {Select} from "primeng/select";
 import {GroupService} from "../../../../shared/services/group.service";
+import {Button} from "primeng/button";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-assign-pre-scout-form',
@@ -20,14 +22,15 @@ import {GroupService} from "../../../../shared/services/group.service";
     FormsModule,
     FormTextAreaComponent,
     SaveButtonsComponent,
-    Select
+    Select,
+    Button
   ]
 })
 export class AssignPreScoutFormComponent implements OnInit {
-
   private readonly config = inject(DynamicDialogConfig);
   protected ref = inject(DynamicDialogRef);
   protected groupService = inject(GroupService);
+  protected router = inject(Router);
 
   protected statuses = statuses;
   protected groups!: BasicGroupForm[];
@@ -84,5 +87,9 @@ export class AssignPreScoutFormComponent implements OnInit {
       };
       this.ref.close(result);
     }
+  }
+
+  protected registerScout() {
+    this.router.navigateByUrl(`/scouts/alta/${this.preScout.id}`).then(() => this.ref.close());
   }
 }

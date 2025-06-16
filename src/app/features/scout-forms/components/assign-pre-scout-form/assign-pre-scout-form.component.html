@@ -2,29 +2,29 @@
   <div class="row">
     <div class="col-12 col-sm-6">
       <p-floatlabel variant="on">
-          <p-select
-            id="group"
-            [options]="groups"
-            [disabled]="!canEditGroup"
-            optionLabel="name"
-            optionValue="id"
-            [(ngModel)]="groupId"
-            styleClass="w-100"
-          ></p-select>
-          <label class="required" for="group">Unidad</label>
+        <p-select
+          id="group"
+          [options]="groups"
+          [disabled]="!canEditGroup"
+          optionLabel="name"
+          optionValue="id"
+          [(ngModel)]="groupId"
+          styleClass="w-100"
+        ></p-select>
+        <label class="required" for="group">Unidad</label>
       </p-floatlabel>
     </div>
     <div class="col-12 col-sm-6">
       <p-floatlabel variant="on">
-          <p-select
-            id="status"
-            [options]="statuses"
-            optionLabel="name"
-            optionValue="id"
-            [(ngModel)]="status"
-            styleClass="w-100"
-          ></p-select>
-          <label class="required" for="status">Estado</label>
+        <p-select
+          id="status"
+          [options]="statuses"
+          optionLabel="name"
+          optionValue="id"
+          [(ngModel)]="status"
+          styleClass="w-100"
+        ></p-select>
+        <label class="required" for="status">Estado</label>
       </p-floatlabel>
     </div>
   </div>
@@ -46,9 +46,12 @@
       </p-floatlabel>
     </div>
   </div>
-  <app-save-buttons
-    [saveDisabled]="groupId == null || status == null"
-    (onSave)="submit()"
-    (onCancel)="ref.close()"
-  ></app-save-buttons>
+  <div class="d-flex flex-row gap-2 justify-content-center">
+    <app-save-buttons
+      [saveDisabled]="groupId == null || status == null"
+      (onSave)="submit()"
+      (onCancel)="ref.close()"
+    ></app-save-buttons>
+    <p-button label="Dar de Alta" severity="info" (onClick)="registerScout()"/>
+  </div>
 </div>
