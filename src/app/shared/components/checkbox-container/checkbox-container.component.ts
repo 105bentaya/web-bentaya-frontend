@@ -19,4 +19,5 @@ export class CheckboxContainerComponent {
   @Input() privacy = false;
   @Input() required = false;
   @Input() labelPlacement: "left" | "right" = "right";
+  @Input() labelClass = "";
 }

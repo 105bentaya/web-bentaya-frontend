@@ -25,6 +25,12 @@
   color: var(--p-floatlabel-invalid-color);
 }
 
+.p-accordion {
+  :has(.p-accordioncontent .ng-invalid.ng-dirty) .p-accordionheader {
+    color: var(--p-floatlabel-invalid-color);
+  }
+}
+
 //fix
 p-date-picker.ng-invalid.ng-dirty .p-datepicker.p-inputwrapper .p-inputtext {
   border-color: var(--p-inputtext-invalid-border-color);

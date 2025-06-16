@@ -34,6 +34,7 @@ import {UserRole} from "../../../users/models/role.model";
 import {Tab, TabList, Tabs} from "primeng/tabs";
 import {Badge} from "primeng/badge";
 import {ContextMenu} from "primeng/contextmenu";
+import {ScoutExcelExportComponent} from "../scout-excel-export/scout-excel-export.component";
 
 @Component({
   selector: 'app-scout-list',
@@ -71,6 +72,7 @@ export class ScoutListComponent implements OnInit {
   private readonly settingService = inject(SettingsService);
   protected readonly groupService = inject(GroupService);
   private readonly userData = inject(LoggedUserDataService);
+  private readonly dialogService = inject(DynamicDialogService);
 
   protected readonly FilterUtils = FilterUtils;
   protected readonly genders = genders;
@@ -122,6 +124,7 @@ export class ScoutListComponent implements OnInit {
       routerLink: () => `/scouts/${this.selectedScoutId}`
     },
   ];
+  private lastFilter!: PagedFilter;
 
   constructor() {
     this.mainQuickFilters = [{label: 'Grupo', value: "ALL"}, {label: 'Sin Imagen', value: "IMAGE"}];
@@ -204,7 +207,8 @@ export class ScoutListComponent implements OnInit {
 
   protected loadData(tableLazyLoadEvent: any) {
     this.loading = true;
-    this.scoutService.getAllFiltered(this.getFilter(tableLazyLoadEvent))
+    this.lastFilter = this.getFilter(tableLazyLoadEvent);
+    this.scoutService.getAllFiltered(this.lastFilter)
       .pipe(finalize(() => this.loading = false))
       .subscribe(result => {
         this.scouts = result.data;
@@ -237,10 +241,9 @@ export class ScoutListComponent implements OnInit {
   }
 
   protected exportExcelScout() {
-    //todo excel this.excelService.exportAsExcel(
-    //   ScoutHelper.generateData(this.scouts!, true),
-    //   ScoutHelper.generateExcelColumns(this.scouts!, true),
-    //   "educandas"
-    // );
+    this.dialogService.openDialog(ScoutExcelExportComponent, "Exportar Datos", "small", {
+      filter: this.lastFilter,
+      totalScouts: this.totalRecords
+    });
   }
 }

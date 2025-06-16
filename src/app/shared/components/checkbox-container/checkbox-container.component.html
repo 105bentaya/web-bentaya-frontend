@@ -1,7 +1,7 @@
 <div class="d-flex align-items-center gap-1" [ngClass]="{'justify-content-end flex-row-reverse' : labelPlacement == 'left'}">
   <ng-content/>
   <div>
-    <label [ngClass]="{'required' : required || privacy}" [for]="controlName">
+    <label [ngClass]="{'required' : required || privacy}" [class]="labelClass" [for]="controlName">
       @if (privacy) {
         He leído y acepto las
         <a href="/politica-privacidad" target="_blank">Políticas de Privacidad.</a>

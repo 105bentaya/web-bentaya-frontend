@@ -1,0 +1,35 @@
+<div>
+  <p>
+    Se exportarán los datos según los filtros que hayas aplicado en la lista ({{totalScouts}} asociadas).
+    A continuación, puedes elegir qué campos incluir en el excel descargado.
+  </p>
+  <p-accordion [value]="0">
+    @for (generalFields of allFields; track $index) {
+      <p-accordion-panel [value]="$index">
+        <p-accordion-header>{{ generalFields.groupLabel }}</p-accordion-header>
+        <p-accordion-content>
+          <div class="d-flex gap-2 flex-column mb-3">
+            @for (field of generalFields.fields; track field) {
+              <app-checkbox-container [label]="field.label">
+                <p-checkbox
+                  [value]="field.field"
+                  [(ngModel)]="selectedFields"
+                  [inputId]="field.field"
+                  (onChange)="saveExcelFields()"
+                />
+              </app-checkbox-container>
+            }
+          </div></p-accordion-content>
+      </p-accordion-panel>
+    }
+  </p-accordion>
+  <div class="mt-4">
+    <p-button
+      label="Descargar Excel"
+      icon="pi pi-download"
+      severity="success"
+      (click)="exportExcel()"
+      [loading]="loading"
+    ></p-button>
+  </div>
+</div>
