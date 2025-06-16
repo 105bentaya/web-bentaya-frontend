@@ -61,6 +61,7 @@ import {ScoutGroupPipe} from "../../pipes/scout-group.pipe";
 import {CensusPipe} from "../../pipes/census.pipe";
 import {BasicLoadingInfoComponent} from "../../../../shared/components/basic-loading-info/basic-loading-info.component";
 import {Button} from "primeng/button";
+import {unauthorizedMessage} from "../../../../core/auth/guards/auth.guard";
 
 type UserDocument = "basicDataDoc" | "bankDoc" | "authorizationDoc" | "imageAuthorizationDoc";
 
@@ -141,6 +142,11 @@ export class NewScoutFormComponent implements OnInit {
   private groups!: BasicGroupInfo[];
 
   ngOnInit() {
+    if (!(this.userData.hasRequiredPermission(UserRole.SECRETARY) || this.userData.getScouterGroup())) {
+      this.alertService.sendBasicErrorMessage(unauthorizedMessage);
+      return;
+    }
+
     this.groupService.getBasicGroups({generalGroup: true}).subscribe(data => this.groups = data);
 
     const preScoutId = this.route.snapshot.params["preScoutId"];
@@ -200,7 +206,7 @@ export class NewScoutFormComponent implements OnInit {
       authorizationDoc: [false, this.requiredIfScout],
       imageAuthorizationDoc: [false],
       scoutType: [preScout ? "SCOUT" : null, Validators.required],
-      groupId: [preScout?.assignation?.group.id ?? null, this.groupValidation],
+      groupId: [this.getInitialGroupId(preScout) ?? null, this.groupValidation],
       census: [previousScout?.scoutInfo.census],
       firstActivityDate: [null, Validators.required],
       imageAuthorization: [true, Validators.required],
@@ -226,13 +232,22 @@ export class NewScoutFormComponent implements OnInit {
       ]
     ]);
 
-    if (this.preScout && !this.isSecretary) {
-      this.formHelper.get("scoutType")?.disable();
+    if (!this.isSecretary) {
       this.formHelper.get("groupId")?.disable();
+      if (this.preScout) {
+        this.formHelper.get("scoutType")?.disable();
+      }
     }
     this.formHelper.get("contact")?.get("idDocument")?.get("idType")?.addValidators(this.requiredIfScout);
     this.formHelper.get("idDocument")?.get("idType")?.addValidators(this.requiredIfScouterOrSupport);
     this.formHelper.get("imageAuthorization")?.disable();
+  }
+
+  private getInitialGroupId(preScout?: PreScout): number | null {
+    const preScoutGroupId = preScout?.assignation?.group.id;
+    if (preScoutGroupId) return preScoutGroupId;
+    if (!this.isSecretary) return this.userData.getScouterGroup()?.id!;
+    return null;
   }
 
   private onNextPageChange() {

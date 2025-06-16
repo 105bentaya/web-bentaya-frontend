@@ -22,4 +22,4 @@ export function authGuard(route: ActivatedRouteSnapshot, state: RouterStateSnaps
   return true;
 }
 
-const unauthorizedMessage = "No tiene permisos para acceder a esta zona. Pruebe a volver iniciar sesión o envíe un correo a " + maintenanceEmail;
+export const unauthorizedMessage = "No tiene permisos para acceder a esta zona. Pruebe a volver iniciar sesión o envíe un correo a " + maintenanceEmail;

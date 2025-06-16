@@ -97,6 +97,7 @@ export class ScoutListComponent implements OnInit {
     {label: 'Scouters', value: "SCOUTER"},
     {label: 'Ambas', value: null}
   ];
+  protected groupFilterValue: "SCOUT" | "SCOUTER" | null = "SCOUT";
   protected activeFilterValue: "ACTIVE" | "INACTIVE" | null = "ACTIVE";
   protected readonly activeQuickFilters: SelectItem[] = [
     {label: 'Altas', value: "ACTIVE"},
@@ -180,6 +181,7 @@ export class ScoutListComponent implements OnInit {
       this.table().filter([this.userGroup!.id], 'groupIds', 'custom');
       this.table().filter([], 'sections', 'custom');
       this.table().filter([], 'statuses', 'custom');
+      this.groupFilterChange();
     } else {
       this.table().filter([], 'groupIds', 'custom');
       this.table().filter([], 'scoutTypes', 'custom');
@@ -193,15 +195,15 @@ export class ScoutListComponent implements OnInit {
     }
   }
 
-  protected groupFilterChange(value: any) {
-    this.table().filter(value, 'scoutTypes', 'custom');
+  protected groupFilterChange() {
+    this.table().filter(this.groupFilterValue, 'scoutTypes', 'custom');
   }
 
   protected activeFilterChange() {
     let value: any = this.activeFilterValue;
     if (value === "ACTIVE") {
       value = ["ACTIVE", "PENDING_NEW", "PENDING_EXISTING"];
-    } else {
+    } else if (value === "INACTIVE") {
       value = ["INACTIVE"];
     }
     this.table().filter(value, 'statuses', 'custom');
