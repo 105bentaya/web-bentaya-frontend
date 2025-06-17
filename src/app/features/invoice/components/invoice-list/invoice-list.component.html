@@ -108,7 +108,7 @@
             [autofocusFilter]="false"
             [maxSelectedLabels]="1"
             appendTo="body"
-            optionLabel="expenseType"
+            optionLabel="description"
             optionValue="id"
             styleClass="w-100 fw-normal"
           ></p-multiSelect>
@@ -134,7 +134,7 @@
           {{ invoice.grant?.grantName || 'Ninguna' }}
         </td>
         <td>
-          {{ invoice.expenseType.expenseType }}
+          {{ invoice.expenseType.description }}
         </td>
         <td>
           {{ invoice.amount / 100 | currency:'EUR':undefined:undefined:'es' }}

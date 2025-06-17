@@ -255,7 +255,10 @@
         [pContextMenuRowIndex]="3213"
       >
         <td>
-          {{ scout.surname }}, {{ scout.feltName ?? scout.name }}
+          {{ scout.surname }}, {{ scout.name }}
+          @if (scout.feltName) {
+            {{ scout.feltName }}
+          }
         </td>
         @if (selectedFilter !== 'GROUP') {
           <td>
