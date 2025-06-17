@@ -67,6 +67,7 @@ export class EconomicDataFormComponent implements OnInit {
 
   protected submit() {
     if (this.formHelper.validateAll()) {
+      this.loading = true;
       const form = {...this.formHelper.value};
       if (form.donorId === 'SCOUT') {
         delete form.donorId;

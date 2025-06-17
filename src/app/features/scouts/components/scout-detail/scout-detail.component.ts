@@ -86,6 +86,7 @@ export class ScoutDetailComponent implements OnInit {
   protected scout!: Scout;
   protected selectedTab!: TabOptions;
   protected loading = true;
+  protected deleteLoading = false;
 
   protected permission: Permission = Permission.BASIC_INFORMATION;
   protected editing: boolean = false;
@@ -226,10 +227,12 @@ export class ScoutDetailComponent implements OnInit {
   }
 
   protected askForDelete() {
+    this.deleteLoading = true;
     this.confirmationService.confirm({
       message: "¿Desea eliminar esta posible alta? Esta acción no se puede revertir.",
       header: "Eliminar Posible Alta",
-      accept: () => this.deletePendingScout()
+      accept: () => this.deletePendingScout(),
+      reject: () => this.deleteLoading = false
     });
   }
 

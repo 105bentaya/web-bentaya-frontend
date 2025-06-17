@@ -242,6 +242,7 @@ export class GroupDataFormComponent implements OnInit {
 
   protected submit() {
     if (this.formHelper.validateAll()) {
+      this.loading = true;
       const form: ScoutInfoForm = {...this.formHelper.value};
       form.registrationDates = form.registrationDates.map(date => {
         return {
@@ -254,10 +255,12 @@ export class GroupDataFormComponent implements OnInit {
         form.groupId = undefined;
       }
 
-      if (this.scoutWillLoseUsers(form.scoutType)) {
+      const wasActive = this.initialData().scoutInfo.scoutType !== "INACTIVE" && form.scoutType === "INACTIVE";
+      if (wasActive || this.scoutWillLoseUsers(form.scoutType)) {
         this.confirmationService.confirm({
-          message: "Si cambia el tipo de asociada, se eliminará el acceso de todos sus usuarios. Para volver" +
-            " a añadir un usuario deberás hacerlo desde la pestaña de 'Datos Personales'. ¿Desea continuar?",
+          header: wasActive ? "Confirmar Baja" : "Confirmar",
+          message: wasActive ? "Si da de baja a la asociada, se eliminará el acceso de todos sus usuarios y se eliminarán las asistencias futuras. ¿Desea continuar?" :
+            "Si cambia el tipo de asociada, se eliminará el acceso de todos sus usuarios. Para volver a añadir un usuario deberás hacerlo desde la pestaña de 'Datos Personales'. ¿Desea continuar?",
           accept: () => this.updateInfo(form),
           reject: () => this.loading = false
         });
