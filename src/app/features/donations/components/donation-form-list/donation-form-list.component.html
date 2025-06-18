@@ -45,6 +45,7 @@
         Fecha
         <p-sortIcon field="creationDate"></p-sortIcon>
       </th>
+      <th class="w-min">Asignar</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-donation>
@@ -66,6 +67,13 @@
       </td>
       <td>
         {{ donation.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}
+      </td>
+      <td class="text-center">
+        <app-table-icon-button
+          icon="pi pi-plus"
+          (click)="addNewDonation(donation.id)"
+          title="Ir A Registros"
+        />
       </td>
     </tr>
   </ng-template>

@@ -89,17 +89,19 @@
         </div>
         @if (dateCoincidences.length > 0) {
           <p-message severity="warn" class="mt-1 mb-3">
-            Las fechas del evento coinciden con el inicio o fin de las actividades de otras unidades:
-            <ul>
-              @for (group of dateCoincidences; track group.id) {
-                <li>{{ group.name }}</li>
-              }
-            </ul>
-            <p class="mb-0">
-              Revisa en el calendario los lugares y horas de estas unidades (haciendo click en
-              <i class="pi pi-globe align-middle"></i>) para evitar conflictos de lugar y horario (y que las familias no
-              tengan que teletransportarse).
-            </p>
+            <div class="d-flex flex-column">
+              Las fechas del evento coinciden con el inicio o fin de las actividades de otras unidades:
+              <ul>
+                @for (group of dateCoincidences; track group.id) {
+                  <li>{{ group.name }}</li>
+                }
+              </ul>
+              <p class="mb-0">
+                Revisa en el calendario los lugares y horas de estas unidades (haciendo click en
+                <i class="pi pi-globe align-middle"></i>) para evitar conflictos de lugar y horario (y que las familias
+                no tengan que teletransportarse).
+              </p>
+            </div>
           </p-message>
         }
       </div>

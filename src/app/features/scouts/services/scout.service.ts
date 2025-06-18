@@ -25,6 +25,7 @@ import {
 import {PagedFilter} from "../../../shared/model/filter.model";
 import {Page} from "../../../shared/model/page.model";
 import {InvoiceTypes} from "../../invoice/invoice.model";
+import {FeeForm} from "../../donations/model/donation-form.model";
 
 export type ScoutQuickFilter = "GROUP" | "ALL" | "IMAGE";
 
@@ -109,6 +110,14 @@ export class ScoutService {
 
   updateScoutEconomicData(scoutId: number, scoutInfoForm: EconomicDataForm) {
     return this.http.patch<Scout>(`${this.scoutUrl}/economic/${scoutId}`, scoutInfoForm);
+  }
+
+  addFees(feesForm: any) {
+    const formData = new FormData();
+    for (const key in feesForm) {
+      formData.append(key, feesForm[key]);
+    }
+    return this.http.post<Scout>(`${this.scoutUrl}/economic/new-fees`, formData);
   }
 
   getDonationEntries(filter: PagedFilter): Observable<Page<EconomicDonationEntry>> {

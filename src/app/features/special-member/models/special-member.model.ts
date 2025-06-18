@@ -17,6 +17,7 @@ export interface SpecialMemberBasicData {
   role: SpecialMemberRole;
   roleCensus: number;
   name: string;
+  idDocumentNumber: string;
 }
 
 export interface SpecialMemberDetail {

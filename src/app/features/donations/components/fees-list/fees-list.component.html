@@ -20,12 +20,17 @@
   [sortOrder]="-1"
 >
   <ng-template pTemplate="caption">
-    {{ totalRecords }}
-    @if (totalRecords === 1) {
-      resultado
-    } @else {
-      resultados
-    }
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        {{ totalRecords }}
+        @if (totalRecords === 1) {
+          resultado
+        } @else {
+          resultados
+        }
+      </div>
+      <p-button size="small" label="Pasar Cuota" (onClick)="openFeesForm()"/>
+    </div>
   </ng-template>
   <ng-template pTemplate="header">
     <tr>

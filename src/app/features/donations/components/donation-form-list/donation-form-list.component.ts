@@ -7,6 +7,10 @@ import {TableModule} from "primeng/table";
 import {DonationsService} from "../../services/donations.service";
 import {ExcelService} from "../../../../shared/services/excel.service";
 import {Donation} from "../../model/donation.model";
+import {
+  TableIconButtonComponent
+} from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-donation-form-list',
@@ -16,7 +20,8 @@ import {Donation} from "../../model/donation.model";
     DatePipe,
     DonationTypePipe,
     PrimeTemplate,
-    TableModule
+    TableModule,
+    TableIconButtonComponent
   ],
   templateUrl: './donation-form-list.component.html',
   styleUrl: './donation-form-list.component.scss'
@@ -25,6 +30,7 @@ export class DonationFormListComponent implements OnInit {
   private readonly donationService = inject(DonationsService);
   private readonly excelService = inject(ExcelService);
   private readonly donationTypePipe = inject(DonationTypePipe);
+  private readonly router = inject(Router);
 
   protected donations!: Donation[];
   protected excelLoading = false;
@@ -47,5 +53,10 @@ export class DonationFormListComponent implements OnInit {
       `formularios_de_donación_a_${new Date().toISOString().slice(0, 19)}`
     );
     this.excelLoading = false;
+  }
+
+  protected addNewDonation(formId: number) {
+    //todo automatic form
+    this.router.navigate(["/registros"], {queryParams: {tab: "DONOR"}});
   }
 }

@@ -86,9 +86,10 @@ const imageMimeTypes = [
   "image/png",
   "image/svg+xml"
 ];
-type FileAllowedType = "DOC" | "PDF" | "IMG"
+type FileAllowedType = "DOC" | "PDF" | "IMG" | "EXCEL";
 const allowedTypeExtensions = {
   "DOC": ".docx,.doc,.dot,.dotx,.odt,.rtf",
   "IMG": ".webp,.jpg,.png,.svg",
   "PDF": ".pdf",
+  "EXCEL": ".xlsx"
 };

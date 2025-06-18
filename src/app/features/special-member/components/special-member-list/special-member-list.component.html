@@ -43,6 +43,7 @@
           <p-sortIcon field="roleCensus"/>
         </th>
         <th>Nombre</th>
+        <th>DOI</th>
       </tr>
       <tr>
         <th>
@@ -61,6 +62,14 @@
             (input)="table.filter($any($event.target).value, 'name', 'custom')"
           >
         </th>
+        <th>
+          <input
+            class="w-100"
+            pInputText
+            placeholder="Filtrar por DOI"
+            (input)="table.filter($any($event.target).value, 'doi', 'custom')"
+          >
+        </th>
       </tr>
     </ng-template>
     <ng-template #body let-specialMember>
@@ -70,6 +79,13 @@
         </td>
         <td>
           {{ specialMember.name }}
+        </td>
+        <td>
+          @if (specialMember.idDocumentNumber) {
+            {{ specialMember.idDocumentNumber }}
+          } @else {
+            <span class="text-danger fw-semibold">No tiene</span>
+          }
         </td>
       </tr>
     </ng-template>

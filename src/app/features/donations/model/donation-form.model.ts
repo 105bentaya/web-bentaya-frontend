@@ -11,3 +11,14 @@ export interface DonationForm {
   singleDonationPaymentType: "TPV" | "IBAN" | "MANUAL";
   iban: string;
 }
+
+export interface FeeForm {
+  account: string;
+  amount?: number;
+  description: string;
+  donationTypeId: number;
+  dueDate: string | Date;
+  issueDate: string | Date;
+  applyToCurrentScouts: boolean;
+  file?: File;
+}

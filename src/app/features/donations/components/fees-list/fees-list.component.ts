@@ -16,6 +16,8 @@ import {
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {DialogService} from "primeng/dynamicdialog";
 import {CensusPipe} from "../../../scouts/pipes/census.pipe";
+import {Button} from "primeng/button";
+import {FeesFormComponent} from "../fees-form/fees-form.component";
 
 @Component({
   selector: 'app-fees-list',
@@ -27,7 +29,8 @@ import {CensusPipe} from "../../../scouts/pipes/census.pipe";
     DatePicker,
     InputText,
     MultiSelect,
-    CensusPipe
+    CensusPipe,
+    Button
   ],
   templateUrl: './fees-list.component.html',
   styleUrl: './fees-list.component.scss',
@@ -67,6 +70,15 @@ export class FeesListComponent implements OnInit {
       "Apunte",
       "small",
       {entry, scoutId: scoutId, editable: true, showRoute: true}
+    );
+    ref.onClose.subscribe(() => this.table().filterGlobal("", ""));
+  }
+
+  protected openFeesForm() {
+    const ref = this.dialogService.openDialog(
+      FeesFormComponent,
+      "Pasar Cuota",
+      "small"
     );
     ref.onClose.subscribe(() => this.table().filterGlobal("", ""));
   }

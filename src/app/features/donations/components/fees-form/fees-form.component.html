@@ -1,0 +1,140 @@
+<div>
+  <p>
+    Puedes elegir entre pasar cuotas a todas las educandas activas o subir un fichero de excel con los datos. Si
+    seleccionas la segunda opción, deberás descargar y rellenar la plantilla.
+  </p>
+  <form class="form-container" [formGroup]="formHelper.form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-12 col-sm">
+        <p-floatlabel variant="on">
+          <p-datePicker
+            id="issueDate"
+            formControlName="issueDate"
+            appendTo="body"
+            showClear
+          ></p-datePicker>
+          <label class="required" for="issueDate">Fecha de Ejecución</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm">
+        <p-floatlabel variant="on">
+          <p-datePicker
+            id="dueDate"
+            formControlName="dueDate"
+            appendTo="body"
+            showClear
+          ></p-datePicker>
+          <label class="required" for="dueDate">Fecha Valor</label>
+        </p-floatlabel>
+      </div>
+      @if (this.formHelper.controlValue('applyToCurrentScouts')) {
+        <div class="col-12 col-sm-4">
+          <p-floatlabel variant="on">
+            <p-inputNumber
+              id="amount"
+              formControlName="amount"
+              mode="currency"
+              locale="es-ES"
+              currency="EUR"
+              [min]="0"
+            ></p-inputNumber>
+            <label [ngClass]="{'required': this.formHelper.controlValue('applyToCurrentScouts')}" for="amount">
+              Importe
+            </label>
+          </p-floatlabel>
+        </div>
+      }
+      <div class="col-12">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="description"
+            formControlName="description"
+            maxlength="255"
+          >
+          <label class="required" for="description">Descripción</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <p-select
+            id="account"
+            formControlName="account"
+            appendTo="body"
+            [options]="accounts"
+          />
+          <label class="required" for="account">Cuenta</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-floatlabel variant="on">
+          <p-select
+            id="donationTypeId"
+            formControlName="donationTypeId"
+            appendTo="body"
+            [options]="donationTypes"
+            optionLabel="description"
+            optionValue="id"
+            [loading]="!donationTypes"
+            showClear
+          />
+          <label class="required" for="donationTypeId">Tipo de Cuota</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-12 d-flex flex-column gap-2">
+        <app-radio-button-container label="Aplicar cuota a todas las educandas de alta">
+          <p-radioButton
+            [value]="true"
+            formControlName="applyToCurrentScouts"
+          ></p-radioButton>
+        </app-radio-button-container>
+        <app-radio-button-container label="Subir fichero">
+          <p-radioButton
+            [value]="false"
+            formControlName="applyToCurrentScouts"
+          ></p-radioButton>
+        </app-radio-button-container>
+      </div>
+      @if (this.formHelper.controlValue('applyToCurrentScouts') === false) {
+        <div class="col-12 col-sm-4">
+          <div class="d-flex flex-row gap-2">
+            <a
+              class="uncolored text-decoration-underline cursor-pointer fw-bold"
+              [ngClass]="{'text-danger': formHelper.hasSpecificError('file', 'required')}"
+              href="/assets/archivos/plantilla_cuota.xlsx"
+              target="_blank"
+            >Descargar Plantilla</a>
+            <p-tag
+              class="inverted gray"
+              [ngClass]="{'secondary': !formHasFile, 'gray': formHasFile, 'red': formHelper.hasSpecificError('file', 'required')}"
+              [value]="formHasFile ? 'Borrar' : 'Subir'"
+              (click)=" formHasFile ? deleteFile() : openUploader(excelUploader)"
+            />
+          </div>
+        </div>
+        <p-fileupload
+          #excelUploader
+          class="small-uploader"
+          styleClass="h-100"
+          [multiple]="false"
+          [accept]="allowedFiles"
+          [maxFileSize]="maxFileUploadByteSize"
+          (uploadHandler)="onUpload($event)"
+          [customUpload]="true"
+          invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
+          invalidFileSizeMessageDetail="el tamaño máximo es {0}."
+          invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
+          invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
+          invalidFileLimitMessageSummary="Número máximo de archivos alcanzado, "
+          invalidFileLimitMessageDetail="el límite es de {0} archivos."
+          [auto]="true"
+          mode="basic"
+        />
+      }
+    </div>
+    <app-save-buttons
+      saveType="submit"
+      [saveLoading]="loading"
+    />
+  </form>
+</div>
