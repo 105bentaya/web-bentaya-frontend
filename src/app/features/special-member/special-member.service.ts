@@ -28,6 +28,10 @@ export class SpecialMemberService {
     return this.http.get<Page<SpecialMemberBasicData>>(this.specialMemberUrl, {params: new HttpParams({fromObject: filter})});
   }
 
+  getDonations(): Observable<SpecialMemberDonation[]> {
+    return this.http.get<SpecialMemberDonation[]>(`${this.specialMemberUrl}/donations`);
+  }
+
   getById(id: number) {
     return this.http.get<SpecialMemberDetail>(`${this.specialMemberUrl}/${id}`);
   }
@@ -56,11 +60,11 @@ export class SpecialMemberService {
     return this.http.post<SpecialMemberDonation>(`${this.specialMemberUrl}/donation/${memberId}`, form);
   }
 
-  updateDonation(memberId: number, donationId: number, form: SpecialMemberDonationForm): Observable<SpecialMemberDonation> {
-    return this.http.put<SpecialMemberDonation>(`${this.specialMemberUrl}/donation/${memberId}/${donationId}`, form);
+  updateDonation(donationId: number, form: SpecialMemberDonationForm): Observable<SpecialMemberDonation> {
+    return this.http.put<SpecialMemberDonation>(`${this.specialMemberUrl}/donation/${donationId}`, form);
   }
 
-  deleteDonation(memberId: number, donationId: number): Observable<void> {
-    return this.http.delete<void>(`${this.specialMemberUrl}/donation/${memberId}/${donationId}`);
+  deleteDonation(donationId: number): Observable<void> {
+    return this.http.delete<void>(`${this.specialMemberUrl}/donation/${donationId}`);
   }
 }

@@ -73,12 +73,12 @@ export class EconomicEntryFormComponent implements OnInit {
   protected donationTypes!: InvoiceTypes;
 
   ngOnInit() {
-    this.getDonationTypes();
     this.groupService.getBasicGroups().subscribe(res => this.accounts = this.accounts.concat(res.map(group => `Caja ${group.name}`)));
     const entry = this.config.data.entry;
     this.scoutId = this.config.data.scoutId;
     this.entryId = entry?.id;
     this.createForm(entry);
+    this.getDonationTypes();
   }
 
   private getDonationTypes() {
@@ -87,7 +87,25 @@ export class EconomicEntryFormComponent implements OnInit {
         expenseTypes: this.transformConceptType(concepts.expenseTypes),
         incomeTypes: this.transformConceptType(concepts.incomeTypes)
       })))
-      .subscribe(result => this.donationTypes = result);
+      .subscribe(result => {
+        this.donationTypes = result;
+        this.checkForType();
+      });
+  }
+
+  private checkForType() {
+    if (this.formHelper.controlValue("incomeId")) {
+      this.formHelper.get("incomeId")?.enable();
+      this.onIncomeSelect();
+    } else if (this.formHelper.controlValue("expenseId")) {
+      this.formHelper.get("expenseId")?.enable();
+      this.formHelper.get("type")?.enable();
+      this.onExpenseSelect();
+    } else {
+      this.formHelper.get("incomeId")?.enable();
+      this.formHelper.get("expenseId")?.enable();
+      this.formHelper.get("type")?.enable();
+    }
   }
 
   private transformConceptType(types: InvoiceConceptType[]) {
@@ -107,11 +125,9 @@ export class EconomicEntryFormComponent implements OnInit {
       observations: [data?.observations, Validators.maxLength(511)]
     }, {validators: this.expenseIncomeValidator});
 
-    if (data?.incomeType) {
-      this.onIncomeSelect();
-    } else if (data?.expenseType) {
-      this.onExpenseSelect();
-    }
+    this.formHelper.get("incomeId")?.disable();
+    this.formHelper.get("expenseId")?.disable();
+    this.formHelper.get("type")?.disable();
   }
 
   private readonly expenseIncomeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -123,6 +139,13 @@ export class EconomicEntryFormComponent implements OnInit {
     const control = this.formHelper.get("expenseId");
 
     if (value) {
+      const typeControl = this.formHelper.get("type");
+      if (this.donationTypes.incomeTypes.find(income => income.id === value)?.donation) {
+        typeControl?.setValue('Donación');
+        typeControl?.disable();
+      } else {
+        typeControl?.enable();
+      }
       control?.setValue(null);
       control?.disable();
     } else {
@@ -133,6 +156,7 @@ export class EconomicEntryFormComponent implements OnInit {
   protected onExpenseSelect() {
     const value = this.formHelper.get("expenseId")?.value;
     const control = this.formHelper.get("incomeId");
+    this.formHelper.get("expenseId")?.enable();
 
     if (value) {
       control?.setValue(null);
@@ -147,7 +171,9 @@ export class EconomicEntryFormComponent implements OnInit {
       this.loading = true;
 
       const form: EconomicEntryForm = {...this.formHelper.value};
-      form.date = DateUtils.toLocalDate(form.date);
+      form.type = this.formHelper.controlValue("type");
+      form.issueDate = DateUtils.toLocalDate(form.issueDate);
+      form.dueDate = DateUtils.toLocalDate(form.dueDate);
       form.amount *= 100;
 
       const saveDonation = this.entryId ?

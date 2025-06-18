@@ -25,7 +25,7 @@ export class ExcelService {
   private getColumnLengths(data: any[], cols: string[]): { wch: number }[] {
     const maxContentWidth: number[] = Object.values(data.reduce((max, obj) => {
       Object.keys(obj).forEach(property => {
-        max[property] = Math.max(obj[property]?.length || 10, max[property] || 10);
+        max[property] = Math.max(obj[property]?.length ?? 10, max[property] ?? 10);
       });
       return max;
     }, {}));

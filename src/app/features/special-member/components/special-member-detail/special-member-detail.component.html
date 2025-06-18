@@ -106,61 +106,7 @@
                       @if (record.donations.length < 1) {
                         <p-tag value="No hay donaciones" severity="secondary"></p-tag>
                       } @else {
-                        <p-table
-                          [value]="record.donations"
-                          class="first-border"
-                          stripedRows
-                          selectionMode="single"
-                          sortField="date"
-                          [sortOrder]="-1"
-                        >
-                          <ng-template pTemplate="caption">
-                            <div>
-                              <b>Total:</b>
-                              @let economic = totalEconomicDonations(record);
-                              @let economicAmount = totalDonatedAmount(record);
-                              @let inKind = totalInKindDonations(record);
-                              @let inKindAmount = totalInKindAmount(record);
-                              @let total = economicAmount + inKindAmount;
-                              {{ total / 100 | currency:'EUR':undefined:undefined:'es' }} -
-                              @if (economic) {
-                                {{ economic }} {{ economic === 1 ? 'donación económica' : 'donaciones económicas' }}
-                                ({{ economicAmount / 100 | currency:'EUR':undefined:undefined:'es' }})
-                              }
-                              @if (economicAmount && inKind) {
-                                y
-                              }
-                              @if (inKind) {
-                                {{ inKind }} {{ inKind === 1 ? 'donación en especie' : 'donaciones en especies' }}
-                                ({{ inKind === 1 ? 'valorada en' : 'valoradas en' }}
-                                {{ inKindAmount / 100 | currency:'EUR':undefined:undefined:'es' }})
-                              }
-                            </div>
-                          </ng-template>
-                          <ng-template pTemplate="header">
-                            <tr>
-                              <th>Tipo</th>
-                              <th>Fecha</th>
-                              <th>Importe o Valoración</th>
-                              <th>Otros Datos</th>
-                            </tr>
-                          </ng-template>
-                          <ng-template pTemplate="body" let-donation let-ri="rowIndex">
-                            <tr pSelectableRow (click)="openDonationInfo(donation, record, ri)">
-                              <td class="text-nowrap">{{ donation.type | specialMemberDonation }}</td>
-                              <td>{{ donation.date | date:'dd/MM/yyyy' }}</td>
-                              <td>{{ donation.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</td>
-                              <td>
-                                @if (donation.type === 'ECONOMIC') {
-                                  Cuenta Bancaria: {{ donation.bankAccount }} -
-                                    Forma de pago: {{ donation.paymentType }}
-                                } @else {
-                                  Tipo de especie: {{ donation.inKindDonationType }}
-                                }
-                              </td>
-                            </tr>
-                          </ng-template>
-                        </p-table>
+                        <app-donation-list [donations]="record.donations" [showSummary]="true"></app-donation-list>
                       }
                     </div>
                   </div>

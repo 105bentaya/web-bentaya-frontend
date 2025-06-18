@@ -8,10 +8,9 @@ import {
   SpecialMember,
   SpecialMemberDetail,
   SpecialMemberDetailRecord,
-  SpecialMemberDonation,
   SpecialMemberRole
 } from "../../models/special-member.model";
-import {CurrencyPipe, DatePipe, Location, NgIf} from "@angular/common";
+import {DatePipe, Location, NgIf} from "@angular/common";
 import {BasicInfoComponent} from "../../../scouts/components/basic-info/basic-info.component";
 import {CensusPipe} from "../../../scouts/pipes/census.pipe";
 import {IdDocumentPipe} from "../../../scouts/pipes/id-document.pipe";
@@ -22,17 +21,13 @@ import {SpecialMemberFormComponent} from "../special-member-form/special-member-
 import {SpecialMemberForm} from "../../models/special-member-form.model";
 import {finalize} from "rxjs";
 import {SpecialRolePipe} from "../../special-role.pipe";
-import {PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {DialogService} from "primeng/dynamicdialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {
   SpecialMemberDonationFormComponent
 } from "../special-member-donation-form/special-member-donation-form.component";
-import {
-  SpecialMemberDonationInfoComponent
-} from "../special-member-donation-info/special-member-donation-info.component";
-import {SpecialMemberDonationPipe} from "../../special-member-donation.pipe";
+import {DonationListComponent} from "../../../donations/components/donation-list/donation-list.component";
 
 @Component({
   selector: 'app-special-member-detail',
@@ -50,10 +45,8 @@ import {SpecialMemberDonationPipe} from "../../special-member-donation.pipe";
     Button,
     SpecialMemberFormComponent,
     SpecialRolePipe,
-    PrimeTemplate,
     TableModule,
-    SpecialMemberDonationPipe,
-    CurrencyPipe
+    DonationListComponent
   ],
   templateUrl: './special-member-detail.component.html',
   styleUrl: './special-member-detail.component.scss',
@@ -93,26 +86,6 @@ export class SpecialMemberDetailComponent implements OnInit {
     return {...detail, person: this.specialMemberDetail!.person};
   }
 
-  protected totalDonatedAmount(record: SpecialMemberDetailRecord): number {
-    return record.donations
-      .filter(don => don.type === "ECONOMIC")
-      .reduce((acc, donation) => acc + (donation.amount ?? 0), 0);
-  };
-
-  protected totalInKindAmount(record: SpecialMemberDetailRecord): number {
-    return record.donations
-      .filter(don => don.type === "IN_KIND")
-      .reduce((acc, donation) => acc + (donation.amount ?? 0), 0);
-  };
-
-  protected totalEconomicDonations(record: SpecialMemberDetailRecord): number {
-    return record.donations.filter(donation => donation.type === 'ECONOMIC').length;
-  }
-
-  protected totalInKindDonations(record: SpecialMemberDetailRecord): number {
-    return record.donations.filter(donation => donation.type === 'IN_KIND').length;
-  }
-
   protected update(form: SpecialMemberForm) {
     this.specialMemberService.updateSpecialMember(form, this.selectedMemberForm.id)
       .pipe(finalize(() => this.loading = false))
@@ -133,23 +106,7 @@ export class SpecialMemberDetailComponent implements OnInit {
     ref.onClose.subscribe(result => {
       if (result) {
         record.donations = [...record.donations, result];
-        this.openDonationInfo(result, record, record.donations.length - 1);
       }
-    });
-  }
-
-  protected openDonationInfo(donation: SpecialMemberDonation, record: SpecialMemberDetailRecord, index: number) {
-    const ref = this.dialogService.openDialog(
-      SpecialMemberDonationInfoComponent,
-      "Donación",
-      "small",
-      {donation, memberId: record.id}
-    );
-    ref.onClose.subscribe(deleted => {
-      if (deleted) {
-        record.donations.splice(index, 1);
-      }
-      record.donations = [...record.donations];
     });
   }
 }

@@ -73,6 +73,16 @@ export interface EconomicEntry {
   observations: string;
 }
 
+export interface EconomicDonationEntry {
+  scoutId: number;
+  scoutCensus: number;
+  scoutName: string;
+  scoutSurname: string;
+  scoutFeltName?: string;
+  scoutIdDocument: IdentificationDocument;
+  entry: EconomicEntry;
+}
+
 export interface RegistrationDate {
   id?: number;
   registrationDate: Date;

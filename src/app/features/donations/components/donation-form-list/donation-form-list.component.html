@@ -1,0 +1,72 @@
+<p-table
+  #tab
+  showGridlines
+  [value]="donations"
+  responsiveLayout="scroll"
+  sortField="creationDate"
+  [sortOrder]="-1"
+>
+  <ng-template pTemplate="caption">
+    <div class="d-flex justify-content-between align-items-center">
+      {{ tab.totalRecords }} formularios de donación
+      <p-button
+        icon="pi pi-download"
+        [loading]="excelLoading"
+        (click)="exportExcel()"
+        severity="success"
+        title="Descargar donaciones como excel"
+        label="Descargar"
+        size="small"
+      ></p-button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="firstSurname">
+        Nombre
+        <p-sortIcon field="firstSurname"></p-sortIcon>
+      </th>
+      <th pSortableColumn="cif">
+        CIF
+        <p-sortIcon field="cif"></p-sortIcon>
+      </th>
+      <th pSortableColumn="amount">
+        Cantidad
+        <p-sortIcon field="amount"></p-sortIcon>
+      </th>
+      <th pSortableColumn="frequency">
+        Tipo de donación
+        <p-sortIcon field="frequency"></p-sortIcon>
+      </th>
+      <th>
+        Estado del pago
+      </th>
+      <th pSortableColumn="creationDate">
+        Fecha
+        <p-sortIcon field="creationDate"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-donation>
+    <tr>
+      <td>
+        {{ donation.firstSurname }} {{ donation.secondSurname }}, {{ donation.name }}
+      </td>
+      <td>
+        {{ donation.cif }}
+      </td>
+      <td>
+        {{ donation.amount / 100 | currency:'EUR':undefined:undefined:'es' }}
+      </td>
+      <td>
+        {{ donation | donationType }}
+      </td>
+      <td>
+        {{ donation.status === null ? '-' : donation.status }}
+      </td>
+      <td>
+        {{ donation.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

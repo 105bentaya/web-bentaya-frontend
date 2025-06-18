@@ -43,6 +43,17 @@
         <b>Observaciones</b>
         <div>{{ entry.observations ?? 'Ninguna' }}</div>
       </div>
+      @if (showRoute) {
+        <div class="mb-0">
+          <div style="height: 1.75rem; right: 1rem;">
+            <p-button
+              styleClass="h-100 px-2"
+              label="Ir a Asociada"
+              (onClick)="navigateToScout()"
+            />
+          </div>
+        </div>
+      }
     </div>
   </div>
 </div>

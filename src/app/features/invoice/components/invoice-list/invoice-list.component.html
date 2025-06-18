@@ -57,8 +57,8 @@
             selectionMode="range"
             styleClass="w-100 fw-normal"
             appendTo="body"
-            (onClose)="FilterUtils.filterDates(dt, dp.value)"
-            (onClear)="FilterUtils.filterDates(dt)"
+            (onClose)="FilterUtils.filterDates(dt, 'filterDates', dp.value)"
+            (onClear)="FilterUtils.filterDates(dt, 'filterDates')"
             readonlyInput
             showClear
           ></p-date-picker>

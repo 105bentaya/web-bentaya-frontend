@@ -7,6 +7,7 @@ import {EconomicEntry} from "../../../models/scout.model";
 import {EconomicEntryFormComponent} from "../../scout-detail-forms/economic-entry-form/economic-entry-form.component";
 import {noop} from "rxjs";
 import {assign} from "lodash";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-economic-entry-info',
@@ -23,10 +24,12 @@ export class EconomicEntryInfoComponent implements OnInit {
   private readonly config = inject(DynamicDialogConfig);
   private readonly dialogService = inject(DynamicDialogService);
   private readonly ref = inject(DynamicDialogRef);
+  private readonly router = inject(Router);
 
   protected entry!: EconomicEntry;
   private scoutId!: number;
   protected editable = false;
+  protected showRoute = false;
 
   protected loading = false;
 
@@ -34,6 +37,7 @@ export class EconomicEntryInfoComponent implements OnInit {
     this.entry = this.config.data.entry;
     this.scoutId = this.config.data.scoutId;
     this.editable = this.config.data.editable;
+    this.showRoute = this.config.data.showRoute;
   }
 
   protected openFormDialog() {
@@ -52,5 +56,9 @@ export class EconomicEntryInfoComponent implements OnInit {
     } else {
       assign(this.entry, result);
     }
+  }
+
+  protected navigateToScout() {
+    this.router.navigate(["scouts", this.scoutId], {queryParams: {tab: 'economico'}}).then(() => this.ref.close());
   }
 }

@@ -94,13 +94,13 @@ export default class FilterUtils {
     return filter;
   }
 
-  public static filterDates(table: Table, dateRange?: Date[] | undefined) {
+  public static filterDates(table: Table, field: string, dateRange?: Date[] | undefined) {
     if (dateRange?.[0]) {
       const startDate = DateUtils.toLocalDate(dateRange[0]);
       const endDate = DateUtils.toLocalDate(dateRange?.[1] ? dateRange[1] : dateRange[0]);
-      table.filter([startDate, endDate], "filterDates", "custom");
+      table.filter([startDate, endDate], field, "custom");
     } else {
-      table.filter(null, "filterDates", "custom");
+      table.filter(null, field, "custom");
     }
   }
 

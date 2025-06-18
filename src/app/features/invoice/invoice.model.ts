@@ -32,6 +32,7 @@ export interface InvoiceTypes {
 export interface InvoiceConceptType {
   id: number;
   description: string;
+  donation?: boolean
 }
 
 export interface InvoiceGrant {

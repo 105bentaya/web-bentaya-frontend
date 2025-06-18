@@ -1,0 +1,159 @@
+<p-table
+  #dt
+  responsiveLayout="scroll"
+  [value]="fees"
+  selectionMode="single"
+  class="first-border"
+  stripedRows
+  [loading]="loading"
+  showGridlines
+
+  paginator
+  [rows]="50"
+  [rowsPerPageOptions]="[10,25,50,100,300]"
+
+  lazy
+  (onLazyLoad)="loadData($event)"
+  [totalRecords]="totalRecords"
+
+  sortField="issueDate"
+  [sortOrder]="-1"
+>
+  <ng-template pTemplate="caption">
+    {{ totalRecords }}
+    @if (totalRecords === 1) {
+      resultado
+    } @else {
+      resultados
+    }
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="economicData.scout.personalData.surname">
+        Asociada
+        <p-sortIcon field="economicData.scout.personalData.surname"/>
+      </th>
+      <th pSortableColumn="economicData.scout.census">
+        Censo
+        <p-sortIcon field="economicData.scout.census"/>
+      </th>
+      <th pSortableColumn="economicData.scout.personalData.idDocument.number">
+        DNI
+        <p-sortIcon field="economicData.scout.personalData.idDocument.number"/>
+      </th>
+      <th pSortableColumn="issueDate">
+        Fecha de Ejecución
+        <p-sortIcon field="issueDate"/>
+      </th>
+      <th pSortableColumn="dueDate">
+        Fecha de Valor
+        <p-sortIcon field="dueDate"/>
+      </th>
+      <th pSortableColumn="incomeType">
+        Concepto Donación
+        <p-sortIcon field="incomeType"/>
+      </th>
+      <th pSortableColumn="amount">
+        Importe
+        <p-sortIcon field="amount"/>
+      </th>
+      <th>Descripción</th>
+    </tr>
+    <tr>
+      <th>
+        <input
+          class="w-100"
+          pInputText
+          (input)="dt.filter($any($event.target).value, 'name', 'custom')"
+        >
+      </th>
+      <th>
+        <input
+          class="w-100"
+          pInputText
+          (input)="dt.filter($any($event.target).value, 'census', 'custom')"
+        >
+      </th>
+      <th>
+        <input
+          class="w-100"
+          pInputText
+          (input)="dt.filter($any($event.target).value, 'idDocument', 'custom')"
+        >
+      </th>
+      <th>
+        <p-date-picker
+          #issueDatePicker
+          selectionMode="range"
+          styleClass="w-100 fw-normal"
+          appendTo="body"
+          (onClose)="FilterUtils.filterDates(dt, 'issueDates', issueDatePicker.value)"
+          (onClear)="FilterUtils.filterDates(dt, 'issueDates')"
+          showClear
+        ></p-date-picker>
+      </th>
+      <th>
+        <p-date-picker
+          #dueDatePicker
+          selectionMode="range"
+          styleClass="w-100 fw-normal"
+          appendTo="body"
+          (onClose)="FilterUtils.filterDates(dt, 'dueDates', dueDatePicker.value)"
+          (onClear)="FilterUtils.filterDates(dt, 'dueDates')"
+          showClear
+        ></p-date-picker>
+      </th>
+      <th>
+        <p-multiSelect
+          [options]="donationTypes"
+          (onChange)="dt.filter($event.value, 'incomeTypes', 'custom')"
+          (onClear)="dt.filter(null, 'incomeTypes', 'custom')"
+          [showHeader]="false"
+          [autofocusFilter]="false"
+          [showClear]="true"
+          appendTo="body"
+          scrollHeight="300px"
+          styleClass="w-100 fw-normal"
+          optionValue="id"
+          optionLabel="description"
+        ></p-multiSelect>
+      </th>
+      <th></th>
+      <th>
+        <input
+          class="w-100"
+          pInputText
+          (input)="dt.filter($any($event.target).value, 'description', 'custom')"
+        >
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-data>
+    @let entry = data.entry;
+    <tr pSelectableRow (click)="openEntryInfo(entry, data.scoutId)">
+      <td>
+        {{ data.scoutSurname }}, {{ data.scoutName }}
+        @if (data.scoutFeltName) {
+          {{ data.scoutFeltName }}
+        }
+      </td>
+      <td>
+        {{ data.scoutCensus | census }}
+      </td>
+      <td>
+        {{ data.scoutIdDocument?.number ?? 'Sin Especificar' }}
+      </td>
+      <td>{{ entry.issueDate | date:'dd/MM/yyyy' }}</td>
+      <td>{{ entry.dueDate | date:'dd/MM/yyyy' }}</td>
+      <td>
+        @if (entry.incomeType) {
+          {{ entry.incomeType.description }}
+        } @else {
+          {{ entry.expenseType.description }}
+        }
+      </td>
+      <td>{{ entry.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</td>
+      <td>{{ entry.description }}</td>
+    </tr>
+  </ng-template>
+</p-table>

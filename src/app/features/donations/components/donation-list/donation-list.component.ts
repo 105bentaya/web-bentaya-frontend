@@ -1,51 +1,68 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {DonationsService} from "../../services/donations.service";
-import {ExcelService} from "../../../../shared/services/excel.service";
-import {Donation} from "../../model/donation.model";
-import {DonationTypePipe} from "../../donation-type.pipe";
-import {CurrencyPipe, DatePipe} from '@angular/common';
-import {Button} from 'primeng/button';
-import {TableModule} from 'primeng/table';
+import {Component, inject, input} from '@angular/core';
+import {CurrencyPipe, DatePipe} from "@angular/common";
+import {PrimeTemplate} from "primeng/api";
+import {SpecialMemberDonationPipe} from "../../../special-member/special-member-donation.pipe";
+import {TableModule} from "primeng/table";
+import {SpecialMemberDonation} from "../../../special-member/models/special-member.model";
+import {
+  SpecialMemberDonationInfoComponent
+} from "../../../special-member/components/special-member-donation-info/special-member-donation-info.component";
+import {DialogService} from "primeng/dynamicdialog";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {Button} from "primeng/button";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-donation-list',
-  templateUrl: './donation-list.component.html',
-  styleUrls: ['./donation-list.component.scss'],
-  providers: [DonationTypePipe],
   imports: [
-    TableModule,
     CurrencyPipe,
-    DonationTypePipe,
     DatePipe,
-    Button
-  ]
+    PrimeTemplate,
+    SpecialMemberDonationPipe,
+    TableModule,
+    Button,
+    RouterLink
+  ],
+  templateUrl: './donation-list.component.html',
+  styleUrl: './donation-list.component.scss',
+  providers: [DialogService, DynamicDialogService]
 })
-export class DonationListComponent implements OnInit {
+export class DonationListComponent {
+  private readonly dialogService = inject(DynamicDialogService);
+  donations = input.required<SpecialMemberDonation[]>();
+  showSummary = input(false);
 
-  private readonly donationService = inject(DonationsService);
-  private readonly excelService = inject(ExcelService);
-  private readonly donationTypePipe = inject(DonationTypePipe);
-
-  protected donations!: Donation[];
-  protected excelLoading = false;
-
-  ngOnInit() {
-    this.donationService.getAll().subscribe(res => this.donations = res);
+  protected openDonationInfo(donation: SpecialMemberDonation, index: number) {
+    const ref = this.dialogService.openDialog(
+      SpecialMemberDonationInfoComponent,
+      "Donación",
+      "small",
+      {donation}
+    );
+    ref.onClose.subscribe(deleted => {
+      if (deleted) {
+        this.donations().splice(index, 1);
+      }
+    });
   }
 
-  protected exportExcel() {
-    this.excelLoading = true;
-    this.excelService.exportAsExcel(
-      this.donations
-        .map((donation: any) => {
-          const mapped = {...donation, frequency: this.donationTypePipe.transform(donation)};
-          delete mapped["singleDonationPaymentType"];
-          return mapped;
-        }),
-      ["ID", "Nombre", "Primer Apellido", "Segundo Apellido", "DNI o CIF", "Teléfono", "Correo",
-        "Quiere deducir", "Cantidad", "Frecuencia", "Iban", "Estado del pago", "Fecha"],
-      "donaciones"
-    );
-    this.excelLoading = false;
+  protected get totalDonatedAmount(): number {
+    return this.donations()
+      .filter(don => don.type === "ECONOMIC")
+      .reduce((acc, donation) => acc + (donation.amount ?? 0), 0);
+  };
+
+  protected get totalInKindAmount(): number {
+    return this.donations()
+      .filter(don => don.type === "IN_KIND")
+      .reduce((acc, donation) => acc + (donation.amount ?? 0), 0);
+  };
+
+  protected get totalEconomicDonations(): number {
+    return this.donations().filter(donation => donation.type === 'ECONOMIC').length;
+  }
+
+  protected get totalInKindDonations(): number {
+    return this.donations().filter(donation => donation.type === 'IN_KIND').length;
   }
 }

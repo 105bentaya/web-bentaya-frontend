@@ -2,7 +2,15 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, shareReplay} from "rxjs";
 import {environment} from "../../../../environments/environment";
-import {EconomicEntry, Scout, ScoutFile, ScoutListData, ScoutRecord, ScoutType} from "../models/scout.model";
+import {
+  EconomicDonationEntry,
+  EconomicEntry,
+  Scout,
+  ScoutFile,
+  ScoutListData,
+  ScoutRecord,
+  ScoutType
+} from "../models/scout.model";
 import {FileType, FileUtils} from "../../../shared/util/file.utils";
 import {
   EconomicDataForm,
@@ -101,6 +109,10 @@ export class ScoutService {
 
   updateScoutEconomicData(scoutId: number, scoutInfoForm: EconomicDataForm) {
     return this.http.patch<Scout>(`${this.scoutUrl}/economic/${scoutId}`, scoutInfoForm);
+  }
+
+  getDonationEntries(filter: PagedFilter): Observable<Page<EconomicDonationEntry>> {
+    return this.http.get<Page<EconomicDonationEntry>>(`${this.scoutUrl}/economic/entries`, {params: new HttpParams({fromObject: filter})});
   }
 
   addEntry(scoutId: number, form: EconomicEntryForm): Observable<EconomicEntry> {

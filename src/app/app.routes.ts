@@ -132,19 +132,19 @@ export const routes: Routes = [
     path: "registros",
     loadComponent: () => import('./features/special-member/components/special-member-list/special-member-list.component').then(c => c.SpecialMemberListComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SECRETARY]}
+    data: {roles: [UserRole.SECRETARY, UserRole.TRANSACTION]}
   },
   {
     path: "registros/nuevo",
     loadComponent: () => import('./features/special-member/components/special-member-new-form/special-member-new-form.component').then(c => c.SpecialMemberNewFormComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SECRETARY]}
+    data: {roles: [UserRole.SECRETARY, UserRole.TRANSACTION]}
   },
   {
     path: "registros/:id",
     loadComponent: () => import('./features/special-member/components/special-member-detail/special-member-detail.component').then(c => c.SpecialMemberDetailComponent),
     canActivate: [authGuard],
-    data: {roles: [UserRole.SECRETARY]}
+    data: {roles: [UserRole.SECRETARY, UserRole.TRANSACTION]}
   },
   //Unidad
   {
@@ -187,7 +187,7 @@ export const routes: Routes = [
   //Donaciones
   {
     path: "donaciones/lista",
-    loadComponent: () => import('./features/donations/components/donation-list/donation-list.component').then(c => c.DonationListComponent),
+    loadComponent: () => import('./features/donations/components/donation-management/donation-management.component').then(c => c.DonationManagementComponent),
     canActivate: [authGuard],
     data: {roles: [UserRole.TRANSACTION]}
   },

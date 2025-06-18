@@ -247,6 +247,10 @@ export class ScoutDetailComponent implements OnInit {
     return this.allTabs.find(tab => tab.id === this.selectedTab)?.editIf() ?? this.permissionGreaterThan(Permission.FULL_EDITION);
   }
 
+  protected get economicEntryEditionAllowed() {
+    return this.permission >= Permission.FULL_EDITION || this.userData.hasRequiredPermission(UserRole.TRANSACTION);
+  }
+
   protected get hideEditButton() {
     return this.editing || !this.tabEditionAllowed;
   }

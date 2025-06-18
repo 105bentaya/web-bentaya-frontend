@@ -9,6 +9,8 @@ import {InputText} from "primeng/inputtext";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {finalize} from "rxjs";
 import {Tab, TabList, Tabs} from "primeng/tabs";
+import {LoggedUserDataService} from "../../../../core/auth/services/logged-user-data.service";
+import {UserRole} from "../../../users/models/role.model";
 
 @Component({
   selector: 'app-special-member-list',
@@ -31,6 +33,7 @@ export class SpecialMemberListComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+  protected isSecretary = inject(LoggedUserDataService).hasRequiredPermission(UserRole.SECRETARY);
   protected specialMemberInfo!: SpecialMemberBasicData[];
   protected loading = true;
   protected totalRecords!: number;
@@ -40,7 +43,7 @@ export class SpecialMemberListComponent implements OnInit {
   table = viewChild.required<Table>("table");
 
   constructor() {
-    this.tabValue = this.route.snapshot.queryParams["tab"] ?? "HONOUR";
+    this.tabValue = this.isSecretary ? this.route.snapshot.queryParams["tab"] ?? "HONOUR" : "DONOR";
   }
 
   ngOnInit() {

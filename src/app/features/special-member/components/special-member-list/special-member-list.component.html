@@ -11,10 +11,12 @@
   </div>
   <p-tabs [(value)]="tabValue" (valueChange)="updateTab()">
     <p-tablist>
-      <p-tab value="HONOUR">Registro Honor</p-tab>
-      <p-tab value="PROTECTOR">Registro Protectoras</p-tab>
-      <p-tab value="FOUNDER">Registro Fundadoras</p-tab>
-      <p-tab value="ACKNOWLEDGEMENT">Reconocimientos</p-tab>
+      @if (isSecretary) {
+        <p-tab value="HONOUR">Registro Honor</p-tab>
+        <p-tab value="PROTECTOR">Registro Protectoras</p-tab>
+        <p-tab value="FOUNDER">Registro Fundadoras</p-tab>
+        <p-tab value="ACKNOWLEDGEMENT">Reconocimientos</p-tab>
+      }
       <p-tab value="DONOR">Registro Donantes</p-tab>
     </p-tablist>
   </p-tabs>
@@ -36,7 +38,10 @@
   >
     <ng-template #header>
       <tr>
-        <th pSortableColumn="roleCensus">Censo <p-sortIcon field="roleCensus"/></th>
+        <th pSortableColumn="roleCensus">
+          Censo
+          <p-sortIcon field="roleCensus"/>
+        </th>
         <th>Nombre</th>
       </tr>
       <tr>

@@ -114,11 +114,12 @@ export interface EconomicDataForm {
 }
 
 export interface EconomicEntryForm {
-  date: Date | string;
+  issueDate: Date | string;
+  dueDate: Date | string;
   description: string;
   amount: number;
-  income?: string;
-  spending?: string;
+  incomeId?: number;
+  expenseId?: number;
   account?: string;
   type: string;
   observations?: string;

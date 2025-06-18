@@ -55,7 +55,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(groupBookings);
   }
   if (user.hasRequiredPermission(UserRole.TRANSACTION)) {
-    menuItems.push(/*transactions, */donations);
+    menuItems.push(donations, specialMemberList);
   }
   if (user.hasRequiredPermission(UserRole.FORM)) {
     menuItems.push(inscriptions, volunteers, senior, jamboreeInscriptions);

@@ -1,71 +1,76 @@
-<div class="container-fluid">
-  <div class="d-flex justify-content-between align-items-end mb-3">
-    <h1 class="mb-0 d-flex me-3">Lista de Donaciones</h1>
-    <div>
-      <p-button
-        icon="pi pi-download"
-        [loading]="excelLoading"
-        (click)="exportExcel()"
-        severity="success"
-        title="Descargar donaciones como excel"
-      ></p-button>
-    </div>
-  </div>
-  <p-table
-    showGridlines
-    [value]="donations"
-    responsiveLayout="scroll"
-    sortField="creationDate"
-    [sortOrder]="-1"
-  >
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="firstSurname">
-          Nombre
-          <p-sortIcon field="firstSurname"></p-sortIcon>
-        </th>
-        <th pSortableColumn="cif">
-          CIF
-          <p-sortIcon field="cif"></p-sortIcon>
-        </th>
-        <th pSortableColumn="amount">
-          Cantidad
-          <p-sortIcon field="amount"></p-sortIcon>
-        </th>
-        <th pSortableColumn="frequency">
-          Tipo de donación
-          <p-sortIcon field="frequency"></p-sortIcon>
-        </th>
-        <th>
-          Estado del pago
-        </th>
-        <th pSortableColumn="creationDate">
-          Fecha
-          <p-sortIcon field="creationDate"></p-sortIcon>
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-donation>
-      <tr>
-        <td>
-          {{ donation.firstSurname }} {{ donation.secondSurname }}, {{ donation.name }}
-        </td>
-        <td>
-          {{ donation.cif }}
-        </td>
-        <td>
-          {{ donation.amount / 100 | currency:'EUR':undefined:undefined:'es' }}
-        </td>
-        <td>
-          {{ donation | donationType }}
-        </td>
-        <td>
-          {{ donation.status === null ? '-' : donation.status }}
-        </td>
-        <td>
-          {{ donation.creationDate | date:"dd/MM/yyyy HH:mm:ss" }}
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+<p-table
+  #tab
+  [value]="donations()"
+  class="first-border"
+  stripedRows
+  selectionMode="single"
+  sortField="date"
+  [sortOrder]="-1"
+>
+  <ng-template pTemplate="caption">
+    @if (showSummary()) {
+      <div>
+        <b>Total:</b>
+        @let economic = totalEconomicDonations;
+        @let economicAmount = totalDonatedAmount;
+        @let inKind = totalInKindDonations;
+        @let inKindAmount = totalInKindAmount;
+        @let total = economicAmount + inKindAmount;
+        {{ total / 100 | currency:'EUR':undefined:undefined:'es' }} -
+        @if (economic) {
+          {{ economic }} {{ economic === 1 ? 'donación económica' : 'donaciones económicas' }}
+          ({{ economicAmount / 100 | currency:'EUR':undefined:undefined:'es' }})
+        }
+        @if (economicAmount && inKind) {
+          y
+        }
+        @if (inKind) {
+          {{ inKind }} {{ inKind === 1 ? 'donación en especie' : 'donaciones en especies' }}
+          ({{ inKind === 1 ? 'valorada en' : 'valoradas en' }}
+          {{ inKindAmount / 100 | currency:'EUR':undefined:undefined:'es' }})
+        }
+      </div>
+    } @else {
+      <div class="d-flex justify-content-between align-items-center">
+        @let total = tab.totalRecords;
+        <div>
+          {{ total }}
+          @if (total === 1) {
+            donación
+          } @else {
+            donaciones
+          }
+        </div>
+        <p-button
+          label="Añadir"
+          routerLink="/registros"
+          [queryParams]="{tab: 'DONOR'}"
+          size="small"
+        ></p-button>
+      </div>
+    }
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Tipo</th>
+      <th>Fecha</th>
+      <th>Importe o Valoración</th>
+      <th>Otros Datos</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-donation let-ri="rowIndex">
+    <tr pSelectableRow (click)="openDonationInfo(donation, ri)">
+      <td class="text-nowrap">{{ donation.type | specialMemberDonation }}</td>
+      <td>{{ donation.date | date:'dd/MM/yyyy' }}</td>
+      <td>{{ donation.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</td>
+      <td>
+        @if (donation.type === 'ECONOMIC') {
+          Cuenta Bancaria: {{ donation.bankAccount }} -
+            Forma de pago: {{ donation.paymentType }}
+        } @else {
+          Tipo de especie: {{ donation.inKindDonationType }}
+        }
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

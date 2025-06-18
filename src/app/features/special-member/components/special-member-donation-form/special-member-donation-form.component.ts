@@ -98,7 +98,7 @@ export class SpecialMemberDonationFormComponent implements OnInit {
 
       const form: SpecialMemberDonationForm = {...this.formHelper.value};
       form.date = DateUtils.toLocalDate(form.date);
-      form.amount! *= 100;
+      form.amount *= 100;
 
       if (form.type === 'ECONOMIC') {
         delete form.inKindDonationType;
@@ -108,7 +108,7 @@ export class SpecialMemberDonationFormComponent implements OnInit {
       }
 
       const saveDonation = this.donationId ?
-        this.specialMemberService.updateDonation(this.memberId, this.donationId, form) :
+        this.specialMemberService.updateDonation(this.donationId, form) :
         this.specialMemberService.addDonation(this.memberId, form);
 
       saveDonation.pipe(finalize(() => this.loading = false))
@@ -137,7 +137,7 @@ export class SpecialMemberDonationFormComponent implements OnInit {
 
   private deleteRecord() {
     this.deleteLoading = true;
-    this.specialMemberService.deleteDonation(this.memberId, this.donationId!)
+    this.specialMemberService.deleteDonation(this.donationId!)
       .pipe(finalize(() => this.deleteLoading = false))
       .subscribe(() => {
         this.alertService.sendBasicSuccessMessage("Donación eliminada con éxito");

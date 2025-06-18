@@ -196,7 +196,7 @@ export class ScoutListComponent implements OnInit {
   }
 
   protected groupFilterChange() {
-    this.table().filter(this.groupFilterValue, 'scoutTypes', 'custom');
+    this.table().filter([this.groupFilterValue], 'scoutTypes', 'custom');
   }
 
   protected activeFilterChange() {
