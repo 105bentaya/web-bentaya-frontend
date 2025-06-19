@@ -1,0 +1,76 @@
+<div class="mt-2">
+  <form class="form-container" [formGroup]="formHelper.form">
+    <div class="row">
+      <div class="col-12 col-sm-6">
+        <p-float-label variant="on">
+          <p-inputNumber
+            formControlName="fiscalYear"
+            id="fiscalYear"
+            [useGrouping]="false"
+            [max]="9999"
+            [min]="2000"
+          />
+          <label for="fiscalYear" class="required">Año fiscal</label>
+        </p-float-label>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-float-label variant="on">
+          <p-inputNumber
+            formControlName="autonomousCommunityDeduction"
+            id="autonomousCommunityDeduction"
+            [max]="100"
+            [min]="0"
+            mode="decimal"
+            [useGrouping]="false"
+            [minFractionDigits]="2"
+            [maxFractionDigits]="2"
+            suffix="%"
+          />
+          <label for="autonomousCommunityDeduction" class="required">Deducción comunidad autónoma</label>
+        </p-float-label>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-float-label variant="on">
+          <input
+            pInputText
+            id="declarantRepresentativeName"
+            formControlName="declarantRepresentativeName"
+          >
+          <label for="declarantRepresentativeName" class="required">Nombre del Representante</label>
+        </p-float-label>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p-float-label variant="on">
+          <input
+            pInputText
+            id="declarantRepresentativeSurname"
+            formControlName="declarantRepresentativeSurname"
+          >
+          <label for="declarantRepresentativeSurname" class="required">Apellidos del Representante</label>
+        </p-float-label>
+      </div>
+      <div class="col-12">
+        <p-float-label variant="on">
+          <p-inputNumber
+            formControlName="declarantRepresentativePhone"
+            id="declarantRepresentativePhone"
+            [useGrouping]="false"
+            [max]="999999999"
+            [min]="0"
+          />
+          <label for="declarantRepresentativePhone" class="required">Teléfono del representante</label>
+        </p-float-label>
+      </div>
+    </div>
+  </form>
+  @if (formHelper.hasFormError("nameTooLong")) {
+    <div class="text-center mb-1">
+      <small class="text-danger">El nombre y apellido combinados no deben superar los 39 caracteres</small>
+    </div>
+  }
+  <app-save-buttons
+    (onSave)="generateFile()"
+    saveLabel="Generar"
+    [saveLoading]="loading"
+  ></app-save-buttons>
+</div>

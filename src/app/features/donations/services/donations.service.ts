@@ -25,4 +25,8 @@ export class DonationsService {
   sendForm(donationForm: DonationForm): Observable<number> {
     return this.http.post<number>(`${this.url}/public`, donationForm);
   }
+
+  generateDownloadFile(form: any) {
+    return this.http.post(`${this.url}/donation-file`, form, {responseType: 'blob', observe: 'response'});
+  }
 }

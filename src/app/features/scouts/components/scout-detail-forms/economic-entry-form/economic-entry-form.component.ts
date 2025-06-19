@@ -195,6 +195,7 @@ export class EconomicEntryFormComponent implements OnInit {
       if (this.donationTypes.incomeTypes.find(income => income.id === value)?.donation) {
         typeControl?.setValue('DONATION');
         typeControl?.disable();
+        this.onTypeChange();
       } else {
         typeControl?.enable();
       }

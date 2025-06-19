@@ -9,13 +9,16 @@ import {DonationListComponent} from "../donation-list/donation-list.component";
 import {FeesListComponent} from "../fees-list/fees-list.component";
 import {SpecialMemberService} from "../../../special-member/special-member.service";
 import {SpecialMemberDonation} from "../../../special-member/models/special-member.model";
-import {EconomicEntry} from "../../../scouts/models/scout.model";
+import {Button} from "primeng/button";
+import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
+import {DialogService} from "primeng/dynamicdialog";
+import {DonationFileFormComponent} from "../donation-file-form/donation-file-form.component";
 
 @Component({
   selector: 'app-donation-management',
   templateUrl: './donation-management.component.html',
   styleUrls: ['./donation-management.component.scss'],
-  providers: [DonationTypePipe],
+  providers: [DonationTypePipe, DynamicDialogService, DialogService],
   imports: [
     TableModule,
     Tab,
@@ -23,11 +26,13 @@ import {EconomicEntry} from "../../../scouts/models/scout.model";
     Tabs,
     DonationFormListComponent,
     DonationListComponent,
-    FeesListComponent
+    FeesListComponent,
+    Button
   ]
 })
 export class DonationManagementComponent implements OnInit {
   private readonly specialMemberService = inject(SpecialMemberService);
+  private readonly dialogService = inject(DynamicDialogService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   protected selectedTab = 0;
@@ -53,5 +58,9 @@ export class DonationManagementComponent implements OnInit {
   protected updateTab() {
     localStorage.setItem("donation_tab", JSON.stringify(this.selectedTab));
     this.router.navigate([], {queryParams: {tab: this.selectedTab}, replaceUrl: true});
+  }
+
+  protected generateDownloadFile() {
+    this.dialogService.openDialog(DonationFileFormComponent, "Generar Modelo 182", "small");
   }
 }
