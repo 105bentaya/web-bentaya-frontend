@@ -8,13 +8,19 @@ import {EconomicEntryFormComponent} from "../../scout-detail-forms/economic-entr
 import {noop} from "rxjs";
 import {assign} from "lodash";
 import {Router} from "@angular/router";
+import {EntryTypePipe} from "../../../pipes/entry-type.pipe";
+import {IdDocumentTypePipe} from "../../../pipes/id-document-type.pipe";
+import {IdDocumentPipe} from "../../../pipes/id-document.pipe";
 
 @Component({
   selector: 'app-economic-entry-info',
   imports: [
     Button,
     CurrencyPipe,
-    DatePipe
+    DatePipe,
+    EntryTypePipe,
+    IdDocumentTypePipe,
+    IdDocumentPipe
   ],
   templateUrl: './economic-entry-info.component.html',
   styleUrl: './economic-entry-info.component.scss'

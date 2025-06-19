@@ -21,6 +21,7 @@ import {ScoutService} from "../../../services/scout.service";
 import {EconomicEntryFormComponent} from "../../scout-detail-forms/economic-entry-form/economic-entry-form.component";
 import {EconomicEntryInfoComponent} from "../economic-entry-info/economic-entry-info.component";
 import {CurrencyPipe, DatePipe} from "@angular/common";
+import {EntryTypePipe} from "../../../pipes/entry-type.pipe";
 
 @Component({
   selector: 'app-economic-data',
@@ -33,7 +34,8 @@ import {CurrencyPipe, DatePipe} from "@angular/common";
     IdDocumentTypePipe,
     DocumentListComponent,
     CurrencyPipe,
-    DatePipe
+    DatePipe,
+    EntryTypePipe
   ],
   templateUrl: './economic-data.component.html',
   styleUrl: './economic-data.component.scss',
@@ -73,7 +75,7 @@ export class EconomicDataComponent {
     ref.onClose.subscribe(result => {
       if (result) {
         const list = this.economicData.entries;
-        list.push(result);
+        this.economicData.entries = [...this.economicData.entries, result];
         this.openEntryInfo(result, list.length - 1);
       }
     });

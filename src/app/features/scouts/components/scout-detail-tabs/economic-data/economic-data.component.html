@@ -37,6 +37,7 @@
         <p-tag value="No hay apuntes" severity="secondary"></p-tag>
       } @else {
         <p-table
+          #entryTable
           [value]="economicData.entries"
           class="first-border"
           stripedRows
@@ -57,7 +58,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-entry let-ri="rowIndex">
             <tr pSelectableRow (click)="openEntryInfo(entry, ri)">
-              <td class="text-nowrap">{{ entry.type }}</td>
+              <td class="text-nowrap">{{ entry.type | entryType }}</td>
               <td>{{ entry.issueDate | date:'dd/MM/yyyy' }}</td>
               <td>{{ entry.dueDate | date:'dd/MM/yyyy' }}</td>
               <td>

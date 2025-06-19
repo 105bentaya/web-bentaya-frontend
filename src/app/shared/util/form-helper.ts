@@ -134,7 +134,8 @@ export class FormHelper {
 
   validateAll(): boolean {
     this.hasBeenValidated = true;
-    return this.validateControls(Object.keys(this.form.controls));
+    this.validateControls(Object.keys(this.form.controls));
+    return this.form.valid;
   }
 
   private validateControls(controls: string[]): boolean {

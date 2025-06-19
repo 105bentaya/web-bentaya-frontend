@@ -54,9 +54,16 @@
             formControlName="type"
             appendTo="body"
             [options]="types"
-            editable
             maxlength="255"
-          />
+            (onChange)="onTypeChange()"
+          >
+            <ng-template pTemplate="item" let-item>
+              {{ item | entryType }}
+            </ng-template>
+            <ng-template pTemplate="selectedItem" let-item>
+              {{ item | entryType }}
+            </ng-template>
+          </p-select>
           <label class="required" for="type">Concepto Económico</label>
         </p-floatlabel>
       </div>
@@ -117,6 +124,68 @@
         </p-floatlabel>
       </div>
     </div>
+    @if (typeIsDonation) {
+      <div class="row" formGroupName="donor">
+        <div class="col-12 d-flex gap-2">
+          <div class="d-flex flex-column">
+            <b class="mb-2">Datos del Donante</b>
+            @if (hasDonated) {
+              <p>
+                Estos son los datos de la persona donante en el momento que se hizo esta donación. Sólo cambiar si hay
+                un error. Si quieres cambiar la persona donante, edita los datos económicos de la asociada.
+              </p>
+            } @else {
+              <p>
+                Por defecto están los datos de la persona declarada como donante. Sólo cambiar si hay un error. Si quieres
+                cambiar la persona donante, edita los datos económicos de la asociada.
+              </p>
+            }
+            <label class="required" for="type">Tipo de persona</label>
+            <p-select-button
+              id="type"
+              class="w-fit"
+              [options]="personTypes"
+              [allowEmpty]="false"
+              formControlName="personType"
+            ></p-select-button>
+          </div>
+        </div>
+        <div class="col">
+          <p-float-label variant="on">
+            <input
+              pInputText
+              formControlName="name"
+              id="name"
+            />
+            <label class="required" for="name">
+              @if (donorIsReal) {
+                Nombre
+              } @else {
+                Razón Social
+              }
+            </label>
+          </p-float-label>
+        </div>
+        @if (donorIsReal) {
+          <div class="col-12 col-sm-6">
+            <p-float-label variant="on">
+              <input
+                pInputText
+                formControlName="surname"
+                id="surname"
+              />
+              <label for="surname">Apellidos</label>
+            </p-float-label>
+          </div>
+        }
+        <app-id-document-form
+          [parentForm]="formHelper.form.get('donor')!"
+          class="col-12"
+          colClass="col-12 col-sm-6"
+          labelClass="required"
+        />
+      </div>
+    }
     <app-save-buttons
       saveType="submit"
       [cancelLabel]="entryId ? 'Borrar' : 'Cancelar'"

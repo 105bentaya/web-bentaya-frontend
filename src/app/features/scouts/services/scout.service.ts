@@ -6,6 +6,7 @@ import {
   EconomicDonationEntry,
   EconomicEntry,
   Scout,
+  ScoutDonor,
   ScoutFile,
   ScoutListData,
   ScoutRecord,
@@ -25,7 +26,6 @@ import {
 import {PagedFilter} from "../../../shared/model/filter.model";
 import {Page} from "../../../shared/model/page.model";
 import {InvoiceTypes} from "../../invoice/invoice.model";
-import {FeeForm} from "../../donations/model/donation-form.model";
 
 export type ScoutQuickFilter = "GROUP" | "ALL" | "IMAGE";
 
@@ -122,6 +122,10 @@ export class ScoutService {
 
   getDonationEntries(filter: PagedFilter): Observable<Page<EconomicDonationEntry>> {
     return this.http.get<Page<EconomicDonationEntry>>(`${this.scoutUrl}/economic/entries`, {params: new HttpParams({fromObject: filter})});
+  }
+
+  getScoutDonor(scoutId: number): Observable<ScoutDonor> {
+    return this.http.get<ScoutDonor>(`${this.scoutUrl}/economic/donor/${scoutId}`);
   }
 
   addEntry(scoutId: number, form: EconomicEntryForm): Observable<EconomicEntry> {

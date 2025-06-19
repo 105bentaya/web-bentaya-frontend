@@ -127,7 +127,7 @@ export class ScoutDetailComponent implements OnInit {
       id: 'economico',
       label: "Datos Económicos",
       showIf: Permission.BASIC_INFORMATION,
-      editIf: () => this.permissionGreaterThan(Permission.BASIC_EDITION)
+      editIf: () => this.permissionGreaterThan(Permission.BASIC_EDITION) || this.userData.hasRequiredPermission(UserRole.TRANSACTION)
     },
   ];
   protected shownTabs: { id: TabOptions; label: string }[] = [];

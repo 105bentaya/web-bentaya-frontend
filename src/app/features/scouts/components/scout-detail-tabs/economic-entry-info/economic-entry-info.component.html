@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-12 col-sm-4">
         <b>Tipo de Apunte</b>
-        <div>{{ entry.type }}</div>
+        <div>{{ entry.type | entryType }}</div>
       </div>
       <div class="col-12 col-sm-4">
         <b>Fecha de Ejecución</b>
@@ -43,6 +43,22 @@
         <b>Observaciones</b>
         <div>{{ entry.observations ?? 'Ninguna' }}</div>
       </div>
+      @if (entry.type === "DONATION") {
+        @let donor = entry.donor!;
+        <div class="col-12 col-sm-8">
+          @if (donor.personType === 'REAL') {
+            <b>Nombre y apellidos del donante</b>
+            <div>{{ donor.name }} {{ donor.surname }}</div>
+          } @else {
+            <b>Razón social del donante</b>
+            <div>{{ donor.name }}</div>
+          }
+        </div>
+        <div class="col">
+          <b> {{ donor.idDocument | idDocumentType }} del donante</b>
+          <div>{{ donor.idDocument | idDocument }}</div>
+        </div>
+      }
       @if (showRoute) {
         <div class="mb-0">
           <div style="height: 1.75rem; right: 1rem;">

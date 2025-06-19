@@ -60,6 +60,13 @@ export interface ScoutEconomicData {
   entries: EconomicEntry[];
 }
 
+export interface ScoutDonor {
+  name: string;
+  surname?: string;
+  idDocument: IdentificationDocument;
+  personType: PersonType;
+}
+
 export interface EconomicEntry {
   id: number;
   issueDate: Date;
@@ -69,8 +76,16 @@ export interface EconomicEntry {
   incomeType: InvoiceConceptType;
   expenseType: InvoiceConceptType;
   account: string;
-  type: string;
+  type: EntryType;
   observations: string;
+  donor?: EconomicEntryDonor;
+}
+
+export interface EconomicEntryDonor {
+  name: string;
+  surname?: string;
+  idDocument: IdentificationDocument;
+  personType: PersonType;
 }
 
 export interface EconomicDonationEntry {
@@ -178,6 +193,7 @@ export interface IdentificationDocument {
 }
 
 
+export type EntryType = "DONATION" | "PAYMENT" | "CONTRIBUTION" | "CHARGE"
 export type PersonType = "REAL" | "JURIDICAL";
 export type IdType = "DNI" | "NIE" | "CIF" | "PAS" | "OTR";
 export type ScoutType = "SCOUT" | "SCOUTER" | "COMMITTEE" | "MANAGER" | "INACTIVE";

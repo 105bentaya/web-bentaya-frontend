@@ -1,4 +1,4 @@
-import {BloodType, IdentificationDocument, ScoutType} from "./scout.model";
+import {BloodType, EconomicEntryDonor, IdentificationDocument, ScoutType} from "./scout.model";
 
 export interface NewScoutForm {
   iban?: string;
@@ -123,6 +123,7 @@ export interface EconomicEntryForm {
   account?: string;
   type: string;
   observations?: string;
+  donor?: EconomicEntryDonor
 }
 
 export interface RegistrationDateForm {
