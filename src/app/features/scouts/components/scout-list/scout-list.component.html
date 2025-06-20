@@ -253,6 +253,7 @@
         routerLink="/scouts/{{scout.id}}"
         [pContextMenuRow]="scout.id"
         [pContextMenuRowIndex]="3213"
+        [ngClass]="{'bg-danger-subtle': scout.hasWarnings}"
       >
         <td>
           {{ scout.surname }}, {{ scout.name }}

@@ -26,6 +26,7 @@ export interface ScoutListData {
   idDocument?: IdentificationDocument;
   census?: number;
   email: string;
+  hasWarnings: boolean;
 }
 
 export interface ScoutHistory {

@@ -182,11 +182,19 @@ export class ScoutDetailComponent implements OnInit {
   }
 
   protected startEditing() {
-    this.editing = this.tabEditionAllowed;
+    this.editing = this.currentTabEditionAllowed;
   }
 
   protected get scoutPersonalData() {
     return this.scout.personalData;
+  }
+
+  protected get personalDataWarning() {
+    return this.scout.scoutInfo.scoutType === "SCOUT" && this.scout.usernames.length < 1;
+  }
+
+  protected get economicWarning() {
+    return this.scout.scoutInfo.scoutType === "SCOUT" && !this.scout.contactList.some(contact => contact.donor);
   }
 
   protected onEditionStop(updatedMember: void | Scout) {
@@ -243,8 +251,12 @@ export class ScoutDetailComponent implements OnInit {
     });
   }
 
-  protected get tabEditionAllowed() {
-    return this.allTabs.find(tab => tab.id === this.selectedTab)?.editIf() ?? this.permissionGreaterThan(Permission.FULL_EDITION);
+  protected tabEditionAllowed(tabId: string) {
+    return this.allTabs.find(tab => tab.id === tabId)?.editIf() ?? this.permissionGreaterThan(Permission.FULL_EDITION);
+  }
+
+  protected get currentTabEditionAllowed() {
+    return this.tabEditionAllowed(this.selectedTab);
   }
 
   protected get economicEntryEditionAllowed() {
@@ -252,10 +264,20 @@ export class ScoutDetailComponent implements OnInit {
   }
 
   protected get hideEditButton() {
-    return this.editing || !this.tabEditionAllowed;
+    return this.editing || !this.currentTabEditionAllowed;
   }
 
   private permissionGreaterThan(permission: Permission) {
     return this.permission >= permission;
+  }
+
+  protected tabHasWarning(id: TabOptions) {
+    if (id === "economico") {
+      return this.economicWarning;
+    }
+    if (id === "personal") {
+      return this.personalDataWarning;
+    }
+    return false;
   }
 }

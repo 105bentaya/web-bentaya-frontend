@@ -89,7 +89,12 @@
       @if (!secretaryEdition) {
         <p-tablist>
           @for (tab of shownTabs; track tab.id) {
-            <p-tab [value]="tab.id" [disabled]="editing">{{ tab.label }}</p-tab>
+            <p-tab [value]="tab.id" [disabled]="editing">
+              {{ tab.label }}
+              @if (tabEditionAllowed(tab.id) && tabHasWarning(tab.id)) {
+                <i class="ms-1 pi pi-exclamation-circle text-danger fw-bolder"></i>
+              }
+            </p-tab>
           }
         </p-tablist>
       }
@@ -112,7 +117,7 @@
                 (onEditionStop)="onEditionStop($event)"
               />
             } @else {
-              <app-personal-data [scout]="scout" [editable]="tabEditionAllowed"/>
+              <app-personal-data [scout]="scout" [editable]="currentTabEditionAllowed"/>
             }
           </p-tabpanel>
           <p-tabpanel value="salud">
@@ -122,7 +127,7 @@
                 (onEditionStop)="onEditionStop($event)"
               />
             } @else {
-              <app-medical-data [scout]="scout" [editable]="tabEditionAllowed"/>
+              <app-medical-data [scout]="scout" [editable]="currentTabEditionAllowed"/>
             }
           </p-tabpanel>
           <p-tabpanel value="familiar">
@@ -144,7 +149,7 @@
                 [newScoutType]="newScoutType"
               />
             } @else {
-              <app-group-data [scout]="scout" [editable]="tabEditionAllowed"/>
+              <app-group-data [scout]="scout" [editable]="currentTabEditionAllowed"/>
             }
           </p-tabpanel>
           <p-tabpanel value="scout">
@@ -166,7 +171,7 @@
             } @else {
               <app-economic-data
                 [scout]="scout"
-                [editable]="tabEditionAllowed"
+                [editable]="currentTabEditionAllowed"
                 [canEditEntries]="economicEntryEditionAllowed"
               />
             }

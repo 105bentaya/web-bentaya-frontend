@@ -1,6 +1,15 @@
 <div class="row">
   <div class="col-12 col-md-6 d-flex flex-column">
-    <b class="fs-5 title-font">Datos Donante</b>
+    <div class="d-flex flex-row gap-1 align-items-center">
+      <b class="fs-5 title-font">Datos Donante</b>
+      @if (!contactIsDonor && editable()) {
+        <i
+          class="pi pi-exclamation-circle text-danger fw-bold"
+          pTooltip="La persona asociada está desginada como donante. En el 99% de los casos esto no es así. Revisa bien quién es el donante"
+          (click)="showDialog = true"
+        ></i>
+      }
+    </div>
     <app-basic-info label="Código" [value]="(scout().scoutInfo.census | census) + ' D'"/>
     @if (donorCompanyName) {
       <app-basic-info label="Razón Social" [value]="donorCompanyName"/>
@@ -84,3 +93,7 @@
     </div>
   </div>
 </div>
+<p-dialog [(visible)]="showDialog" modal [draggable]="false" header="Aviso donante" [style]="{'max-width': '700px'}">
+  La persona asociada está designada como donante. En el 99% de los casos suele ser uno de los familiares. Comprueba
+  bien quién es el donante para evitar problemas a la hora de realizar la declaración de donantes.
+</p-dialog>

@@ -22,6 +22,8 @@ import {EconomicEntryFormComponent} from "../../scout-detail-forms/economic-entr
 import {EconomicEntryInfoComponent} from "../economic-entry-info/economic-entry-info.component";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {EntryTypePipe} from "../../../pipes/entry-type.pipe";
+import {Tooltip} from "primeng/tooltip";
+import {Dialog} from "primeng/dialog";
 
 @Component({
   selector: 'app-economic-data',
@@ -35,7 +37,9 @@ import {EntryTypePipe} from "../../../pipes/entry-type.pipe";
     DocumentListComponent,
     CurrencyPipe,
     DatePipe,
-    EntryTypePipe
+    EntryTypePipe,
+    Tooltip,
+    Dialog
   ],
   templateUrl: './economic-data.component.html',
   styleUrl: './economic-data.component.scss',
@@ -48,6 +52,7 @@ export class EconomicDataComponent {
   public scout = input.required<Scout>();
   public canEditEntries = input<boolean>(false);
   public editable = input<boolean>(false);
+  protected showDialog = false;
 
   protected get economicData(): ScoutEconomicData {
     return this.scout().economicData;
@@ -55,6 +60,10 @@ export class EconomicDataComponent {
 
   protected get donor(): ScoutContact | ScoutPersonalData {
     return this.scout().contactList.find(contact => contact.donor) ?? this.scout().personalData;
+  }
+
+  protected get contactIsDonor() {
+    return this.scout().contactList.some(contact => contact.donor);
   }
 
   protected get donorCompanyName(): string | undefined {

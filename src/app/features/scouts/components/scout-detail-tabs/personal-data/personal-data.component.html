@@ -44,7 +44,11 @@
       }
     </div>
     @if (usernames.length < 1) {
-      <p-tag class="mt-1" severity="secondary" value="No usuarios asignados"/>
+      @if (editable() && scout().scoutInfo.scoutType === "SCOUT") {
+        <p-tag class="mt-1" severity="danger" icon="pi pi-exclamation-circle" value="No hay usuarios asignados"/>
+      } @else {
+        <p-tag class="mt-1" severity="secondary" value="No usuarios asignados"/>
+      }
     }
     @for (username of usernames; track username) {
       <div class="mb-1">
