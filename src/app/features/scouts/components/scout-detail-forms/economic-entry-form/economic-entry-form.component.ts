@@ -228,7 +228,7 @@ export class EconomicEntryFormComponent implements OnInit {
       form.type = this.formHelper.controlValue("type");
       form.issueDate = DateUtils.toLocalDate(form.issueDate);
       form.dueDate = DateUtils.toLocalDate(form.dueDate);
-      form.amount *= 100;
+      form.amount = Math.round(form.amount * 100);
 
       if (form.type != "DONATION") {
         form.donor = undefined;

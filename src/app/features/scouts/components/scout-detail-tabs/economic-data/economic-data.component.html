@@ -2,7 +2,7 @@
   <div class="col-12 col-md-6 d-flex flex-column">
     <div class="d-flex flex-row gap-1 align-items-center">
       <b class="fs-5 title-font">Datos Donante</b>
-      @if (!contactIsDonor && editable()) {
+      @if (showDonorWarning && editable()) {
         <i
           class="pi pi-exclamation-circle text-danger fw-bold"
           pTooltip="La persona asociada está desginada como donante. En el 99% de los casos esto no es así. Revisa bien quién es el donante"

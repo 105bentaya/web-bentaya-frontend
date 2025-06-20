@@ -62,8 +62,8 @@ export class EconomicDataComponent {
     return this.scout().contactList.find(contact => contact.donor) ?? this.scout().personalData;
   }
 
-  protected get contactIsDonor() {
-    return this.scout().contactList.some(contact => contact.donor);
+  protected get showDonorWarning() {
+    return this.scout().scoutInfo.scoutType === "SCOUT" && !this.scout().contactList.some(contact => contact.donor);
   }
 
   protected get donorCompanyName(): string | undefined {

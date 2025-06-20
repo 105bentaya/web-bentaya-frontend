@@ -50,7 +50,7 @@ export class DonationFileFormComponent implements OnInit {
     if (this.formHelper.validateAll()) {
       this.loading = true;
       const form = {...this.formHelper.value};
-      form.autonomousCommunityDeduction *= 100;
+      form.autonomousCommunityDeduction = Math.round(form.autonomousCommunityDeduction * 100);
       this.donationService.generateDownloadFile(form)
         .pipe(finalize(() => this.loading = false))
         .subscribe(res => {

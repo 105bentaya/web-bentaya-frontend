@@ -98,7 +98,7 @@ export class SpecialMemberDonationFormComponent implements OnInit {
 
       const form: SpecialMemberDonationForm = {...this.formHelper.value};
       form.date = DateUtils.toLocalDate(form.date);
-      form.amount *= 100;
+      form.amount = Math.round(form.amount * 100);
 
       if (form.type === 'ECONOMIC') {
         delete form.inKindDonationType;

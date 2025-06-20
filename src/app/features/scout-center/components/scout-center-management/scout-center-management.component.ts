@@ -168,7 +168,7 @@ export class ScoutCenterManagementComponent implements OnInit {
     if (this.editForm.validateAll()) {
       this.loading = true;
       const scoutCenter: ScoutCenter = this.editForm.value;
-      scoutCenter.price *= 100;
+      scoutCenter.price = Math.round(scoutCenter.price * 100);
       this.scoutCenterService.updateScoutCenter(scoutCenter)
         .pipe(finalize(() => this.loading = false))
         .subscribe(result => {

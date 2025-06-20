@@ -169,7 +169,7 @@ export class InvoiceFormComponent implements OnInit {
   protected onSubmit(continueAdding = false) {
     if (this.invoiceFormHelper.validateAll()) {
       const invoice: Invoice = {...this.invoiceFormHelper.value};
-      invoice.amount *= 100;
+      invoice.amount = Math.round(invoice.amount * 100);
       invoice.invoiceDate = DateUtils.toLocalDate(invoice.invoiceDate);
       invoice.paymentDate = DateUtils.toLocalDate(invoice.paymentDate);
       invoice.nif = invoice.nif.toUpperCase();

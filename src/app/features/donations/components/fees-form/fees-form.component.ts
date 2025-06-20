@@ -98,7 +98,7 @@ export class FeesFormComponent implements OnInit {
       value.dueDate = DateUtils.toLocalDate(value.dueDate);
 
       if (value.applyToCurrentScouts) {
-        value.amount! *= 100;
+        value.amount = Math.round(value.amount! * 100);
         delete value.file;
       } else {
         delete value.amount;
