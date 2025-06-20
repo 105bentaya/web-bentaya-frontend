@@ -47,6 +47,7 @@ export class FeesListComponent implements OnInit {
   protected donationTypes: InvoiceConceptType[] = [];
   protected readonly FilterUtils = FilterUtils;
   protected readonly table = viewChild.required<Table>("dt");
+  private lastFilter: any;
 
   ngOnInit() {
     this.scoutService.getDonationTypes.pipe(
@@ -56,7 +57,8 @@ export class FeesListComponent implements OnInit {
 
   protected loadData(tableLazyLoadEvent: any) {
     this.loading = true;
-    this.scoutService.getDonationEntries(FilterUtils.lazyEventToFilter(tableLazyLoadEvent))
+    this.lastFilter = tableLazyLoadEvent;
+    this.scoutService.getDonationEntries(FilterUtils.lazyEventToFilter(this.lastFilter))
       .pipe(finalize(() => this.loading = false))
       .subscribe(result => {
         this.fees = result.data;
@@ -71,7 +73,7 @@ export class FeesListComponent implements OnInit {
       "small",
       {entry, scoutId: scoutId, editable: true, showRoute: true}
     );
-    ref.onClose.subscribe(() => this.table().filterGlobal("", ""));
+    ref.onClose.subscribe(() => this.loadData(this.lastFilter));
   }
 
   protected openFeesForm() {
@@ -80,6 +82,6 @@ export class FeesListComponent implements OnInit {
       "Pasar Cuota",
       "small"
     );
-    ref.onClose.subscribe(() => this.table().filterGlobal("", ""));
+    ref.onClose.subscribe(() => this.loadData(this.lastFilter));
   }
 }
