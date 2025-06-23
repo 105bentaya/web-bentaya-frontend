@@ -1,7 +1,7 @@
-import {Component, inject, OnInit, viewChild} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
-import {Table, TableModule} from "primeng/table";
+import {TableModule} from "primeng/table";
 import {EconomicDonationEntry, EconomicEntry} from "../../../scouts/models/scout.model";
 import {ScoutService} from "../../../scouts/services/scout.service";
 import {finalize, map} from "rxjs";
@@ -46,7 +46,6 @@ export class FeesListComponent implements OnInit {
 
   protected donationTypes: InvoiceConceptType[] = [];
   protected readonly FilterUtils = FilterUtils;
-  protected readonly table = viewChild.required<Table>("dt");
   private lastFilter: any;
 
   ngOnInit() {
