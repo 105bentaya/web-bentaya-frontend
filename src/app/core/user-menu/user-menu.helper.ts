@@ -10,25 +10,29 @@ const generalScoutList = {label: "Educandas", icon: "pi pi-users", route: "/scou
 const groupAttendanceList = {label: "Listas de Asistencia", icon: "pi pi-list-check", route: "/unidad/asistencias", category: "Unidad"};
 const groupInscriptions = {label: "Preinscripciones", icon: "pi pi-folder", route: "/unidad/preinscripciones", category: "Unidad"};
 const invoiceList = {label: "Facturas", icon: "pi pi-receipt", route: "/facturas", category: "Gestión de Grupo"};
+const treasuryInvoiceList = {label: "Facturas", icon: "pi pi-receipt", route: "/facturas", category: "Tesorería"};
 const secretaryScoutList = {label: "Censo", icon: "pi pi-users", route: "/scouts/censo", category: "Gestión de Grupo"};
 const specialMemberList = {label: "Registros", icon: "fa fa-award", route: "/registros", category: "Gestión de Grupo"};
 const groupBookings = {label: "Centros Scout", icon: "fa-solid fa-tents", route: "/centros-scout/grupo", category: "Gestión de Grupo"};
 const scoutCenterRequester = {label: "Mis Reservas", icon: "pi pi-compass", route: "/centros-scout/seguimiento"};
 const scoutCenterManager = {label: "Gestión de Reservas", icon: "fa-solid fa-tents", route: "/centros-scout/gestion", category: "Centros Scout"};
 const scoutCenterInformation = {label: "Ajustes Centros Scout", icon: "fa-solid fa-sliders", route: "/centros-scout/datos", category: "Centros Scout"};
-const donations = {label: "Donaciones", icon: "fa-solid fa-piggy-bank", route: '/donaciones/lista', category: "Gestión de Grupo"};
+const donations = {label: "Donaciones", icon: "fa-solid fa-piggy-bank", route: '/donaciones/lista', category: "Tesorería"};
 const inscriptions = {label: "Preinscripciones", icon: "pi pi-folder", route: "/preinscripciones", category: "Gestión de Grupo"};
 const jamboreeInscriptions = {label: "Jamboree", icon: "fa-solid fa-earth", route: "/jamboree/inscripciones", category: "Gestión de Grupo"};
 const volunteers = {label: "Voluntariado", icon: "pi pi-heart", route: "/voluntariado", category: "Gestión de Grupo"};
 const senior = {label: "Sección Sénior", icon: "fa-solid fa-hat-cowboy", route: "/seccion-senior/lista", category: "Gestión de Grupo"};
 const userList = {label: "Usuarios", icon: "pi pi-database", route: "/usuarios", category: "Administración"};
 const settings = {label: "Ajustes", icon: "pi pi-cog", route: "/ajustes", category: "Administración"};
+const shop = {label: "Tienda Scout", icon: "fa fa-store", route: "/tienda-scout"};
+const shopProducts = {label: "Productos", icon: "fa fa-shirt", route: "/tienda/productos", category: "Tesorería"};
+const transactions = {label: "Transacciones", icon: "pi pi-wallet", route: "/tienda/transacciones", category: "Tesorería"};
 
 export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
   const menuItems = [];
 
   if (userIsScoutMember(user)) {
-    menuItems.push(calendar);
+    menuItems.push(calendar, shop);
   }
   if (user.hasRequiredPermission(UserRole.USER)) {
     menuItems.push(scoutData, userAttendanceList);
@@ -40,7 +44,10 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     if (user.getScouterGroup()) {
       menuItems.push(groupAttendanceList, groupInscriptions);
     }
-    menuItems.push(scoutData, invoiceList);
+    menuItems.push(scoutData);
+    if (!user.hasRequiredPermission(UserRole.TRANSACTION)) {
+      menuItems.push(invoiceList);
+    }
   }
   if (user.hasRequiredPermission(UserRole.SCOUT_CENTER_REQUESTER)) {
     menuItems.push(scoutCenterRequester);
@@ -55,7 +62,7 @@ export function buildSplitMenu(user: LoggedUserDataService): MenuItem[] {
     menuItems.push(groupBookings);
   }
   if (user.hasRequiredPermission(UserRole.TRANSACTION)) {
-    menuItems.push(donations, specialMemberList);
+    menuItems.push(treasuryInvoiceList, donations, specialMemberList, shopProducts, transactions);
   }
   if (user.hasRequiredPermission(UserRole.FORM)) {
     menuItems.push(inscriptions, volunteers, senior, jamboreeInscriptions);

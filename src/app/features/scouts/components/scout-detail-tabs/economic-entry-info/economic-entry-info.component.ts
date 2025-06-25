@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {DynamicDialogService} from "../../../../../shared/services/dynamic-dialog.service";
 import {EconomicEntry} from "../../../models/scout.model";
@@ -11,16 +11,17 @@ import {Router} from "@angular/router";
 import {EntryTypePipe} from "../../../pipes/entry-type.pipe";
 import {IdDocumentTypePipe} from "../../../pipes/id-document-type.pipe";
 import {IdDocumentPipe} from "../../../pipes/id-document.pipe";
+import {CurrencyEuroPipe} from "../../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-economic-entry-info',
   imports: [
     Button,
-    CurrencyPipe,
     DatePipe,
     EntryTypePipe,
     IdDocumentTypePipe,
-    IdDocumentPipe
+    IdDocumentPipe,
+    CurrencyEuroPipe
   ],
   templateUrl: './economic-entry-info.component.html',
   styleUrl: './economic-entry-info.component.scss'

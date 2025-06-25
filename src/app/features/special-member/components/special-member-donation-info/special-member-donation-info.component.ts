@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {ScoutRecord} from "../../../scouts/models/scout.model";
@@ -11,14 +11,15 @@ import {
   SpecialMemberDonationFormComponent
 } from "../special-member-donation-form/special-member-donation-form.component";
 import {SpecialMemberDonationPipe} from "../../special-member-donation.pipe";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-special-member-donation-info',
   imports: [
     Button,
     DatePipe,
-    CurrencyPipe,
-    SpecialMemberDonationPipe
+    SpecialMemberDonationPipe,
+    CurrencyEuroPipe
   ],
   templateUrl: './special-member-donation-info.component.html',
   styleUrl: './special-member-donation-info.component.scss'

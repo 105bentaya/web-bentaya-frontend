@@ -11,6 +11,7 @@ import {
 } from "../../../../shared/components/buttons/general-a-button/general-a-button.component";
 import {Button} from "primeng/button";
 import {ScoutCenterService} from "../../../scout-center/scout-center.service";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-booking-information',
@@ -22,7 +23,8 @@ import {ScoutCenterService} from "../../../scout-center/scout-center.service";
     AutoFocus,
     DatePicker,
     GeneralAButtonComponent,
-    Button
+    Button,
+    CurrencyEuroPipe
   ]
 })
 export class BookingInformationComponent implements OnChanges {

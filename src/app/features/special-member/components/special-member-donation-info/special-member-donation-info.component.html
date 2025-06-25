@@ -10,7 +10,7 @@
       </div>
       <div class="col-12 col-sm-4">
         <b>{{ donation.type === 'IN_KIND' ? 'Valoración Económica' : 'Importe' }}</b>
-        <div>{{ donation.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
+        <div>{{ donation.amount! | currencyEuro }}</div>
       </div>
       <div class="col-12 col-sm-4">
         <b>Fecha</b>

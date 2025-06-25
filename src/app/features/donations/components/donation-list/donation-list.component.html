@@ -16,10 +16,10 @@
         @let inKind = totalInKindDonations;
         @let inKindAmount = totalInKindAmount;
         @let total = economicAmount + inKindAmount;
-        {{ total / 100 | currency:'EUR':undefined:undefined:'es' }} -
+        {{ total | currencyEuro }} -
         @if (economic) {
           {{ economic }} {{ economic === 1 ? 'donación económica' : 'donaciones económicas' }}
-          ({{ economicAmount / 100 | currency:'EUR':undefined:undefined:'es' }})
+          ({{ economicAmount | currencyEuro }})
         }
         @if (economicAmount && inKind) {
           y
@@ -27,7 +27,7 @@
         @if (inKind) {
           {{ inKind }} {{ inKind === 1 ? 'donación en especie' : 'donaciones en especies' }}
           ({{ inKind === 1 ? 'valorada en' : 'valoradas en' }}
-          {{ inKindAmount / 100 | currency:'EUR':undefined:undefined:'es' }})
+          {{ inKindAmount | currencyEuro }})
         }
       </div>
     } @else {
@@ -62,7 +62,7 @@
     <tr pSelectableRow (click)="openDonationInfo(donation, ri)">
       <td class="text-nowrap">{{ donation.type | specialMemberDonation }}</td>
       <td>{{ donation.date | date:'dd/MM/yyyy' }}</td>
-      <td>{{ donation.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</td>
+      <td>{{ donation.amount! | currencyEuro }}</td>
       <td>
         @if (donation.type === 'ECONOMIC') {
           Cuenta Bancaria: {{ donation.bankAccount }} -

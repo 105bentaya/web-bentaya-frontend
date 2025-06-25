@@ -8,7 +8,7 @@ import {Status} from "../../constant/status.constant";
 import {BookingStatusUpdateComponent} from "../management/booking-status-update/booking-status-update.component";
 import {DialogService} from "primeng/dynamicdialog";
 import {ConfirmationService} from "primeng/api";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {BookingStatusPipe} from '../../../scout-center/scout-center-status.pipe';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {DividerModule} from 'primeng/divider';
@@ -32,6 +32,7 @@ import {filter, finalize} from "rxjs";
 import {identity} from "lodash";
 import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
 import {BookingDocumentHelpComponent} from "../booking-document-help/booking-document-help.component";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-booking-follow-up',
@@ -42,7 +43,6 @@ import {BookingDocumentHelpComponent} from "../booking-document-help/booking-doc
     DatePipe,
     FieldsetModule,
     DividerModule,
-    CurrencyPipe,
     BookingStatusPipe,
     FileUploadModule,
     BasicLoadingInfoComponent,
@@ -52,7 +52,8 @@ import {BookingDocumentHelpComponent} from "../booking-document-help/booking-doc
     Tag,
     DocumentFileUploaderComponent,
     BooleanPipe,
-    BookingDocumentHelpComponent
+    BookingDocumentHelpComponent,
+    CurrencyEuroPipe
   ]
 })
 export class BookingFollowUpComponent implements OnInit {

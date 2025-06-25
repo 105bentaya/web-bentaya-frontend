@@ -1,0 +1,92 @@
+<div class="container container-padding">
+
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <h1 class="mb-0">Tienda Scout</h1>
+    @if (cartButton && cartButton.label === '0') {
+      <i [routerLink]="cartButton.routerLink" class="pi pi-shopping-cart fs-3 cursor-pointer"></i>
+    } @else if (cartButton) {
+      <i
+        [routerLink]="cartButton.routerLink"
+        class="pi pi-shopping-cart fs-3 cursor-pointer"
+        pBadge
+        [severity]="cartButton.severity"
+        [value]="cartButton.label"
+      ></i>
+    }
+  </div>
+  <div class="d-flex flex-column">
+    <div class="mb-2 align-self-end">
+      <p-selectButton
+        [options]="viewOptions"
+        [(ngModel)]="showTable"
+        (onChange)="saveView()"
+        [allowEmpty]="false"
+      >
+        <ng-template pTemplate="item" let-item>
+          <i [class]="item.icon"></i>
+        </ng-template>
+      </p-selectButton>
+    </div>
+    @if (showTable) {
+      <p-table [value]="products" [loading]="!products">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nombre</th>
+            <th>Imagen</th>
+            <th class="d-none d-md-table-cell">Descripción</th>
+            <th>Precio</th>
+            <th style="width: 6rem">Unidades</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr class="cursor-pointer" (click)="productClick(product)">
+            <td>{{ product.name }}</td>
+            <td>
+              <img
+                [src]="getProductImage(product)"
+                [alt]="product.name"
+                width="100"
+                height="100"
+                class="ratio-1x1 object-fit-cover border rounded shadow-sm"
+              />
+            </td>
+            <td class="d-none d-md-table-cell">{{ product.description }}</td>
+            <td>
+              {{ product.price / 100 | currencyEuro }}
+            </td>
+            <td class="text-center">
+              <p-tag
+                [severity]="product.totalStock > 6 ? 'success' : product.totalStock > 0 ? 'warn' : 'danger'"
+                [value]="product.totalStock"
+              ></p-tag>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    } @else {
+      <div class="row row-cols-1 row-cols-xsm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 justify-content-center justify-content-md-start">
+        @for (product of products; track product.id) {
+          <div class="col product-card">
+            <div class="card h-100 cursor-pointer" (click)="productClick(product)">
+              <img
+                class="card-img-top ratio-1x1 object-fit-cover"
+                height="200px"
+                [src]="getProductImage(product)"
+                alt="Imagen {{product.name}}"
+              >
+              <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text" [ngClass]="{'text-danger fw-semibold': product.totalStock! < 1}">
+                  {{ product.totalStock }} {{ product.totalStock != 1 ? 'unidades restantes' : 'unidad restante' }}
+                </p>
+              </div>
+              <div class="card-footer text-body-secondary d-flex justify-content-end">
+                <span>{{ product.price | currencyEuro }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

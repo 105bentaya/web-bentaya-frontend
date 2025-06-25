@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {DonationTypePipe} from "../../donation-type.pipe";
 import {PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
@@ -11,17 +11,18 @@ import {
   TableIconButtonComponent
 } from "../../../../shared/components/buttons/table-icon-button/table-icon-button.component";
 import {Router} from "@angular/router";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-donation-form-list',
   imports: [
     Button,
-    CurrencyPipe,
     DatePipe,
     DonationTypePipe,
     PrimeTemplate,
     TableModule,
-    TableIconButtonComponent
+    TableIconButtonComponent,
+    CurrencyEuroPipe
   ],
   templateUrl: './donation-form-list.component.html',
   styleUrl: './donation-form-list.component.scss'

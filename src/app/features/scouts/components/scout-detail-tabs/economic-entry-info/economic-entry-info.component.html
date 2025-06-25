@@ -24,7 +24,7 @@
       </div>
       <div class="col-12 col-sm-4">
         <b>Importe</b>
-        <div>{{ entry.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
+        <div>{{ entry.amount! | currencyEuro }}</div>
       </div>
       <div class="col-12">
         @if (entry.incomeType) {

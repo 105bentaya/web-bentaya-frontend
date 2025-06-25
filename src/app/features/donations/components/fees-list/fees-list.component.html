@@ -157,7 +157,7 @@
           {{ entry.expenseType.description }}
         }
       </td>
-      <td>{{ entry.amount! / 100 | currency:'EUR':undefined:undefined:'es' }}</td>
+      <td>{{ entry.amount! | currencyEuro }}</td>
       <td>{{ entry.description }}</td>
     </tr>
   </ng-template>

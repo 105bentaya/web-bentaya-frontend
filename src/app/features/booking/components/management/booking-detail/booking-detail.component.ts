@@ -8,7 +8,7 @@ import {BookingStatusUpdateComponent} from "../booking-status-update/booking-sta
 import {BookingStatusPipe} from "../../../../scout-center/scout-center-status.pipe";
 import {BookingDocument, BookingDocumentType} from "../../../model/booking-document.model";
 import {Button} from "primeng/button";
-import {CurrencyPipe, DatePipe, NgTemplateOutlet} from "@angular/common";
+import {DatePipe, NgTemplateOutlet} from "@angular/common";
 import {DividerModule} from "primeng/divider";
 import {DocumentStatusPipe} from "../../../pipe/document-status.pipe";
 import {DialogModule} from "primeng/dialog";
@@ -29,6 +29,7 @@ import {
 } from "../../../constant/confirm-messages.constants";
 import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
 import {BookingDocumentHelpComponent} from "../../booking-document-help/booking-document-help.component";
+import {CurrencyEuroPipe} from "../../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-booking-detail',
@@ -37,7 +38,6 @@ import {BookingDocumentHelpComponent} from "../../booking-document-help/booking-
   providers: [DialogService, BookingStatusPipe, DynamicDialogService],
   imports: [
     DatePipe,
-    CurrencyPipe,
     BookingStatusPipe,
     DividerModule,
     DocumentStatusPipe,
@@ -49,7 +49,8 @@ import {BookingDocumentHelpComponent} from "../../booking-document-help/booking-
     TableModule,
     Tooltip,
     BooleanPipe,
-    BookingDocumentHelpComponent
+    BookingDocumentHelpComponent,
+    CurrencyEuroPipe
   ]
 })
 export class BookingDetailComponent implements OnInit {

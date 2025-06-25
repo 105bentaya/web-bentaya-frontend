@@ -1,0 +1,8 @@
+:host(::ng-deep) {
+  .product-uploader {
+    --p-fileupload-content-padding: 1rem 1rem .5rem 1rem;
+    .p-fileupload-header, .p-fileupload-file-list, p-progressbar {
+      display: none !important;
+    }
+  }
+}

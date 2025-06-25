@@ -1,0 +1,151 @@
+<div class="mt-2">
+  @if (formHelper.form) {
+    <form [formGroup]="formHelper.form" class="form-container" (submit)="submitForm()">
+      <div class="row">
+        <div class="col-12 col-sm-4">
+          <div class="d-flex align-items-center gap-2 flex-column">
+            <div class="d-flex gap-2">
+              <p-fileupload
+                [multiple]="false"
+                [accept]="allowedFiles"
+                [maxFileSize]="maxFileUploadByteSize"
+                (uploadHandler)="onFileChanged($event)"
+                [auto]="true"
+                customUpload
+                invalidFileSizeMessageSummary="{0}: Tamaño del archivo inválido, "
+                invalidFileSizeMessageDetail="el tamaño máximo es {0}."
+                invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido, "
+                invalidFileTypeMessageDetail="los archivos permitidos son: {0}."
+                class="product-uploader"
+              >
+                <ng-template
+                  #content
+                  let-files
+                  let-chooseCallback="chooseCallback"
+                >
+                  <div class="text-center">
+                    @if (files.length > 0) {
+                      @let file = files[0];
+                      <img
+                        [src]="file.objectURL"
+                        alt="imagen"
+                        height="150px"
+                        width="160pc"
+                        class="ratio-1x1 object-fit-cover shadow-sm"
+                      >
+                    } @else if (originalProduct?.image) {
+                      <img
+                        [src]="formImage"
+                        alt="imagen"
+                        height="150px"
+                        width="160pc"
+                        class="ratio-1x1 object-fit-cover shadow-sm"
+                      >
+                    } @else {
+                      <div
+                        style="height: 150px; width: 160px"
+                        class="d-flex justify-content-center align-items-center"
+                      >
+                        <i style="font-size: 150px" class="pi pi-image"></i>
+                      </div>
+                    }
+                    <div class="mt-2">
+                      <p-button icon="pi pi-upload" (onClick)="chooseCallback()"/>
+                    </div>
+                  </div>
+                </ng-template>
+              </p-fileupload>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-8 row">
+          <div class="col-12 col-md-6">
+            <p-float-label variant="on">
+              <input class="form-control" formControlName="name" pInputText>
+              <label class="required">Nombre</label>
+            </p-float-label>
+          </div>
+          <div class="col-12 col-md-6">
+            <p-float-label variant="on">
+              <p-inputNumber
+                formControlName="price"
+                mode="currency"
+                currency="EUR"
+                locale="es-ES"
+                class="w-100"
+                styleClass="w-100"
+              />
+              <label class="required">Precio</label>
+            </p-float-label>
+          </div>
+          <div class="col">
+            <p-float-label variant="on">
+              <app-form-text-area
+                formControlName="description"
+                [maxLength]="1023"
+              ></app-form-text-area>
+              <label class="required">Descripción</label>
+            </p-float-label>
+          </div>
+        </div>
+      </div>
+      <p-table [value]="tableControls" sortField="pos">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Talla</th>
+            <th>Cantidad</th>
+            <th class="w-min">
+              <p-button
+                (onClick)="addSize()"
+                size="small"
+                icon="pi pi-plus"
+                styleClass="rounded-3"
+              />
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-ri="rowIndex">
+          <tr [formGroup]="product">
+            <td>
+              <input
+                pInputText
+                formControlName="size"
+              >
+            </td>
+            <td>
+              <p-inputNumber
+                mode="decimal"
+                [useGrouping]="false"
+                formControlName="stock"
+              />
+            </td>
+            <td>
+              <p-button
+                (onClick)="removeSize(ri)"
+                size="small"
+                icon="pi pi-trash"
+                severity="danger"
+                styleClass="rounded-3"
+              />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <div>
+            Stock total: {{ totalStock }}
+          </div>
+        </ng-template>
+      </p-table>
+      <div class="d-flex justify-content-center">
+        <app-save-buttons
+          saveType="submit"
+          [saveLoading]="loading"
+          [saveLabel]="originalProduct ? 'Guardar' : 'Añadir'"
+        ></app-save-buttons>
+      </div>
+    </form>
+  } @else {
+    <app-basic-loading-info/>
+  }
+</div>
+

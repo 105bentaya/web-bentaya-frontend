@@ -3,7 +3,7 @@ import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {Invoice} from "../../invoice.model";
 import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
-import {CurrencyPipe, DatePipe, TitleCasePipe} from "@angular/common";
+import {DatePipe, TitleCasePipe} from "@angular/common";
 import {Button} from "primeng/button";
 import {InvoiceFormComponent} from "../invoice-form/invoice-form.component";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
@@ -14,18 +14,19 @@ import {InvoiceService} from "../../invoice.service";
 import {ConfirmationService, PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {FileUtils} from "../../../../shared/util/file.utils";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-invoice-detail',
   imports: [
     BooleanPipe,
     DatePipe,
-    CurrencyPipe,
     TitleCasePipe,
     Button,
     FileUpload,
     PrimeTemplate,
-    TableModule
+    TableModule,
+    CurrencyEuroPipe
   ],
   templateUrl: './invoice-detail.component.html',
   styleUrl: './invoice-detail.component.scss'

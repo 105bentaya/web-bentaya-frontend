@@ -1,0 +1,137 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <h1 class="mb-0">Carrito Scout</h1>
+    <i routerLink="/tienda-scout" class="pi pi-shopping-bag fs-3 cursor-pointer"></i>
+  </div>
+  @if (!cartItemList) {
+    <app-basic-loading-info/>
+  } @else if (cartItemList.length < 1) {
+    <div>
+      <p>El carrito está vacío :(</p>
+      <p>Añade algún producto para poder realizar una compra.</p>
+    </div>
+  } @else {
+    <p-table [value]="cartItemList" rowGroupMode="subheader" groupRowsBy="product">
+      <ng-template pTemplate="groupheader" let-cartItem>
+        @let product = cartItem.product;
+        <tr pRowGroupHeader>
+          <td colspan="2">
+            <div class="d-flex flex-row">
+              <img
+                [alt]="product.name"
+                [src]="getProductImage(product)"
+                width="100"
+                style="vertical-align: middle"
+                class="me-3 ratio-1x1 object-fit-cover border rounded shadow-sm cursor-pointer"
+                (click)="productClick(product)"
+              />
+              <div class="d-flex flex-column justify-content-between">
+                <div>
+                  <span (click)="productClick(product)" class="fw-bold cursor-pointer">
+                    {{ product.name }}
+                  </span>
+                </div>
+                <span class="truncate-description">{{ product.description }}</span>
+                <span>{{ product.price | currencyEuro }}</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cartItem>
+        @for (item of cartItem.items; track item.productSizeId) {
+          <tr [ngClass]="{'bg-danger-subtle': item.count > item.stock}">
+            <td [ngClass]="{'fw-bold': item.count > item.stock}">
+              {{ item.size }} ({{ item.stock }} {{ item.stock == 1 ? 'unidad restante' : 'unidades restantes' }})
+            </td>
+            <td class="text-end" style="min-width: 9rem">
+              <div class="d-flex flex-wrap justify-content-end align-items-center gap-2">
+                <p-button
+                  size="small"
+                  icon="pi pi-trash"
+                  text
+                  severity="danger"
+                  class="py-1"
+                  (click)="updateItem(item.productSizeId, 0)"
+                  [disabled]="loading"
+                />
+                <p-button-group>
+                  <p-button
+                    size="small"
+                    icon="pi pi-minus"
+                    text
+                    raised
+                    severity="secondary"
+                    (click)="updateItem(item.productSizeId, item.count > item.stock ? item.stock : item.count - 1)"
+                    [disabled]="loading || item.count <= 1"
+                    [style]="{'height': '32px'}"
+                  />
+                  <p-button
+                    size="small"
+                    class="opacity-100"
+                    severity="secondary"
+                    text
+                    [label]="item.count"
+                    [disabled]="true"
+                    [style]="{'height': '32px'}"
+                  />
+                  <p-button
+                    size="small"
+                    icon="pi pi-plus"
+                    text
+                    raised
+                    severity="secondary"
+                    (click)="updateItem(item.productSizeId, item.count + 1)"
+                    [disabled]="loading || item.count >= item.stock"
+                    [style]="{'height': '32px'}"
+                  />
+                </p-button-group>
+              </div>
+            </td>
+          </tr>
+        }
+      </ng-template>
+      <ng-template pTemplate="groupfooter" let-data>
+        <tr class="fw-bold">
+          <td colspan="2" class="text-end py-2">
+            <span>{{ data.totalPrice | currencyEuro }}</span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr>
+          <td class="fw-bolder">
+            Total
+          </td>
+          <td class="text-end fw-bolder">
+            <span>{{ totalPrice | currencyEuro }}</span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    @if (cartItemList.length > 0) {
+      <div
+        class="d-flex ms-auto me-3 align-items-center gap-2 my-2 cursor-pointer w-fit"
+        (click)="emptyCart()"
+      >
+        <i class="pi pi-trash text-danger"></i>
+        <a class="link-danger link-offset-2 link-underline-opacity-100-hover">Vaciar carrito</a>
+      </div>
+    }
+    <div class="d-flex flex-column justify-content-center align-items-center gap-2">
+      @if (tooManyProducts) {
+        <small class="text-danger text-center">
+          No hay suficientes unidades para los productos seleccionados
+        </small>
+      }
+      <p-button
+        label="Realizar Compra"
+        class="mt-3"
+        [disabled]="!cartIsValid()"
+        [loading]="startedPurchase"
+        loadingIcon="pi pi-spin pi-spinner"
+        (click)="confirmPurchase()"
+      />
+    </div>
+  }
+</div>

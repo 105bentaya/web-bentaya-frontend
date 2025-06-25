@@ -12,7 +12,7 @@ import {
   Validators
 } from '@angular/forms';
 import {InputNumberModule} from 'primeng/inputnumber';
-import {CurrencyPipe, LowerCasePipe, NgClass} from '@angular/common';
+import {LowerCasePipe, NgClass} from '@angular/common';
 import {FloatLabelModule} from "primeng/floatlabel";
 import {SaveButtonsComponent} from "../../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {Booking, bookingIsAlwaysExclusive} from "../../../model/booking.model";
@@ -22,6 +22,7 @@ import {HourPipe} from "../../../../../shared/pipes/hour.pipe";
 import {SelectButton} from "primeng/selectbutton";
 import {yesNoOptions} from "../../../../../shared/constant";
 import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
+import {CurrencyEuroPipe} from "../../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-booking-status-update',
@@ -39,13 +40,15 @@ import {BooleanPipe} from "../../../../../shared/pipes/boolean.pipe";
     SelectButton,
     BooleanPipe,
     LowerCasePipe
-  ]
+  ],
+  providers: [CurrencyEuroPipe]
 })
 export class BookingStatusUpdateComponent implements OnInit {
 
   protected ref = inject(DynamicDialogRef);
   private readonly config = inject(DynamicDialogConfig);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly currencyPipe = inject(CurrencyEuroPipe);
 
   protected readonly formHelper = new FormHelper();
   protected readonly exclusiveOptions = yesNoOptions;
@@ -107,8 +110,8 @@ export class BookingStatusUpdateComponent implements OnInit {
   private calculateRecommendedPrice() {
     const booking: Booking = this.config.data.booking;
     this.recommendedPrice = booking.billableDays * booking.scoutCenter.price / 100 * booking.packs;
-    const priceCalculation = new CurrencyPipe('es', 'EUR').transform(this.recommendedPrice);
-    const scoutCenterPrice = new CurrencyPipe('es', 'EUR').transform(booking.scoutCenter.price / 100);
+    const priceCalculation = this.currencyPipe.transform(this.recommendedPrice, true);
+    const scoutCenterPrice = this.currencyPipe.transform(booking.scoutCenter.price);
     this.realDays = new HourPipe().transform(booking.minutes, true);
     this.billableDays = booking.billableDays;
     this.recommendedPriceText = `${booking.billableDays} días × ${booking.packs}pax × ${scoutCenterPrice} = ${priceCalculation} - Según días calculados`;
@@ -116,7 +119,7 @@ export class BookingStatusUpdateComponent implements OnInit {
     const realDaysAsNumbers = Math.round(booking.minutes / (60 * 24));
     if (realDaysAsNumbers !== this.billableDays) {
       this.realPrice = realDaysAsNumbers * booking.scoutCenter.price / 100 * booking.packs;
-      const realPriceCalculation = new CurrencyPipe('es', 'EUR').transform(this.realPrice);
+      const realPriceCalculation = this.currencyPipe.transform(this.realPrice, true);
       this.realPriceText = `${realDaysAsNumbers} días × ${booking.packs}pax × ${scoutCenterPrice} = ${realPriceCalculation} - Según días reales redondeados`;
     }
   }

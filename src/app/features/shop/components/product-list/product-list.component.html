@@ -1,0 +1,52 @@
+<div class="container">
+
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <h1 class="mb-0">Lista de Productos</h1>
+    <div>
+      <p-button
+        label="Nuevo Producto"
+        icon="pi pi-plus"
+        (click)="openAddDialog()"
+      ></p-button>
+    </div>
+  </div>
+  <p-table [value]="productList">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nombre</th>
+        <th class="d-none d-sm-table-cell">Imagen</th>
+        <th class="w-min">Precio</th>
+        <th class="w-min">Stock</th>
+        <th class="w-min">Editar</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{ product.name }}</td>
+        <td class="d-none d-sm-table-cell">
+          <img
+            [src]="productPhoto(product)"
+            [alt]="product.name"
+            width="100"
+            height="100"
+            class="ratio-1x1 object-fit-cover border rounded"
+          />
+        </td>
+        <td>{{ product.price | currencyEuro }}</td>
+        <td class="text-center">
+          <p-tag
+            [severity]="getProductStock(product) > 6 ? 'success' : getProductStock(product) > 0 ? 'warn' : 'danger'"
+            [value]="getProductStock(product).toString()"
+          ></p-tag>
+        </td>
+        <td class="text-center pe-none">
+          <p-button
+            class="pe-auto"
+            icon="pi pi-pencil"
+            (click)="openEditDialog(product.id)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

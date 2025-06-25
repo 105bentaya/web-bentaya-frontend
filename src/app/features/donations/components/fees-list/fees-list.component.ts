@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {EconomicDonationEntry, EconomicEntry} from "../../../scouts/models/scout.model";
@@ -18,11 +18,11 @@ import {DialogService} from "primeng/dynamicdialog";
 import {CensusPipe} from "../../../scouts/pipes/census.pipe";
 import {Button} from "primeng/button";
 import {FeesFormComponent} from "../fees-form/fees-form.component";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-fees-list',
   imports: [
-    CurrencyPipe,
     DatePipe,
     PrimeTemplate,
     TableModule,
@@ -30,7 +30,8 @@ import {FeesFormComponent} from "../fees-form/fees-form.component";
     InputText,
     MultiSelect,
     CensusPipe,
-    Button
+    Button,
+    CurrencyEuroPipe
   ],
   templateUrl: './fees-list.component.html',
   styleUrl: './fees-list.component.scss',

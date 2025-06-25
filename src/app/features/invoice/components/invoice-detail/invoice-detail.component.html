@@ -11,7 +11,7 @@
         </div>
         <div class="col-12 col-sm-6 col-md-4">
           <b>Importe</b>
-          <div>{{ invoice.amount / 100 | currency:'EUR':undefined:undefined:'es' }}</div>
+          <div>{{ invoice.amount | currencyEuro }}</div>
         </div>
         <div class="col-12 col-sm-6 col-md-4">
           <b>Fecha de Factura</b>

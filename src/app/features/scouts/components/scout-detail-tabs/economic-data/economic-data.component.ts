@@ -20,10 +20,11 @@ import {noop, Observable} from "rxjs";
 import {ScoutService} from "../../../services/scout.service";
 import {EconomicEntryFormComponent} from "../../scout-detail-forms/economic-entry-form/economic-entry-form.component";
 import {EconomicEntryInfoComponent} from "../economic-entry-info/economic-entry-info.component";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {EntryTypePipe} from "../../../pipes/entry-type.pipe";
 import {Tooltip} from "primeng/tooltip";
 import {Dialog} from "primeng/dialog";
+import {CurrencyEuroPipe} from "../../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-economic-data',
@@ -35,11 +36,11 @@ import {Dialog} from "primeng/dialog";
     IdDocumentPipe,
     IdDocumentTypePipe,
     DocumentListComponent,
-    CurrencyPipe,
     DatePipe,
     EntryTypePipe,
     Tooltip,
-    Dialog
+    Dialog,
+    CurrencyEuroPipe
   ],
   templateUrl: './economic-data.component.html',
   styleUrl: './economic-data.component.scss',

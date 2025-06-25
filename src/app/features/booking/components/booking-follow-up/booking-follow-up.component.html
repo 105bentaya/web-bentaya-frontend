@@ -88,7 +88,7 @@
           @if (booking.price) {
             <div class="col-12 col-lg-6">
               <b>Aportación de mantenimiento</b>
-              <div>{{ booking.price | currency:'EUR':undefined:undefined:'es' }}</div>
+              <div>{{ booking.price | currencyEuro:true }}</div>
             </div>
           }
           <div class="col-12">
@@ -126,7 +126,7 @@
         @case ("RESERVED") {
           <p>
             <b>Aportación de mantenimiento:</b>
-            {{ booking.price | currency:'EUR':undefined:undefined:'es' }}
+            {{ booking.price | currencyEuro:true }}
           </p>
           @if (booking.statusObservations) {
             <p>

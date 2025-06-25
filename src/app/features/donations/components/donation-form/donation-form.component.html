@@ -339,7 +339,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <b>Importe:</b>
-                {{ donationForm.amount! / 100 | currency:'EUR':undefined:undefined:'ES-es' }}
+                {{ donationForm.amount! | currencyEuro }}
               </div>
               <div class="col-12 col-sm-6">
                 <b>Periodicidad:</b>
@@ -378,8 +378,3 @@
 @if (loading) {
   <div class="p-overlay-mask block-scroll"></div>
 }
-<form #tpvForm action="{{url}}" method="POST" class="d-none">
-  <input #i1 type="hidden" name="Ds_SignatureVersion"/>
-  <input #i2 type="hidden" name="Ds_MerchantParameters"/>
-  <input #i3 type="hidden" name="Ds_Signature"/>
-</form>

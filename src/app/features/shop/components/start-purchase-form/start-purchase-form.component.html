@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Realizar compra</h2>
+    <i routerLink="/tienda-scout" class="pi pi-shopping-bag fs-3 cursor-pointer"></i>
+  </div>
+  @if (purchase) {
+    <form [formGroup]="formHelper.form" class="form-container" (ngSubmit)="submit()">
+      <b>Compra</b>
+      <ul>
+        @for (prod of purchase.boughtProducts; track prod) {
+          <li>{{ prod | purchaseProduct }}</li>
+        }
+        <li style="list-style-type: square">
+          <b>Total: {{ purchase.amount | currencyEuro }}</b></li>
+      </ul>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <p-float-label variant="on">
+            <input
+              pInputText
+              class="form-control"
+              formControlName="name"
+              id="name"
+              type="text"
+              maxlength="255"
+            >
+            <label class="required" for="name">Nombre</label>
+          </p-float-label>
+          @if (formHelper.isDirtyAndInvalid('name')) {
+            <small class="text-danger">Introduzca su nombre</small>
+          }
+        </div>
+        <div class="col-12 col-md-6">
+          <p-float-label variant="on">
+            <input
+              pInputText
+              class="form-control"
+              formControlName="surname"
+              id="surname"
+              type="text"
+              maxlength="255"
+            >
+            <label class="required" for="surname">Apellidos</label>
+          </p-float-label>
+          @if (formHelper.isDirtyAndInvalid('surname')) {
+            <small class="text-danger">Introduzca sus apellidos</small>
+          }
+        </div>
+        <div class="col-12 col-md-6">
+          <p-float-label variant="on">
+            <input
+              pInputText
+              class="form-control"
+              formControlName="email"
+              id="email"
+              type="text"
+              maxlength="255"
+            >
+            <label class="required" for="email">Correo</label>
+          </p-float-label>
+          @if (formHelper.isDirtyAndInvalid('email')) {
+            <small class="text-danger">Introduzca un correo electrónico válido</small>
+          }
+        </div>
+        <div class="col-12 col-md-6">
+          <p-float-label variant="on">
+            <input
+              pInputText
+              class="form-control"
+              formControlName="phone"
+              id="phone"
+              type="text"
+              maxlength="255"
+            >
+            <label class="required" for="phone">Teléfono</label>
+          </p-float-label>
+          @if (formHelper.isDirtyAndInvalid('phone')) {
+            <small class="text-danger">Introduzca su teléfono</small>
+          }
+        </div>
+        <div class="col-12">
+          <p-float-label variant="on">
+            <app-form-text-area
+              id="observations"
+              formControlName="observations"
+              [maxLength]="65535"
+              [showTag]="false"
+            ></app-form-text-area>
+            <label for="observations">Alguna observación a tener en cuenta</label>
+          </p-float-label>
+        </div>
+      </div>
+      <app-save-buttons
+        saveType="submit"
+        saveLabel="Confirmar Datos"
+        [showCancelButton]="true"
+        cancelLabel="Cancelar Compra"
+        (onCancel)="cancel()"
+      />
+    </form>
+  } @else {
+    <app-basic-loading-info/>
+  }
+</div>

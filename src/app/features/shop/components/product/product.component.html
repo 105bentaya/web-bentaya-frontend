@@ -1,0 +1,71 @@
+<div class="d-flex flex-column align-items-center gap-3">
+  <div class="d-flex flex-column-reverse flex-sm-row justify-content-evenly gap-4">
+    <div class="mx-2 d-flex flex-column">
+      <span>{{ product.description }}</span>
+      <hr>
+      <label>
+        @if (!selectedSize && product.stockList.length > 1) {
+          Unidades disponibles <b>(seleccione una talla)</b>:
+        } @else {
+          Unidades disponibles:
+        }
+      </label>
+      <div class="d-flex flex-column gap-2">
+        @for (size of product.stockList; track size) {
+          <app-radio-button-container label="{{ size.stock }} ({{ size.size }})">
+            <p-radioButton
+              name="category"
+              [value]="size"
+              [(ngModel)]="selectedSize"
+              (onClick)="selectedSizeChange()"
+              [disabled]="size.stock == 0"
+            ></p-radioButton>
+          </app-radio-button-container>
+        }
+      </div>
+    </div>
+    <div class="d-flex flex-column align-items-center gap-2">
+      <div>
+        <img
+          [src]="imageUrl"
+          [alt]="product.name"
+          width="200"
+          height="200"
+          class="ratio-1x1 object-fit-cover border rounded shadow-sm"
+        >
+      </div>
+      <div>
+        <span>
+          Precio:
+          <b>{{ product.price | currencyEuro }}</b>
+          @if (count > 1) {
+            <span>
+            ({{ product.price * count | currencyEuro }})
+          </span>
+          }
+        </span>
+      </div>
+    </div>
+  </div>
+  <p-button-group>
+    <p-button
+      icon="pi pi-minus"
+      class="opacity-75"
+      (click)="minusItem()"
+      [disabled]="!selectedSize || count == 1"
+    />
+    <p-button
+      label="Añadir {{count > 0 ? count : ''}}"
+      icon="pi pi-cart-plus"
+      (click)="addProductToCart()"
+      [disabled]="!selectedSize"
+      [style]="{'height': '40px'}"
+    />
+    <p-button
+      icon="pi pi-plus"
+      class="opacity-75"
+      (click)="plusItem()"
+      [disabled]="!selectedSize || count == selectedSize.stock"
+    />
+  </p-button-group>
+</div>

@@ -57,7 +57,7 @@
         {{ donation.cif }}
       </td>
       <td>
-        {{ donation.amount / 100 | currency:'EUR':undefined:undefined:'es' }}
+        {{ donation.amount | currencyEuro }}
       </td>
       <td>
         {{ donation | donationType }}

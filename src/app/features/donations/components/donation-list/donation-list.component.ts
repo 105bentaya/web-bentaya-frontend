@@ -1,5 +1,5 @@
 import {Component, inject, input} from '@angular/core';
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {PrimeTemplate} from "primeng/api";
 import {SpecialMemberDonationPipe} from "../../../special-member/special-member-donation.pipe";
 import {TableModule} from "primeng/table";
@@ -11,17 +11,18 @@ import {DialogService} from "primeng/dynamicdialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
 import {Button} from "primeng/button";
 import {RouterLink} from "@angular/router";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-donation-list',
   imports: [
-    CurrencyPipe,
     DatePipe,
     PrimeTemplate,
     SpecialMemberDonationPipe,
     TableModule,
     Button,
-    RouterLink
+    RouterLink,
+    CurrencyEuroPipe
   ],
   templateUrl: './donation-list.component.html',
   styleUrl: './donation-list.component.scss',

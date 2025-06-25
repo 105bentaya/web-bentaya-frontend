@@ -1,0 +1,69 @@
+<div class="container-fluid">
+  <h1>Lista de Transacciones</h1>
+  <p-table
+    styleClass="p-datatable-gridlines"
+    [value]="paymentList"
+    responsiveLayout="scroll"
+    sortField="surname"
+    [loading]="!paymentList"
+  >
+    <ng-template pTemplate="caption">
+      <div class="d-flex justify-content-end">
+        <p-button
+          icon="pi pi-file-excel"
+          (click)="downloadTransactions()"
+          title="Descargar pagos como excel"
+          severity="success"
+          size="small"
+          styleClass="rounded-3"
+        ></p-button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="orderNumber">
+          Número de Pedido
+          <p-sortIcon field="orderNumber"></p-sortIcon>
+        </th>
+        <th pSortableColumn="status">
+          <a>Estado</a>
+          <p-sortIcon field="status"></p-sortIcon>
+        </th>
+        <th pSortableColumn="amount">
+          Cantidad
+          <p-sortIcon field="amount"></p-sortIcon>
+        </th>
+        <th pSortableColumn="paymentType">
+          Tipo de Pago
+          <p-sortIcon field="paymentType"></p-sortIcon>
+        </th>
+        <th pSortableColumn="modificationDate">
+          Última fecha de modificación
+          <p-sortIcon field="modificationDate"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-payment
+    >
+      <tr>
+        <td>
+          {{ payment.orderNumber }}
+        </td>
+        <td>
+          {{ payment.status }}
+        </td>
+        <td>
+          {{ payment.amount | currencyEuro }}
+        </td>
+        <td>
+          {{ payment.paymentType }}
+        </td>
+        <td>
+          {{ payment.modificationDate | date:"EEEE, d 'de' MMMM, y, HH:mm:ss":undefined:"es" }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

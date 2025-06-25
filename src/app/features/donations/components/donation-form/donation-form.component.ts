@@ -1,10 +1,9 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {DonationsService} from "../../services/donations.service";
 import {AlertService} from "../../../../shared/services/alert-service.service";
 import {ConfirmationService, MenuItem} from "primeng/api";
 import {AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {DonationForm} from "../../model/donation-form.model";
-import {environment} from "../../../../../environments/environment";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {DonationFrequencyPipe} from '../../donation-frecuency.pipe';
 import {CheckboxModule} from 'primeng/checkbox';
@@ -12,7 +11,6 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {InputTextModule} from 'primeng/inputtext';
 import {StepsModule} from 'primeng/steps';
-import {CurrencyPipe} from '@angular/common';
 import {FormHelper} from "../../../../shared/util/form-helper";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {
@@ -29,6 +27,8 @@ import {
   RadioButtonContainerComponent
 } from "../../../../shared/components/radio-button-container/radio-button-container.component";
 import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
+import {TpvService} from "../../../../shared/services/tpv.service";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-donation-form',
@@ -45,16 +45,16 @@ import {BooleanPipe} from "../../../../shared/pipes/boolean.pipe";
     DonationFrequencyPipe,
     CheckboxContainerComponent,
     CheckboxModule,
-    CurrencyPipe,
     LargeFormButtonsComponent,
     GeneralAButtonComponent,
     RadioButtonContainerComponent,
-    BooleanPipe
+    BooleanPipe,
+    CurrencyEuroPipe
   ]
 })
 export class DonationFormComponent implements OnInit {
-
   private readonly donationsService = inject(DonationsService);
+  private readonly tpvService = inject(TpvService);
   private readonly alertService = inject(AlertService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly route = inject(ActivatedRoute);
@@ -72,16 +72,6 @@ export class DonationFormComponent implements OnInit {
     {label: 'Datos de Donación'},
     {label: 'Confirmación'}
   ];
-
-  @ViewChild("tpvForm")
-  protected tpvForm: any;
-  @ViewChild("i1")
-  protected signatureVersion: any;
-  @ViewChild("i2")
-  protected parameters: any;
-  @ViewChild("i3")
-  protected signature: any;
-  protected url = environment.tpvUrl;
 
   ngOnInit(): void {
     const successParam = this.route.snapshot.queryParams["success"];
@@ -157,12 +147,7 @@ export class DonationFormComponent implements OnInit {
       koUrl: `${url}?success=0`
     };
     this.donationsService.getNewDonationInfo(donationId, urls).subscribe({
-      next: data => {
-        this.signatureVersion.nativeElement.value = data.Ds_SignatureVersion;
-        this.parameters.nativeElement.value = data.Ds_MerchantParameters;
-        this.signature.nativeElement.value = data.Ds_Signature;
-        this.tpvForm.nativeElement.submit();
-      },
+      next: data => this.tpvService.redirectToPaymentGateway(data),
       error: () => this.loading = false
     });
   }

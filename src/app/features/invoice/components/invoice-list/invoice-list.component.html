@@ -137,7 +137,7 @@
           {{ invoice.expenseType.description }}
         </td>
         <td>
-          {{ invoice.amount / 100 | currency:'EUR':undefined:undefined:'es' }}
+          {{ invoice.amount | currencyEuro }}
         </td>
       </tr>
     </ng-template>

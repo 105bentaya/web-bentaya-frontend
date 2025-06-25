@@ -57,6 +57,42 @@ export const routes: Routes = [
     loadComponent: () => import('./features/login/components/reset-password/reset-password.component').then(c => c.ResetPasswordComponent),
     canActivate: [noAuthGuard]
   },
+  {
+    path: "tienda-scout",
+    loadComponent: () => import('./features/shop/components/shop/shop.component').then(c => c.ShopComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUTER, UserRole.USER]}
+  },
+  {
+    path: "tienda-scout/carrito",
+    loadComponent: () => import('./features/shop/components/cart/cart.component').then(c => c.CartComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUTER, UserRole.USER]}
+  },
+  {
+    path: "tienda-scout/compra",
+    loadComponent: () => import('./features/shop/components/start-purchase-form/start-purchase-form.component').then(c => c.StartPurchaseFormComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUTER, UserRole.USER]}
+  },
+  {
+    path: "tienda-scout/continuar-compra",
+    loadComponent: () => import('./features/shop/components/continue-purchase-form/continue-purchase-form.component').then(c => c.ContinuePurchaseFormComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.SCOUTER, UserRole.USER]}
+  },
+  {
+    path: "tienda/transacciones",
+    loadComponent: () => import('./features/shop/components/payment-list/payment-list.component').then(c => c.PaymentListComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.TRANSACTION]}
+  },
+  {
+    path: "tienda/productos",
+    loadComponent: () => import('./features/shop/components/product-list/product-list.component').then(c => c.ProductListComponent),
+    canActivate: [authGuard],
+    data: {roles: [UserRole.TRANSACTION]}
+  },
   //ADMIN
   {
     path: "ajustes",

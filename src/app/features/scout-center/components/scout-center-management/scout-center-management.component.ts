@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {ScoutCenterService} from "../../scout-center.service";
 import {ScoutCenter, ScoutCenterFile, ScoutCenterWithFiles} from "../../scout-center.model";
 import {TabsModule} from "primeng/tabs";
-import {CurrencyPipe, NgClass, NgStyle} from "@angular/common";
+import {NgClass, NgStyle} from "@angular/common";
 import {Button} from "primeng/button";
 import {FileUpload, FileUploadHandlerEvent} from "primeng/fileupload";
 import {maxFileUploadByteSize} from "../../../../shared/constant";
@@ -25,12 +25,12 @@ import {FormTextAreaComponent} from "../../../../shared/components/form-text-are
 import {SaveButtonsComponent} from "../../../../shared/components/buttons/save-buttons/save-buttons.component";
 import {centerIsAlwaysExclusive} from "../../../booking/model/booking.model";
 import {ScoutCenterSettingsComponent} from "../scout-center-settings/scout-center-settings.component";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 @Component({
   selector: 'app-scout-center-management',
   imports: [
     TabsModule,
-    CurrencyPipe,
     Button,
     FileUpload,
     BasicLoadingInfoComponent,
@@ -47,7 +47,8 @@ import {ScoutCenterSettingsComponent} from "../scout-center-settings/scout-cente
     NgClass,
     SaveButtonsComponent,
     ScoutCenterSettingsComponent,
-    NgStyle
+    NgStyle,
+    CurrencyEuroPipe
   ],
   templateUrl: './scout-center-management.component.html',
   styleUrl: './scout-center-management.component.scss'

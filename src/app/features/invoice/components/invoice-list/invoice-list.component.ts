@@ -6,7 +6,7 @@ import {PrimeTemplate} from "primeng/api";
 import {TableLazyLoadEvent, TableModule} from "primeng/table";
 import {InvoiceService} from "../../invoice.service";
 import {Invoice, InvoiceData} from "../../invoice.model";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import FilterUtils from "../../../../shared/util/filter-utils";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {DynamicDialogService} from "../../../../shared/services/dynamic-dialog.service";
@@ -16,6 +16,7 @@ import {cloneDeep} from "lodash";
 import {noop} from "rxjs";
 import {DatePicker} from "primeng/datepicker";
 import {FormsModule} from "@angular/forms";
+import {CurrencyEuroPipe} from "../../../../shared/pipes/currency-euro.pipe";
 
 
 @Component({
@@ -25,11 +26,11 @@ import {FormsModule} from "@angular/forms";
     MultiSelectModule,
     PrimeTemplate,
     TableModule,
-    CurrencyPipe,
     Button,
     DatePipe,
     DatePicker,
-    FormsModule
+    FormsModule,
+    CurrencyEuroPipe
   ],
   templateUrl: './invoice-list.component.html',
   styleUrl: './invoice-list.component.scss',

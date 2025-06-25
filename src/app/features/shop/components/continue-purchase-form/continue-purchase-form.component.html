@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <h1 class="mb-0">Continuar compra</h1>
+    <i routerLink="/tienda-scout" class="pi pi-shopping-bag fs-3 cursor-pointer"></i>
+  </div>
+  @if (purchase) {
+    <div class="row overflow-hidden">
+      <div class="col-12 col-md-6">
+        <b>Compra</b>
+        <ul>
+          @for (prod of purchase.boughtProducts; track prod) {
+            <li>{{ prod | purchaseProduct }}</li>
+          }
+          <li style="list-style-type: square;">
+            <b>Total: {{ purchase.amount | currencyEuro }}</b>
+          </li>
+        </ul>
+      </div>
+      <div class="col">
+        <b>Datos</b>
+        <ul>
+          <li>Nombre: {{ purchase.name }}</li>
+          <li>Apellidos: {{ purchase.surname }}</li>
+          <li>Teléfono: {{ purchase.phone }}</li>
+          <li>Correo: {{ purchase.email }}</li>
+          <li>Observaciones: {{ purchase.observations || 'ninguna' }}</li>
+        </ul>
+      </div>
+    </div>
+    <app-save-buttons
+      saveLabel="Continuar compra"
+      (onSave)="continue()"
+      [showCancelButton]="true"
+      cancelLabel="Cancelar compra"
+      (onCancel)="cancel()"
+    />
+  } @else {
+    <app-basic-loading-info/>
+  }
+</div>
