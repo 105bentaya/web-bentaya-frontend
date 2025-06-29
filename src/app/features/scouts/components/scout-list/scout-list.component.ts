@@ -35,6 +35,7 @@ import {Tab, TabList, Tabs} from "primeng/tabs";
 import {Badge} from "primeng/badge";
 import {ContextMenu} from "primeng/contextmenu";
 import {ScoutExcelExportComponent} from "../scout-excel-export/scout-excel-export.component";
+import {cloneDeep} from "lodash";
 
 @Component({
   selector: 'app-scout-list',
@@ -220,7 +221,8 @@ export class ScoutListComponent implements OnInit {
       });
   }
 
-  private getFilter(tableLazyLoadEvent: any): PagedFilter {
+  private getFilter(originalTableLazyLoadEvent: any): PagedFilter {
+    const tableLazyLoadEvent = cloneDeep(originalTableLazyLoadEvent);
     const groupFilter = tableLazyLoadEvent.filters.groupIds;
     if (groupFilter) {
       const realGroupFilter: number[] = groupFilter.value.filter((id: number) => id > 0);

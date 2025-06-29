@@ -79,10 +79,6 @@ export class GroupDataFormComponent implements OnInit {
     if (!this.userData.hasRequiredPermission(UserRole.SECRETARY)) {
       this.formHelper.get("census")?.disable();
     }
-
-    if (possibleNewScoutType) {
-      this.updateFormValues(possibleNewScoutType);
-    }
   }
 
   private readonly groupValidation: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
