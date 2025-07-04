@@ -9,7 +9,7 @@
       ></p-button>
     </div>
   </div>
-  <p-tabs [(value)]="tabValue" (valueChange)="updateTab()">
+  <p-tabs [(value)]="tabValue" (valueChange)="updateTab()" scrollable>
     <p-tablist>
       @if (isSecretary) {
         <p-tab value="HONOUR">Registro Honor</p-tab>

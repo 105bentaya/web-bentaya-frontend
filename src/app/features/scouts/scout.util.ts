@@ -31,8 +31,7 @@ export default class ScoutHelper {
 
   static readonly cifRegex = /^[ABCDEFGHJNPQRSUVW]\d{7}[0-9A-J]$/;
   static readonly controlLetters = 'JABCDEFGHI';
-  static readonly letterControl = ['P', 'Q', 'R', 'S', 'W'];
-  static readonly numberControl = ['A', 'B', 'E', 'H'];
+  static readonly letterControl = ['N', 'P', 'Q', 'R', 'S', 'W'];
 
   public static cifIsValid(value: string) {
     value = value.toUpperCase();
@@ -57,16 +56,10 @@ export default class ScoutHelper {
       const lastNumber = 10 - ((evenSum + oddSum) % 10);
       const controlDigit = lastNumber === 10 ? 0 : lastNumber;
 
-      const expectedLetter = ScoutHelper.controlLetters[controlDigit];
-      const expectedNumber = controlDigit.toString();
-
       if (ScoutHelper.letterControl.includes(firstLetter)) {
-        return controlCharacter === expectedLetter;
+        return controlCharacter === ScoutHelper.controlLetters[controlDigit];
       }
-      if (ScoutHelper.numberControl.includes(firstLetter)) {
-        return controlCharacter === expectedNumber;
-      }
-      return controlCharacter === expectedLetter || controlCharacter === expectedNumber;
+      return controlCharacter === controlDigit.toString();
     }
     return false;
   }
