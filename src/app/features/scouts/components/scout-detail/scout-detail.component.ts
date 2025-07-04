@@ -150,12 +150,6 @@ export class ScoutDetailComponent implements OnInit {
           this.generateTabs();
         });
       });
-
-    if (this.fromForm && this.permission >= Permission.BASIC_EDITION) {
-      this.updateTab('salud');
-      this.fromFormStatus = "MEDICAL";
-      this.editing = true;
-    }
   }
 
   private generateTabs() {
@@ -178,6 +172,13 @@ export class ScoutDetailComponent implements OnInit {
     } else {
       this.updateTab(JSON.parse(localStorage.getItem("scout_tab")!) ?? 'personal');
     }
+
+    if (this.fromForm && this.permission >= Permission.BASIC_EDITION) {
+      this.updateTab('salud');
+      this.fromFormStatus = "MEDICAL";
+      this.editing = true;
+    }
+
     this.loading = false;
   }
 
@@ -204,7 +205,7 @@ export class ScoutDetailComponent implements OnInit {
     }
     if (this.fromFormStatus === "MEDICAL") {
       if (this.scout.scoutInfo.scoutType === "SCOUT") {
-        this.updateTab('salud');
+        this.updateTab('familiar');
       } else {
         this.editing = false;
       }
